@@ -4461,7 +4461,7 @@ class App:
                         if (pyxel.frame_count % 8) == 0:
                              pyxel.play(2,5)
                              new_shot = Shot()
-                             new_shot.update(self.shot_level,self.my_x + 5,self.my_y -4,       3,0,  8,16,  0,   0.5,1)
+                             new_shot.update(self.shot_level,self.my_x + 5,self.my_y -4,       3,0,  8,16,  0,   2,1)
                              
                              self.shots.append(new_shot)
 
@@ -4470,7 +4470,7 @@ class App:
                         if (pyxel.frame_count % 8) == 0:
                              pyxel.play(2,5)
                              new_shot = Shot()
-                             new_shot.update(self.shot_level,self.my_x + 5,self.my_y -8,       3,0,  8,24,  0,   0.5,1)
+                             new_shot.update(self.shot_level,self.my_x + 5,self.my_y -8,       3,0,  8,24,  0,   2,1)
                              self.shots.append(new_shot)
               
               if self.shot_level == 9:#ウェーブカッターLv3発射
@@ -4478,7 +4478,7 @@ class App:
                         if (pyxel.frame_count % 8) == 0:
                              pyxel.play(2,5)
                              new_shot = Shot()
-                             new_shot.update(self.shot_level,self.my_x + 5,self.my_y -12,       3,0,  8,32,  0,   0.5,1)
+                             new_shot.update(self.shot_level,self.my_x + 5,self.my_y -12,       3,0,  8,32,  0,   2,1)
                              self.shots.append(new_shot)
                
               if self.shot_level == 10:#ウェーブカッターLv4発射
@@ -4486,7 +4486,7 @@ class App:
                         if (pyxel.frame_count % 6) == 0:
                              pyxel.play(2,5)
                              new_shot = Shot()
-                             new_shot.update(self.shot_level,self.my_x + 5,self.my_y -12,       4,0,  8,32,  0,   1,1)
+                             new_shot.update(self.shot_level,self.my_x + 5,self.my_y -12,       4,0,  8,32,  0,   2,1)
                              self.shots.append(new_shot)
 
               if self.shot_level == 4:#レーザー発射
@@ -4494,7 +4494,7 @@ class App:
                         if (pyxel.frame_count % 2) == 0:
                              pyxel.play(2,4)
                              new_shot = Shot()
-                             new_shot.update(self.shot_level,self.my_x + 5,self.my_y,           3,1,  8,8,  0,   1,1)
+                             new_shot.update(self.shot_level,self.my_x + 5,self.my_y,           3,1,  8,8,  0,   0.3,1)
                              self.shots.append(new_shot)
 
               if self.shot_level == 5:#ツインレーザー発射
@@ -4502,11 +4502,11 @@ class App:
                         if (pyxel.frame_count % 2) == 0:
                              pyxel.play(2,4)
                              new_shot = Shot()
-                             new_shot.update(self.shot_level,self.my_x + 5,self.my_y - 3,      3,1,  8,8,  -3,  1,1)
+                             new_shot.update(self.shot_level,self.my_x + 5,self.my_y - 3,      3,1,  8,8,  -3,  0.3,1)
                              self.shots.append(new_shot)
 
                              new_shot = Shot()
-                             new_shot.update(self.shot_level,self.my_x + 5,self.my_y + 3,      3,1,  8,8,    3, 1,1)
+                             new_shot.update(self.shot_level,self.my_x + 5,self.my_y + 3,      3,1,  8,8,    3, 0.3,1)
                              self.shots.append(new_shot)
 
               if self.shot_level == 6:#３ＷＡＹレーザー発射
@@ -4514,16 +4514,16 @@ class App:
                         if (pyxel.frame_count % 2) == 0:
                              pyxel.play(2,4)
                              new_shot = Shot()
-                             new_shot.update(self.shot_level,self.my_x + 1,self.my_y  -1,    1,-1.08,   8,8,   -1,  1,1)
+                             new_shot.update(self.shot_level,self.my_x + 1,self.my_y  -1,    1,-1.08,   8,8,   -1,  0.2,1)
                              self.shots.append(new_shot)
 
                              new_shot = Shot()
-                             new_shot.update(self.shot_level,self.my_x + 6,self.my_y,        3,1,       8,8,    0,  1,1)
+                             new_shot.update(self.shot_level,self.my_x + 6,self.my_y,        3,1,       8,8,    0,  0.3,1)
                              self.shots.append(new_shot)
 
                              pyxel.play(2,4)
                              new_shot = Shot()
-                             new_shot.update(self.shot_level,self.my_x + 6,self.my_y + 1,    2, 1.07,   8,8,    1,  1,1)
+                             new_shot.update(self.shot_level,self.my_x + 6,self.my_y + 1,    2, 1.07,   8,8,    1,  0.2,1)
                              self.shots.append(new_shot)
               
               
