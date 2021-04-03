@@ -415,12 +415,12 @@ E_SIZE_HI_MIDDLE53    =10  #敵サイズ5x3チップタイプ  準中型40ドッ
 #敵キャラのIDナンバー定数定義
 ID00,ID01,ID02,ID03,ID04,ID05,ID06,ID07,ID08,ID09,ID10 = 0,1,2,3,4,5,6,7,8,9,10
 #敵キャラのステータス(状態)
-ENEMY_STATUS_NORMAL    = 0 #通常 score_normal
-ENEMY_STATUS_ATTACK    = 1 #攻撃 score_attack
-ENEMY_STATUS_ESCAPE    = 2 #撤退 score_escape
-ENEMY_STATUS_AWAITING  = 3 #待機 score_awaiting
-ENEMY_STATUS_DEFENSE   = 4 #防御 score_defense
-ENEMY_STATUS_BERSERK   = 5 #怒り score_berserk
+ENEMY_STATUS_NORMAL    = 0 #通常 破壊時はscore_normalを加算
+ENEMY_STATUS_ATTACK    = 1 #攻撃 破壊時はscore_attackを加算
+ENEMY_STATUS_ESCAPE    = 2 #撤退 破壊時はscore_escapeを加算
+ENEMY_STATUS_AWAITING  = 3 #待機 破壊時はscore_awaitingを加算
+ENEMY_STATUS_DEFENSE   = 4 #防御 破壊時はscore_defenseを加算
+ENEMY_STATUS_BERSERK   = 5 #怒り 破壊時はscore_berserkを加算
 
 ENEMY_STATUS_MOVE_COORDINATE_INIT    = 10 #移動用座標初期化
 ENEMY_STATUS_MOVE_BEZIER_CURVE       = 11 #ベジェ曲線で移動
@@ -3283,6 +3283,14 @@ class App:
                if self.raster_scroll[i].scroll_id == id: #scroll_idと調べるidが一致したのなら
                     self.raster_scroll[i].display = flag #flag(0=表示しない 1=表示する)を書き込む
      
+     #ランクに応じた数値をリストから取得する
+     def get_rank_data(self):
+          self.enemy_speed_mag           = self.game_rank_data_list[self.rank][LIST_RANK_E_SPEED_MAG]               #敵スピード倍率をリストを参照してランク数で取得、変数に代入する
+          self.enemy_bullet_speed_mag    = self.game_rank_data_list[self.rank][LIST_RANK_BULLET_SPEED_MAG]          #敵狙い撃ち弾スピード倍率をリストを参照してランク数で取得、変数に代入する
+          self.return_bullet_probability = self.game_rank_data_list[self.rank][LIST_RANK_RETURN_BULLET_PROBABILITY] #敵撃ち返し弾発射確率をリストを参照してランク数で取得、変数に代入する
+          self.enemy_hp_mag              = self.game_rank_data_list[self.rank][LIST_RANK_E_HP_MAG]                  #敵耐久力倍率をリストを参照してランク数で取得、変数に代入する
+         
+     
      ################################################################ボツ関数群・・・・・・(涙)##########################################################
      #外積を計算する関数 self.cpに結果が入る(バグありなので使えないっぽい・・・この関数)
      def cross_product_calc_function(self,ax,ay,bx,by,cx,cy):
@@ -3835,11 +3843,7 @@ class App:
          self.rank                = self.game_difficulty_list[self.game_difficulty][LIST_START_RANK]          #ゲームスタート時のランク数をリストを参照し難易度に合わせて取得、変数に代入する
          
          #ランクに応じた数値をリストから取得する
-         self.enemy_speed_mag           = self.game_rank_data_list[self.rank][LIST_RANK_E_SPEED_MAG]               #敵スピード倍率をリストを参照してランク数で取得、変数に代入する
-         self.enemy_bullet_speed_mag    = self.game_rank_data_list[self.rank][LIST_RANK_BULLET_SPEED_MAG]          #敵狙い撃ち弾スピード倍率をリストを参照してランク数で取得、変数に代入する
-         self.return_bullet_probability = self.game_rank_data_list[self.rank][LIST_RANK_RETURN_BULLET_PROBABILITY] #敵撃ち返し弾発射確率をリストを参照してランク数で取得、変数に代入する
-         self.enemy_hp_mag              = self.game_rank_data_list[self.rank][LIST_RANK_E_HP_MAG]                  #敵耐久力倍率をリストを参照してランク数で取得、変数に代入する
-         
+         self.get_rank_data() #ランクデータリストから数値を取り出す関数の呼び出し
          
          self.shot_table_list = self.j_python_shot_table_list       #とりあえずショットテーブルリストは初期機体のj_pythonのものをコピーして使用します
                                                                     #将来的には選択した機体で色々な機体のリストがコピーされるはず
@@ -7846,6 +7850,13 @@ class App:
                self.one_game_playtime_seconds   += 1 #1プレイタイムを1秒増加させる
                self.total_game_playtime_seconds += 1 #総ゲームプレイ時間も1秒増加させる
                
+     #1プレイタイムを見てランクを上昇させる
+     def update_rank_up_look_at_playtime(self):
+          if (pyxel.frame_count % 1800) == 0:
+               if self.rank < 50:
+                    self.rank += 1
+                    self.get_rank_data() #ランク数が変化したのでランク数をもとにしたデータをリストから各変数に代入する関数の呼び出し
+
      #ハイスコアのチェックを行う関数
      def update_check_hi_score(self):
           if self.score > self.hi_score: #スコアがハイスコアより大きければ
@@ -8741,7 +8752,10 @@ class App:
           mou_x = "{:>3}".format(int(self.mountain_x))
           pyxel.text(160-20,67,"mX",8)
           pyxel.text(160-12,67,mou_x,10)
-          
+
+          #ランクの表示
+          pyxel.text(160-16,73,"RA" + str(self.rank), 7)
+
           #1番目のクローの座標の表示
           if self.claw_number >= 1:
                pyxel.text(0,WINDOW_H - 13,str(self.claw[0].posx),6)
@@ -9141,7 +9155,8 @@ class App:
                self.update_obtain_item()                #パワーアップアイテム類の更新（移動とか）する関数を呼び出します
                self.update_clip_obtain_item()           #画面からはみ出したパワーアップアイテム類を消去する関数を呼び出します
                self.stage_count += 1                    #ステージ開始から経過したフレームカウント数を1増加させる
-               
+               #ランクアップ処理#############################################################################################################
+               self.update_rank_up_look_at_playtime()   #時間経過によるランクアップ関数を呼び出します
                #スクロール関連の処理#########################################################################################################
                if self.boss_test_mode == 0:                  #ボス戦テストモードオフの時だけ
                     self.scroll_count += self.side_scroll_speed   #スクロールカウント数をスクロールスピード分(通常は1)増加させていく
