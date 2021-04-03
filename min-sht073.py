@@ -204,6 +204,7 @@ LIST_REPAIR_SHIELD       = 5 #ステージクリア後に回復するシール�
 LIST_RETURN_BULLET       = 6 #撃ち返し弾の有無と有の時の種類
 LIST_SCORE_MAGNIFICATION = 7 #スコア倍率
 LIST_RANK_EXPONENTIAL    = 8 #ランク上昇指数
+LIST_START_RANK          = 9 #ゲームスタート時のランク数
 #難易度名の定数定義
 GAME_VERY_EASY = 0
 GAME_EASY      = 1
@@ -213,11 +214,11 @@ GAME_VERY_HARD = 4
 GAME_INSAME    = 5 #狂ってる・・・・・
 
 #ランクリストを参照するときに使用するインデックスナンバー定数定義
-LIST_RANK                      = 0  #ランク数
-LIST_E_SPEED_MAG               = 1  #敵スピード倍率
-LIST_BULLET_SPEED_MAG          = 2  #敵狙い撃ち弾スピード倍率
-LIST_RETURN_BULLET_PROBABILITY = 3  #敵撃ち返し弾発射確率
-LIST_E_HP_MAG                  = 4  #敵耐久力倍率
+LIST_RANK                           = 0  #ランク数
+LIST_RANK_E_SPEED_MAG               = 1  #敵スピード倍率
+LIST_RANK_BULLET_SPEED_MAG          = 2  #敵狙い撃ち弾スピード倍率
+LIST_RANK_RETURN_BULLET_PROBABILITY = 3  #敵撃ち返し弾発射確率
+LIST_RANK_E_HP_MAG                  = 4  #敵耐久力倍率
 
 #ゲーム開始時に追加されるクロー数の定数定義
 NO_CLAW        = 0
@@ -2101,43 +2102,73 @@ class App:
           #難易度ごとの各種設定数値のリスト
           #フォーマット
           #[
-          # [難易度名,開始時のショットボーナス,開始時のミサイルボーナス,開始時のシールドボーナス,クロー初期値,ステージクリア後に回復するシールド値,撃ち返し弾の有無,スコア倍率,ランク上昇指数]
+          # [難易度名,開始時のショットボーナス,開始時のミサイルボーナス,開始時のシールドボーナス,クロー初期値,ステージクリア後に回復するシールド値,撃ち返し弾の有無,        スコア倍率, ランク上昇指数, スタートランク数]
           #]
           self.game_difficulty_list = [
-              [GAME_VERY_EASY,6,6,6, THREE_CLAW, REPAIR_SHIELD3,RETURN_BULLET_NONE,         1.0, 1.0],
-              [GAME_EASY     ,3,3,3, ONE_CLAW,   REPAIR_SHIELD2,RETURN_BULLET_NONE,         1.0, 1.0],
-              [GAME_NORMAL   ,0,0,0, NO_CLAW,    REPAIR_SHIELD2,RETURN_BULLET_AIM,          1.0, 1.0],
-              [GAME_HARD     ,0,0,0, NO_CLAW,    REPAIR_SHIELD1,RETURN_BULLET_AIM,          1.0, 1.5],
-              [GAME_VERY_HARD,0,0,0, NO_CLAW,    REPAIR_SHIELD0,RETURN_BULLET_DELAY_AIM,    2.0,1.75],
-              [GAME_INSAME   ,0,0,0, NO_CLAW,    REPAIR_SHIELD0,RETURN_BULLET_DELAY_AIM,    3.0, 2.0],
+              [GAME_VERY_EASY,6,6,6,                                                      THREE_CLAW, REPAIR_SHIELD3,                  RETURN_BULLET_NONE,     1.0,        1.0,           0],
+              [GAME_EASY     ,3,3,3,                                                      ONE_CLAW,   REPAIR_SHIELD2,                  RETURN_BULLET_NONE,     1.0,        1.0,           0],
+              [GAME_NORMAL   ,0,0,0,                                                      NO_CLAW,    REPAIR_SHIELD2,                  RETURN_BULLET_AIM,      1.0,        1.0,           0],
+              [GAME_HARD     ,0,0,0,                                                      NO_CLAW,    REPAIR_SHIELD1,                  RETURN_BULLET_AIM,      1.0,        1.5,           5],
+              [GAME_VERY_HARD,0,0,0,                                                      NO_CLAW,    REPAIR_SHIELD0,                  RETURN_BULLET_DELAY_AIM,2.0,       1.75,          10],
+              [GAME_INSAME   ,0,0,0,                                                      NO_CLAW,    REPAIR_SHIELD0,                  RETURN_BULLET_DELAY_AIM,3.0,        2.0,          15],
               ]
           #ランク値による各種設定数値のリスト
           #フォーマット
           #[
-          #    [ランク,  敵スピード倍率, 狙い撃ち弾スピード倍率, 撃ち返し弾確率%,  敵耐久力倍率]
+          #    [ランク,  敵スピード倍率, 敵弾弾スピード倍率,    撃ち返し弾確率%,  敵耐久力倍率]敵のスピード倍率は3.9までにしておいてください、追尾戦闘機のスピードが速すぎると一瞬で画面外に飛んでいくみたいで・・
           #]
           self.game_rank_data_list = [
                [ 0,     1.0,           1.0,                  0,              1.0],
                [ 1,     1.0,           1.0,                  0,              1.0],
                [ 2,     1.1,           1.0,                  1,              1.0],
-               [ 3,     1.1,           1.1,                  1,              1.0],
-               [ 4,     1.2,           1.2,                  1,              1.0],
-               [ 5,     1.2,           1.2,                  1,              1.0],
-               [ 6,     1.2,           1.2,                  2,              1.0],
-               [ 7,     1.2,           1.2,                  2,              1.0],
-               [ 8,     1.2,           1.2,                  2,              1.0],
-               [ 9,     1.2,           1.3,                  2,              1.0],
-               [10,     1.3,           1.3,                  3,              1.0],
-               [11,     1.3,           1.3,                  3,              1.0],
-               [12,     1.3,           1.3,                  3,              1.0],
-               [13,     1.3,           1.3,                  4,              1.0],
-               [14,     1.3,           1.4,                  4,              1.0],
-               [15,     1.4,           1.4,                  4,              1.0],
-               [16,     1.4,           1.4,                  5,              1.0],
-               [17,     1.4,           1.4,                  5,              1.0],
-               [18,     1.4,           1.4,                  6,              1.0],
-               [19,     1.4,           1.4,                  6,              1.0],
-               [20,     1.5,           1.5,                  6,              1.0],
+               [ 3,     1.1,           1.0,                  1,              1.0],
+               [ 4,     1.2,           1.0,                  1,              1.0],
+               [ 5,     1.2,           1.1,                  1,              1.0],
+               [ 6,     1.2,           1.1,                  2,              1.0],
+               [ 7,     1.2,           1.1,                  2,              1.0],
+               [ 8,     1.2,           1.1,                  2,              1.0],
+               [ 9,     1.2,           1.1,                  2,              1.0],
+               [10,     1.3,           1.1,                  3,              1.1],
+               [11,     1.3,           1.1,                  3,              1.1],
+               [12,     1.3,           1.2,                  3,              1.1],
+               [13,     1.3,           1.2,                  4,              1.1],
+               [14,     1.3,           1.2,                  4,              1.1],
+               [15,     1.4,           1.3,                  4,              1.1],
+               [16,     1.4,           1.3,                  5,              1.1],
+               [17,     1.4,           1.3,                  5,              1.1],
+               [18,     1.4,           1.3,                  5,              1.1],
+               [19,     1.4,           1.3,                  5,              1.1],
+               [20,     1.4,           1.4,                  6,              1.2],
+               [21,     1.4,           1.4,                  6,              1.2],
+               [22,     1.4,           1.4,                  6,              1.2],
+               [23,     1.4,           1.4,                  6,              1.2],
+               [24,     1.4,           1.4,                  6,              1.2],
+               [25,     1.4,           1.5,                  6,              1.3],
+               [26,     1.4,           1.5,                  6,              1.3],
+               [27,     1.4,           1.5,                  7,              1.3],
+               [28,     1.4,           1.5,                  7,              1.3],
+               [29,     1.4,           1.5,                  7,              1.4],
+               [30,     1.4,           1.5,                  7,              1.4],
+               [31,     1.5,           1.5,                  7,              1.4],
+               [32,     1.5,           1.5,                  7,              1.4],
+               [33,     1.5,           1.5,                  7,              1.4],
+               [34,     1.5,           1.5,                  8,              1.4],
+               [35,     1.5,           1.6,                  8,              1.4],
+               [36,     1.5,           1.6,                  8,              1.4],
+               [37,     1.5,           1.6,                  8,              1.4],
+               [38,     1.5,           1.6,                  8,              1.5],
+               [39,     1.5,           1.6,                  8,              1.5],
+               [40,     1.6,           1.6,                  8,              1.5],
+               [41,     1.6,           1.7,                  8,              1.5],
+               [42,     1.6,           1.7,                  8,              1.5],
+               [43,     1.6,           1.7,                  9,              1.5],
+               [44,     1.6,           1.7,                  9,              1.5],
+               [45,     1.6,           1.7,                  9,              1.5],
+               [46,     1.6,           1.7,                  9,              1.5],
+               [47,     1.6,           1.7,                  9,              1.5],
+               [48,     1.6,           1.7,                  9,              1.5],
+               [49,     1.6,           1.7,                  9,              1.6],
+               [50,     1.6,           1.7,                 10,              1.6],
                ]
           #ショットパワーアップテーブルのフォーマット
           #
@@ -3748,7 +3779,6 @@ class App:
          self.my_vx = 1    #自機のx方向の移動量
          self.my_vy = 0    #自機のy方向の移動量
          
-         self.rank                        = 10 #ランク数
          self.run_away_bullet_probability = 10 #敵が過ぎ去っていくときに弾を出す確率
 
      
@@ -3802,7 +3832,15 @@ class App:
          self.return_bullet       = self.game_difficulty_list[self.game_difficulty][LIST_RETURN_BULLET]       #撃ち返し弾の有無とありの時の種類をリストを参照し難易度に合わせて取得、変数に代入する
          self.score_magnification = self.game_difficulty_list[self.game_difficulty][LIST_SCORE_MAGNIFICATION] #スコア倍率をリストを参照し難易度に合わせて取得、変数に代入する
          self.rank_exponential    = self.game_difficulty_list[self.game_difficulty][LIST_RANK_EXPONENTIAL]    #ランク上昇指数をリストを参照し難易度に合わせて取得、変数に代入する
-
+         self.rank                = self.game_difficulty_list[self.game_difficulty][LIST_START_RANK]          #ゲームスタート時のランク数をリストを参照し難易度に合わせて取得、変数に代入する
+         
+         #ランクに応じた数値をリストから取得する
+         self.enemy_speed_mag           = self.game_rank_data_list[self.rank][LIST_RANK_E_SPEED_MAG]               #敵スピード倍率をリストを参照してランク数で取得、変数に代入する
+         self.enemy_bullet_speed_mag    = self.game_rank_data_list[self.rank][LIST_RANK_BULLET_SPEED_MAG]          #敵狙い撃ち弾スピード倍率をリストを参照してランク数で取得、変数に代入する
+         self.return_bullet_probability = self.game_rank_data_list[self.rank][LIST_RANK_RETURN_BULLET_PROBABILITY] #敵撃ち返し弾発射確率をリストを参照してランク数で取得、変数に代入する
+         self.enemy_hp_mag              = self.game_rank_data_list[self.rank][LIST_RANK_E_HP_MAG]                  #敵耐久力倍率をリストを参照してランク数で取得、変数に代入する
+         
+         
          self.shot_table_list = self.j_python_shot_table_list       #とりあえずショットテーブルリストは初期機体のj_pythonのものをコピーして使用します
                                                                     #将来的には選択した機体で色々な機体のリストがコピーされるはず
          self.missile_table_list = self.j_python_missile_table_list #とりあえずミサイルテーブルリストは初期機体のj_pythonのものをコピーして使用します
@@ -6095,7 +6133,7 @@ class App:
                          for number in range(self.event_list[self.event_index][5]):
                               #編隊なので現在の編隊ＩＤナンバーであるcurrent_formation_idも出現時にenemyクラスに情報を書き込みます
                               new_enemy = Enemy()
-                              new_enemy.update(CIR_COIN,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W - 1 + (number * 12),self.event_list[self.event_index][4],0,0,      0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0, -1,1,      0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8, 1,0,   0, HP01,  0,0, E_SIZE_NORMAL,   30,0,0,    0,0,0,0,    E_SHOT_POW,self.current_formation_id ,0,0,0,      0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT02,PT02,  PT01,PT01,PT03)
+                              new_enemy.update(CIR_COIN,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W - 1 + (number * 12),self.event_list[self.event_index][4],0,0,      0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0, -1,1,      0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8, 1*self.enemy_speed_mag,0,   0, HP01 * self.enemy_hp_mag,  0,0, E_SIZE_NORMAL,   30,0,0,    0,0,0,0,    E_SHOT_POW,self.current_formation_id ,0,0,0,      0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT02,PT02,  PT01,PT01,PT03)
                               self.enemy.append(new_enemy) 
                               
                          #編隊なので編隊のIDナンバーと編隊の総数、現在の編隊生存数をenemy_formationリストに登録します
@@ -6103,27 +6141,27 @@ class App:
                     #追尾戦闘機ツインアロー出現
                     elif self.event_list[self.event_index][2] == TWIN_ARROW:
                          new_enemy = Enemy()
-                         new_enemy.update(TWIN_ARROW,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,    self.event_list[self.event_index][3],self.event_list[self.event_index][4],0,0,       0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,  0,0,        0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   1.5,0,  0,    HP01,     0,0,   E_SIZE_NORMAL,  0,  0, 1.3,     0,0,0,0,    E_NO_POW,ID00 ,0,0,0,     0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
+                         new_enemy.update(TWIN_ARROW,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,    self.event_list[self.event_index][3],self.event_list[self.event_index][4],0,0,       0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,  0,0,        0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   1.5 - (self.enemy_speed_mag // 2),0,  0,    HP01 * self.enemy_hp_mag,     0,0,   E_SIZE_NORMAL,  0,  0, 1.3,     0,0,0,0,    E_NO_POW,ID00 ,0,0,0,     0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                          self.enemy.append(new_enemy)                   
                     #回転戦闘機サイシーロ出現(サインカーブを描く敵)
                     elif self.event_list[self.event_index][2] == SAISEE_RO:
                          new_enemy = Enemy()
-                         new_enemy.update(SAISEE_RO,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   self.event_list[self.event_index][3],self.event_list[self.event_index][4],0,0,      0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,  0,0,        0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   1,0,  0,  HP01,   0,0,  E_SIZE_NORMAL,0.5,0.05,0,      0,0,0,0,     E_NO_POW,ID00 ,0,0,0,                 0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
+                         new_enemy.update(SAISEE_RO,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   self.event_list[self.event_index][3],self.event_list[self.event_index][4],0,0,      0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,  0,0,        0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   1*self.enemy_speed_mag,0,  0,  HP01 * self.enemy_hp_mag,   0,0,  E_SIZE_NORMAL,0.5,0.05,0,      0,0,0,0,     E_NO_POW,ID00 ,0,0,0,                 0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                          self.enemy.append(new_enemy)    
                     #グリーンランサー 3way弾を出してくる緑の戦闘機(サインカーブを描く敵)
                     elif self.event_list[self.event_index][2] == GREEN_LANCER:
                          new_enemy = Enemy()
-                         new_enemy.update(GREEN_LANCER,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   self.event_list[self.event_index][3],self.event_list[self.event_index][4],0,0,     0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,   0,0,        0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   0.1,0,  0,  HP05,   0,0,  E_SIZE_NORMAL,0.5,0.01,0,      0,0,0,0,     E_MISSILE_POW,ID00 ,0,0,0,     0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
+                         new_enemy.update(GREEN_LANCER,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   self.event_list[self.event_index][3],self.event_list[self.event_index][4],0,0,     0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,   0,0,        0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   0.1*self.enemy_speed_mag,0,  0,  HP05 * self.enemy_hp_mag,   0,0,  E_SIZE_NORMAL,0.5,0.01,0,      0,0,0,0,     E_MISSILE_POW,ID00 ,0,0,0,     0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                          self.enemy.append(new_enemy)
                     #レイブラスター 直進して画面前方のどこかで停止→レーザービーム射出→急いで後退するレーザー系
                     elif self.event_list[self.event_index][2] == RAY_BLASTER:
                          new_enemy = Enemy()
-                         new_enemy.update(RAY_BLASTER,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   self.event_list[self.event_index][3],self.event_list[self.event_index][4],0,0,      0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,    -2,(randint(0,1)-0.5),        0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   0.98,0,  0,  HP02,   0,0,  E_SIZE_NORMAL,80 + randint(0,40),0,0,      0,0,0,0,      E_NO_POW,ID00 ,0,0,0,      0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
+                         new_enemy.update(RAY_BLASTER,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   self.event_list[self.event_index][3],self.event_list[self.event_index][4],0,0,      0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,    -2,(randint(0,1)-0.5),        0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   0.98*self.enemy_speed_mag,0,  0,  HP02 * self.enemy_hp_mag,   0,0,  E_SIZE_NORMAL,80 + randint(0,40),0,0,      0,0,0,0,      E_NO_POW,ID00 ,0,0,0,      0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                          self.enemy.append(new_enemy)
                     #ボルダー 硬めの弾バラマキ重爆撃機
                     elif self.event_list[self.event_index][2] == VOLDAR:
                          new_enemy = Enemy()
-                         new_enemy.update(VOLDAR,ID00,      ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   self.event_list[self.event_index][3],self.event_list[self.event_index][4],0,0,      0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,    0,0,        0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_40,SIZE_24,   -0.07,1,  0,  HP59,   0,0,  E_SIZE_HI_MIDDLE53,  0,0,0,      0,0,0,0,      E_SHOT_POW,ID00    ,1,0.007,0.6,      0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT10)
+                         new_enemy.update(VOLDAR,ID00,      ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   self.event_list[self.event_index][3],self.event_list[self.event_index][4],0,0,      0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,    0,0,        0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_40,SIZE_24,   -0.07*self.enemy_speed_mag,1,  0,  HP59 * self.enemy_hp_mag,   0,0,  E_SIZE_HI_MIDDLE53,  0,0,0,      0,0,0,0,      E_SHOT_POW,ID00    ,1,0.007,0.6,      0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT10)
                          self.enemy.append(new_enemy)
                elif self.event_list[self.event_index][1] == EVENT_FAST_FORWARD_NUM:  #イベント「早回し編隊パラメーター設定」の場合
                     self.fast_forward_destruction_num   = self.event_list[self.event_index][2] #早回しの条件を満たすのに必要な「敵編隊殲滅必要数」を変数に代入する
