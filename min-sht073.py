@@ -4426,10 +4426,10 @@ class App:
                self.reverse_claw_svx = -(self.my_vx)#リバースクロー用のショット方向ベクトルは自機移動ベクトルを反転したものとなります
                self.reverse_claw_svy = -(self.my_vy)
      
-     #キーボードの1かゲームパッドのXが推されたらショット経験値を増やしていく                      KEY 1
+     #キーボードの1が推されたらショット経験値を増やしていく                                     KEY 1
      def update_powerup_shot(self):
-          if pyxel.btnp(pyxel.KEY_1) or pyxel.btnp(pyxel.GAMEPAD_1_X) or pyxel.btnp(pyxel.GAMEPAD_2_X):
-               self.shot_exp += 1#ショット経験値を１増やして武器をアップグレードさせていく
+          if pyxel.btnp(pyxel.KEY_1):
+               self.shot_exp += 1  #ショット経験値を１増やして武器をアップグレードさせていく
                self.level_up_my_shot() #自機ショットの経験値を調べ可能な場合レベルアップをさせる関数を呼び出す
                if self.shot_level > 10:
                     self.shot_level = 0
@@ -7394,7 +7394,7 @@ class App:
           if self.collision_flag == 1: #コリジョンフラグが建っていたのなら
               self.update_my_ship_damage(1) #障害物に当たったので自機のシールド値を減らす
      
-     #ゲームパッドのYが推されたらサブウェポンを切り替える                     KEY Y
+     #ゲームパッドのYが推されたらサブウェポンを切り替える                     GAMEPAD Y
      def update_change_sub_weapon(self):
           if pyxel.btnp(pyxel.GAMEPAD_1_Y) or pyxel.btnp(pyxel.GAMEPAD_2_Y) and self.select_sub_weapon_id != -1:#サブウェポン切り替えボタンが押された＆サブウェポンを一つでも所維持しているのなら以下の命令を実行する
                for __i in range(5):#5回繰り返す
