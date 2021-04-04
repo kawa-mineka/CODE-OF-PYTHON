@@ -73,7 +73,7 @@
 
 #todo800 メイン武器を高速で切り替えたときグラフイックパターンがおかしくなるバグ取り
 #todo801 ボスを倒した瞬間、自機がほぼ同時にやられた場合、進行不可になるバグの処置
-#todo801 自機が爆発中にボスが出現すると、進行不可になるバグの処置
+#todo801 自機が爆発中にボスが出現すると、進行不可になるバグの処置  全然わからないどこにバグが潜んでいるのかそれは・・・謎
 #todo803 ウィンドウシステムを改良する（滅茶苦茶難しそう・・・今は同じようなコードを羅列してるだけなのでシンプルに行きたいところですが・・）
 #todo804 難易度選択によるスタート時のクロー追加ボーナスでローリングクローだけ上手く複数追加されない(1個だけなら追加される)(おそらく2~4個追加時に全く同じ座標で回転し続けて1個だけで回っているように見える？のかも？)要バグ取り
 
@@ -104,7 +104,9 @@
 #todo41 難易度選択メニューの実装 2021 03/28 実装完了
 #todo704 チョット大き目で耐久力のある広めの範囲から自機狙い＆ばらまき弾を撃ってくる重爆撃機みたいな敵の実装 2021 03/20 実装完了
 #todo712 爆発パターンがその場で爆発していただけなので地上物はスクロールスピードに合わせて爆発パターンが移動するようにする 2021 03/20 実装完了
-#todo    ランクシステム実装 生存時間によってランクが上がっていくようにした 2021 04/04 実装完了→難易度によってランクの上がり方も変化させたい
+#todo    ランクシステム実装 生存時間によってランクが上がっていくようにした 2021 04/04 実装完了→難易度によってランクの上がり方も変化させたい→追加実装完了
+#todo   アイテムを取った直後だけちょっと無敵時間を追加するようにした 2021 04/04
+#todo   EASY VERY_EASYのみパワーアップアイテムが敵の弾を遮って消去するようにした 2021 04/04
 
 from random import randint
 from random import random
@@ -1642,7 +1644,7 @@ class Explosion:#爆発のクラス設定
           self.vx = 0   #速度(ベクトル)
           self.vy = 0
           self.explotion_count = 0 #アニメーションパターン数
-          self.return_bullet_type = 0  #打ち返し弾の種類 0=打ち返しなし 1=自機狙い弾1個 2=自機狙い弾1個+数フレーム停止して自機を狙う弾1個
+          self.return_bullet_type = 0  #打ち返し弾の種類 0=打ち返しなし 1=爆発直後に自機狙い弾1個 2=爆発直後に自機狙い弾1個+爆発の終わりに自機を狙う弾1個
           self.return_buller_count = 0 #打ち返し弾を生み出すまでのカウントタイマー(0になったら打ち返し弾を育成する)
           self.x_reverse = 0           #x軸方向(横)反転フラグ1=通常表示 -1=横に反転する
           self.y_reverse = 0           #y軸方向(横)反転フラグ1=通常表示 -1=縦に反転する
@@ -2164,19 +2166,19 @@ class App:
                [35,    1.5,           1.6,             8,              1.4,         3,         10,          1],
                [36,    1.5,           1.6,             8,              1.4,         3,         10,          1],
                [37,    1.5,           1.6,             8,              1.4,         3,         11,          1],
-               [38,    1.5,           1.6,             8,              1.5,         3,         11,          1],
-               [39,    1.5,           1.6,             8,              1.5,         3,         12,          1],
-               [40,    1.6,           1.6,             8,              1.5,         4,         12,          2],
-               [41,    1.6,           1.7,             8,              1.5,         4,         12,          2],
-               [42,    1.6,           1.7,             8,              1.5,         4,         13,          2],
-               [43,    1.6,           1.7,             9,              1.5,         4,         13,          2],
-               [44,    1.6,           1.7,             9,              1.5,         4,         13,          2],
-               [45,    1.6,           1.7,             9,              1.5,         4,         14,          2],
-               [46,    1.6,           1.7,             9,              1.5,         4,         14,          2],
-               [47,    1.6,           1.7,             9,              1.5,         4,         14,          2],
-               [48,    1.6,           1.7,             9,              1.5,         4,         15,          2],
-               [49,    1.6,           1.7,             9,              1.6,         4,         15,          2],
-               [50,    1.6,           1.7,            10,              1.6,         4,         16,          2],
+               [38,    1.5,           1.6,             9,              1.5,         3,         11,          1],
+               [39,    1.5,           1.6,             9,              1.5,         3,         12,          1],
+               [40,    1.6,           1.6,             9,              1.5,         4,         12,          2],
+               [41,    1.6,           1.7,            10,              1.5,         4,         12,          2],
+               [42,    1.6,           1.7,            10,              1.5,         4,         13,          2],
+               [43,    1.6,           1.7,            11,              1.5,         4,         13,          2],
+               [44,    1.6,           1.7,            11,              1.5,         4,         13,          2],
+               [45,    1.6,           1.7,            12,              1.5,         4,         14,          2],
+               [46,    1.6,           1.7,            12,              1.5,         4,         14,          2],
+               [47,    1.6,           1.7,            13,              1.5,         4,         14,          2],
+               [48,    1.6,           1.7,            13,              1.5,         4,         15,          2],
+               [49,    1.6,           1.7,            14,              1.6,         4,         15,          2],
+               [50,    1.6,           1.7,            14,              1.6,         4,         16,          2],
                ]
           #ショットパワーアップテーブルのフォーマット
           #
@@ -2745,22 +2747,22 @@ class App:
          #自機ショットや自機ミサイル、クローショットが敵に当たり敵の耐久力が0以下になったらその座標に爆発を生成する
          if   self.enemy[e].enemy_size == E_SIZE_NORMAL:         #標準的な大きさの敵8x8ドットの敵を倒したとき
               new_explosion = Explosion()
-              new_explosion.update(EXPLOSION_NORMAL,PRIORITY_FRONT,self.enemy[e].posx,self.enemy[e].posy,0,0,10,RETURN_BULLET_NONE,0,  1,1)
+              new_explosion.update(EXPLOSION_NORMAL,PRIORITY_FRONT,self.enemy[e].posx,self.enemy[e].posy,0,0,10,self.return_bullet,0,  1,1)
               self.explosions.append(new_explosion)       
          elif self.enemy[e].enemy_size == E_SIZE_MIDDLE32:       #スクランブルハッチを倒したとき
               new_explosion = Explosion()
-              new_explosion.update(EXPLOSION_MIDDLE,PRIORITY_MORE_FRONT,self.enemy[e].posx + 4,self.enemy[e].posy,0,0,10*2,RETURN_BULLET_NONE,0,  1,1)
+              new_explosion.update(EXPLOSION_MIDDLE,PRIORITY_MORE_FRONT,self.enemy[e].posx + 4,self.enemy[e].posy,0,0,10*2,self.return_bullet,0,  1,1)
               self.explosions.append(new_explosion)
          elif self.enemy[e].enemy_size == E_SIZE_MIDDLE32_Y_REV: #天井のスクランブルハッチを倒したとき
               new_explosion = Explosion()
-              new_explosion.update(EXPLOSION_MIDDLE,PRIORITY_MORE_FRONT,self.enemy[e].posx + 4,self.enemy[e].posy,0,0,10*2,RETURN_BULLET_NONE,0,  1,-1)
+              new_explosion.update(EXPLOSION_MIDDLE,PRIORITY_MORE_FRONT,self.enemy[e].posx + 4,self.enemy[e].posy,0,0,10*2,self.return_bullet,0,  1,-1)
               self.explosions.append(new_explosion)
          elif self.enemy[e].enemy_size == E_SIZE_HI_MIDDLE53:    #重爆撃機タイプを倒したとき 大型爆発パターン2個育成
               new_explosion = Explosion()
-              new_explosion.update(EXPLOSION_MIDDLE,PRIORITY_MORE_FRONT,self.enemy[e].posx + 4 ,self.enemy[e].posy + 4,0,0,10*2,RETURN_BULLET_NONE,0,  1,1)
+              new_explosion.update(EXPLOSION_MIDDLE,PRIORITY_MORE_FRONT,self.enemy[e].posx + 4 ,self.enemy[e].posy + 4,0,0,10*2,self.return_bullet,0,  1,1)
               self.explosions.append(new_explosion)
               new_explosion = Explosion()
-              new_explosion.update(EXPLOSION_MIDDLE,PRIORITY_MORE_FRONT,self.enemy[e].posx + 28,self.enemy[e].posy + 4,0,0,10*2,RETURN_BULLET_NONE,0,  1,1)
+              new_explosion.update(EXPLOSION_MIDDLE,PRIORITY_MORE_FRONT,self.enemy[e].posx + 28,self.enemy[e].posy + 4,0,0,10*2,self.return_bullet,0,  1,1)
               self.explosions.append(new_explosion)
          
          #敵編隊殲滅フラグを強制的に初期化する
@@ -3789,7 +3791,7 @@ class App:
      #!ゲームスタート時の初期化#########################################
      def update_game_start_init(self):
          self.score = 0                 #スコア
-         self.my_shield = 5            #自機のシールド耐久値
+         self.my_shield = 5             #自機のシールド耐久値
          self.my_speed = 1              #自機の初期スピード
          
          self.my_x = 24    #自機のx座標の初期値
@@ -5868,7 +5870,6 @@ class App:
           if(pyxel.frame_count % 3) == 0:
                if pyxel.btn(pyxel.KEY_B):
                     if len(self.enemy_shot) < 800:
-                        new_enemy_shot = Enemy_shot()
                         ex = 80
                         ey = 60
                         theta = 30
@@ -7631,12 +7632,6 @@ class App:
                              self.update_append_particle(PARTICLE_DOT,self.enemy_shot[e].posx + 4,self.enemy_shot[e].posy + 4,self.obtain_item[h].vx / 2,self.obtain_item[h].vy / 2,   0,0,0)
 
                         del self.enemy_shot[e] #敵弾をリストから消去
-
-
-
-
-
-
      
      #画面外に出たパワーアップアイテム類を消去する
      def update_clip_obtain_item(self):
@@ -7664,17 +7659,38 @@ class App:
           for i in reversed(range(explosioncount)):
               #爆発パターンを背景スクロールに合わせて移動させる
               self.explosions[i].posx -= self.side_scroll_speed * 0.5#基本BGスクロールスピードは0.5、それと倍率扱いのside_scroll_speedを掛け合わせてスクロールと同じように移動させてやる（地面スクロールに引っ付いた状態で爆発してるように見せるため）           
-              self.explosions[i].explosion_count -= 1#爆発育成時に設定したカウントを１減らし0になったら爆発リストをDELしちゃう（お前・・消えるのか・・・？）
+              self.explosions[i].explosion_count -= 1#爆発育成時に設定したカウントを1減らす
+              fire_rnd = randint(0,100)
+              if self.explosions[i].explosion_count == 9 and fire_rnd <= self.return_bullet_probability: #カウント9の時&return_bullet_probabilityパーセントの確率で1発目の撃ち返し弾を出す
+                   if      self.explosions[i].return_bullet_type == RETURN_BULLET_AIM\
+                        or self.explosions[i].return_bullet_type == RETURN_BULLET_DELAY_AIM:
+                        #自機狙い弾を1発,自機狙い撃ち返しまたは遅れて更に自機狙い弾を撃ち返す 2発のときは...
+                        self.enemy_aim_bullet(self.explosions[i].posx,self.explosions[i].posy,0,0,0,0,1)#自機狙いの撃ち返し弾発射！
+                   
+                   elif    self.explosions[i].return_bullet_type == RETURN_BULLET_3WAY:
+                        #自機狙いの3way弾の場合は.....
+                        ex = self.explosions[i].posx
+                        ey = self.explosions[i].posy
+                        theta = 30
+                        n = 3
+                        division_type = 0
+                        division_count = 0
+                        division_num = 0
+                        stop_count = 0
+                        self.enemy_aim_bullet_nway(ex,ey,theta,n,division_type,division_count,division_num,stop_count)
+              
               if self.explosions[i].explosion_type == EXPLOSION_MIDDLE: #中間サイズの爆発パターンの場合は
                   #1フレームごとに通常爆発パターンを追加発生させる
                   new_explosion = Explosion()
                   new_explosion.update(EXPLOSION_NORMAL,PRIORITY_FRONT,self.explosions[i].posx + 4 + randint(0,24)-12,self.explosions[i].posy + 4 + randint(0,12)-6,0,0,10,RETURN_BULLET_NONE,0,  1,1)
                   self.explosions.append(new_explosion)
 
-                  
-              
-              if self.explosions[i].explosion_count == 0:
-                  del self.explosions[i]
+              if self.explosions[i].explosion_count == 0: #カウントが0の時は....
+                   if self.explosions[i].return_bullet_type == RETURN_BULLET_DELAY_AIM and fire_rnd <= self.return_bullet_probability:
+                        #return_bullet_probabilityパーセントの確率で更に自機狙い弾を撃ち返す 2発目
+                        self.enemy_aim_bullet(self.explosions[i].posx,self.explosions[i].posy,0,0,0,0,1)#自機狙いの撃ち返し弾発射！
+                   
+                   del self.explosions[i] #爆発リストをDELしちゃう（お前・・消えるのか・・・？）
      
      #パーティクルの追加（発生＆育成）
      def update_append_particle(self,particle_type,x,y,dx,dy,life,wait,color):
@@ -9226,7 +9242,7 @@ class App:
 
                self.update_change_sub_weapon()          #サブウェポンの切り替え関数を呼び出す
                #デバッグモードによる敵や敵弾の追加発生（ボタンを押したら敵が出てくる！？）###################################################
-               self.update_debug_mode_enemy_append()   #デバッグモードによる敵＆敵弾追加発生
+               # self.update_debug_mode_enemy_append()   #デバッグモードによる敵＆敵弾追加発生
                #プレイ時間の計算#####################################################
                self.update_calc_playtime()             #プレイ時間を計算する関数を呼び出す
                #ハイスコアの更新チェック##############################################
