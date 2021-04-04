@@ -2116,16 +2116,16 @@ class App:
           
           #難易度ごとの各種設定数値のリスト
           #フォーマット
-          #[
-          # [難易度名,startショットbonus,ミサイル,シールド,クロー初期値,ステージ後に回復するシールド値,撃ち返し弾の有無,       スコア倍率, ランク上昇frame, スタートランク数,被弾後無敵時間,アイテム取得後無敵時間,アイテム敵弾消去,ランク限界,撃ち返し開始loop,撃ち返し開始stage,1ランクダウンに必要なダメージ数]
+          #[  s=start b=bonusの略です
+          # [難易度名,sショットb,sミサイルb,sシールドb,クロー初期値,ステージ後に回復するシールド値,撃ち返し弾の有無,       スコア倍率, ランク上昇frame,sランク数,被弾後無敵時間,アイテム取得後無敵時間,アイテム敵弾消去,ランク限界,撃ち返し開始loop,撃ち返し開始stage,1ランクダウンに必要なダメージ数]
           #]
           self.game_difficulty_list = [
-              [GAME_VERY_EASY,6,6,6,                   THREE_CLAW, REPAIR_SHIELD3,             RETURN_BULLET_NONE,     1.0,       3000,            0,             60,          10,                  1,              50,       2,               6,                1],
-              [GAME_EASY     ,3,3,3,                   ONE_CLAW,   REPAIR_SHIELD2,             RETURN_BULLET_NONE,     1.0,       2400,            0,             45,          5,                   1,              50,       2,               4,                1],
-              [GAME_NORMAL   ,0,0,0,                   NO_CLAW,    REPAIR_SHIELD2,             RETURN_BULLET_AIM,      1.0,       2000,            0,             30,          3,                   0,              50,       2,               3,                2],
-              [GAME_HARD     ,0,0,0,                   NO_CLAW,    REPAIR_SHIELD1,             RETURN_BULLET_AIM,      1.0,       1800,            5,             29,          2,                   0,              50,       2,               1,                2],
-              [GAME_VERY_HARD,0,0,0,                   NO_CLAW,    REPAIR_SHIELD0,             RETURN_BULLET_DELAY_AIM,2.0,       1200,           10,             26,          0,                   0,              50,       1,               8,                3],
-              [GAME_INSAME   ,0,0,0,                   NO_CLAW,    REPAIR_SHIELD0,             RETURN_BULLET_DELAY_AIM,3.0,        900,           15,             23,          0,                   0,              50,       1,               5,                5],
+              [GAME_VERY_EASY,6,6,6,                THREE_CLAW, REPAIR_SHIELD3,             RETURN_BULLET_NONE,     1.0,       3000,           0,      60,          10,                  1,              50,       2,               6,                1],
+              [GAME_EASY     ,3,3,3,                ONE_CLAW,   REPAIR_SHIELD2,             RETURN_BULLET_NONE,     1.0,       2400,           0,      45,          5,                   1,              50,       2,               4,                1],
+              [GAME_NORMAL   ,0,0,0,                NO_CLAW,    REPAIR_SHIELD2,             RETURN_BULLET_AIM,      1.0,       2000,           0,      30,          3,                   0,              50,       2,               3,                2],
+              [GAME_HARD     ,0,0,0,                NO_CLAW,    REPAIR_SHIELD1,             RETURN_BULLET_AIM,      1.0,       1800,           5,      29,          2,                   0,              50,       2,               1,                2],
+              [GAME_VERY_HARD,0,0,0,                NO_CLAW,    REPAIR_SHIELD0,             RETURN_BULLET_DELAY_AIM,2.0,       1200,          10,      26,          0,                   0,              50,       1,               8,                3],
+              [GAME_INSAME   ,0,0,0,                NO_CLAW,    REPAIR_SHIELD0,             RETURN_BULLET_DELAY_AIM,3.0,        900,          15,      23,          0,                   0,              50,       1,               5,                4],
               ]
           #ランク値による各種設定数値のリスト
           #フォーマット
@@ -3307,6 +3307,12 @@ class App:
           self.enemy_bullet_interval     = self.game_rank_data_list[self.rank][LIST_RANK_E_BULLET_INTERVAL]         #弾発射間隔減少パーセントをリストを参照してランク数で取得、変数に代入する
           self.enemy_nway_level          = self.game_rank_data_list[self.rank][LIST_RANK_NWAY_LEVEL]                #nWAY弾のレベルをリストを参照してランク数で取得、変数に代入する
      
+     #ランクダウンさせる関数
+     def rank_down(self):
+          if self.rank > 0: #ランク数が0より大きいのならば
+               self.rank -= 1       #ランク数をデクリメント
+               self.get_rank_data() #ランク数が変化したのでランク数をもとにしたデータをリストから各変数に代入する関数の呼び出し
+
      ################################################################ボツ関数群・・・・・・(涙)##########################################################
      #外積を計算する関数 self.cpに結果が入る(バグありなので使えないっぽい・・・この関数)
      def cross_product_calc_function(self,ax,ay,bx,by,cx,cy):
@@ -3910,7 +3916,7 @@ class App:
          self.atmospheric_entry_spark_flag = self.stage_data_list[self.stage_number - 1][9] #大気圏突入時の火花を発生させるかどうかのフラグをリストを参照して取得、変数に代入する
          
          self.present_repair_item_flag = 0 #ボス破壊後の爆発シーンでリペアアイテムを出すときに使用するフラグ 0=まだアイテム出してない 1=アイテム放出したよ～
-         
+         self.rank_down_count = 0          #ダメージを受けて難易度別に設定された規定値まで行ったかどうかをカウントする変数
          self.bg_cls_color = 0            #BGをCLS(クリアスクリーン)するときの色の指定(通常は0=黒色です) ゲーム中のイベントで変化することもあるのでステージスタート時でも初期化する
          self.bg_transparent_color = 0    #BGタイルマップを敷き詰めるときに指定する透明色です            ゲーム中のイベントで変化することもあるのでステージスタート時でも初期化する
          
@@ -7472,6 +7478,12 @@ class App:
           
           pyxel.play(0,15) #自機ダメージ音再生
           self.invincible_counter += self.invincible_time #ダメージ後の無敵時間を加算する
+          
+          self.rank_down_count += 1 #ランクダウン用カウンタを１増やす
+          if self.rank_down_count == self.rank_down_need_damage: #カウンタがランクダウンに必要であるダメージ分まで増えたのなら
+               self.rank_down()  #1ランクダウンさせる関数の呼び出し
+               self.rank_down_count = 0 #カウンターをリセット
+
 
      #自機のシールドパワーがまだあるのかチェックする
      def update_check_my_shield(self):
