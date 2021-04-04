@@ -198,16 +198,19 @@ HOMING_MISSILE   = 3 #ホーミングミサイルＩＤナンバー
 SHOCK_BUMPER     = 4 #ショックバンパーＩＤナンバー
 
 #難易度リストを参照するときに使用するインデックスナンバー定数定義
-LIST_DIFFICULTY          = 0 #難易度(難しさ)
-LIST_START_BONUS_SHOT    = 1 #ゲーム開始時のショットボーナス
-LIST_START_BONUS_MISSILE = 2 #ゲーム開始時のミサイルボーナス
-LIST_START_BONUS_SHIELD  = 3 #ゲーム開始時のシールドボーナス
-LIST_START_CLAW          = 4 #ゲーム開始時のクローの数
-LIST_REPAIR_SHIELD       = 5 #ステージクリア後に回復するシールド値
-LIST_RETURN_BULLET       = 6 #撃ち返し弾の有無と有の時の種類
-LIST_SCORE_MAGNIFICATION = 7 #スコア倍率
-LIST_RANK_UP_FRAME       = 8 #ランク上昇フレーム数
-LIST_START_RANK          = 9 #ゲームスタート時のランク数
+LIST_DIFFICULTY                   = 0 #難易度(難しさ)
+LIST_START_BONUS_SHOT             = 1 #ゲーム開始時のショットボーナス
+LIST_START_BONUS_MISSILE          = 2 #ゲーム開始時のミサイルボーナス
+LIST_START_BONUS_SHIELD           = 3 #ゲーム開始時のシールドボーナス
+LIST_START_CLAW                   = 4 #ゲーム開始時のクローの数
+LIST_REPAIR_SHIELD                = 5 #ステージクリア後に回復するシールド値
+LIST_RETURN_BULLET                = 6 #撃ち返し弾の有無と有の時の種類
+LIST_SCORE_MAGNIFICATION          = 7 #スコア倍率
+LIST_RANK_UP_FRAME                = 8 #ランク上昇フレーム数
+LIST_START_RANK                   = 9 #ゲームスタート時のランク数
+LIST_DAMAGE_AFTER_INVINCIBLE_TIME =10 #被弾後の無敵時間
+LIST_GET_ITEM_INVINCIBLE_TIME     =11 #アイテム取得後の無敵時間
+LIST_ITEM_ERACE_BULLET            =12 #パワーアップアイテムが敵弾を消去するかどうか？のフラグ
 #難易度名の定数定義
 GAME_VERY_EASY = 0
 GAME_EASY      = 1
@@ -224,7 +227,7 @@ LIST_RANK_RETURN_BULLET_PROBABILITY = 3  #敵撃ち返し弾発射確率
 LIST_RANK_E_HP_MAG                  = 4  #敵耐久力倍率
 LIST_RANK_E_BULLET_APPEND           = 5  #弾追加数
 LIST_RANK_E_BULLET_INTERVAL         = 6  #弾発射間隔減少パーセント
-LIST_RANK_NWAY_LEVEL                = 7  #nWAY弾のレベル(レベルが上がると扇状に広がる弾を出す)
+LIST_RANK_NWAY_LEVEL                = 7  #nWAY弾のレベル(レベルが上がると扇状の幅が広がる)
 
 #ゲーム開始時に追加されるクロー数の定数定義
 NO_CLAW        = 0
@@ -2108,15 +2111,15 @@ class App:
           #難易度ごとの各種設定数値のリスト
           #フォーマット
           #[
-          # [難易度名,開始時のショットボーナス,ミサイルボーナス,シールドボーナス,クロー初期値,ステージクリア後に回復するシールド値,撃ち返し弾の有無,        スコア倍率, ランク上昇frame, スタートランク数]
+          # [難易度名,開始時のショットボーナス,ミサイルボーナス,シールドボーナス,クロー初期値,ステージクリア後に回復するシールド値,撃ち返し弾の有無,        スコア倍率, ランク上昇frame, スタートランク数,被弾後無敵時間,アイテム取得後無敵時間,アイテム敵弾消去]
           #]
           self.game_difficulty_list = [
-              [GAME_VERY_EASY,6,6,6,                                       THREE_CLAW, REPAIR_SHIELD3,                  RETURN_BULLET_NONE,     1.0,        3000,            0],
-              [GAME_EASY     ,3,3,3,                                       ONE_CLAW,   REPAIR_SHIELD2,                  RETURN_BULLET_NONE,     1.0,        2400,            0],
-              [GAME_NORMAL   ,0,0,0,                                       NO_CLAW,    REPAIR_SHIELD2,                  RETURN_BULLET_AIM,      1.0,        2000,            0],
-              [GAME_HARD     ,0,0,0,                                       NO_CLAW,    REPAIR_SHIELD1,                  RETURN_BULLET_AIM,      1.0,        1800,            5],
-              [GAME_VERY_HARD,0,0,0,                                       NO_CLAW,    REPAIR_SHIELD0,                  RETURN_BULLET_DELAY_AIM,2.0,        1200,           10],
-              [GAME_INSAME   ,0,0,0,                                       NO_CLAW,    REPAIR_SHIELD0,                  RETURN_BULLET_DELAY_AIM,3.0,         900,           15],
+              [GAME_VERY_EASY,6,6,6,                                       THREE_CLAW, REPAIR_SHIELD3,                  RETURN_BULLET_NONE,     1.0,        3000,            0,             60,          10,                  1],
+              [GAME_EASY     ,3,3,3,                                       ONE_CLAW,   REPAIR_SHIELD2,                  RETURN_BULLET_NONE,     1.0,        2400,            0,             45,          5,                   1],
+              [GAME_NORMAL   ,0,0,0,                                       NO_CLAW,    REPAIR_SHIELD2,                  RETURN_BULLET_AIM,      1.0,        2000,            0,             30,          3,                   0],
+              [GAME_HARD     ,0,0,0,                                       NO_CLAW,    REPAIR_SHIELD1,                  RETURN_BULLET_AIM,      1.0,        1800,            5,             29,          2,                   0],
+              [GAME_VERY_HARD,0,0,0,                                       NO_CLAW,    REPAIR_SHIELD0,                  RETURN_BULLET_DELAY_AIM,2.0,        1200,           10,             26,          0,                   0],
+              [GAME_INSAME   ,0,0,0,                                       NO_CLAW,    REPAIR_SHIELD0,                  RETURN_BULLET_DELAY_AIM,3.0,         900,           15,             23,          0,                   0],
               ]
           #ランク値による各種設定数値のリスト
           #フォーマット
@@ -3839,16 +3842,18 @@ class App:
 
          self.claw = []                   #クローのリスト クローのリストはステージスタート時に初期化してしまうと次のステージに進んだときクローが消滅してしまうのでgame_start_initで初期化します
          #難易度に応じた数値をリストから取得する
-         self.start_bonus_shot    = self.game_difficulty_list[self.game_difficulty][LIST_START_BONUS_SHOT]    #初期ショットボーナスをリストを参照し難易度に合わせて取得、変数に代入する
-         self.start_bonus_missile = self.game_difficulty_list[self.game_difficulty][LIST_START_BONUS_MISSILE] #初期ミサイルボーナスをリストを参照し難易度に合わせて取得、変数に代入する
-         self.start_bonus_shield  = self.game_difficulty_list[self.game_difficulty][LIST_START_BONUS_SHIELD]  #初期シールドボーナスをリストを参照し難易度に合わせて取得、変数に代入する
-         self.start_claw          = self.game_difficulty_list[self.game_difficulty][LIST_START_CLAW]          #初期クローボーナスをリストを参照し難易度に合わせて取得、変数に代入する
-         self.repair_shield       = self.game_difficulty_list[self.game_difficulty][LIST_REPAIR_SHIELD]       #ステージクリア後に回復するシールド値をリストを参照し難易度に合わせて取得、変数に代入する
-         self.return_bullet       = self.game_difficulty_list[self.game_difficulty][LIST_RETURN_BULLET]       #撃ち返し弾の有無とありの時の種類をリストを参照し難易度に合わせて取得、変数に代入する
-         self.score_magnification = self.game_difficulty_list[self.game_difficulty][LIST_SCORE_MAGNIFICATION] #スコア倍率をリストを参照し難易度に合わせて取得、変数に代入する
-         self.rank_up_frame       = self.game_difficulty_list[self.game_difficulty][LIST_RANK_UP_FRAME]       #ランク上昇フレーム数をリストを参照し難易度に合わせて取得、変数に代入する
-         self.rank                = self.game_difficulty_list[self.game_difficulty][LIST_START_RANK]          #ゲームスタート時のランク数をリストを参照し難易度に合わせて取得、変数に代入する
-         
+         self.start_bonus_shot         = self.game_difficulty_list[self.game_difficulty][LIST_START_BONUS_SHOT]             #初期ショットボーナスをリストを参照し難易度に合わせて取得、変数に代入する
+         self.start_bonus_missile      = self.game_difficulty_list[self.game_difficulty][LIST_START_BONUS_MISSILE]          #初期ミサイルボーナスをリストを参照し難易度に合わせて取得、変数に代入する
+         self.start_bonus_shield       = self.game_difficulty_list[self.game_difficulty][LIST_START_BONUS_SHIELD]           #初期シールドボーナスをリストを参照し難易度に合わせて取得、変数に代入する
+         self.start_claw               = self.game_difficulty_list[self.game_difficulty][LIST_START_CLAW]                   #初期クローボーナスをリストを参照し難易度に合わせて取得、変数に代入する
+         self.repair_shield            = self.game_difficulty_list[self.game_difficulty][LIST_REPAIR_SHIELD]                #ステージクリア後に回復するシールド値をリストを参照し難易度に合わせて取得、変数に代入する
+         self.return_bullet            = self.game_difficulty_list[self.game_difficulty][LIST_RETURN_BULLET]                #撃ち返し弾の有無とありの時の種類をリストを参照し難易度に合わせて取得、変数に代入する
+         self.score_magnification      = self.game_difficulty_list[self.game_difficulty][LIST_SCORE_MAGNIFICATION]          #スコア倍率をリストを参照し難易度に合わせて取得、変数に代入する
+         self.rank_up_frame            = self.game_difficulty_list[self.game_difficulty][LIST_RANK_UP_FRAME]                #ランク上昇フレーム数をリストを参照し難易度に合わせて取得、変数に代入する
+         self.rank                     = self.game_difficulty_list[self.game_difficulty][LIST_START_RANK]                   #ゲームスタート時のランク数をリストを参照し難易度に合わせて取得、変数に代入する
+         self.invincible_time          = self.game_difficulty_list[self.game_difficulty][LIST_DAMAGE_AFTER_INVINCIBLE_TIME] #被弾後の無敵時間をリストを参照し難易度に合わせて取得、変数に代入する
+         self.get_item_invincible_time = self.game_difficulty_list[self.game_difficulty][LIST_GET_ITEM_INVINCIBLE_TIME]     #アイテム取得後の無敵時間をリストを参照し難易度に合わせて取得、変数に代入する
+         self.item_erace_bullet_flag   = self.game_difficulty_list[self.game_difficulty][LIST_ITEM_ERACE_BULLET]            #パワーアップアイテムが敵弾を消去するかどうか？のフラグをリストを参照し難易度に合わせて取得、変数に代入する
          #ランクに応じた数値をリストから取得する
          self.get_rank_data() #ランクデータリストから数値を取り出す関数の呼び出し
          
@@ -3968,7 +3973,6 @@ class App:
                                   #1=自機は移動したので座標履歴リストに記録する
          
          self.invincible_counter = 0 #無敵時間(単位はフレーム)のカウンタ 0の時以外は無敵状態です
-         self.invincible_time = 30   #ダメージを受けた後の無敵時間の初期値
 
          self.enemy_bound_collision_flag = 0 #ホッパー君が地面に接触してバウンドしたかどうかのフラグ(デバッグ用に使います)
          self.mountain_x = 0                 #8wayフリースクロール＋ラスタースクロール時の背景に表示される山のBGX座標用の変数です（デバッグ様に使用します）
@@ -7456,7 +7460,7 @@ class App:
                self.my_shield = 0 #シールドパワーがマイナスまで行ってしまったら0に修正する
           
           pyxel.play(0,15) #自機ダメージ音再生
-          self.invincible_counter = self.invincible_time #ダメージ後の無敵時間を設定する
+          self.invincible_counter += self.invincible_time #ダメージ後の無敵時間を加算する
 
      #自機のシールドパワーがまだあるのかチェックする
      def update_check_my_shield(self):
@@ -7559,6 +7563,7 @@ class App:
                self.dy = (self.obtain_item[i].posy - self.my_y)
                self.distance = math.sqrt(self.dx * self.dx + self.dy * self.dy)
                if self.distance <= 8: #自機の中心位置とパワーアップアイテム類の中心位置の距離が8より小さいなら重なったと判定する
+                    self.invincible_counter += self.get_item_invincible_time #アイテムを取ったので無敵時間のカウンターを増やす
                     if ITEM_SHOT_POWER_UP <= self.obtain_item[i].item_type <= ITEM_SHIELD_POWER_UP: #ショット、ミサイル、シールドパワーアップの処理
                          self.shot_exp    += self.obtain_item[i].shot    #ショット経験値をショットパワーの増加量の分だけパワーアップさせる
                          self.missile_exp += self.obtain_item[i].missile #ミサイル経験値をミサイルパワーの増加量の分だけパワーアップさせる
@@ -7609,6 +7614,29 @@ class App:
                          self.sub_weapon_list[4] += 1  #サブウェポンリスト内のショックバンバーの所持数を１増やす
                          if self.select_sub_weapon_id == -1: #もしサブウェポンを何も所持していない状態でアイテムを取ったのなら・・・
                               self.select_sub_weapon_id = 4 #強制的にショックバンバーを選択させる
+     
+     #パワーアップアイテム類と敵弾の当たり判定(難易度によってパワーアップアイテムは敵弾を消す効果あり)
+     def update_collision_obtain_item_enemy_shot(self):
+          if self.item_erace_bullet_flag == 0: #パワーアップアイテムが敵弾を消すフラグが立っていないのならそのままリターンする
+               return
+
+          obtain_item_hit = len(self.obtain_item)
+          for h in reversed(range(obtain_item_hit)):
+               enemy_shot_hit = len(self.enemy_shot)
+               for e in reversed(range(enemy_shot_hit)):
+                    if      -4 <= self.obtain_item[h].posx - self.enemy_shot[e].posx <= 4\
+                        and -4 <= self.obtain_item[h].posy - self.enemy_shot[e].posy <= 4:
+                        #敵弾消滅時のパーティクル生成
+                        for _number in range(5):
+                             self.update_append_particle(PARTICLE_DOT,self.enemy_shot[e].posx + 4,self.enemy_shot[e].posy + 4,self.obtain_item[h].vx / 2,self.obtain_item[h].vy / 2,   0,0,0)
+
+                        del self.enemy_shot[e] #敵弾をリストから消去
+
+
+
+
+
+
      
      #画面外に出たパワーアップアイテム類を消去する
      def update_clip_obtain_item(self):
@@ -9153,9 +9181,10 @@ class App:
                #ボス関連の処理#############################################################################################################
                self.update_boss()                       #ボスの更新移動とかを行う関数を呼び出す
                #パワーアップアイテム類の処理################################################################################################
-               self.update_obtain_item()                #パワーアップアイテム類の更新（移動とか）する関数を呼び出します
-               self.update_clip_obtain_item()           #画面からはみ出したパワーアップアイテム類を消去する関数を呼び出します
-               self.stage_count += 1                    #ステージ開始から経過したフレームカウント数を1増加させる
+               self.update_obtain_item()                      #パワーアップアイテム類の更新（移動とか）する関数を呼び出します
+               self.update_collision_obtain_item_enemy_shot() #パワーアップアイテムと敵弾の当たり判定を行う関数を呼び出します
+               self.update_clip_obtain_item()                 #画面からはみ出したパワーアップアイテム類を消去する関数を呼び出します
+               self.stage_count += 1                          #ステージ開始から経過したフレームカウント数を1増加させる
                #ランクアップ処理#############################################################################################################
                self.update_rank_up_look_at_playtime()   #時間経過によるランクアップ関数を呼び出します
                #スクロール関連の処理#########################################################################################################
@@ -9197,7 +9226,7 @@ class App:
 
                self.update_change_sub_weapon()          #サブウェポンの切り替え関数を呼び出す
                #デバッグモードによる敵や敵弾の追加発生（ボタンを押したら敵が出てくる！？）###################################################
-               # self.update_debug_mode_enemy_append()   #デバッグモードによる敵＆敵弾追加発生
+               self.update_debug_mode_enemy_append()   #デバッグモードによる敵＆敵弾追加発生
                #プレイ時間の計算#####################################################
                self.update_calc_playtime()             #プレイ時間を計算する関数を呼び出す
                #ハイスコアの更新チェック##############################################
