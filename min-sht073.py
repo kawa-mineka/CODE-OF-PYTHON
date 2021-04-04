@@ -213,6 +213,10 @@ LIST_START_RANK                   = 9 #ゲームスタート時のランク数
 LIST_DAMAGE_AFTER_INVINCIBLE_TIME =10 #被弾後の無敵時間
 LIST_GET_ITEM_INVINCIBLE_TIME     =11 #アイテム取得後の無敵時間
 LIST_ITEM_ERACE_BULLET            =12 #パワーアップアイテムが敵弾を消去するかどうか？のフラグ
+LIST_RANK_LIMIT                   =13 #ランク数の上限値
+LIST_RETURN_BULLET_START_LOOP     =14 #撃ち返しを始めてくるループ数
+LIST_RETURN_BULLET_START_STAGE    =15 #撃ち返しを始めてくるステージ数
+LIST_RANK_DOWN_NEED_DAMAGE        =16 #1ランクダウンに必要なダメージ数
 #難易度名の定数定義
 GAME_VERY_EASY = 0
 GAME_EASY      = 1
@@ -2113,15 +2117,15 @@ class App:
           #難易度ごとの各種設定数値のリスト
           #フォーマット
           #[
-          # [難易度名,開始時のショットボーナス,ミサイルボーナス,シールドボーナス,クロー初期値,ステージクリア後に回復するシールド値,撃ち返し弾の有無,        スコア倍率, ランク上昇frame, スタートランク数,被弾後無敵時間,アイテム取得後無敵時間,アイテム敵弾消去]
+          # [難易度名,startショットbonus,ミサイル,シールド,クロー初期値,ステージ後に回復するシールド値,撃ち返し弾の有無,       スコア倍率, ランク上昇frame, スタートランク数,被弾後無敵時間,アイテム取得後無敵時間,アイテム敵弾消去,ランク限界,撃ち返し開始loop,撃ち返し開始stage,1ランクダウンに必要なダメージ数]
           #]
           self.game_difficulty_list = [
-              [GAME_VERY_EASY,6,6,6,                                       THREE_CLAW, REPAIR_SHIELD3,                  RETURN_BULLET_NONE,     1.0,        3000,            0,             60,          10,                  1],
-              [GAME_EASY     ,3,3,3,                                       ONE_CLAW,   REPAIR_SHIELD2,                  RETURN_BULLET_NONE,     1.0,        2400,            0,             45,          5,                   1],
-              [GAME_NORMAL   ,0,0,0,                                       NO_CLAW,    REPAIR_SHIELD2,                  RETURN_BULLET_AIM,      1.0,        2000,            0,             30,          3,                   0],
-              [GAME_HARD     ,0,0,0,                                       NO_CLAW,    REPAIR_SHIELD1,                  RETURN_BULLET_AIM,      1.0,        1800,            5,             29,          2,                   0],
-              [GAME_VERY_HARD,0,0,0,                                       NO_CLAW,    REPAIR_SHIELD0,                  RETURN_BULLET_DELAY_AIM,2.0,        1200,           10,             26,          0,                   0],
-              [GAME_INSAME   ,0,0,0,                                       NO_CLAW,    REPAIR_SHIELD0,                  RETURN_BULLET_DELAY_AIM,3.0,         900,           15,             23,          0,                   0],
+              [GAME_VERY_EASY,6,6,6,                   THREE_CLAW, REPAIR_SHIELD3,             RETURN_BULLET_NONE,     1.0,       3000,            0,             60,          10,                  1,              50,       2,               6,                1],
+              [GAME_EASY     ,3,3,3,                   ONE_CLAW,   REPAIR_SHIELD2,             RETURN_BULLET_NONE,     1.0,       2400,            0,             45,          5,                   1,              50,       2,               4,                1],
+              [GAME_NORMAL   ,0,0,0,                   NO_CLAW,    REPAIR_SHIELD2,             RETURN_BULLET_AIM,      1.0,       2000,            0,             30,          3,                   0,              50,       2,               3,                2],
+              [GAME_HARD     ,0,0,0,                   NO_CLAW,    REPAIR_SHIELD1,             RETURN_BULLET_AIM,      1.0,       1800,            5,             29,          2,                   0,              50,       2,               1,                2],
+              [GAME_VERY_HARD,0,0,0,                   NO_CLAW,    REPAIR_SHIELD0,             RETURN_BULLET_DELAY_AIM,2.0,       1200,           10,             26,          0,                   0,              50,       1,               8,                3],
+              [GAME_INSAME   ,0,0,0,                   NO_CLAW,    REPAIR_SHIELD0,             RETURN_BULLET_DELAY_AIM,3.0,        900,           15,             23,          0,                   0,              50,       1,               5,                5],
               ]
           #ランク値による各種設定数値のリスト
           #フォーマット
@@ -3856,6 +3860,12 @@ class App:
          self.invincible_time          = self.game_difficulty_list[self.game_difficulty][LIST_DAMAGE_AFTER_INVINCIBLE_TIME] #被弾後の無敵時間をリストを参照し難易度に合わせて取得、変数に代入する
          self.get_item_invincible_time = self.game_difficulty_list[self.game_difficulty][LIST_GET_ITEM_INVINCIBLE_TIME]     #アイテム取得後の無敵時間をリストを参照し難易度に合わせて取得、変数に代入する
          self.item_erace_bullet_flag   = self.game_difficulty_list[self.game_difficulty][LIST_ITEM_ERACE_BULLET]            #パワーアップアイテムが敵弾を消去するかどうか？のフラグをリストを参照し難易度に合わせて取得、変数に代入する
+         self.rank_limit               = self.game_difficulty_list[self.game_difficulty][LIST_RANK_LIMIT]                   #ランク数の上限値をリストを参照し難易度に合わせて取得、変数に代入する
+         self.return_bullet_start_loop = self.game_difficulty_list[self.game_difficulty][LIST_RETURN_BULLET_START_LOOP]     #撃ち返しを始めてくるループ数をリストを参照し難易度に合わせて取得、変数に代入する
+         self.return_bullet_start_stage= self.game_difficulty_list[self.game_difficulty][LIST_RETURN_BULLET_START_STAGE]    #撃ち返しを始めてくるステージ数をリストを参照し難易度に合わせて取得、変数に代入する
+         self.rank_down_need_damage    = self.game_difficulty_list[self.game_difficulty][LIST_RANK_DOWN_NEED_DAMAGE]        #1ランクダウンに必要なダメージ数をリストを参照し難易度に合わせて取得、変数に代入する
+         
+         
          #ランクに応じた数値をリストから取得する
          self.get_rank_data() #ランクデータリストから数値を取り出す関数の呼び出し
          
@@ -7898,8 +7908,8 @@ class App:
      #1プレイタイムを見てランクを上昇させる
      def update_rank_up_look_at_playtime(self):
           if (pyxel.frame_count % self.rank_up_frame) == 0:
-               if self.rank < 50:
-                    self.rank += 1
+               if self.rank < self.rank_limit: #ランク数がランク上限限界値より小さいのなら
+                    self.rank += 1       #ランク数をインクリメント
                     self.get_rank_data() #ランク数が変化したのでランク数をもとにしたデータをリストから各変数に代入する関数の呼び出し
 
      #ハイスコアのチェックを行う関数
