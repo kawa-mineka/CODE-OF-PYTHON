@@ -206,7 +206,7 @@ LIST_START_CLAW          = 4 #ゲーム開始時のクローの数
 LIST_REPAIR_SHIELD       = 5 #ステージクリア後に回復するシールド値
 LIST_RETURN_BULLET       = 6 #撃ち返し弾の有無と有の時の種類
 LIST_SCORE_MAGNIFICATION = 7 #スコア倍率
-LIST_RANK_EXPONENTIAL    = 8 #ランク上昇指数
+LIST_RANK_UP_FRAME       = 8 #ランク上昇フレーム数
 LIST_START_RANK          = 9 #ゲームスタート時のランク数
 #難易度名の定数定義
 GAME_VERY_EASY = 0
@@ -222,6 +222,9 @@ LIST_RANK_E_SPEED_MAG               = 1  #敵スピード倍率
 LIST_RANK_BULLET_SPEED_MAG          = 2  #敵狙い撃ち弾スピード倍率
 LIST_RANK_RETURN_BULLET_PROBABILITY = 3  #敵撃ち返し弾発射確率
 LIST_RANK_E_HP_MAG                  = 4  #敵耐久力倍率
+LIST_RANK_E_BULLET_APPEND           = 5  #弾追加数
+LIST_RANK_E_BULLET_INTERVAL         = 6  #弾発射間隔減少パーセント
+LIST_RANK_NWAY_LEVEL                = 7  #nWAY弾のレベル(レベルが上がると扇状に広がる弾を出す)
 
 #ゲーム開始時に追加されるクロー数の定数定義
 NO_CLAW        = 0
@@ -2105,73 +2108,72 @@ class App:
           #難易度ごとの各種設定数値のリスト
           #フォーマット
           #[
-          # [難易度名,開始時のショットボーナス,開始時のミサイルボーナス,開始時のシールドボーナス,クロー初期値,ステージクリア後に回復するシールド値,撃ち返し弾の有無,        スコア倍率, ランク上昇指数, スタートランク数]
+          # [難易度名,開始時のショットボーナス,ミサイルボーナス,シールドボーナス,クロー初期値,ステージクリア後に回復するシールド値,撃ち返し弾の有無,        スコア倍率, ランク上昇frame, スタートランク数]
           #]
           self.game_difficulty_list = [
-              [GAME_VERY_EASY,6,6,6,                                                      THREE_CLAW, REPAIR_SHIELD3,                  RETURN_BULLET_NONE,     1.0,        1.0,           0],
-              [GAME_EASY     ,3,3,3,                                                      ONE_CLAW,   REPAIR_SHIELD2,                  RETURN_BULLET_NONE,     1.0,        1.0,           0],
-              [GAME_NORMAL   ,0,0,0,                                                      NO_CLAW,    REPAIR_SHIELD2,                  RETURN_BULLET_AIM,      1.0,        1.0,           0],
-              [GAME_HARD     ,0,0,0,                                                      NO_CLAW,    REPAIR_SHIELD1,                  RETURN_BULLET_AIM,      1.0,        1.5,           5],
-              [GAME_VERY_HARD,0,0,0,                                                      NO_CLAW,    REPAIR_SHIELD0,                  RETURN_BULLET_DELAY_AIM,2.0,       1.75,          10],
-              [GAME_INSAME   ,0,0,0,                                                      NO_CLAW,    REPAIR_SHIELD0,                  RETURN_BULLET_DELAY_AIM,3.0,        2.0,          15],
+              [GAME_VERY_EASY,6,6,6,                                       THREE_CLAW, REPAIR_SHIELD3,                  RETURN_BULLET_NONE,     1.0,        3000,            0],
+              [GAME_EASY     ,3,3,3,                                       ONE_CLAW,   REPAIR_SHIELD2,                  RETURN_BULLET_NONE,     1.0,        2400,            0],
+              [GAME_NORMAL   ,0,0,0,                                       NO_CLAW,    REPAIR_SHIELD2,                  RETURN_BULLET_AIM,      1.0,        2000,            0],
+              [GAME_HARD     ,0,0,0,                                       NO_CLAW,    REPAIR_SHIELD1,                  RETURN_BULLET_AIM,      1.0,        1800,            5],
+              [GAME_VERY_HARD,0,0,0,                                       NO_CLAW,    REPAIR_SHIELD0,                  RETURN_BULLET_DELAY_AIM,2.0,        1200,           10],
+              [GAME_INSAME   ,0,0,0,                                       NO_CLAW,    REPAIR_SHIELD0,                  RETURN_BULLET_DELAY_AIM,3.0,         900,           15],
               ]
           #ランク値による各種設定数値のリスト
           #フォーマット
-          #[
-          #    [ランク,  敵スピード倍率, 敵弾弾スピード倍率,    撃ち返し弾確率%,  敵耐久力倍率]敵のスピード倍率は3.9までにしておいてください、追尾戦闘機のスピードが速すぎると一瞬で画面外に飛んでいくみたいで・・
-          #]
+          #敵スピード倍率は3.9までにしておいてください、追尾戦闘機のスピードが速すぎると一瞬で画面外に飛んでいくみたいで・・
+          #    [ランク, 敵スピード倍率, 敵弾スピード倍率, 撃ち返し弾確率%, 敵耐久力倍率, 弾追加数, 弾発射間隔減%, nWAY弾レベル]
           self.game_rank_data_list = [
-               [ 0,     1.0,           1.0,                  0,              1.0],
-               [ 1,     1.0,           1.0,                  0,              1.0],
-               [ 2,     1.1,           1.0,                  1,              1.0],
-               [ 3,     1.1,           1.0,                  1,              1.0],
-               [ 4,     1.2,           1.0,                  1,              1.0],
-               [ 5,     1.2,           1.1,                  1,              1.0],
-               [ 6,     1.2,           1.1,                  2,              1.0],
-               [ 7,     1.2,           1.1,                  2,              1.0],
-               [ 8,     1.2,           1.1,                  2,              1.0],
-               [ 9,     1.2,           1.1,                  2,              1.0],
-               [10,     1.3,           1.1,                  3,              1.1],
-               [11,     1.3,           1.1,                  3,              1.1],
-               [12,     1.3,           1.2,                  3,              1.1],
-               [13,     1.3,           1.2,                  4,              1.1],
-               [14,     1.3,           1.2,                  4,              1.1],
-               [15,     1.4,           1.3,                  4,              1.1],
-               [16,     1.4,           1.3,                  5,              1.1],
-               [17,     1.4,           1.3,                  5,              1.1],
-               [18,     1.4,           1.3,                  5,              1.1],
-               [19,     1.4,           1.3,                  5,              1.1],
-               [20,     1.4,           1.4,                  6,              1.2],
-               [21,     1.4,           1.4,                  6,              1.2],
-               [22,     1.4,           1.4,                  6,              1.2],
-               [23,     1.4,           1.4,                  6,              1.2],
-               [24,     1.4,           1.4,                  6,              1.2],
-               [25,     1.4,           1.5,                  6,              1.3],
-               [26,     1.4,           1.5,                  6,              1.3],
-               [27,     1.4,           1.5,                  7,              1.3],
-               [28,     1.4,           1.5,                  7,              1.3],
-               [29,     1.4,           1.5,                  7,              1.4],
-               [30,     1.4,           1.5,                  7,              1.4],
-               [31,     1.5,           1.5,                  7,              1.4],
-               [32,     1.5,           1.5,                  7,              1.4],
-               [33,     1.5,           1.5,                  7,              1.4],
-               [34,     1.5,           1.5,                  8,              1.4],
-               [35,     1.5,           1.6,                  8,              1.4],
-               [36,     1.5,           1.6,                  8,              1.4],
-               [37,     1.5,           1.6,                  8,              1.4],
-               [38,     1.5,           1.6,                  8,              1.5],
-               [39,     1.5,           1.6,                  8,              1.5],
-               [40,     1.6,           1.6,                  8,              1.5],
-               [41,     1.6,           1.7,                  8,              1.5],
-               [42,     1.6,           1.7,                  8,              1.5],
-               [43,     1.6,           1.7,                  9,              1.5],
-               [44,     1.6,           1.7,                  9,              1.5],
-               [45,     1.6,           1.7,                  9,              1.5],
-               [46,     1.6,           1.7,                  9,              1.5],
-               [47,     1.6,           1.7,                  9,              1.5],
-               [48,     1.6,           1.7,                  9,              1.5],
-               [49,     1.6,           1.7,                  9,              1.6],
-               [50,     1.6,           1.7,                 10,              1.6],
+               [ 0,    1.0,           1.0,             0,              1.0,         0,          0,          0],
+               [ 1,    1.0,           1.0,             0,              1.0,         0,          0,          0],
+               [ 2,    1.1,           1.0,             1,              1.0,         0,          1,          0],
+               [ 3,    1.1,           1.0,             1,              1.0,         0,          1,          0],
+               [ 4,    1.2,           1.0,             1,              1.0,         0,          1,          0],
+               [ 5,    1.2,           1.1,             1,              1.0,         0,          1,          0],
+               [ 6,    1.2,           1.1,             2,              1.0,         0,          2,          0],
+               [ 7,    1.2,           1.1,             2,              1.0,         0,          2,          0],
+               [ 8,    1.2,           1.1,             2,              1.0,         0,          2,          0],
+               [ 9,    1.2,           1.1,             2,              1.0,         0,          2,          0],
+               [10,    1.3,           1.1,             3,              1.1,         1,          2,          0],
+               [11,    1.3,           1.1,             3,              1.1,         1,          3,          0],
+               [12,    1.3,           1.2,             3,              1.1,         1,          3,          0],
+               [13,    1.3,           1.2,             4,              1.1,         1,          3,          0],
+               [14,    1.3,           1.2,             4,              1.1,         1,          4,          0],
+               [15,    1.4,           1.3,             4,              1.1,         1,          4,          0],
+               [16,    1.4,           1.3,             5,              1.1,         1,          4,          0],
+               [17,    1.4,           1.3,             5,              1.1,         1,          5,          0],
+               [18,    1.4,           1.3,             5,              1.1,         1,          5,          0],
+               [19,    1.4,           1.3,             5,              1.1,         1,          5,          0],
+               [20,    1.4,           1.4,             6,              1.2,         2,          6,          0],
+               [21,    1.4,           1.4,             6,              1.2,         2,          6,          0],
+               [22,    1.4,           1.4,             6,              1.2,         2,          7,          0],
+               [23,    1.4,           1.4,             6,              1.2,         2,          7,          1],
+               [24,    1.4,           1.4,             6,              1.2,         2,          7,          1],
+               [25,    1.4,           1.5,             6,              1.3,         2,          8,          1],
+               [26,    1.4,           1.5,             6,              1.3,         2,          8,          1],
+               [27,    1.4,           1.5,             7,              1.3,         2,          8,          1],
+               [28,    1.4,           1.5,             7,              1.3,         2,          9,          1],
+               [29,    1.4,           1.5,             7,              1.4,         2,          9,          1],
+               [30,    1.4,           1.5,             7,              1.4,         3,          9,          1],
+               [31,    1.5,           1.5,             7,              1.4,         3,          9,          1],
+               [32,    1.5,           1.5,             7,              1.4,         3,          9,          1],
+               [33,    1.5,           1.5,             7,              1.4,         3,          9,          1],         
+               [34,    1.5,           1.5,             8,              1.4,         3,         10,          1],
+               [35,    1.5,           1.6,             8,              1.4,         3,         10,          1],
+               [36,    1.5,           1.6,             8,              1.4,         3,         10,          1],
+               [37,    1.5,           1.6,             8,              1.4,         3,         11,          1],
+               [38,    1.5,           1.6,             8,              1.5,         3,         11,          1],
+               [39,    1.5,           1.6,             8,              1.5,         3,         12,          1],
+               [40,    1.6,           1.6,             8,              1.5,         4,         12,          2],
+               [41,    1.6,           1.7,             8,              1.5,         4,         12,          2],
+               [42,    1.6,           1.7,             8,              1.5,         4,         13,          2],
+               [43,    1.6,           1.7,             9,              1.5,         4,         13,          2],
+               [44,    1.6,           1.7,             9,              1.5,         4,         13,          2],
+               [45,    1.6,           1.7,             9,              1.5,         4,         14,          2],
+               [46,    1.6,           1.7,             9,              1.5,         4,         14,          2],
+               [47,    1.6,           1.7,             9,              1.5,         4,         14,          2],
+               [48,    1.6,           1.7,             9,              1.5,         4,         15,          2],
+               [49,    1.6,           1.7,             9,              1.6,         4,         15,          2],
+               [50,    1.6,           1.7,            10,              1.6,         4,         16,          2],
                ]
           #ショットパワーアップテーブルのフォーマット
           #
@@ -3292,7 +3294,9 @@ class App:
           self.enemy_bullet_speed_mag    = self.game_rank_data_list[self.rank][LIST_RANK_BULLET_SPEED_MAG]          #敵狙い撃ち弾スピード倍率をリストを参照してランク数で取得、変数に代入する
           self.return_bullet_probability = self.game_rank_data_list[self.rank][LIST_RANK_RETURN_BULLET_PROBABILITY] #敵撃ち返し弾発射確率をリストを参照してランク数で取得、変数に代入する
           self.enemy_hp_mag              = self.game_rank_data_list[self.rank][LIST_RANK_E_HP_MAG]                  #敵耐久力倍率をリストを参照してランク数で取得、変数に代入する
-         
+          self.enemy_bullet_append       = self.game_rank_data_list[self.rank][LIST_RANK_E_BULLET_APPEND]           #弾追加数をリストを参照してランク数で取得、変数に代入する
+          self.enemy_bullet_interval     = self.game_rank_data_list[self.rank][LIST_RANK_E_BULLET_INTERVAL]         #弾発射間隔減少パーセントをリストを参照してランク数で取得、変数に代入する
+          self.enemy_nway_level          = self.game_rank_data_list[self.rank][LIST_RANK_NWAY_LEVEL]                #nWAY弾のレベルをリストを参照してランク数で取得、変数に代入する
      
      ################################################################ボツ関数群・・・・・・(涙)##########################################################
      #外積を計算する関数 self.cpに結果が入る(バグありなので使えないっぽい・・・この関数)
@@ -3842,7 +3846,7 @@ class App:
          self.repair_shield       = self.game_difficulty_list[self.game_difficulty][LIST_REPAIR_SHIELD]       #ステージクリア後に回復するシールド値をリストを参照し難易度に合わせて取得、変数に代入する
          self.return_bullet       = self.game_difficulty_list[self.game_difficulty][LIST_RETURN_BULLET]       #撃ち返し弾の有無とありの時の種類をリストを参照し難易度に合わせて取得、変数に代入する
          self.score_magnification = self.game_difficulty_list[self.game_difficulty][LIST_SCORE_MAGNIFICATION] #スコア倍率をリストを参照し難易度に合わせて取得、変数に代入する
-         self.rank_exponential    = self.game_difficulty_list[self.game_difficulty][LIST_RANK_EXPONENTIAL]    #ランク上昇指数をリストを参照し難易度に合わせて取得、変数に代入する
+         self.rank_up_frame       = self.game_difficulty_list[self.game_difficulty][LIST_RANK_UP_FRAME]       #ランク上昇フレーム数をリストを参照し難易度に合わせて取得、変数に代入する
          self.rank                = self.game_difficulty_list[self.game_difficulty][LIST_START_RANK]          #ゲームスタート時のランク数をリストを参照し難易度に合わせて取得、変数に代入する
          
          #ランクに応じた数値をリストから取得する
@@ -6135,8 +6139,7 @@ class App:
      def update_enemy_append_event_system(self):
           if self.stage_count == self.event_list[self.event_index][0]:#ステージカウントとリストのカウント値が同じならリスト内容を実行する
                if   self.event_list[self.event_index][1] == EVENT_ENEMY:             #イベント「敵出現」の場合
-                    #サーコイン発生！
-                    if   self.event_list[self.event_index][2] == CIR_COIN:
+                    if   self.event_list[self.event_index][2] == CIR_COIN:       #サーコイン発生！
                          for number in range(self.event_list[self.event_index][5]):
                               #編隊なので現在の編隊ＩＤナンバーであるcurrent_formation_idも出現時にenemyクラスに情報を書き込みます
                               new_enemy = Enemy()
@@ -6145,28 +6148,23 @@ class App:
                               
                          #編隊なので編隊のIDナンバーと編隊の総数、現在の編隊生存数をenemy_formationリストに登録します
                          self.record_enemy_formation(self.event_list[self.event_index][5]) 
-                    #追尾戦闘機ツインアロー出現
-                    elif self.event_list[self.event_index][2] == TWIN_ARROW:
+                    elif self.event_list[self.event_index][2] == TWIN_ARROW:     #追尾戦闘機ツインアロー出現
                          new_enemy = Enemy()
                          new_enemy.update(TWIN_ARROW,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,    self.event_list[self.event_index][3],self.event_list[self.event_index][4],0,0,       0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,  0,0,        0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   1.5 - (self.enemy_speed_mag // 2),0,  0,    HP01 * self.enemy_hp_mag,     0,0,   E_SIZE_NORMAL,  0,  0, 1.3,     0,0,0,0,    E_NO_POW,ID00 ,0,0,0,     0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                          self.enemy.append(new_enemy)                   
-                    #回転戦闘機サイシーロ出現(サインカーブを描く敵)
-                    elif self.event_list[self.event_index][2] == SAISEE_RO:
+                    elif self.event_list[self.event_index][2] == SAISEE_RO:      #回転戦闘機サイシーロ出現(サインカーブを描く敵)
                          new_enemy = Enemy()
                          new_enemy.update(SAISEE_RO,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   self.event_list[self.event_index][3],self.event_list[self.event_index][4],0,0,      0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,  0,0,        0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   1*self.enemy_speed_mag,0,  0,  HP01 * self.enemy_hp_mag,   0,0,  E_SIZE_NORMAL,0.5,0.05,0,      0,0,0,0,     E_NO_POW,ID00 ,0,0,0,                 0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                          self.enemy.append(new_enemy)    
-                    #グリーンランサー 3way弾を出してくる緑の戦闘機(サインカーブを描く敵)
-                    elif self.event_list[self.event_index][2] == GREEN_LANCER:
+                    elif self.event_list[self.event_index][2] == GREEN_LANCER:   #グリーンランサー 3way弾を出してくる緑の戦闘機(サインカーブを描く敵)
                          new_enemy = Enemy()
                          new_enemy.update(GREEN_LANCER,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   self.event_list[self.event_index][3],self.event_list[self.event_index][4],0,0,     0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,   0,0,        0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   0.1*self.enemy_speed_mag,0,  0,  HP05 * self.enemy_hp_mag,   0,0,  E_SIZE_NORMAL,0.5,0.01,0,      0,0,0,0,     E_MISSILE_POW,ID00 ,0,0,0,     0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                          self.enemy.append(new_enemy)
-                    #レイブラスター 直進して画面前方のどこかで停止→レーザービーム射出→急いで後退するレーザー系
-                    elif self.event_list[self.event_index][2] == RAY_BLASTER:
+                    elif self.event_list[self.event_index][2] == RAY_BLASTER:    #レイブラスター 直進して画面前方のどこかで停止→レーザービーム射出→急いで後退するレーザー系
                          new_enemy = Enemy()
-                         new_enemy.update(RAY_BLASTER,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   self.event_list[self.event_index][3],self.event_list[self.event_index][4],0,0,      0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,    -2,(randint(0,1)-0.5),        0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   0.98*self.enemy_speed_mag,0,  0,  HP02 * self.enemy_hp_mag,   0,0,  E_SIZE_NORMAL,80 + randint(0,40),0,0,      0,0,0,0,      E_NO_POW,ID00 ,0,0,0,      0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
+                         new_enemy.update(RAY_BLASTER,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   self.event_list[self.event_index][3],self.event_list[self.event_index][4],0,0,      0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,    -2,(randint(0,1)-0.5),        0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   0.98,0,  0,  HP02 * self.enemy_hp_mag,   0,0,  E_SIZE_NORMAL,80 + randint(0,40),0,0,      0,0,0,0,      E_NO_POW,ID00 ,0,0,0,      0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                          self.enemy.append(new_enemy)
-                    #ボルダー 硬めの弾バラマキ重爆撃機
-                    elif self.event_list[self.event_index][2] == VOLDAR:
+                    elif self.event_list[self.event_index][2] == VOLDAR:         #ボルダー 硬めの弾バラマキ重爆撃機
                          new_enemy = Enemy()
                          new_enemy.update(VOLDAR,ID00,      ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   self.event_list[self.event_index][3],self.event_list[self.event_index][4],0,0,      0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,    0,0,        0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_40,SIZE_24,   -0.07*self.enemy_speed_mag,1,  0,  HP59 * self.enemy_hp_mag,   0,0,  E_SIZE_HI_MIDDLE53,  0,0,0,      0,0,0,0,      E_SHOT_POW,ID00    ,1,0.007,0.6,      0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT10)
                          self.enemy.append(new_enemy)
@@ -6463,7 +6461,7 @@ class App:
      def update_enemy(self):
           enemy_count = len(self.enemy)
           for i in range (enemy_count):
-            if   self.enemy[i].enemy_type ==  1:#敵タイプ1の更新    直進して斜め後退→勢いよく後退していく10機編隊
+            if   self.enemy[i].enemy_type ==  1:#敵タイプ1の更新   サーコイン 直進して斜め後退→勢いよく後退していく10機編隊
                 if self.enemy[i].enemy_flag1 == 0:
                 #敵１を前進させる
                     self.enemy[i].posx = self.enemy[i].posx - self.enemy[i].move_speed#X座標をmove_speed分減らして左方向に進む
@@ -6485,26 +6483,26 @@ class App:
                                   self.ex = self.enemy[i].posx
                                   self.ey = self.enemy[i].posy
                                   self.enemy_aim_bullet(self.ex,self.ey,0,0,0,0,1)#後退時に自機狙いの弾を射出して去っていく
-            elif self.enemy[i].enemy_type ==  2:#敵タイプ2の更新    サインカーブを描く3機編隊
+            elif self.enemy[i].enemy_type ==  2:#敵タイプ2の更新   サイシーロ サインカーブを描く3機編隊
                 #敵２をサインカーブを描きながら移動させる 
                  self.enemy[i].posx -= self.enemy[i].move_speed#X座標をmove_speed分減らして左方向に進む
                  self.enemy[i].enemy_count3 += self.enemy[i].enemy_count2#enemy_count3はタイマー enemy_count_2は速度
                  self.enemy[i].posy += self.enemy[i].enemy_count1 * math.sin(self.enemy[i].enemy_count3)#enemy_count_1は振れ幅
-            elif self.enemy[i].enemy_type ==  3:#敵タイプ3の更新    固定砲台（地面に張り付く１連射タイプ）
+            elif self.enemy[i].enemy_type ==  3:#敵タイプ3の更新   固定砲台ホウダ（地面に張り付く１連射タイプ）
                  #敵３を背景スクロールに合わせて左へ移動させる
                  self.enemy[i].posx -= self.side_scroll_speed * 0.5
                  if self.enemy[i].posx < WINDOW_W -80 and (randint(0,(self.run_away_bullet_probability) * 50) == 0):
                                   self.ex = self.enemy[i].posx
                                   self.ey = self.enemy[i].posy
                                   self.enemy_aim_bullet(self.ex,self.ey,0,0,0,0,1)#画面端から出現して８０ドット進んだら、自機狙いの弾を射出
-            elif self.enemy[i].enemy_type ==  4:#敵タイプ4の更新    固定砲台（天井に張り付く１連射タイプ）
+            elif self.enemy[i].enemy_type ==  4:#敵タイプ4の更新   固定砲台ホウダ（天井に張り付く１連射タイプ）
                  #敵４を背景スクロールに合わせて左へ移動させる
                  self.enemy[i].posx -= self.side_scroll_speed * 0.5
                  if self.enemy[i].posx < WINDOW_W -80 and (randint(0,(self.run_away_bullet_probability) * 50) == 0):
                                   self.ex = self.enemy[i].posx
                                   self.ey = self.enemy[i].posy
                                   self.enemy_aim_bullet(self.ex,self.ey,0,0,0,0,1)#画面端から出現して８０ドット進んだら、自機狙いの弾を射出
-            elif self.enemy[i].enemy_type ==  5:#敵タイプ5の更新    ぴょんぴょんはねるホッパー君mk2
+            elif self.enemy[i].enemy_type ==  5:#敵タイプ5の更新   ホッパーチャンmk2
                  #敵５を背景スクロールに合わせて左へ移動させる
                  #
                  #enemy_count1をy_prevとして使用してます
@@ -6579,7 +6577,7 @@ class App:
                  pyxel.blt(135,WINDOW_H - 8, 0, 0,80, 8,8, 0)
                  if self.enemy[i].posx < 0:
                       self.enemy[i].direction = 1#もしx座標が0まで画面の左端に進んだら跳ね返りdirectionフラグを(+1右方向増加）にして右に反転後退していく
-            elif self.enemy[i].enemy_type ==  6:#敵タイプ6の更新    謎の回転飛翔体Ｍ５４
+            elif self.enemy[i].enemy_type ==  6:#敵タイプ6の更新   謎の回転飛翔体Ｍ５４
                 
                 #敵6を回転させる 
                  
@@ -6588,7 +6586,7 @@ class App:
                  self.enemy[i].posy += self.enemy[i].enemy_count1 * -math.sin(self.enemy[i].enemy_count3)#enemy_count_1は振れ幅(intensity)
 
                  self.enemy[i].posx -= 0.05
-            elif self.enemy[i].enemy_type ==  7:#敵タイプ7の更新    追尾戦闘機 (サインカーブを描きつつ追尾してくる)
+            elif self.enemy[i].enemy_type ==  7:#敵タイプ7の更新   真！(SIN)ツインアロー追尾戦闘機(サインカーブを描きつつ追尾してくる)
                 #敵７を自機に追尾させる
                 #目標までの距離を求める dに距離が入る
                 self.d = math.sqrt((self.my_x - self.enemy[i].posx) * (self.my_x - self.enemy[i].posx) + (self.my_y - self.enemy[i].posy) * (self.my_y - self.enemy[i].posy))
@@ -6614,7 +6612,7 @@ class App:
                 self.enemy[i].posy += self.enemy[i].enemy_count1 * -math.sin(self.enemy[i].enemy_count3)#enemy_count_1は振れ幅(intensity)
 
                 self.enemy[i].posx -= 0.05
-            elif self.enemy[i].enemy_type ==  8:#敵タイプ8の更新    追尾戦闘機
+            elif self.enemy[i].enemy_type ==  8:#敵タイプ8の更新   ツインアロー追尾戦闘機
                 #敵８を自機に追尾させる
                 vx0 = self.enemy[i].vx
                 vy0 = self.enemy[i].vy #敵の速度(vx,vy)を(vx0,vy0)に退避する
@@ -6675,7 +6673,7 @@ class App:
                 #敵の座標(posx,posy)を増分(vx,vy)を加減算更新して敵を移動させる(座標更新！)
                 self.enemy[i].posx += self.enemy[i].vx
                 self.enemy[i].posy += self.enemy[i].vy
-            elif self.enemy[i].enemy_type ==  9:#敵タイプ9の更新    自機のＹ軸を合わせた後突進してくる敵
+            elif self.enemy[i].enemy_type ==  9:#敵タイプ9の更新   ロルボード 自機のＹ軸を合わせた後突進してくる敵
                 if self.enemy[i].enemy_flag2 == 0:#自機撃墜フラグ（自機と完全に重なったフラグ）はまだ建ってない？？
                     if self.enemy[i].enemy_flag1 == 0:#自機の位置をサーチしてどちらの方向に進むかのフラグはまだ建ってない？
                         if self.my_y > self.enemy[i].posy:
@@ -6705,7 +6703,7 @@ class App:
                 #vx,vyで敵の座標posx,posy更新！移動！！
                 self.enemy[i].posx += self.enemy[i].vx
                 self.enemy[i].posy += self.enemy[i].vy
-            elif self.enemy[i].enemy_type == 10:#敵タイプ10の更新  スクランブルハッチ（地面タイプ）
+            elif self.enemy[i].enemy_type == 10:#敵タイプ10の更新  クランブルアンダー スクランブルハッチ（地面タイプ）
                  
                  #enemy_flag1を状態遷移フラグとして使用します
                  #    0=待機中（射出開始カウンタを減らしていく）
@@ -6749,7 +6747,7 @@ class App:
                       self.enemy[i].status = ENEMY_STATUS_DEFENSE #敵９を出し切った後は防御モードにする
                  #敵１０を背景スクロールに合わせて左へ移動させる
                  self.enemy[i].posx -= self.side_scroll_speed * 0.5#基本BGスクロールスピードは0.5、それと倍率扱いのside_scroll_speedを掛け合わせてスクロールと同じように移動させてやる（地面スクロールに引っ付いた状態で飛んでいくように見せるため）           
-            elif self.enemy[i].enemy_type == 11:#敵タイプ11の更新  スクランブルハッチ（天井タイプ）
+            elif self.enemy[i].enemy_type == 11:#敵タイプ11の更新  クランブルアッパー スクランブルハッチ（天井タイプ）
 
                  #enemy_flag1を状態遷移フラグとして使用します
                  #    0=待機中（射出開始カウンタを減らしていく）
@@ -6793,7 +6791,7 @@ class App:
                       self.enemy[i].status = ENEMY_STATUS_DEFENSE #敵９を出し切った後は防御モードにする
                  #敵１１を背景スクロールに合わせて左へ移動させる
                  self.enemy[i].posx -= self.side_scroll_speed * 0.5 #基本BGスクロールスピードは0.5、それと倍率扱いのside_scroll_speedを掛け合わせてスクロールと同じように移動させてやる（地面スクロールに引っ付いた状態で飛んでいくように見せるため）
-            elif self.enemy[i].enemy_type == 12:#敵タイプ12の更新  直進して画面前方のどこかで停止→レーザービーム射出→急いで後退
+            elif self.enemy[i].enemy_type == 12:#敵タイプ12の更新  レイブラスター 直進して画面前方のどこかで停止→レーザービーム射出→急いで後退
                 #enemy_flag1を状態遷移フラグとして使用します
                 #  0=前進中
                 #  1=レーザービーム発射スタート
@@ -6812,7 +6810,7 @@ class App:
                              self.enemy[i].enemy_flag1 = 1#敵のＸ座標が前進限界以下なら 遷移状態を「レーザービーム発射中にする」
                 elif self.enemy[i].enemy_flag1 == 1:
                      #遷移状態が「レーザービーム発射スタート」ならレーザー発射関数を呼び出し
-                     self.enemy_laser(self.enemy[i].posx,self.enemy[i].posy,30,2)#レーザーの長さ30 スピード2
+                     self.enemy_laser(self.enemy[i].posx,self.enemy[i].posy,30,2 * self.enemy_bullet_speed_mag)#レーザーの長さ30 スピード2*ランクによる倍率
                      self.enemy[i].enemy_flag1 = 2#遷移状態を「レーザービーム発射中」にする
 
                 elif 2 <= self.enemy[i].enemy_flag1 <= 28:
@@ -6823,7 +6821,7 @@ class App:
                      self.enemy[i].posx = self.enemy[i].posx + 1#2ドットの増分で右方向に逃げていく
                 else:
                      self.enemy[i].posx = self.enemy[i].posx + 2#2ドットの増分で右方向に逃げていく                     
-            elif self.enemy[i].enemy_type == 13:#敵タイプ13の更新  ゆらゆら浮遊する3way弾を発射する硬い敵(倒すとショットパワーアップアイテム)
+            elif self.enemy[i].enemy_type == 13:#敵タイプ13の更新  グリーンランサー ゆらゆら浮遊する3way弾を発射する硬い敵(倒すとショットパワーアップアイテム)
                  #敵１３をサインカーブを描きながら移動させる 
                  self.enemy[i].posx -= self.enemy[i].move_speed#X座標をmove_speed分減らして左方向に進む
                  self.enemy[i].enemy_count3 += self.enemy[i].enemy_count2#enemy_count3はタイマー enemy_count_2は速度
@@ -6833,11 +6831,11 @@ class App:
                  if self.enemy[i].enemy_flag1 == 90:
                       self.enemy_forward_3way_bullet(self.enemy[i].posx,self.enemy[i].posy) #前方3way弾発射
                       self.enemy[i].enemy_flag1 = 0
-            elif self.enemy[i].enemy_type == 14:#敵タイプ14の更新  ゆっくり直進してくる赤いアイテムキャリアー
+            elif self.enemy[i].enemy_type == 14:#敵タイプ14の更新  テミー ゆっくり直進してくる赤いアイテムキャリアー
                  #vx,vyで敵の座標posx,posy更新！移動！！
                 self.enemy[i].posx += self.enemy[i].vx
                 self.enemy[i].posy += self.enemy[i].vy
-            elif self.enemy[i].enemy_type == 15:#敵タイプ15の更新  地面を左右に動きながらチョット進んできて弾を撃つ移動砲台
+            elif self.enemy[i].enemy_type == 15:#敵タイプ15の更新  ムーロボ 地面を左右に動きながらチョット進んできて弾を撃つ移動砲台
                  #敵１５を背景スクロールに合わせて移動させる（地上キャラなので不自然が無いように・・・）
                  self.enemy[i].posx -= self.side_scroll_speed * 0.5
                  if self.enemy[i].posx < WINDOW_W -80 and (randint(0,(self.run_away_bullet_probability) * 50) == 0):
@@ -6877,7 +6875,7 @@ class App:
                  
                  self.enemy[i].posx += self.enemy[i].vx * self.enemy[i].move_speed #移動ベクトル分加減算して移動！
                  self.enemy[i].posy += self.enemy[i].vy * self.enemy[i].move_speed
-            elif self.enemy[i].enemy_type == 16:#敵タイプ16の更新  2機一体で挟みこみ攻撃をしてくるクランパリオン
+            elif self.enemy[i].enemy_type == 16:#敵タイプ16の更新  クランパリオン 2機一体で挟みこみ攻撃をしてくる
                  #enemy_flag1は自機とx座標が一致して挟みこむ行動を開始するかのフラグ 0=off 1=on
                  if self.enemy[i].enemy_flag1 == 0 and -3 <= self.enemy[i].posx - self.my_x <= 3: #もしflag1がたっていない&自機と敵のx座標の差が+-3以内だったら
                       self.enemy[i].enemy_flag1 = 1  #挟みこみ開始フラグをonにする
@@ -6891,7 +6889,7 @@ class App:
                  self.enemy[i].vy = self.enemy[i].vy * self.enemy[i].move_speed
                  self.enemy[i].posx += self.enemy[i].vx #移動ベクトル分加減算して移動！
                  self.enemy[i].posy += self.enemy[i].vy
-            elif self.enemy[i].enemy_type == 17:#敵タイプ17の更新  ベジェ曲線で定点まで移動して離脱する敵 ロールブリッツ
+            elif self.enemy[i].enemy_type == 17:#敵タイプ17の更新  ロールブリッツ ベジェ曲線で定点まで移動して離脱する敵
                 if self.enemy[i].status == ENEMY_STATUS_MOVE_COORDINATE_INIT: #「移動用座標初期化」ベジェ曲線で移動するための移動元、移動先、制御点をまず初めに取得する
                          enemy_type = self.enemy[i].enemy_type
                          self.enemy_get_bezier_curve_coordinate(enemy_type,i) #敵をベジェ曲線で移動させるために必要な座標をリストから取得する関数の呼び出し
@@ -7855,7 +7853,7 @@ class App:
                
      #1プレイタイムを見てランクを上昇させる
      def update_rank_up_look_at_playtime(self):
-          if (pyxel.frame_count % 1800) == 0:
+          if (pyxel.frame_count % self.rank_up_frame) == 0:
                if self.rank < 50:
                     self.rank += 1
                     self.get_rank_data() #ランク数が変化したのでランク数をもとにしたデータをリストから各変数に代入する関数の呼び出し
