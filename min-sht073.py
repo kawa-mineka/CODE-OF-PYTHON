@@ -191,6 +191,25 @@ GAMBA_RUBY        = 12   #GAMBA Ruby New Generation IDOL
 SHIFT_SWIFT       = 13   #SHIFT timer SWIFT space
 MAGI_FORCE        = 14   #MAGI FORCE power is dream
 LOOK_AT_LOGO      = 15   #LOOK AT THE TURTLE LOGO! 1967
+#ショットレベル(というか種類？)の定数定義
+SHOT_LV0_VULCAN_SHOT      =  0 #バルカンショット1連装
+SHOT_LV1_TWIN_VULCAN_SHOT =  1 #ツインバルカンショット2連装
+SHOT_LV2_3WAY_VULCAN_SHOT =  2 #3WAYバルカンショット
+SHOT_LV3_5WAY_VULCAN_SHOT =  3 #5WAYバルカンショット
+SHOT_LV4_LASER            =  4 #レーザー
+SHOT_LV5_TWIN_LASER       =  5 #ツインレーザー
+SHOT_LV6_3WAY_LASER       =  6 #3WAYレーザー
+SHOT_LV7_WAVE_CUTTER_LV1  =  7 #ウェーブカッターLv1
+SHOT_LV8_WAVE_CUTTER_LV2  =  8 #ウェーブカッターLv2
+SHOT_LV9_WAVE_CUTTER_LV3  =  9 #ウェーブカッターLv3
+SHOT_LV10_WAVE_CUTTER_LV4 = 10 #ウェーブカッターLv4
+#ミサイルレベル(というか種類？)の定数定義
+MISSILE_LV0_NORMAL_MISSILE = 0 #初期装備右下ミサイル
+MISSILE_LV1_TWIN_MISSILE   = 1 #ツインミサイル(右下と右上方向)
+MISSILE_LV2_MULTI_MISSILE  = 2 #マルチミサイル(右下右上左下左上4方向)
+
+
+
 
 #サブウェポン関連のIDナンバー定数定義
 TAIL_SHOT        = 0 #テイルショットＩＤナンバー
@@ -4526,7 +4545,7 @@ class App:
      #スペースキーかゲームバットＡが押されたらショットを発射する
      def update_fire_shot(self):
           if pyxel.btn(pyxel.KEY_SPACE) or pyxel.btn(pyxel.GAMEPAD_1_A) or pyxel.btn(pyxel.GAMEPAD_2_A):     
-              if self.shot_level == 7:#ウェーブカッターLv1発射
+              if self.shot_level == SHOT_LV7_WAVE_CUTTER_LV1:#ウェーブカッターLv1発射
                    if len(self.shots) < self.shot_rapid_of_fire:
                    #if self.shot_type_count(self.shot_level) < 3: 
                         if (pyxel.frame_count % 8) == 0:
@@ -4536,7 +4555,7 @@ class App:
                              
                              self.shots.append(new_shot)
 
-              if self.shot_level == 8:#ウェーブカッターLv2発射
+              if self.shot_level == SHOT_LV8_WAVE_CUTTER_LV2:#ウェーブカッターLv2発射
                    if len(self.shots) < self.shot_rapid_of_fire:
                         if (pyxel.frame_count % 8) == 0:
                              pyxel.play(2,5)
@@ -4544,7 +4563,7 @@ class App:
                              new_shot.update(self.shot_level,self.my_x + 5,self.my_y -8,       3,0,  8,24,  0,   2,1)
                              self.shots.append(new_shot)
               
-              if self.shot_level == 9:#ウェーブカッターLv3発射
+              if self.shot_level == SHOT_LV9_WAVE_CUTTER_LV3:#ウェーブカッターLv3発射
                    if len(self.shots) < self.shot_rapid_of_fire:
                         if (pyxel.frame_count % 8) == 0:
                              pyxel.play(2,5)
@@ -4552,7 +4571,7 @@ class App:
                              new_shot.update(self.shot_level,self.my_x + 5,self.my_y -12,       3,0,  8,32,  0,   2,1)
                              self.shots.append(new_shot)
                
-              if self.shot_level == 10:#ウェーブカッターLv4発射
+              if self.shot_level == SHOT_LV10_WAVE_CUTTER_LV4:#ウェーブカッターLv4発射
                    if len(self.shots) < self.shot_rapid_of_fire:
                         if (pyxel.frame_count % 6) == 0:
                              pyxel.play(2,5)
@@ -4560,7 +4579,7 @@ class App:
                              new_shot.update(self.shot_level,self.my_x + 5,self.my_y -12,       4,0,  8,32,  0,   2,1)
                              self.shots.append(new_shot)
 
-              if self.shot_level == 4:#レーザー発射
+              if self.shot_level == SHOT_LV4_LASER:#レーザー発射
                    if len(self.shots) < 20:
                         if (pyxel.frame_count % 2) == 0:
                              pyxel.play(2,4)
@@ -4568,7 +4587,7 @@ class App:
                              new_shot.update(self.shot_level,self.my_x + 5,self.my_y,           3,1,  8,8,  0,   0.3,1)
                              self.shots.append(new_shot)
 
-              if self.shot_level == 5:#ツインレーザー発射
+              if self.shot_level == SHOT_LV5_TWIN_LASER:#ツインレーザー発射
                    if len(self.shots) < 40:
                         if (pyxel.frame_count % 2) == 0:
                              pyxel.play(2,4)
@@ -4580,7 +4599,7 @@ class App:
                              new_shot.update(self.shot_level,self.my_x + 5,self.my_y + 3,      3,1,  8,8,    3, 0.3,1)
                              self.shots.append(new_shot)
 
-              if self.shot_level == 6:#３ＷＡＹレーザー発射
+              if self.shot_level == SHOT_LV6_3WAY_LASER:#３ＷＡＹレーザー発射
                    if len(self.shots) < 80:
                         if (pyxel.frame_count % 2) == 0:
                              pyxel.play(2,4)
@@ -4655,12 +4674,12 @@ class App:
 
               if len(self.shots) < (self.shot_rapid_of_fire + (self.shot_level) * 2):#バルカンショットの発射
                if (pyxel.frame_count % 6) == 0:    
-                    if self.shot_level == 0:#初期ショット バルカンショット1連装
+                    if self.shot_level == SHOT_LV0_VULCAN_SHOT:#初期ショット バルカンショット1連装
                               pyxel.play(2,1)
                               new_shot = Shot()
                               new_shot.update(self.shot_level,self.my_x + 4,self.my_y    ,4,0,  8,8,     0, 1,1)
                               self.shots.append(new_shot)
-                    if self.shot_level == 1:#ツインバルカンショット 2連装
+                    if self.shot_level == SHOT_LV1_TWIN_VULCAN_SHOT:#ツインバルカンショット 2連装
                               pyxel.play(2,1)
                               new_shot = Shot()
                               new_shot.update(self.shot_level,self.my_x + 6,self.my_y - 2,4,0,  8,8,     0,  1,1)
@@ -4669,7 +4688,7 @@ class App:
                               new_shot = Shot()
                               new_shot.update(self.shot_level,self.my_x + 6,self.my_y + 2,4,0,  8,8,      0,  1,1)
                               self.shots.append(new_shot)
-                    if self.shot_level == 2:#３ＷＡＹバルカンショット
+                    if self.shot_level == SHOT_LV2_3WAY_VULCAN_SHOT:#３ＷＡＹバルカンショット
                               pyxel.play(2,1)
                               new_shot = Shot()
                               new_shot.update(self.shot_level,self.my_x + 6,self.my_y - 2  ,5,-0.3,  8,8,     0,  1,1)
@@ -4682,7 +4701,7 @@ class App:
                               new_shot = Shot()
                               new_shot.update(self.shot_level,self.my_x + 6,self.my_y + 2  ,5,0.3,   8,8,     0,  1,1)
                               self.shots.append(new_shot)
-                    if self.shot_level == 3:#５ＷＡＹバルカンショット
+                    if self.shot_level == SHOT_LV3_5WAY_VULCAN_SHOT:#５ＷＡＹバルカンショット
                               pyxel.play(2,1)
                               new_shot = Shot()
                               new_shot.update(self.shot_level,self.my_x + 6,self.my_y - 2,    5,-1,     8,8,     0,  1,1)
@@ -4710,14 +4729,14 @@ class App:
               if (pyxel.frame_count % 10) == 0:
                    self.count_missile_type(0,1,2,3)#ミサイルタイプ0,1,2,3の合計数を数える
                    if self.type_check_quantity < (self.missile_level + 1) * self.missile_rapid_of_fire:  #初期段階では２発以上は出せないようにする
-                        if self.missile_level == 0:
+                        if self.missile_level == MISSILE_LV0_NORMAL_MISSILE:
                              pyxel.play(2,1)
 
                              new_missile = Missile()
                              new_missile.update(0,self.my_x + 4,self.my_y,   0.7,0.7,   3,    1   ,0,0,    1,1,  8,8  ,0,0,   0,0) #前方右下に落ちていくミサイル
                              self.missile.append(new_missile)#ミサイル育成
 
-                        elif self.missile_level == 1:
+                        elif self.missile_level == MISSILE_LV1_TWIN_MISSILE:
                              pyxel.play(2,1)
                         
                              new_missile = Missile()
@@ -4728,7 +4747,7 @@ class App:
                              new_missile.update(1,self.my_x + 2,self.my_y -2,   0.7,0.7,   3,     1   ,0,0    ,1,-1,  8,8,  0,0,  0,0) #前方右上に飛んでいくミサイル
                              self.missile.append(new_missile)#ミサイル育成
 
-                        elif self.missile_level == 2:
+                        elif self.missile_level == MISSILE_LV2_MULTI_MISSILE:
                              pyxel.play(2,1)
                         
                              new_missile = Missile()
