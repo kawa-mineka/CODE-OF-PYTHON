@@ -121,6 +121,7 @@ SHIP_H = 8         #自機の縦サイズ
 SHIP_W = 8         #自機の横サイズ
 MOVE_LIMIT = 20    #前方に進める限界距離
 
+ALL_STAGE_NUMBER = 10 #全ステージ数(撃ち返し弾を出すとき ループ数×ALL_STAGE_NUMBER+ステージ数を計算して撃ち返すのか撃ち返さないのか判断します)
 
 SHOT_EXP_MAXIMUM    = 71 #自機ショットの最大経験値（この数値を超えちゃダメだよ）
                          #例 self.j_python_shot_table_listのｙ軸の最大値がこの数と一致します
@@ -472,6 +473,13 @@ HP20,HP21,HP22,HP23,HP24,HP25,HP26,HP27,HP28,HP29 = 20,21,22,23,24,25,26,27,28,2
 HP30,HP31,HP32,HP33,HP34,HP35,HP36,HP37,HP38,HP39 = 30,31,32,33,34,35,36,37,38,39
 HP40,HP41,HP42,HP43,HP44,HP45,HP46,HP47,HP48,HP49 = 40,41,42,43,44,45,46,47,48,49
 HP50,HP51,HP52,HP53,HP54,HP55,HP56,HP57,HP58,HP59 = 50,51,52,53,54,55,56,57,58,59
+#ShotPower(ショットパワー)攻撃力の定数定義
+SP00,SP01,SP02,SP03,SP04,SP05,SP06,SP07,SP08,SP09 =  0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+SP10,SP11,SP12,SP13,SP14,SP15,SP16,SP17,SP18,SP19 = 10,11,12,13,14,15,16,17,18,19
+SP20,SP21,SP22,SP23,SP24,SP25,SP26,SP27,SP28,SP29 = 20,21,22,23,24,25,26,27,28,29
+SP30,SP31,SP32,SP33,SP34,SP35,SP36,SP37,SP38,SP39 = 30,31,32,33,34,35,36,37,38,39
+SP40,SP41,SP42,SP43,SP44,SP45,SP46,SP47,SP48,SP49 = 40,41,42,43,44,45,46,47,48,49
+SP50,SP51,SP52,SP53,SP54,SP55,SP56,SP57,SP58,SP59 = 50,51,52,53,54,55,56,57,58,59
 #得点の定数定義
 PT01,PT02,PT03,PT04,PT05,PT06,PT07,PT08,PT09,PT10 =  1, 2, 3, 4, 5, 6, 7, 8, 9,10
 PT11,PT12,PT13,PT14,PT15,PT16,PT17,PT18,PT19,PT20 = 11,12,13,14,15,16,17,18,19,20
@@ -2144,7 +2152,7 @@ class App:
               [GAME_NORMAL   ,0,0,0,                NO_CLAW,    REPAIR_SHIELD2,             RETURN_BULLET_AIM,      1.0,       2000,           0,      30,          3,                   0,              50,       2,               3,                2],
               [GAME_HARD     ,0,0,0,                NO_CLAW,    REPAIR_SHIELD1,             RETURN_BULLET_AIM,      1.0,       1800,           5,      29,          2,                   0,              50,       2,               1,                2],
               [GAME_VERY_HARD,0,0,0,                NO_CLAW,    REPAIR_SHIELD0,             RETURN_BULLET_DELAY_AIM,2.0,       1200,          10,      26,          0,                   0,              50,       1,               8,                3],
-              [GAME_INSAME   ,0,0,0,                NO_CLAW,    REPAIR_SHIELD0,             RETURN_BULLET_DELAY_AIM,3.0,        900,          15,      23,          0,                   0,              50,       1,               5,                4],
+              [GAME_INSAME   ,0,0,0,                NO_CLAW,    REPAIR_SHIELD0,             RETURN_BULLET_DELAY_AIM,3.0,        900,          15,      23,          0,                   0,              50,       1,               2,                4],
               ]
           #ランク値による各種設定数値のリスト
           #フォーマット
@@ -3357,8 +3365,6 @@ class App:
          self.disp_flag_bg_back            = self.stage_data_list[self.stage_number - 1][8] #BG背景(奥)を表示するかどうかのフラグをリストを参照して取得、変数に代入する
          self.atmospheric_entry_spark_flag = self.stage_data_list[self.stage_number - 1][9] #大気圏突入時の火花を発生させるかどうかのフラグをリストを参照して取得、変数に代入する
          
-     
-     
      #ランクダウンさせる関数
      def rank_down(self):
           if self.rank > 0: #ランク数が0より大きいのならば
@@ -3942,6 +3948,7 @@ class App:
          self.my_vx = 1    #自機のx方向の移動量
          self.my_vy = 0    #自機のy方向の移動量
          
+         #各ステージに応じた数値をリストから取得する
          self.get_stage_data() #ステージデータリストからステージごとに設定された数値を取り出す関数の呼び出し
          
          self.present_repair_item_flag = 0 #ボス破壊後の爆発シーンでリペアアイテムを出すときに使用するフラグ 0=まだアイテム出してない 1=アイテム放出したよ～
@@ -6228,7 +6235,7 @@ class App:
                               for number in range(self.event_list[self.event_index][5]):
                                    #編隊なので現在の編隊ＩＤナンバーであるcurrent_formation_idも出現時にenemyクラスに情報を書き込みます
                                    new_enemy = Enemy()
-                                   new_enemy.update(CIR_COIN,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W - 1 + (number * 12),self.event_list[self.event_index][4],0,0,       0,0,0,0,0,0,0,0,      0,0,0,0,0,0,0,0,0,0,  -1,1,     0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,     SIZE_8,SIZE_8, 1,0,   0, HP01,  0,0, E_SIZE_NORMAL,   30,0,0,     0,0,0,0,     E_SHOT_POW,self.current_formation_id ,0,0,0,     0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
+                                   new_enemy.update(CIR_COIN,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W - 1 + (number * 12),self.event_list[self.event_index][4],0,0,       0,0,0,0,0,0,0,0,      0,0,0,0,0,0,0,0,0,0,  -1,1,     0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,     SIZE_8,SIZE_8, 1,0,   0, HP01 * self.enemy_hp_mag,  0,0, E_SIZE_NORMAL,   30,0,0,     0,0,0,0,     E_SHOT_POW,self.current_formation_id ,0,0,0,     0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                                    self.enemy.append(new_enemy) 
                               
                               #編隊なので編隊のIDナンバーと編隊の総数、現在の編隊生存数をenemy_formationリストに登録します
@@ -6334,7 +6341,7 @@ class App:
                               self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
                          self.get_bg_chip(WINDOW_W,i*8,0)#bgxの値が変化したので再度bgチップナンバーを取得する関数を呼び出す
                          new_enemy = Enemy()
-                         new_enemy.update(3,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,      0,0,0,0,0,0,0,0,      0,0,0,0,0,0,0,0,0,0,   0,0,       0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,     SIZE_8,SIZE_8,  1,0,    0, HP01,   0,0,E_SIZE_NORMAL,0,0,0,      0,0,0,0,      item_number,ID00 ,0,0,0,     0  ,0,0,0,     0,GROUND_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
+                         new_enemy.update(3,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,      0,0,0,0,0,0,0,0,      0,0,0,0,0,0,0,0,0,0,   0,0,       0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,     SIZE_8,SIZE_8,  1,0,    0, HP01 * self.enemy_hp_mag,   0,0,E_SIZE_NORMAL,0,0,0,      0,0,0,0,      item_number,ID00 ,0,0,0,     0  ,0,0,0,     0,GROUND_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                          self.enemy.append(new_enemy)
                          self.delete_map_chip(self.bgx,i)#敵を出現させたら（「敵出現」情報）のキャラチップは不要なのでそこに（0=何もない空白）を書き込む                         
                   
@@ -6353,31 +6360,31 @@ class App:
 
                          self.get_bg_chip(WINDOW_W,i*8,0)#bgxの値が変化したので再度bgチップナンバーを取得する関数を呼び出す
                          new_enemy = Enemy()
-                         new_enemy.update(4,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,      0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,   0,0,      0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,     SIZE_8,SIZE_8,  1,0,  0,  HP01,    0,0,E_SIZE_NORMAL,0,0,0,     0,0,0,0,     item_number,ID00 ,0,0,0,     0  ,0,0,0,     0,GROUND_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
+                         new_enemy.update(4,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,      0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,   0,0,      0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,     SIZE_8,SIZE_8,  1,0,  0,  HP01 * self.enemy_hp_mag,    0,0,E_SIZE_NORMAL,0,0,0,     0,0,0,0,     item_number,ID00 ,0,0,0,     0  ,0,0,0,     0,GROUND_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                          self.enemy.append(new_enemy)
                          self.delete_map_chip(self.bgx,i)#敵を出現させたら(「敵出現」情報)のキャラチップは不要なのでそこに（0=何もない空白）を書き込む
 
                   elif self.bg_chip == (64 /8) * 32 +(64 / 8):#マップチップx64y64(C)だったら   敵5を出現させる（ホッパー君mk2）
                          new_enemy = Enemy()
-                         new_enemy.update(5,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,      0,0,0,0,0,0,0,0,      0,0,0,0,0,0,0,0,0,0,    0.4,0,      0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,      SIZE_8,SIZE_8,    0.2,0,  -1,     HP01,   0,0,   E_SIZE_NORMAL,(i * 8),-20,1,      0,0,0,0,      E_NO_POW,ID00 ,0,0,0,     0  ,0,0,0,     0,MOVING_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
+                         new_enemy.update(5,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,      0,0,0,0,0,0,0,0,      0,0,0,0,0,0,0,0,0,0,    0.4,0,      0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,      SIZE_8,SIZE_8,    0.2*self.enemy_speed_mag,0,  -1,     HP01 * self.enemy_hp_mag,   0,0,   E_SIZE_NORMAL,(i * 8),-20,1,      0,0,0,0,      E_NO_POW,ID00 ,0,0,0,     0  ,0,0,0,     0,MOVING_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                          self.enemy.append(new_enemy)
                          self.delete_map_chip(self.bgx,i)#敵を出現させたら（「敵出現」情報）のキャラチップは不要なのでそこに（0=何もない空白）を書き込む
                                                 
                   elif self.bg_chip == (64 /8) * 32 +(72 / 8):#マップチップx72y64(D)だったら   敵2を出現させる(サインカーブを描く敵)
                          new_enemy = Enemy()
-                         new_enemy.update(SAISEE_RO,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,       0,0,0,0,0,0,0,0,      0,0,0,0,0,0,0,0,0,0,   0,0,      0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,      SIZE_8,SIZE_8,    1,0,   0,   HP01,    0,0,   E_SIZE_NORMAL,   0.5,0.05,0,     0,0,0,0,      E_NO_POW,ID00 ,0,0,0,     0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
+                         new_enemy.update(SAISEE_RO,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,       0,0,0,0,0,0,0,0,      0,0,0,0,0,0,0,0,0,0,   0,0,      0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,      SIZE_8,SIZE_8,    1*self.enemy_speed_mag,0,   0,   HP01 * self.enemy_hp_mag,    0,0,   E_SIZE_NORMAL,   0.5,0.05,0,     0,0,0,0,      E_NO_POW,ID00 ,0,0,0,     0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                          self.enemy.append(new_enemy)
                          self.delete_map_chip(self.bgx,i)#敵を出現させたら（「敵出現」情報）のキャラチップは不要なのでそこに（0=何もない空白）を書き込む
                                              
                   elif self.bg_chip == (64 /8) * 32 +(80 / 8):#マップチップx80y64(E)だったら   敵10を出現させる(地上スクランブルハッチ)
                          new_enemy = Enemy()
-                         new_enemy.update(10,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,       0,0,0,0,0,0,0,0,       0,0,0,0,0,0,0,0,0,0,    0,0,      0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,     SIZE_24,SIZE_16,   0.5,0,   0,    HP10,   0,0,   E_SIZE_MIDDLE32,  (randint(0,130) + 10),  6, 20,      0,0,0,0,      E_NO_POW,ID00 ,0,0,0,     0  ,0,0,0,     0,GROUND_OBJ,  PT01,PT01,PT01,  PT01,PT10,PT01)
+                         new_enemy.update(10,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,       0,0,0,0,0,0,0,0,       0,0,0,0,0,0,0,0,0,0,    0,0,      0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,     SIZE_24,SIZE_16,   0.5,0,   0,    HP10 * self.enemy_hp_mag,   0,0,   E_SIZE_MIDDLE32,  (randint(0,130) + 10),  6, 20,      0,0,0,0,      E_NO_POW,ID00 ,0,0,0,     0  ,0,0,0,     0,GROUND_OBJ,  PT01,PT01,PT01,  PT01,PT10,PT01)
                          self.enemy.append(new_enemy)
                          self.delete_map_chip(self.bgx,i)#敵を出現させたら（「敵出現」情報）のキャラチップは不要なのでそこに（0=何もない空白）を書き込む
                                                
                   elif self.bg_chip == (64 /8) * 32 +(88 / 8):#マップチップx88y64(F)だったら   敵11を出現させる(天井スクランブルハッチ)
                          new_enemy = Enemy()
-                         new_enemy.update(11,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,      0,0,0,0,0,0,0,0,       0,0,0,0,0,0,0,0,0,0,    0,0,     0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,      SIZE_24,SIZE_16,   0.5,0,   0,    HP10,   0,0,   E_SIZE_MIDDLE32_Y_REV,  (randint(0,130) + 10),  6, 20,      0,0,0,0,      E_NO_POW,ID00 ,0,0,0,     0  ,0,0,0,     0,GROUND_OBJ,  PT01,PT01,PT01,  PT01,PT10,PT01)
+                         new_enemy.update(11,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,      0,0,0,0,0,0,0,0,       0,0,0,0,0,0,0,0,0,0,    0,0,     0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,      SIZE_24,SIZE_16,   0.5,0,   0,    HP10 * self.enemy_hp_mag,   0,0,   E_SIZE_MIDDLE32_Y_REV,  (randint(0,130) + 10),  6, 20,      0,0,0,0,      E_NO_POW,ID00 ,0,0,0,     0  ,0,0,0,     0,GROUND_OBJ,  PT01,PT01,PT01,  PT01,PT10,PT01)
                          self.enemy.append(new_enemy)
                          self.delete_map_chip(self.bgx,i)#敵を出現させたら（「敵出現」情報）のキャラチップは不要なのでそこに（0=何もない空白）を書き込む
                                   
@@ -6422,13 +6429,13 @@ class App:
                   
                   elif self.bg_chip == (64 /8) * 32 +(104/ 8):#マップチップx104y64(H)だったら  敵12を出現させる(直進して画面前方のどこかで停止→レーザービーム射出→急いで後退)
                          new_enemy = Enemy()
-                         new_enemy.update(RAY_BLASTER,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W + 8,i * 8,0,0,       0,0,0,0,0,0,0,0,        0,0,0,0,0,0,0,0,0,0,     -2,(randint(0,1)-0.5),      0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,      SIZE_8,SIZE_8,   0.98,0,     0,    HP01,  0,0,    E_SIZE_NORMAL,   80 + randint(0,40),0,0,      0,0,0,0,      E_NO_POW,ID00 ,0,0,0,     0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
+                         new_enemy.update(RAY_BLASTER,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W + 8,i * 8,0,0,       0,0,0,0,0,0,0,0,        0,0,0,0,0,0,0,0,0,0,     -2,(randint(0,1)-0.5),      0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,      SIZE_8,SIZE_8,   0.98,0,     0,    HP01 * self.enemy_hp_mag,  0,0,    E_SIZE_NORMAL,   80 + randint(0,40),0,0,      0,0,0,0,      E_NO_POW,ID00 ,0,0,0,     0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                          self.enemy.append(new_enemy)
                          self.delete_map_chip(self.bgx,i)#敵を出現させたら（「敵出現」情報）のキャラチップは不要なのでそこに（0=何もない空白）を書き込む
                   
                   elif self.bg_chip == (64 /8) * 32 +(112/ 8):#マップチップx112y64(I)だったら  敵15を出現させる(地面を左右に動きながらチョット進んできて弾を撃つ移動砲台,何故か宇宙なのに重力の影響を受けて下に落ちたりもします)
                          new_enemy = Enemy()
-                         new_enemy.update(15,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,        0,0,0,0,0,0,0,0,        0,0,0,0,0,0,0,0,0,0,     0,0,      0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,      SIZE_8,SIZE_8,   0.8,0,     -1,    HP01,  70,80,    E_SIZE_NORMAL,   70,80,0,      0,0,0,0,        E_NO_POW,ID00 ,0,0,0,     0  ,0,0,0,     0,MOVING_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
+                         new_enemy.update(15,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,        0,0,0,0,0,0,0,0,        0,0,0,0,0,0,0,0,0,0,     0,0,      0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,      SIZE_8,SIZE_8,   0.8*self.enemy_speed_mag,0,     -1,    HP01 * self.enemy_hp_mag,  70,80,    E_SIZE_NORMAL,   70,80,0,      0,0,0,0,        E_NO_POW,ID00 ,0,0,0,     0  ,0,0,0,     0,MOVING_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                          self.enemy.append(new_enemy)
                          self.delete_map_chip(self.bgx,i)#敵を出現させたら（「敵出現」情報）のキャラチップは不要なのでそこに（0=何もない空白）を書き込む
      
@@ -7703,7 +7710,7 @@ class App:
                     self.obtain_item.append(new_obtain_item)
              self.present_repair_item_flag = 1 #フラグを立ててもう出ないようにする
 
-     #爆発パターンの更新
+     #爆発パターンの更新→撃ち返し弾の発生
      def update_explosion(self):
           explosioncount = len(self.explosions)
           for i in reversed(range(explosioncount)):
@@ -7711,7 +7718,9 @@ class App:
               self.explosions[i].posx -= self.side_scroll_speed * 0.5#基本BGスクロールスピードは0.5、それと倍率扱いのside_scroll_speedを掛け合わせてスクロールと同じように移動させてやる（地面スクロールに引っ付いた状態で爆発してるように見せるため）           
               self.explosions[i].explosion_count -= 1#爆発育成時に設定したカウントを1減らす
               fire_rnd = randint(0,100)
-              if self.explosions[i].explosion_count == 9 and fire_rnd <= self.return_bullet_probability: #カウント9の時&return_bullet_probabilityパーセントの確率で1発目の撃ち返し弾を出す
+              if     self.explosions[i].explosion_count == 9\
+                   and self.stage_loop * ALL_STAGE_NUMBER + self.stage_number >= self.return_bullet_start_loop * ALL_STAGE_NUMBER + self.return_bullet_start_stage\
+                   and fire_rnd <= self.return_bullet_probability: #カウント9の時&return_bullet_probabilityパーセントの確率&現在のループ数とステージ数がstart_loop,start_stageの数値以上ならば撃ち返し弾を出す
                    if      self.explosions[i].return_bullet_type == RETURN_BULLET_AIM\
                         or self.explosions[i].return_bullet_type == RETURN_BULLET_DELAY_AIM:
                         #自機狙い弾を1発,自機狙い撃ち返しまたは遅れて更に自機狙い弾を撃ち返す 2発のときは...
