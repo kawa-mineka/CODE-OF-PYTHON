@@ -3326,6 +3326,39 @@ class App:
           self.enemy_bullet_interval     = self.game_rank_data_list[self.rank][LIST_RANK_E_BULLET_INTERVAL]         #弾発射間隔減少パーセントをリストを参照してランク数で取得、変数に代入する
           self.enemy_nway_level          = self.game_rank_data_list[self.rank][LIST_RANK_NWAY_LEVEL]                #nWAY弾のレベルをリストを参照してランク数で取得、変数に代入する
      
+     #難易度に応じた数値をリストから取得する
+     def get_difficulty_data(self):
+         self.start_bonus_shot         = self.game_difficulty_list[self.game_difficulty][LIST_START_BONUS_SHOT]             #初期ショットボーナスをリストを参照し難易度に合わせて取得、変数に代入する
+         self.start_bonus_missile      = self.game_difficulty_list[self.game_difficulty][LIST_START_BONUS_MISSILE]          #初期ミサイルボーナスをリストを参照し難易度に合わせて取得、変数に代入する
+         self.start_bonus_shield       = self.game_difficulty_list[self.game_difficulty][LIST_START_BONUS_SHIELD]           #初期シールドボーナスをリストを参照し難易度に合わせて取得、変数に代入する
+         self.start_claw               = self.game_difficulty_list[self.game_difficulty][LIST_START_CLAW]                   #初期クローボーナスをリストを参照し難易度に合わせて取得、変数に代入する
+         self.repair_shield            = self.game_difficulty_list[self.game_difficulty][LIST_REPAIR_SHIELD]                #ステージクリア後に回復するシールド値をリストを参照し難易度に合わせて取得、変数に代入する
+         self.return_bullet            = self.game_difficulty_list[self.game_difficulty][LIST_RETURN_BULLET]                #撃ち返し弾の有無とありの時の種類をリストを参照し難易度に合わせて取得、変数に代入する
+         self.score_magnification      = self.game_difficulty_list[self.game_difficulty][LIST_SCORE_MAGNIFICATION]          #スコア倍率をリストを参照し難易度に合わせて取得、変数に代入する
+         self.rank_up_frame            = self.game_difficulty_list[self.game_difficulty][LIST_RANK_UP_FRAME]                #ランク上昇フレーム数をリストを参照し難易度に合わせて取得、変数に代入する
+         self.rank                     = self.game_difficulty_list[self.game_difficulty][LIST_START_RANK]                   #ゲームスタート時のランク数をリストを参照し難易度に合わせて取得、変数に代入する
+         self.invincible_time          = self.game_difficulty_list[self.game_difficulty][LIST_DAMAGE_AFTER_INVINCIBLE_TIME] #被弾後の無敵時間をリストを参照し難易度に合わせて取得、変数に代入する
+         self.get_item_invincible_time = self.game_difficulty_list[self.game_difficulty][LIST_GET_ITEM_INVINCIBLE_TIME]     #アイテム取得後の無敵時間をリストを参照し難易度に合わせて取得、変数に代入する
+         self.item_erace_bullet_flag   = self.game_difficulty_list[self.game_difficulty][LIST_ITEM_ERACE_BULLET]            #パワーアップアイテムが敵弾を消去するかどうか？のフラグをリストを参照し難易度に合わせて取得、変数に代入する
+         self.rank_limit               = self.game_difficulty_list[self.game_difficulty][LIST_RANK_LIMIT]                   #ランク数の上限値をリストを参照し難易度に合わせて取得、変数に代入する
+         self.return_bullet_start_loop = self.game_difficulty_list[self.game_difficulty][LIST_RETURN_BULLET_START_LOOP]     #撃ち返しを始めてくるループ数をリストを参照し難易度に合わせて取得、変数に代入する
+         self.return_bullet_start_stage= self.game_difficulty_list[self.game_difficulty][LIST_RETURN_BULLET_START_STAGE]    #撃ち返しを始めてくるステージ数をリストを参照し難易度に合わせて取得、変数に代入する
+         self.rank_down_need_damage    = self.game_difficulty_list[self.game_difficulty][LIST_RANK_DOWN_NEED_DAMAGE]        #1ランクダウンに必要なダメージ数をリストを参照し難易度に合わせて取得、変数に代入する
+     
+     #ステージデータリストから各ステージの設定データを取り出す
+     def get_stage_data(self):
+         self.bg_obstacle_y                = self.stage_data_list[self.stage_number - 1][1] #BG障害物とみなすＹ座標位置をリストを参照して取得、変数に代入する
+         self.reference_tilemap            = self.stage_data_list[self.stage_number - 1][2] #BGにアクセスするときどのタイルマップを使用するかの数値をリストを参照して取得、変数に代入する
+         self.scroll_type                  = self.stage_data_list[self.stage_number - 1][3] #スクロールの種類をリストを参照して取得、変数に代入する
+         self.star_scroll_flag             = self.stage_data_list[self.stage_number - 1][4] #背景のスクロールする星々を表示するかのフラグをリストを参照して取得、変数に代入する
+         self.raster_scroll_flag           = self.stage_data_list[self.stage_number - 1][5] #背景のラスタースクロールを表示するかのフラグをリストを参照して取得、変数に代入する
+         self.disp_flag_bg_front           = self.stage_data_list[self.stage_number - 1][6] #BG背景(手前)を表示するかどうかのフラグをリストを参照して取得、変数に代入する
+         self.disp_flag_bg_middle          = self.stage_data_list[self.stage_number - 1][7] #BG背景(中間)を表示するかどうかのフラグをリストを参照して取得、変数に代入する
+         self.disp_flag_bg_back            = self.stage_data_list[self.stage_number - 1][8] #BG背景(奥)を表示するかどうかのフラグをリストを参照して取得、変数に代入する
+         self.atmospheric_entry_spark_flag = self.stage_data_list[self.stage_number - 1][9] #大気圏突入時の火花を発生させるかどうかのフラグをリストを参照して取得、変数に代入する
+         
+     
+     
      #ランクダウンさせる関数
      def rank_down(self):
           if self.rank > 0: #ランク数が0より大きいのならば
@@ -3462,6 +3495,7 @@ class App:
                "",DISP_CENTER,0,7,\
                44,52,   0,0,  8*8,7*8,   2,1, 1,1,   0,0,    0,0)
                self.window.append(new_window)                           #「SELECT MENU」を育成する
+               
                self.cursor_show = True                                  #選択カーソル表示をonにする
                self.cursor_x = 46                                       #セレクトカーソルの座標を設定します
                self.cursor_y = 64
@@ -3872,25 +3906,9 @@ class App:
          self.ls_shield_hp = 0            #L'sシールドの耐久力 0=シールド装備していない 1以上はシールド耐久値を示す
 
          self.claw = []                   #クローのリスト クローのリストはステージスタート時に初期化してしまうと次のステージに進んだときクローが消滅してしまうのでgame_start_initで初期化します
+         
          #難易度に応じた数値をリストから取得する
-         self.start_bonus_shot         = self.game_difficulty_list[self.game_difficulty][LIST_START_BONUS_SHOT]             #初期ショットボーナスをリストを参照し難易度に合わせて取得、変数に代入する
-         self.start_bonus_missile      = self.game_difficulty_list[self.game_difficulty][LIST_START_BONUS_MISSILE]          #初期ミサイルボーナスをリストを参照し難易度に合わせて取得、変数に代入する
-         self.start_bonus_shield       = self.game_difficulty_list[self.game_difficulty][LIST_START_BONUS_SHIELD]           #初期シールドボーナスをリストを参照し難易度に合わせて取得、変数に代入する
-         self.start_claw               = self.game_difficulty_list[self.game_difficulty][LIST_START_CLAW]                   #初期クローボーナスをリストを参照し難易度に合わせて取得、変数に代入する
-         self.repair_shield            = self.game_difficulty_list[self.game_difficulty][LIST_REPAIR_SHIELD]                #ステージクリア後に回復するシールド値をリストを参照し難易度に合わせて取得、変数に代入する
-         self.return_bullet            = self.game_difficulty_list[self.game_difficulty][LIST_RETURN_BULLET]                #撃ち返し弾の有無とありの時の種類をリストを参照し難易度に合わせて取得、変数に代入する
-         self.score_magnification      = self.game_difficulty_list[self.game_difficulty][LIST_SCORE_MAGNIFICATION]          #スコア倍率をリストを参照し難易度に合わせて取得、変数に代入する
-         self.rank_up_frame            = self.game_difficulty_list[self.game_difficulty][LIST_RANK_UP_FRAME]                #ランク上昇フレーム数をリストを参照し難易度に合わせて取得、変数に代入する
-         self.rank                     = self.game_difficulty_list[self.game_difficulty][LIST_START_RANK]                   #ゲームスタート時のランク数をリストを参照し難易度に合わせて取得、変数に代入する
-         self.invincible_time          = self.game_difficulty_list[self.game_difficulty][LIST_DAMAGE_AFTER_INVINCIBLE_TIME] #被弾後の無敵時間をリストを参照し難易度に合わせて取得、変数に代入する
-         self.get_item_invincible_time = self.game_difficulty_list[self.game_difficulty][LIST_GET_ITEM_INVINCIBLE_TIME]     #アイテム取得後の無敵時間をリストを参照し難易度に合わせて取得、変数に代入する
-         self.item_erace_bullet_flag   = self.game_difficulty_list[self.game_difficulty][LIST_ITEM_ERACE_BULLET]            #パワーアップアイテムが敵弾を消去するかどうか？のフラグをリストを参照し難易度に合わせて取得、変数に代入する
-         self.rank_limit               = self.game_difficulty_list[self.game_difficulty][LIST_RANK_LIMIT]                   #ランク数の上限値をリストを参照し難易度に合わせて取得、変数に代入する
-         self.return_bullet_start_loop = self.game_difficulty_list[self.game_difficulty][LIST_RETURN_BULLET_START_LOOP]     #撃ち返しを始めてくるループ数をリストを参照し難易度に合わせて取得、変数に代入する
-         self.return_bullet_start_stage= self.game_difficulty_list[self.game_difficulty][LIST_RETURN_BULLET_START_STAGE]    #撃ち返しを始めてくるステージ数をリストを参照し難易度に合わせて取得、変数に代入する
-         self.rank_down_need_damage    = self.game_difficulty_list[self.game_difficulty][LIST_RANK_DOWN_NEED_DAMAGE]        #1ランクダウンに必要なダメージ数をリストを参照し難易度に合わせて取得、変数に代入する
-         
-         
+         self.get_difficulty_data() #難易度データリストから数値を取り出す関数の呼び出し
          #ランクに応じた数値をリストから取得する
          self.get_rank_data() #ランクデータリストから数値を取り出す関数の呼び出し
          
@@ -3924,15 +3942,7 @@ class App:
          self.my_vx = 1    #自機のx方向の移動量
          self.my_vy = 0    #自機のy方向の移動量
          
-         self.bg_obstacle_y                = self.stage_data_list[self.stage_number - 1][1] #BG障害物とみなすＹ座標位置をリストを参照して取得、変数に代入する
-         self.reference_tilemap            = self.stage_data_list[self.stage_number - 1][2] #BGにアクセスするときどのタイルマップを使用するかの数値をリストを参照して取得、変数に代入する
-         self.scroll_type                  = self.stage_data_list[self.stage_number - 1][3] #スクロールの種類をリストを参照して取得、変数に代入する
-         self.star_scroll_flag             = self.stage_data_list[self.stage_number - 1][4] #背景のスクロールする星々を表示するかのフラグをリストを参照して取得、変数に代入する
-         self.raster_scroll_flag           = self.stage_data_list[self.stage_number - 1][5] #背景のラスタースクロールを表示するかのフラグをリストを参照して取得、変数に代入する
-         self.disp_flag_bg_front           = self.stage_data_list[self.stage_number - 1][6] #BG背景(手前)を表示するかどうかのフラグをリストを参照して取得、変数に代入する
-         self.disp_flag_bg_middle          = self.stage_data_list[self.stage_number - 1][7] #BG背景(中間)を表示するかどうかのフラグをリストを参照して取得、変数に代入する
-         self.disp_flag_bg_back            = self.stage_data_list[self.stage_number - 1][8] #BG背景(奥)を表示するかどうかのフラグをリストを参照して取得、変数に代入する
-         self.atmospheric_entry_spark_flag = self.stage_data_list[self.stage_number - 1][9] #大気圏突入時の火花を発生させるかどうかのフラグをリストを参照して取得、変数に代入する
+         self.get_stage_data() #ステージデータリストからステージごとに設定された数値を取り出す関数の呼び出し
          
          self.present_repair_item_flag = 0 #ボス破壊後の爆発シーンでリペアアイテムを出すときに使用するフラグ 0=まだアイテム出してない 1=アイテム放出したよ～
          self.rank_down_count = 0          #ダメージを受けて難易度別に設定された規定値まで行ったかどうかをカウントする変数
@@ -7502,7 +7512,6 @@ class App:
           if self.rank_down_count == self.rank_down_need_damage: #カウンタがランクダウンに必要であるダメージ分まで増えたのなら
                self.rank_down()  #1ランクダウンさせる関数の呼び出し
                self.rank_down_count = 0 #カウンターをリセット
-
 
      #自機のシールドパワーがまだあるのかチェックする
      def update_check_my_shield(self):
