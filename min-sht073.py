@@ -50,7 +50,6 @@
 #todo51 NIGHT_SKYSCRAPER 中ボスの実装
 #todo52 NIGHT_SKYSCRAPER ボスの実装
 
-#todo60 pyxel本体のリソースpyxeresファイルに対するsave,load命令を利用したシステムデータ、コンフィグデータのセーブロードの実装
 
 #todo80 ネームエントリー(別に必要ないかも？ストーリー重視だから・・)
 #todo81 第2の機体ElegantPerlの実装
@@ -107,6 +106,8 @@
 #todo    ランクシステム実装 生存時間によってランクが上がっていくようにした 2021 04/04 実装完了→難易度によってランクの上がり方も変化させたい→追加実装完了
 #todo   アイテムを取った直後だけちょっと無敵時間を追加するようにした 2021 04/04
 #todo   EASY VERY_EASYのみパワーアップアイテムが敵の弾を遮って消去するようにした 2021 04/04
+#todo   撃ち返し弾の実装 2021 04/04
+#todo60 pyxel本体のリソースpyxeresファイルに対するsave,load命令を利用したシステムデータ、コンフィグデータのセーブロードの実装 2021 04/11 難易度,開始ステージ数ル,ープ数を記録するようにした
 
 from random import randint
 from random import random
@@ -2035,9 +2036,9 @@ class App:
           pyxel.init(WINDOW_W,WINDOW_H,caption="mineka shooting game",fps=60) #ゲームウィンドウのタイトルバーの表示とfpsの設定(60fpsにした)
           
           pyxel.load("system-data.pyxres") #システムデータを読み込む
-          self.game_difficulty = (pyxel.tilemap(0).get(0,120)) -16 #数字の[0]はアスキーコード16番なので16引いて数値としての0にしてやります
-          self.stage_number    = (pyxel.tilemap(0).get(0,121)) -16
-          self.stage_loop      = (pyxel.tilemap(0).get(0,122)) -16
+          self.game_difficulty = (pyxel.tilemap(0).get(0,120)) - 16 #数字の[0]はアスキーコード16番なので16引いて数値としての0にしてやります
+          self.stage_number    = (pyxel.tilemap(0).get(0,121)) - 16
+          self.stage_loop      = (pyxel.tilemap(0).get(0,122)) - 16
           
           pyxel.mouse(False) #マウスカーソルを非表示にする
           self.bg_cls_color = 0            #BGをCLS(クリアスクリーン)するときの色の指定(通常は0=黒色です)
@@ -2484,19 +2485,24 @@ class App:
           
 
           #デバッグモード＆ゴッドモード用のフラグやパラメーターの初期化とか宣言はこちらで行うようにします########################
-          self.debug_menu_status                = 0 #デバッグパラメータの表示ステータス
+          # self.debug_menu_status                = 0 #デバッグパラメータの表示ステータス
                                                     #0=表示しない 1=フル表示タイプ 2=簡易表示タイプ
           
-          self.boss_collision_rect_display_flag = 0 #ボス用の当たり判定確認の為の矩形表示フラグ(デバッグ時に1にします)
-          self.bg_collision_Judgment_flag       = 1 #背景の障害物との衝突判定を行うかどうかのフラグ
+          # self.boss_collision_rect_display_flag = 0 #ボス用の当たり判定確認の為の矩形表示フラグ(デバッグ時に1にします)
+          # self.bg_collision_Judgment_flag       = 1 #背景の障害物との衝突判定を行うかどうかのフラグ
                                                     #0=背景の障害物との当たり判定をしない 1=行う
 
-          self.boss_test_mode                   = 0 #ボス戦闘のみのテストモード 
+          # self.boss_test_mode                   = 0 #ボス戦闘のみのテストモード 
                                                     #0=オフ 1=オン scroll_countを増やさない→マップスクロールしないので敵が発生しません
                                                     #イベントリストもボス専用の物が読み込まれます
-          self.no_enemy_mode                    = 0 #マップチップによる敵の発生を行わないモードのフラグですです(地上の敵が出ない！)2021 03/07現在機能してない模様
+          # self.no_enemy_mode                    = 0 #マップチップによる敵の発生を行わないモードのフラグですです(地上の敵が出ない！)2021 03/07現在機能してない模様
                                                     #0=マップスクロールによって敵が発生します
                                                     #1=                         発生しません          
+          self.debug_menu_status                = (pyxel.tilemap(0).get(0,126)) - 16 #数字の[0]はアスキーコード16番なので16引いて数値としての0にしてやります
+          self.boss_collision_rect_display_flag = (pyxel.tilemap(0).get(0,127)) - 16
+          self.bg_collision_Judgment_flag       = (pyxel.tilemap(0).get(0,128)) - 16
+          self.boss_test_mode                   = (pyxel.tilemap(0).get(0,129)) - 16
+          self.no_enemy_mode                    = (pyxel.tilemap(0).get(0,130)) - 16
           
           #毎フレームごとにupdateとdrawを呼び出す
           pyxel.run(self.update,self.draw) #この命令でこれ以降は１フレームごとに自動でupdate関数とdraw関数が交互に実行されることとなります
@@ -3537,9 +3543,9 @@ class App:
                                             #選択してcursor_decision_itemに入ったアイテムナンバーをcursor_pre_decision_itemに入れて次の階層に潜るって手法かな？
           
           #system-data.pyxresリソースファイルからこれらの設定値を読み込むようにしたのでコメントアウトしています
+          # self.game_difficulty = GAME_NORMAL         #難易度                  タイトルメニューで難易度を選択して変化させるのでここで初期化します
           # self.stage_number = STAGE_MOUNTAIN_REGION  #最初に出撃するステージ   タイトルメニューでステージを選択して変化させるのでここで初期化します
           # self.stage_loop   = 1                      #ループ数(ステージ周回数) タイトルメニューで周回数を選択して変化させるのでここで初期化します
-          # self.game_difficulty = GAME_NORMAL         #難易度                  タイトルメニューで難易度を選択して変化させるのでここで初期化します
           
           self.game_status = SCENE_TITLE             #ゲームステータスを「SCENE_TITLE」にしてタイトル表示を開始する
      
@@ -3930,10 +3936,15 @@ class App:
      #!ゲームスタート時の初期化#########################################
      def update_game_start_init(self):
          pyxel.load("system-data.pyxres") #システムデータを読み込む
-         #各種設定値書き込み
-         pyxel.tilemap(0).set(0,120,self.game_difficulty + 16) #数字の[0]はアスキーコード16番なので16足してアスキーコードとしての0にしてやります
+         #各種設定値書き込み 数字の[0]はアスキーコード16番なので16足してアスキーコードとしての0にしてやります
+         pyxel.tilemap(0).set(0,120,self.game_difficulty + 16)
          pyxel.tilemap(0).set(0,121,self.stage_number + 16)
          pyxel.tilemap(0).set(0,122,self.stage_loop + 16)
+         pyxel.tilemap(0).set(0,126,self.debug_menu_status + 16)
+         pyxel.tilemap(0).set(0,127,self.boss_collision_rect_display_flag + 16)
+         pyxel.tilemap(0).set(0,128,self.bg_collision_Judgment_flag + 16)
+         pyxel.tilemap(0).set(0,129,self.boss_test_mode + 16)
+         pyxel.tilemap(0).set(0,130,self.no_enemy_mode + 16)
          pyxel.save("system-data.pyxres") #システムデータを書き込み
          
          self.score = 0                 #スコア
