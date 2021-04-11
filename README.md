@@ -24,7 +24,7 @@
 ```sh
 pip install -U pyxel
 ```
-min-sht073.pyとmin-sht2.pyxresをダウンロード
+min-sht073.pyとmin-sht2.pyxresとsystem-data.pyxresをダウンロード
 
 コマンドプロンプトから以下の様に入力して実行します
 

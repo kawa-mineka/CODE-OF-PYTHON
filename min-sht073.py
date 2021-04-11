@@ -76,6 +76,7 @@
 
 #todo900 BGMの作成(無理そう.........)
 #実装完了済み！
+#todo    総ゲームプレイ時間をsystem-data.pyxresに自動記録できるようにした,次回起動時もプレイ時間の記録が残っているぞ～ 2021 04/11
 
 from random import randint
 from random import random
