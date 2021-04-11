@@ -17,7 +17,6 @@
 #        GPU GeForce GTX960         #
 #            Memory 8GB             #
 #####################################
-
 #todo1 MOUNTAIN_REGION 地下洞窟＆地底湖の実装
 #todo4 MOUNTAIN_REGION ブリザーディア(ボス)の実装(かなり難しい.......)
 #todo5 MOUNTAIN_REGION ブリザーディア(ボス)が大気圏離脱していくシーンの実装LOOP2
@@ -76,14 +75,14 @@
 #todo804 難易度選択によるスタート時のクロー追加ボーナスでローリングクローだけ上手く複数追加されない(1個だけなら追加される)(おそらく2~4個追加時に全く同じ座標で回転し続けて1個だけで回っているように見える？のかも？)要バグ取り
 
 #todo900 BGMの作成(無理そう.........)
-
 #実装完了済み！
 
 from random import randint
 from random import random
+import math
+
 import pyxel
 #import pygame #MP3再生するためだけに使用する予定・・・予定は未定・・・
-import math
 
 #定数の定義関連##################################################################################################
 WINDOW_W = 160     #ゲームウィンドウの横サイズ
@@ -2006,9 +2005,24 @@ class App:
           pyxel.init(WINDOW_W,WINDOW_H,caption="mineka shooting game",fps=60) #ゲームウィンドウのタイトルバーの表示とfpsの設定(60fpsにした)
           
           pyxel.load("system-data.pyxres") #システムデータを読み込む
-          self.game_difficulty = (pyxel.tilemap(0).get(0,120)) - 16 #数字の[0]はアスキーコード16番なので16引いて数値としての0にしてやります
-          self.stage_number    = (pyxel.tilemap(0).get(0,121)) - 16
-          self.stage_loop      = (pyxel.tilemap(0).get(0,122)) - 16
+          self.game_difficulty = pyxel.tilemap(0).get(0,120) - 16 #数字の[0]はアスキーコード16番なので16引いて数値としての0にしてやります
+          self.stage_number    = pyxel.tilemap(0).get(0,121) - 16
+          self.stage_loop      = pyxel.tilemap(0).get(0,122) - 16
+          #総ゲームプレイ時間(秒)を今までの累積時間と加算する
+          sec_1  = pyxel.tilemap(0).get(9,5) - 16 #秒の  1の位取得
+          sec_10 = pyxel.tilemap(0).get(8,5) - 16 #秒の  10の位取得
+          min_1  = pyxel.tilemap(0).get(6,5) - 16 #分の  1の位取得
+          min_10 = pyxel.tilemap(0).get(5,5) - 16 #分の  10の位取得
+          hour_1 = pyxel.tilemap(0).get(3,5) - 16 #時の   1の位取得
+          hour_10 = pyxel.tilemap(0).get(2,5) - 16 #時の   10の位取得
+          hour_100 = pyxel.tilemap(0).get(1,5) - 16 #時の   100の位取得
+          hour_1000 = pyxel.tilemap(0).get(0,5) - 16 #時の   1000の位取得
+          
+          s = sec_10 * 10 + sec_1
+          m = min_10 * 10 + min_1
+          h = hour_1000 * 1000 + hour_100 * 100 + hour_10 * 10 + hour_1
+          t_sec = h * 3600 + m * 60 + s
+          self.total_game_playtime_seconds = t_sec
           
           pyxel.mouse(False) #マウスカーソルを非表示にする
           self.bg_cls_color = 0            #BGをCLS(クリアスクリーン)するときの色の指定(通常は0=黒色です)
@@ -2439,7 +2453,7 @@ class App:
           
           #再スタートで初期化してはいけない変数はここ(appクラスの__init__関数)で定義します###################################
           self.hi_score =  100                      #ハイスコア
-          self.total_game_playtime_seconds = 0      #トータルゲームプレイ時間 (秒)
+          # self.total_game_playtime_seconds = 0      #トータルゲームプレイ時間 (秒)
 
           #####IPL関連の変数を初期化#####################################################################################
           self.display_ipl_time = 200              #IPLメッセージを表示する時間 200
@@ -3915,6 +3929,29 @@ class App:
          pyxel.tilemap(0).set(0,128,self.bg_collision_Judgment_flag + 16)
          pyxel.tilemap(0).set(0,129,self.boss_test_mode + 16)
          pyxel.tilemap(0).set(0,130,self.no_enemy_mode + 16)
+
+         #総ゲームプレイ時間(秒)のそれぞれの桁の数値を計算する (自分でも訳が分からないよ・・・)
+         t_sec = self.total_game_playtime_seconds
+         se = t_sec % 60        #se 秒は 総秒数を60で割った余り
+         mo = t_sec // 60 % 60  #mo 分は 総秒数を60で割った数(切り捨て)を更に60で割った余り
+         ho = t_sec // 3600     #ho 時は 総秒数を3600で割った数(切り捨て)
+         sec_1  = se  % 10
+         sec_10 = se // 10
+         min_1  = mo  % 10
+         min_10 = mo // 10
+         hour_1 = ho % 10
+         hour_10 = ho % 100 // 10
+         hour_100 = ho % 1000 // 100
+         hour_1000 = ho % 10000 // 1000
+         #総ゲームプレイ時間(秒)を今までの累積時間と加算する
+         pyxel.tilemap(0).set(9,5,sec_1 + 16) #秒の  1の位を書き込む
+         pyxel.tilemap(0).set(8,5,sec_10 + 16) #秒の  10の位を書き込む
+         pyxel.tilemap(0).set(6,5,min_1 + 16) #分の  1の位を書き込む
+         pyxel.tilemap(0).set(5,5,min_10 + 16) #分の  10の位を書き込む
+         pyxel.tilemap(0).set(3,5,hour_1  + 16) #時の   1の位を書き込む
+         pyxel.tilemap(0).set(2,5,hour_10 + 16) #時の   10の位を書き込む
+         pyxel.tilemap(0).set(1,5,hour_100 + 16) #時の   100の位を書き込む
+         pyxel.tilemap(0).set(0,5,hour_1000 + 16) #時の   1000の位を書き込む
          pyxel.save("system-data.pyxres") #システムデータを書き込み
          
          self.score = 0                 #スコア
@@ -8884,17 +8921,19 @@ class App:
           #早回し条件が成立するまでの必要殲滅編隊数の表示
           pyxel.text(160-8*3+4,25,"NUM " + str(self.fast_forward_destruction_num), 9)
 
-          #プレイ時間の表示(分)
+          #1プレイ時間の表示(分)
           pyxel.text(160-8*3,31,"   :", 10)
           minutes = "{:>3}".format(self.one_game_playtime_seconds // 60)
-          seconds = "{:0>2}".format(self.one_game_playtime_seconds % 60)
+          seconds = "{:>02}".format(self.one_game_playtime_seconds % 60)
           pyxel.text(160-8*3,31,minutes, 10)
           pyxel.text(160-8  ,31,seconds, 10)
-
-          pyxel.text(160-8*3,37,"   :", 13)
-          total_minutes = "{:>3}".format(self.total_game_playtime_seconds // 60)
-          total_seconds = "{:0>2}".format(self.total_game_playtime_seconds % 60)
-          pyxel.text(160-8*3,37,total_minutes, 13)
+          #総プレイ時間の表示(分)
+          pyxel.text(160-8*3,37,":  :", 13)
+          total_seconds = "{:>02}".format(self.total_game_playtime_seconds % 60)
+          total_minutes = "{:>02}".format(self.total_game_playtime_seconds // 60 % 60)
+          total_hours   = "{:>04}".format(self.total_game_playtime_seconds // 3600)
+          pyxel.text(160-8*6+8,37,  total_hours, 13)
+          pyxel.text(160-8*3+4,37,total_minutes, 13)
           pyxel.text(160-8  ,37,total_seconds, 13)
 
           #ステージ数の表示
@@ -8902,7 +8941,7 @@ class App:
           #周回数の表示
           pyxel.text(160-8*3+8,49,"LP " + str(self.stage_loop), 7)
 
-          #ワールドマップＢＧのxy座標の表示
+          #ワールドマップBGのxy座標の表示
           world_x = "{:>3}".format(int(self.scroll_count          // 8 % 256))
           pyxel.text(160-16,55,"X",8)
           pyxel.text(160-12,55,world_x,7)
@@ -8912,7 +8951,7 @@ class App:
 
           #背景山のx座標
           mou_x = "{:>3}".format(int(self.mountain_x))
-          pyxel.text(160-20,67,"mX",8)
+          pyxel.text(160-20,67,"MX",8)
           pyxel.text(160-12,67,mou_x,10)
 
           #ランクの表示
