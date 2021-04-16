@@ -2005,7 +2005,7 @@ class App:
      def __init__(self):
           pyxel.init(WINDOW_W,WINDOW_H,caption="mineka shooting game",fps=60) #ゲームウィンドウのタイトルバーの表示とfpsの設定(60fpsにした)
           
-          pyxel.load("system-data.pyxres") #システムデータを読み込む
+          pyxel.load("assets/system/system-data.pyxres") #システムデータを読み込む
           self.game_difficulty = pyxel.tilemap(0).get(0,120) - 16 #数字の[0]はアスキーコード16番なので16引いて数値としての0にしてやります
           self.stage_number    = pyxel.tilemap(0).get(0,121) - 16
           self.stage_loop      = pyxel.tilemap(0).get(0,122) - 16
@@ -3497,7 +3497,7 @@ class App:
      
      #タイトル表示に必要な変数を設定＆初期化する##############
      def update_title_init(self):
-          pyxel.load("min-sht2.pyxres") #タイトル＆ステージ1＆2のリソースファイルを読み込む
+          pyxel.load("assets/graphic/min-sht2.pyxres") #タイトル＆ステージ1＆2のリソースファイルを読み込む
           #タイトル関連の変数を初期化
           
           # self.display_title_time = 204            #タイトルを表示する時間
@@ -3920,7 +3920,7 @@ class App:
                     self.cursor_pre_decision_item = -1
      #!ゲームスタート時の初期化#########################################
      def update_game_start_init(self):
-         pyxel.load("system-data.pyxres") #システムデータを読み込む
+         pyxel.load("assets/system/system-data.pyxres") #システムデータを読み込む
          #各種設定値書き込み 数字の[0]はアスキーコード16番なので16足してアスキーコードとしての0にしてやります
          pyxel.tilemap(0).set(0,120,self.game_difficulty + 16)
          pyxel.tilemap(0).set(0,121,self.stage_number + 16)
@@ -3953,7 +3953,7 @@ class App:
          pyxel.tilemap(0).set(2,5,hour_10 + 16) #時の   10の位を書き込む
          pyxel.tilemap(0).set(1,5,hour_100 + 16) #時の   100の位を書き込む
          pyxel.tilemap(0).set(0,5,hour_1000 + 16) #時の   1000の位を書き込む
-         pyxel.save("system-data.pyxres") #システムデータを書き込み
+         pyxel.save("assets/system/system-data.pyxres") #システムデータを書き込み
          
          self.score = 0                 #スコア
          self.my_shield = 5             #自機のシールド耐久値
@@ -4038,7 +4038,7 @@ class App:
      #!ステージスタート時の初期化#######################################
      def update_stage_start_init(self):
          #画像リソースファイルを読み込みます
-         pyxel.load("min-sht2.pyxres")
+         pyxel.load("assets/graphic/min-sht2.pyxres")
          self.my_x = 24    #自機のx座標の初期値
          self.my_y = 50    #自機のy座標の初期値
          self.my_vx = 1    #自機のx方向の移動量
