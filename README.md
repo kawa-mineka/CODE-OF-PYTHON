@@ -1,14 +1,14 @@
 # code-of-python
-![gif/pyxel-210222-065611.gif](gif/pyxel-210222-065611.gif)
-![gif/pyxel-210222-065611.gif](gif/pyxel-210222-065917.gif)
+![source/gif/pyxel-210222-065611.gif](source/gif/pyxel-210222-065611.gif)
+![source/gif/pyxel-210222-065611.gif](source/gif/pyxel-210222-065917.gif)
 
-![gif/pyxel-210226-194506.gif](gif/pyxel-210226-194506.gif)
-![gif/pyxel-210226-194639.gif](gif/pyxel-210226-194639.gif)
+![source/gif/pyxel-210226-194506.gif](source/gif/pyxel-210226-194506.gif)
+![source/gif/pyxel-210226-194639.gif](source/gif/pyxel-210226-194639.gif)
 
-![gif/pyxel-210226-195228.gif](gif/pyxel-210226-195228.gif)
-![gif/pyxel-210403-175232.gif](gif/pyxel-210403-175232.gif)
+![source/gif/pyxel-210226-195228.gif](source/gif/pyxel-210226-195228.gif)
+![source/gif/pyxel-210403-175232.gif](source/gif/pyxel-210403-175232.gif)
 
-![gif/pyxel-210403-175305.gif](gif/pyxel-210403-175305.gif)
+![source/gif/pyxel-210403-175305.gif](source/gif/pyxel-210403-175305.gif)
 
 シューティングゲームっぽい？未完成ですけど・・
 
@@ -24,7 +24,7 @@
 ```sh
 pip install -U pyxel
 ```
-min-sht073.pyとmin-sht2.pyxresとsystem-data.pyxresをダウンロード
+sourceフォルダ以降にあるファイルをフォルダ構成そのままにダウンロードします
 
 コマンドプロンプトから以下の様に入力して実行します
 
