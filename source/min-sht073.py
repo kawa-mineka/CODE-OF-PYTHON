@@ -73,10 +73,18 @@
 #todo801 自機が爆発中にボスが出現すると、進行不可になるバグの処置  全然わからないどこにバグが潜んでいるのかそれは・・・謎
 #todo803 ウィンドウシステムを改良する（滅茶苦茶難しそう・・・今は同じようなコードを羅列してるだけなのでシンプルに行きたいところですが・・）
 #todo804 難易度選択によるスタート時のクロー追加ボーナスでローリングクローだけ上手く複数追加されない(1個だけなら追加される)(おそらく2~4個追加時に全く同じ座標で回転し続けて1個だけで回っているように見える？のかも？)要バグ取り
+#todo805 ボスとの当たり判定関連の関数はショット、ミサイル、クローショットの3関数あるがほとんど同じようなコードの羅列なので共通化したい・・リファクタリングって奴なのかな？？
+
 
 #todo900 BGMの作成(無理そう.........)
 #実装完了済み！
 #todo    総ゲームプレイ時間をsystem-data.pyxresに自動記録できるようにした,次回起動時もプレイ時間の記録が残っているぞ～ 2021 04/11
+#todo    フォルダ構成を見直しsourceに本体のpyファイル assetフォルダ以降にアセットファイルを置くようにした 2021 04/16
+#todo    ミサイルとクローショットにそれぞれボスキャラとの当たり判定を実装しやっと攻撃ヒット出来るようにした(その結果・・・結構簡単にボスを倒せるようになった感が・・・) 2021 04/18
+#todo    プログラムファイルが10000行を超えてしまった・・・やばいですね・・ 2021 04/18
+#todo    累計テストプレイ時間をsystem-dataに記録できるようにし2021 04/18から稼働を始めました 2021 04/18
+
+
 
 from random import randint
 from random import random
@@ -164,6 +172,14 @@ SHIFT_SWIFT       = 13   #SHIFT timer SWIFT space
 MAGI_FORCE        = 14   #MAGI FORCE power is dream
 LOOK_AT_LOGO      = 15   #LOOK AT THE TURTLE LOGO! 1967
 
+#自機、機体分類
+SHIP_FIRST_STEP      = 0 #初期機体
+SHIP_STANDARD        = 1 #標準機体
+SHIP_ANCENT          = 2 #古代機体
+SHIP_EXTRA           = 3 #特殊機体
+SHIP_NEXT_GENERATION = 4 #次世代機体
+
+
 #キーアイテムの定数定義
 KEY_ITEM_PUNCHED_CARD               =  0 #パンチカード
 KEY_ITEM_MAGNETIC_CORE_MEMORY       =  1 #磁気コアメモリ
@@ -178,6 +194,25 @@ KEY_ITEM_DAT                        =  9 #DAT デジタルオーディオテー�
 KEY_ITEM_3INCH_FLOPPY_DISK          = 10 #3インチフロッピーディスク
 KEY_ITEM_PD                         = 11 #PD Phase-change Dual or Phase-change Disc
 KEY_ITEM_MD                         = 12 #Micro Drive
+
+#称号
+NOVICE             = 0 #ノービス 入門者
+ASPIRANT           = 1 #アスパイラント 志を持つ者
+BATTLER            = 2 #バトラー 兵士
+FIGHTER            = 3 #ファイター 闘士
+ADEPT              = 4 #アデプト 熟練者
+CHEVALIER          = 5 #シェバリアー 騎士
+VETERAN            = 6 #ベテラン 軍人
+WARRIOR            = 7 #ウォーリア 勇士
+SWORDMAN           = 8 #ソードマン 剣士
+HERO               = 9 #ヒーロー 英雄
+SWASHBUCKLER       =10 #スワッシュバックラー 暴れ者
+MYRMIDON           =11 #マーミダン 忠臣
+CHAMPION           =12 #チャンピオン 勝者
+SUPERHERO          =13 #スーパーヒーロー 勇者
+PALADIN            =14 #パラディン 親衛隊騎士
+LOAD               =15 #ロード 君主
+MASTER_LOAD        =16 #マスターロード 大君主
 
 #勲章(メダル)自機のオプションスロットにはめ込むことが出来るメダル 色々な効果を付加することが出来る
 MEDAL_BEFOREHAND_1SHOT_ITEM       = 0 #ゲームスタート時点で事前にショットアイテムを1個入手した状態から始まる 1個目のショットアイテムは得点アイテムに変化する　それ以降は通常となる
@@ -2040,13 +2075,8 @@ class App:
      def __init__(self):
           pyxel.init(WINDOW_W,WINDOW_H,caption="mineka shooting game",fps=60) #ゲームウィンドウのタイトルバーの表示とfpsの設定(60fpsにした)
           
-          self.load_system_data() #システムデータをロードする関数の呼び出し
-
-          
-          
-          
-          
-          pyxel.mouse(False) #マウスカーソルを非表示にする
+          self.load_system_data()          #システムデータをロードする関数の呼び出し
+          pyxel.mouse(False)               #マウスカーソルを非表示にする
           self.bg_cls_color = 0            #BGをCLS(クリアスクリーン)するときの色の指定(通常は0=黒色です)
           self.bg_transparent_color = 0    #BGタイルマップを敷き詰めるときに指定する透明色です
           
@@ -2285,6 +2315,15 @@ class App:
                [98,    1.7,           2.0,            19,              2.0,         7,       58,            4],
                [99,    1.7,           2.0,            20,              2.2,         7,       57,            4],
                ]
+          
+          #各機体のデータリスト
+          #
+          #
+          #   [機体名,      機体分類,          移動スピードの倍率,最大移動スピード,最大ショット経験値,最大ミサイル経験値,最大クロー数,メダルスロット数]
+          self.my_ship_data_list = [
+              [J_PYTHON,    SHIP_FIRST_STEP,    1,               3,             71,                71,             2,            1,            ]
+
+              ]
           #ショットパワーアップテーブルのフォーマット
           #
           #x軸 [ショットレベル,ショットスピード(倍率),バルカンショットの連射数,ショットの攻撃力(倍率)]
@@ -2499,7 +2538,7 @@ class App:
           self.game_difficulty = pyxel.tilemap(0).get(0,120) - 16 #数字の[0]はアスキーコード16番なので16引いて数値としての0にしてやります
           self.stage_number    = pyxel.tilemap(0).get(0,121) - 16
           self.stage_loop      = pyxel.tilemap(0).get(0,122) - 16
-          #総ゲームプレイ時間(秒)を今までの累積時間と加算する
+          #総ゲームプレイ時間(秒)を計算する
           sec_1  = pyxel.tilemap(0).get(9,5) - 16 #秒の  1の位取得
           sec_10 = pyxel.tilemap(0).get(8,5) - 16 #秒の  10の位取得
           min_1  = pyxel.tilemap(0).get(6,5) - 16 #分の  1の位取得
@@ -2514,6 +2553,19 @@ class App:
           h = hour_1000 * 1000 + hour_100 * 100 + hour_10 * 10 + hour_1
           t_sec = h * 3600 + m * 60 + s
           self.total_game_playtime_seconds = t_sec
+
+          #総開発テスト時間(分)を計算する
+          min_1  = pyxel.tilemap(0).get(7,3) - 16 #分の  1の位取得
+          min_10 = pyxel.tilemap(0).get(6,3) - 16 #分の  10の位取得
+          hour_1 = pyxel.tilemap(0).get(4,3) - 16 #時の   1の位取得
+          hour_10 = pyxel.tilemap(0).get(3,3) - 16 #時の   10の位取得
+          hour_100 = pyxel.tilemap(0).get(2,3) - 16 #時の   100の位取得
+          hour_1000 = pyxel.tilemap(0).get(1,3) - 16 #時の   1000の位取得
+          hour_10000 = pyxel.tilemap(0).get(0,3) - 16 #時の   10000の位取得
+          m = min_10 * 10 + min_1
+          h = hour_10000 * 10000 + hour_1000 * 1000 + hour_100 * 100 + hour_10 * 10 + hour_1
+          t_min = h * 60 + m
+          self.total_development_testtime_min = t_min
 
           #デバッグモード＆ゴッドモード用のフラグやパラメーターの初期化とか宣言はこちらで行うようにします
           #debug_menu_status                        #デバッグパラメータの表示ステータス
@@ -2537,29 +2589,30 @@ class App:
      def save_system_data(self):
           pyxel.load("assets/system/system-data.pyxres") #システムデータにアクセスするためにローディングだけしてやります(グラフイック関連のアセットをローディングしている時がほとんどなので)
           #各種設定値書き込み 数字の[0]はアスキーコード16番なので16足してアスキーコードとしての0にしてやります
-          pyxel.tilemap(0).set(0,120,self.game_difficulty + 16)
-          pyxel.tilemap(0).set(0,121,self.stage_number + 16)
-          pyxel.tilemap(0).set(0,122,self.stage_loop + 16)
-          pyxel.tilemap(0).set(0,126,self.debug_menu_status + 16)
-          pyxel.tilemap(0).set(0,127,self.boss_collision_rect_display_flag + 16)
-          pyxel.tilemap(0).set(0,128,self.bg_collision_Judgment_flag + 16)
-          pyxel.tilemap(0).set(0,129,self.boss_test_mode + 16)
-          pyxel.tilemap(0).set(0,130,self.no_enemy_mode + 16)
+          pyxel.tilemap(0).set(0,120,self.game_difficulty + 16)                 #難易度書き込み
+          pyxel.tilemap(0).set(0,121,self.stage_number + 16)                    #スタートステージ数書き込み
+          pyxel.tilemap(0).set(0,122,self.stage_loop + 16)                      #スタート周回数書き込み
+          pyxel.tilemap(0).set(0,126,self.debug_menu_status + 16)               #デバッグメニュー表示フラグ書き込み
+          pyxel.tilemap(0).set(0,127,self.boss_collision_rect_display_flag + 16)#ボス当たり判定矩形表示フラグ書き込み
+          pyxel.tilemap(0).set(0,128,self.bg_collision_Judgment_flag + 16)      #BGとの当たり判定フラグ書き込み
+          pyxel.tilemap(0).set(0,129,self.boss_test_mode + 16)                  #ボステストモードフラグ書き込み
+          pyxel.tilemap(0).set(0,130,self.no_enemy_mode + 16)                   #敵が出ないモードフラグ書き込み
 
-          #総ゲームプレイ時間(秒)のそれぞれの桁の数値を計算する (自分でも訳が分からないよ・・・)
+          #総ゲームプレイ時間(秒)のそれぞれの桁の数値を計算する (自分でも訳が分からないよ・・・)------------------------------
           t_sec = self.total_game_playtime_seconds
           se = t_sec % 60        #se 秒は 総秒数を60で割った余り
-          mo = t_sec // 60 % 60  #mo 分は 総秒数を60で割った数(切り捨て)を更に60で割った余り
+          mi = t_sec // 60 % 60  #mi 分は 総秒数を60で割った数(切り捨て)を更に60で割った余り
           ho = t_sec // 3600     #ho 時は 総秒数を3600で割った数(切り捨て)
+          #それぞれの桁の数値(0~9)を計算して求めていく
           sec_1  = se  % 10
           sec_10 = se // 10
-          min_1  = mo  % 10
-          min_10 = mo // 10
+          min_1  = mi  % 10
+          min_10 = mi // 10
           hour_1 = ho % 10
           hour_10 = ho % 100 // 10
           hour_100 = ho % 1000 // 100
           hour_1000 = ho % 10000 // 1000
-          #総ゲームプレイ時間(秒)を今までの累積時間と加算する
+          #総ゲームプレイ時間(秒)を書き込んでいく
           pyxel.tilemap(0).set(9,5,sec_1 + 16) #秒の  1の位を書き込む
           pyxel.tilemap(0).set(8,5,sec_10 + 16) #秒の  10の位を書き込む
           pyxel.tilemap(0).set(6,5,min_1 + 16) #分の  1の位を書き込む
@@ -2568,6 +2621,28 @@ class App:
           pyxel.tilemap(0).set(2,5,hour_10 + 16) #時の   10の位を書き込む
           pyxel.tilemap(0).set(1,5,hour_100 + 16) #時の   100の位を書き込む
           pyxel.tilemap(0).set(0,5,hour_1000 + 16) #時の   1000の位を書き込む
+
+          #総開発テストプレイ時間(分)を計算します------------------------------------------------------
+          self.total_development_testtime_min += self.one_game_playtime_seconds // 60 #今プレイしているゲームの時間(分)を総ゲームテスト時間に加算
+          t_dev_min = self.total_development_testtime_min
+          mi = t_dev_min % 60    #mi 分は 総分数を60で割った余り
+          ho = t_dev_min // 60       #ho 時は 総秒数を60で割った数(切り捨て)
+          #それぞれの桁の数値(0~9)を計算して求めていく
+          min_1  = mi  % 10
+          min_10 = mi // 10
+          hour_1 = ho % 10
+          hour_10 = ho % 100 // 10
+          hour_100 = ho % 1000 // 100
+          hour_1000 = ho % 10000 // 1000
+          hour_10000 = ho % 100000 // 10000
+          #総開発テストプレイ時間を書き込んでいく
+          pyxel.tilemap(0).set(7,3,min_1 + 16) #分の  1の位を書き込む
+          pyxel.tilemap(0).set(6,3,min_10 + 16) #分の  10の位を書き込む
+          pyxel.tilemap(0).set(4,3,hour_1  + 16) #時の   1の位を書き込む
+          pyxel.tilemap(0).set(3,3,hour_10 + 16) #時の   10の位を書き込む
+          pyxel.tilemap(0).set(2,3,hour_100 + 16) #時の   100の位を書き込む
+          pyxel.tilemap(0).set(1,3,hour_1000 + 16) #時の   1000の位を書き込む
+          pyxel.tilemap(0).set(0,3,hour_10000 + 16) #時の   10000の位を書き込む
           pyxel.save("assets/system/system-data.pyxres") #システムデータを書き込み
          
      #自機との距離を求める関数定義
@@ -3997,8 +4072,6 @@ class App:
                     self.cursor_pre_decision_item = -1
      #!ゲームスタート時の初期化#########################################
      def update_game_start_init(self):
-         self.save_system_data() #システムデータをセーブする関数の呼び出し
-
          self.score = 0                 #スコア
          self.my_shield = 5             #自機のシールド耐久値
          self.my_speed = 1              #自機の初期スピード
@@ -9357,13 +9430,13 @@ class App:
           #早回し条件が成立するまでの必要殲滅編隊数の表示
           pyxel.text(160-8*3+4,25,"NUM " + str(self.fast_forward_destruction_num), 9)
 
-          #1プレイ時間の表示(分)
+          #1プレイ時間の表示(秒まで表示します)
           pyxel.text(160-8*3,31,"   :", 10)
           minutes = "{:>3}".format(self.one_game_playtime_seconds // 60)
           seconds = "{:>02}".format(self.one_game_playtime_seconds % 60)
           pyxel.text(160-8*3,31,minutes, 10)
           pyxel.text(160-8  ,31,seconds, 10)
-          #総プレイ時間の表示(分)
+          #総プレイ時間の表示(秒まで表示します)
           pyxel.text(160-8*3,37,":  :", 13)
           total_seconds = "{:>02}".format(self.total_game_playtime_seconds % 60)
           total_minutes = "{:>02}".format(self.total_game_playtime_seconds // 60 % 60)
@@ -9371,7 +9444,14 @@ class App:
           pyxel.text(160-8*6+8,37,  total_hours, 13)
           pyxel.text(160-8*3+4,37,total_minutes, 13)
           pyxel.text(160-8  ,37,total_seconds, 13)
-
+          #総開発テストプレイ時間の表示(分まで表示します)
+          playing_min = self.one_game_playtime_seconds // 60 #今プレイしているゲームの時間(分)を計算
+          pyxel.text(160-8*3,79,"   :", 14)
+          testplay_hours   =  "{:>5}".format((self.total_development_testtime_min  + playing_min) // 60)
+          testplay_minutes =  "{:>02}".format((self.total_development_testtime_min + playing_min)  % 60)
+          pyxel.text(160-8*4,79,testplay_hours  , 14)
+          pyxel.text(160-8  ,79,testplay_minutes, 14)
+          
           #ステージ数の表示
           pyxel.text(160-8*3+8,43,"ST " + str(self.stage_number), 9)
           #周回数の表示
@@ -9895,10 +9975,13 @@ class App:
               if pyxel.btnp(pyxel.KEY_ENTER):                    #リターンキーが押されたら
                   self.game_status = SCENE_TITLE_INIT            #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
                   self.game_playing_flag = 0                     #ゲームプレイ中のフラグを降ろす
+                  self.save_system_data()                        #システムデータをセーブする関数の呼び出し
+
               if self.cursor_decision_item == 0:                 #メニューでアイテムナンバー0の「YES」が押されたら
                   self.game_status = SCENE_TITLE_INIT            #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
                   self.game_playing_flag = 0                     #ゲームプレイ中のフラグを降ろす
-                  
+                  self.save_system_data()                        #システムデータをセーブする関数の呼び出し
+
           #########ステージクリア後の処理#################
           if self.game_status == SCENE_STAGE_CLEAR_FADE_OUT:     #「SCENE_STAGE_CLEAR_FADE_OUT」の時は
               if self.fade_complete_flag == 1:                   #フェードアウト完了のフラグが建ったのなら
