@@ -57,10 +57,11 @@
 
 #todo90 MagiForceとJusticePythonの合体演出
 #todo91 美咲フォントを使用した日本語テキスト表示関数の実装
+#todo92 自前の乱数育成関数を作製しリプレイ時で決まった数値を返すような乱数を育成できるようにする(古典的な乱数表を作ってパッド入力データとフレームすうでバラけるようにしてもいいかも？わかんないけど・・)
 
 #todo703 画面上の任意の位置＆画面下の任意の位置から降下、上昇してくる敵編隊の実装
 #todo705 子世代まで分裂する隕石の実装(結構硬い感じで)
-#todo706 画面後ろから出てきて画面前方まで移動し、x軸合わせのサーチレーザーを撃ってくる敵（ちょっと硬め）の実装
+#todo706 画面後ろから出てきて画面前方まで移動しx軸合わせのサーチレーザーを撃ってくる敵（ちょっと硬め）の実装
 #todo707 自機とx軸が一致したら上または下方向に発射されるロングロケットミサイル→ドット絵作成済み
 #todo708 斜め前方にレーザー（少し長め）を等間隔で発射してくるレーザー固定砲台→ドット絵作成済み
 #todo709 3way弾を撃ってくる固定砲台(近づくと反応してくる)→ドット絵作成済み
@@ -73,7 +74,7 @@
 #todo801 自機が爆発中にボスが出現すると、進行不可になるバグの処置  全然わからないどこにバグが潜んでいるのかそれは・・・謎
 #todo803 ウィンドウシステムを改良する（滅茶苦茶難しそう・・・今は同じようなコードを羅列してるだけなのでシンプルに行きたいところですが・・）
 #todo804 難易度選択によるスタート時のクロー追加ボーナスでローリングクローだけ上手く複数追加されない(1個だけなら追加される)(おそらく2~4個追加時に全く同じ座標で回転し続けて1個だけで回っているように見える？のかも？)要バグ取り
-#todo805 ボスとの当たり判定関連の関数はショット、ミサイル、クローショットの3関数あるがほとんど同じようなコードの羅列なので共通化したい・・リファクタリングって奴なのかな？？
+#todo805 ボスとの当たり判定関連の関数はショット、ミサイル、クローショットの3つの関数があるがほとんど同じようなコードの羅列なので共通化したい・・リファクタリングって奴なのかな？？
 
 
 #todo900 BGMの作成(無理そう.........)
@@ -2532,6 +2533,36 @@ class App:
           pyxel.run(self.update,self.draw) #この命令でこれ以降は１フレームごとに自動でupdate関数とdraw関数が交互に実行されることとなります
                                            #近年のゲームエンジンはみんなこんな感じらしい？？？unityやUEもこんな感じなのかな？？使ったことないけど
      
+     #システムデータからの数値読み込み
+     def read_system_data_num(self,x,y,digit): #x,yは1の位の座標です digitは桁数です
+          global num   #なんやようわからんが・・・global命令で 「numはグローバル変数やで～」って宣言したら上手くいくようになった、なんでや・・・？？謎
+          num = 0
+          a = 1
+          for i in range(digit):
+               n = pyxel.tilemap(0).get(x-i,y) - 16
+               num += n * a
+               a = a * 10
+          return(num)
+     
+     #システムデータへの数値書き込み
+     def write_system_data_num(self,x,y,digit,num): #x,yは1の位の座標です digitは桁数 numは書き込む数値です(整数を推奨)
+          a = 10
+          for i in range(digit):
+               n = num % a*10 // a
+               pyxel.tilemap(0).set(x-i,y,n + 16)
+               a = a * 10                           #めっちゃ判りにくいなぁ・・・試行錯誤で上手くいった？かも？です！？
+                                                    #書き込みテストで段々ステップアップしていくと上手くいくね☆彡
+          
+          #書き込みテストその１ 0からdigit桁数まで数値と桁数が増えてく digit=1なら0 digit=3なら210 digit=7なら6543210 digit=10なら9876543210
+          # n = 0 
+          # for i in range(digit):
+               # pyxel.tilemap(0).set(x-i,y,n + 16)
+               # n += 1
+          
+          #書き込みテストその２
+          # for i in range(digit):
+               # pyxel.tilemap(0).set(x-i,y,(digit - i) + 16)
+
      #システムデータのロード
      def load_system_data(self):
           pyxel.load("assets/system/system-data.pyxres") #システムデータを読み込む
@@ -2584,6 +2615,8 @@ class App:
                                                     #0=マップスクロールによって敵が発生します
                                                     #1=                         発生しません          
           self.no_enemy_mode                    = (pyxel.tilemap(0).get(0,130)) - 16
+
+          # self.test_read_num = self.read_system_data_num(15,156,16) #数値の読み取りテストです
           
      #システムデータのセーブ
      def save_system_data(self):
@@ -2643,8 +2676,11 @@ class App:
           pyxel.tilemap(0).set(2,3,hour_100 + 16) #時の   100の位を書き込む
           pyxel.tilemap(0).set(1,3,hour_1000 + 16) #時の   1000の位を書き込む
           pyxel.tilemap(0).set(0,3,hour_10000 + 16) #時の   10000の位を書き込む
+
+          self.write_system_data_num(16,152,16,8777992360588341)   #!############################ test write
+
           pyxel.save("assets/system/system-data.pyxres") #システムデータを書き込み
-         
+     
      #自機との距離を求める関数定義
      def to_my_ship_distance(self,x,y):
           dx = x - self.my_x
@@ -5503,7 +5539,6 @@ class App:
                               self.missile[h].missile_hp = 0#ミサイルのＨＰをゼロしてミサイル移動時にチェックしリストから消去させる
                               continue #これ以下の処理はせず次のループへと移行する     
      
-
      #自機ミサイルの更新（背景障害物との当たり判定も行っています）
      def update_my_missile(self):
           missile_count = len(self.missile)#ミサイルの総数を数える
@@ -9451,6 +9486,9 @@ class App:
           testplay_minutes =  "{:>02}".format((self.total_development_testtime_min + playing_min)  % 60)
           pyxel.text(160-8*4,79,testplay_hours  , 14)
           pyxel.text(160-8  ,79,testplay_minutes, 14)
+
+          # システムデータ数値読み取りテスト
+          # pyxel.text(60,107,"TEST " + str(self.test_read_num), 9)
           
           #ステージ数の表示
           pyxel.text(160-8*3+8,43,"ST " + str(self.stage_number), 9)
