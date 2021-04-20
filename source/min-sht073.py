@@ -2200,9 +2200,9 @@ class App:
               [GAME_VERY_EASY,6,6,6,                THREE_CLAW, REPAIR_SHIELD3,             RETURN_BULLET_NONE,     1.0,       3000,           0,      60,          10,                  1,              50,       2,               6,                1,                        LOOP_POWER_CONTINUE           ], 
               [GAME_EASY     ,3,3,3,                ONE_CLAW,   REPAIR_SHIELD2,             RETURN_BULLET_NONE,     1.0,       2400,           0,      45,          5,                   1,              50,       2,               4,                1,                        LOOP_ONE_LEVEL_DOWN     ],
               [GAME_NORMAL   ,0,0,0,                NO_CLAW,    REPAIR_SHIELD2,             RETURN_BULLET_AIM,      1.0,       2000,           0,      30,          3,                   0,              60,       2,               1,                2,                        LOOP_TWO_LEVEL_DOWN     ],
-              [GAME_HARD     ,0,0,0,                NO_CLAW,    REPAIR_SHIELD1,             RETURN_BULLET_AIM,      1.0,       1800,           5,      29,          2,                   0,              70,       1,               8,                2,                        LOOP_THREE_LEVEL_DOWN   ],
-              [GAME_VERY_HARD,0,0,0,                NO_CLAW,    REPAIR_SHIELD1,             RETURN_BULLET_DELAY_AIM,2.0,       1200,          10,      26,          0,                   0,              80,       1,               6,                3,                        LOOP_FIVE_LEVEL_DOWN    ],
-              [GAME_INSAME   ,0,0,0,                NO_CLAW,    REPAIR_SHIELD0,             RETURN_BULLET_DELAY_AIM,3.0,        900,          25,      23,          0,                   0,              99,       1,               2,                4,                        LOOP_ALL_RESET          ],
+              [GAME_HARD     ,0,0,0,                NO_CLAW,    REPAIR_SHIELD1,             RETURN_BULLET_AIM,      1.0,       1800,          10,      29,          2,                   0,              70,       1,               8,                2,                        LOOP_THREE_LEVEL_DOWN   ],
+              [GAME_VERY_HARD,0,0,0,                NO_CLAW,    REPAIR_SHIELD1,             RETURN_BULLET_DELAY_AIM,2.0,       1200,          20,      26,          0,                   0,              80,       1,               6,                3,                        LOOP_FIVE_LEVEL_DOWN    ],
+              [GAME_INSAME   ,0,0,0,                NO_CLAW,    REPAIR_SHIELD0,             RETURN_BULLET_DELAY_AIM,3.0,        900,          40,      23,          0,                   0,              99,       1,               2,                4,                        LOOP_ALL_RESET          ],
               ]
           #ランク値による各種設定数値のリスト
           #フォーマット
@@ -2314,16 +2314,16 @@ class App:
           #サブウェポンのレベルデータリスト
           #    [レベル,連射数 ,スピード ,攻撃力 ,1-2-3-5way?,加速度]
           self.sub_weapon_tail_shot_level_data_list = [
-               [ 1,     1,      1.0,      1,      1,       1     ],
-               [ 2,     1,      1.1,      1,      1,       1     ],
-               [ 3,     2,      1.3,      1,      1,       1     ],
-               [ 4,   2*2,      1.1,      1,      2,       1     ],
-               [ 5,   2*2,      1.2,      1,      2,       1     ],
-               [ 6,   2*2,      1.3,      1,      2,       1     ],
-               [ 7,   2*3,      0.7,      1,      3,       1     ],
-               [ 8,   2*3,      0.9,      1,      3,       1     ],
-               [ 9,   3*3,      1.1,      1,      3,       1     ],
-               [10,   3*3,      1.3,      1,      3,       1     ],
+               [ 1,     1,      1.0,     1.5,      1,       1     ],
+               [ 2,     1,      1.1,     1.6,      1,       1     ],
+               [ 3,     2,      1.3,     1.8,      1,       1     ],
+               [ 4,   2*2,      1.1,     1.9,      2,       1     ],
+               [ 5,   2*2,      1.2,     2.0,      2,       1     ],
+               [ 6,   2*2,      1.3,     2.1,      2,       1     ],
+               [ 7,   2*3,      0.7,     2.2,      3,       1     ],
+               [ 8,   2*3,      0.9,     2.3,      3,       1     ],
+               [ 9,   3*3,      1.1,     2.4,      3,       1     ],
+               [10,   3*3,      1.3,     2.5,      3,       1     ],
           ]
           
           #各機体のデータリスト
@@ -4914,34 +4914,30 @@ class App:
               
               self.count_missile_type(4,4,4,4) #ミサイルタイプ4(テイルショット）がいくつ存在するのか調べる    
               if self.type_check_quantity < self.sub_weapon_tail_shot_level_data_list[self.sub_weapon_list[TAIL_SHOT]-1][1] and self.select_sub_weapon_id == TAIL_SHOT and (pyxel.frame_count % 6) == 0:#もしテイルショットが全く存在しないのなら発射する！！！
-                  level = self.sub_weapon_list[TAIL_SHOT]
-                  speed = self.sub_weapon_tail_shot_level_data_list[level - 1][2]
-                  way =   self.sub_weapon_tail_shot_level_data_list[level - 1][4]
-                  if way == 1 or way == 3: #真後ろにテイルショット発射
+                  level = self.sub_weapon_list[TAIL_SHOT] #現在のテイルショットのレベルを取得する
+                  #テイルショットのレベルデータリストから現時点のレベルに応じたデータを取得する
+                  speed = self.sub_weapon_tail_shot_level_data_list[level - 1][2] #スピード
+                  power = self.sub_weapon_tail_shot_level_data_list[level - 1][3] #攻撃力
+                  n_way = self.sub_weapon_tail_shot_level_data_list[level - 1][4] #n_way数
+                  if n_way == 1 or n_way == 3: #真後ろにテイルショット発射
                        new_missile = Missile()
-                       new_missile.update(4,self.my_x - 4,self.my_y,   -2*speed,0,   3,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
+                       new_missile.update(4,self.my_x - 4,self.my_y,   -2*speed,0,   power,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
                        self.missile.append(new_missile)#真後ろに射出されるテイルショット育成
-                       if way == 3: #3wayの場合は更に後ろ斜め方向にテイルショット発射
+                       if n_way == 3: #3wayの場合は更に斜め後ろ方向にテイルショット発射
                             new_missile = Missile()
-                            new_missile.update(4,self.my_x - 4,self.my_y - 2,   -2*speed,-0.5,   3,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
-                            self.missile.append(new_missile)#斜め後ろのテイルショット(上)育成
+                            new_missile.update(4,self.my_x - 4,self.my_y - 2,   -2*speed,-0.5,   power,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
+                            self.missile.append(new_missile)#斜め後ろ(上)のテイルショット育成
 
                             new_missile = Missile()
-                            new_missile.update(4,self.my_x - 4,self.my_y + 2,   -2*speed, 0.5,   3,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
-                            self.missile.append(new_missile)#斜め後ろのテイルショット(下)育成
-
-
-                  
-                  
-                  
-                  
-                  elif way == 2: #ツインテイルショット発射
+                            new_missile.update(4,self.my_x - 4,self.my_y + 2,   -2*speed, 0.5,   power,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
+                            self.missile.append(new_missile)#斜め後ろ(下)のテイルショット育成
+                  elif n_way == 2: #ツインテイルショット発射
                        new_missile = Missile()
-                       new_missile.update(4,self.my_x - 4,self.my_y - 2,   -2*speed,0,   3,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
+                       new_missile.update(4,self.my_x - 4,self.my_y - 2,   -2*speed,0,   power,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
                        self.missile.append(new_missile)#ツインテイルショット(上)育成
 
                        new_missile = Missile()
-                       new_missile.update(4,self.my_x - 4,self.my_y + 2,   -2*speed,0,   3,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
+                       new_missile.update(4,self.my_x - 4,self.my_y + 2,   -2*speed,0,   power,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
                        self.missile.append(new_missile)#ツインテイルショット(下)育成
 
               self.count_missile_type(6,6,6,6) #ミサイルタイプ6(サーチレーザー）がいくつ存在するのか調べる
