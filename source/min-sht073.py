@@ -3627,6 +3627,14 @@ class App:
                self.rank -= 1       #ランク数をデクリメント
                self.get_rank_data() #ランク数が変化したのでランク数をもとにしたデータをリストから各変数に代入する関数の呼び出し
 
+     #各ステージBGMのロード
+     def load_stage_bgm(self):
+          if   self.stage_number == 1:
+               pygame.mixer.music.load("assets/music/BGM088-100714-kongoushinkidaia-su.wav") #STAGE1 BGMファイルの読み込み
+          elif self.stage_number == 2:
+               pygame.mixer.music.load("assets/music/BGM056-081012-kakeroginnnogennya.wav")  #STAGE2 BGMファイルの読み込み
+
+     
      ################################################################ボツ関数群・・・・・・(涙)##########################################################
      #外積を計算する関数 self.cpに結果が入る(バグありなので使えないっぽい・・・この関数)
      def cross_product_calc_function(self,ax,ay,bx,by,cx,cy):
@@ -3698,13 +3706,13 @@ class App:
           pyxel.load("assets/graphic/min-sht2.pyxres") #タイトル＆ステージ1＆2のリソースファイルを読み込む
           #タイトル関連の変数を初期化
           
-          # self.display_title_time = 204            #タイトルを表示する時間
-          # self.title_oscillation_count = 200       #タイトルグラフイックの振れ幅カウンター
-          # self.title_slash_in_count =    100       #タイトルグラフイックが下から切り込んで競りあがってくる時に使うカウンター
+          self.display_title_time = 204            #タイトルを表示する時間
+          self.title_oscillation_count = 200       #タイトルグラフイックの振れ幅カウンター
+          self.title_slash_in_count =    100       #タイトルグラフイックが下から切り込んで競りあがってくる時に使うカウンター
           
-          self.display_title_time        = 10       #タイトルを表示する時間
-          self.title_oscillation_count = 10         #タイトルグラフイックの振れ幅カウンター
-          self.title_slash_in_count =    10         #タイトルグラフイックが下から切り込んで競りあがってくる時に使うカウンター
+          # self.display_title_time        = 10       #タイトルを表示する時間
+          # self.title_oscillation_count = 10         #タイトルグラフイックの振れ幅カウンター
+          # self.title_slash_in_count =    10         #タイトルグラフイックが下から切り込んで競りあがってくる時に使うカウンター
           
           self.stars = []                           #タイトル表示時も背景の星を流したいのでリストをここで初期化してやります
           self.star_scroll_speed = 1                #背景の流れる星のスクロールスピード 1=通常スピード 0.5なら半分のスピードとなります
@@ -3730,7 +3738,13 @@ class App:
           # self.stage_number = STAGE_MOUNTAIN_REGION  #最初に出撃するステージ   タイトルメニューでステージを選択して変化させるのでここで初期化します
           # self.stage_loop   = 1                      #ループ数(ステージ周回数) タイトルメニューで周回数を選択して変化させるのでここで初期化します
           
+          pygame.mixer.init(frequency = 44100)     #pygameミキサー関連の初期化
+          pygame.mixer.music.set_volume(0.7)       #音量設定(0~1の範囲内)
+          pygame.mixer.music.load('assets/music/BGM200-171031-konotenitsukame-intro.wav') #タイトルイントロ部分のwavファイルを読み込み
+          pygame.mixer.music.play(1)              #イントロを1回だけ再生
+          
           self.game_status = SCENE_TITLE             #ゲームステータスを「SCENE_TITLE」にしてタイトル表示を開始する
+
      
      #タイトルの更新#######################################
      def update_title(self):
@@ -3745,6 +3759,13 @@ class App:
           self.title_slash_in_count -= 1        #タイトルグラフイックが下から切り込んで競りあがってくる時に使うカウンターを1減らす
           if self.title_slash_in_count < 0:     #カウンターが0以下になったら・・・
                self.title_slash_in_count = 0    #強制的に0の状態にする
+          
+          #BGMイントロ再生が終了したらBGMループ部分を再生し始める
+          if pygame.mixer.music.get_pos() == -1:        #pygame.mixer.music.get_posはBGM再生が終了すると-1を返してきます
+               pygame.mixer.init(frequency = 44100)     #pygameミキサー関連の初期化
+               pygame.mixer.music.set_volume(0.7)       #音量設定(0~1の範囲内)
+               pygame.mixer.music.load('assets/music/BGM200-171031-konotenitsukame-loop.wav') #タイトルBGMループ部分のwavファイルを読み込み
+               pygame.mixer.music.play(-1)              #タイトルBGMをループ再生
           
           #全てのカウンター類が0になったらゲームメニューウィンドウを育成する
           if self.title_oscillation_count == 0 and self.title_slash_in_count == 0 and self.display_title_time == 0:
@@ -4202,9 +4223,9 @@ class App:
      def update_stage_start_init(self):
          #画像リソースファイルを読み込みます
          pyxel.load("assets/graphic/min-sht2.pyxres")
-         pygame.mixer.init(frequency = 44100)  #pygameミキサー関連の初期化
-         pygame.mixer.music.set_volume(0.7)
-         pygame.mixer.music.load("assets/music/BGM088-100714-kongoushinkidaia-su.wav")     # 音楽ファイルの読み込み
+         pygame.mixer.init(frequency = 44100)     #pygameミキサー関連の初期化
+         pygame.mixer.music.set_volume(0.7)       #音量設定(0~1の範囲内)
+         self.load_stage_bgm()                    #BGMファイルの読み込み
          pygame.mixer.music.play(-1)              #BGMループ再生
          self.my_x = 24    #自機のx座標の初期値
          self.my_y = 50    #自機のy座標の初期値
@@ -4492,12 +4513,13 @@ class App:
                [3100,EVENT_CLOUD,CLOUD_STOP],
                [3110,EVENT_ENTRY_SPARK_ON_OFF,SPARK_OFF],
 
+               [3200,EVENT_WARNING,500,120,240],
 
                
-               [3200,EVENT_SCROLL,SCROLL_SPEED_CHANGE,3.0,0.0001],
-               [3210,EVENT_WARNING,500,120,240],
-               [3300,EVENT_BOSS],
+               [3320,EVENT_SCROLL,SCROLL_SPEED_CHANGE,3.0,0.0001],
+               [3340,EVENT_BOSS],
                
+               [3420,EVENT_SCROLL,SCROLL_SPEED_CHANGE,4.0,0.001],
 
 
                
@@ -10015,7 +10037,7 @@ class App:
                self.my_ship_explosion_timer += 1                 # my_ship_explosionタイマーを加算していき
                if self.my_ship_explosion_timer >= SHIP_EXPLOSION_TIMER_LIMIT:#リミット値まで行ったのなら
                     self.game_status = SCENE_GAME_OVER           #「GAME_OVER」にする
-                    pygame.mixer.music.fadeout(12000)               #BGMフェードアウト開始
+                    pygame.mixer.music.fadeout(6000)               #BGMフェードアウト開始
           
           #######ゲームオーバー後の処理###############
           if self.game_status == SCENE_GAME_OVER:                #「GAME_OVER」の時は
