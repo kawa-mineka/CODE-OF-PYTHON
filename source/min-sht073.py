@@ -84,7 +84,7 @@ from random import random
 import math
 
 import pyxel
-#import pygame #MP3再生するためだけに使用する予定・・・予定は未定・・・
+import pygame.mixer #MP3再生するためだけに使用する予定・・・予定は未定・・・
 
 #定数の定義関連##################################################################################################
 WINDOW_W = 160     #ゲームウィンドウの横サイズ
@@ -2069,6 +2069,7 @@ class App:
      #確かに関数定義をしないで関数呼び出したらエラーになるよなぁ・・・最初は関数定義はどこでも定義できると思って最後の方で定義してエラー出て悩んでたよ
      
      def __init__(self):
+          pygame.mixer.init()  #pygameミキサー関連の初期化 pyxel.initよりも先にpygameをinitしないと上手く動かないみたい・・・
           pyxel.init(WINDOW_W,WINDOW_H,caption="mineka shooting game",fps=60) #ゲームウィンドウのタイトルバーの表示とfpsの設定(60fpsにした)
           
           self.load_system_data()          #システムデータをロードする関数の呼び出し
@@ -4201,6 +4202,10 @@ class App:
      def update_stage_start_init(self):
          #画像リソースファイルを読み込みます
          pyxel.load("assets/graphic/min-sht2.pyxres")
+         pygame.mixer.init(frequency = 44100)  #pygameミキサー関連の初期化
+         pygame.mixer.music.set_volume(0.7)
+         pygame.mixer.music.load("assets/music/BGM088-100714-kongoushinkidaia-su.wav")     # 音楽ファイルの読み込み
+         pygame.mixer.music.play(-1)              #BGMループ再生
          self.my_x = 24    #自機のx座標の初期値
          self.my_y = 50    #自機のy座標の初期値
          self.my_vx = 1    #自機のx方向の移動量
@@ -10010,6 +10015,7 @@ class App:
                self.my_ship_explosion_timer += 1                 # my_ship_explosionタイマーを加算していき
                if self.my_ship_explosion_timer >= SHIP_EXPLOSION_TIMER_LIMIT:#リミット値まで行ったのなら
                     self.game_status = SCENE_GAME_OVER           #「GAME_OVER」にする
+                    pygame.mixer.music.fadeout(12000)               #BGMフェードアウト開始
           
           #######ゲームオーバー後の処理###############
           if self.game_status == SCENE_GAME_OVER:                #「GAME_OVER」の時は

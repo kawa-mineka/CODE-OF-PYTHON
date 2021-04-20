@@ -24,6 +24,12 @@
 ```sh
 pip install -U pyxel
 ```
+
+さらに続いてBGM再生用に使用している pygameをコマンドプロンプトから以下の`pip`コマンドでインストールします。
+
+```sh
+pip install pygame 
+```
 sourceフォルダ以降にあるファイルをフォルダ構成そのままにダウンロードします
 
 コマンドプロンプトから以下の様に入力して実行します
@@ -40,6 +46,8 @@ python min-sht073.py
              RIGHTボタンでフィックスクローの間隔の調整
 
 TABキーまたはゲームパッドのSTARTで一時停止できます
+
+BGMに[PANICPUMPKIN](http://pansound.com/panicpumpkin/)さんの楽曲を使わさせてもらっています
 
 
 
