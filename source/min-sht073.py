@@ -96,11 +96,14 @@ MOVE_LIMIT = 20    #前方に進める限界距離
 ALL_STAGE_NUMBER = 10 #全ステージ数(撃ち返し弾を出すとき ループ数×ALL_STAGE_NUMBER+ステージ数を計算して撃ち返すのか撃ち返さないのか判断します)
 
 SHOT_EXP_MAXIMUM    = 71 #自機ショットの最大経験値（この数値を超えちゃダメだよ）
-                         #例 self.j_python_shot_table_listのｙ軸の最大値がこの数と一致します
+                         #例 self.j_python_shot_table_listのy軸の最大値がこの数と一致します
                          #これより大きい数値にしちゃうとindex erroerになっちゃうからね
 MISSILE_EXP_MAXIMUM = 71 #自機ミサイルの最大経験値（この数値を超えちゃダメだよ）
-                         #例 self.j_python_missile_table_listのｙ軸の最大値がこの数と一致します
+                         #例 self.j_python_missile_table_listのy軸の最大値がこの数と一致します
                          #これより大きい数値にしちゃうとindex erroerになっちゃうからね
+SUB_WEAPON_LEVEL_MAXIMUM = 10 #自機サブウェポンのレベルの最大値
+                              #例 self.sub_weapon_tail_shot_level_data_listのy軸の最大値がこの数と一致します
+                              #これより大きい数値にしちゃうとindex out of range erroerになっちゃうからね
 
 #!ゲームステータス関連の定数定義 game_statusに代入されます#######################################################################
 SCENE_IPL                 =  0    #IPL(Initial Program Load)
@@ -2308,6 +2311,20 @@ class App:
                [98,    1.7,           2.0,            19,              2.0,         7,       58,            4],
                [99,    1.7,           2.0,            20,              2.2,         7,       57,            4],
                ]
+          #サブウェポンのレベルデータリスト
+          #    [レベル,連射数 ,スピード ,攻撃力 ,1-2-3-5way?,加速度]
+          self.sub_weapon_tail_shot_level_data_list = [
+               [ 1,     1,      1.0,      1,      1,       1     ],
+               [ 2,     1,      1.1,      1,      1,       1     ],
+               [ 3,     2,      1.3,      1,      1,       1     ],
+               [ 4,   2*2,      1.1,      1,      2,       1     ],
+               [ 5,   2*2,      1.2,      1,      2,       1     ],
+               [ 6,   2*2,      1.3,      1,      2,       1     ],
+               [ 7,   2*3,      0.7,      1,      3,       1     ],
+               [ 8,   2*3,      0.9,      1,      3,       1     ],
+               [ 9,   3*3,      1.1,      1,      3,       1     ],
+               [10,   3*3,      1.3,      1,      3,       1     ],
+          ]
           
           #各機体のデータリスト
           #
@@ -4128,7 +4145,7 @@ class App:
          self.missile_rapid_of_fire = 1     #自機ミサイルの連射数  初期値は1連射
          
          self.select_sub_weapon_id = 0       #現在使用しているサブウェポンのIDナンバー -1だと何も所有していない状態
-         self.sub_weapon_list = [0,1,2,6,1]   #どのサブウェポンを所持しているかのリスト(インデックスオフセット値)
+         self.sub_weapon_list = [1,1,1,1,1]   #どのサブウェポンを所持しているかのリスト(インデックスオフセット値)
                                               #0=テイルショット 1=ペネトレートロケット 2=サーチレーザー 3=ホーミングミサイル 4=ショックバンバー
          self.star_scroll_speed = 1           #背景の流れる星のスクロールスピード 1=通常スピード 0.5なら半分のスピードとなります
          self.pow_item_bounce_num = 6         #パワーアップアイテムが画面の左端で跳ね返って戻ってくる回数
@@ -4895,11 +4912,37 @@ class App:
                   self.missile.append(new_missile)#ペネトレートロケット育成
                   
               
-              self.count_missile_type(4,4,4,4) #ミサイルタイプ4(テイルショット）がいくつ存在するのか調べる
-              if self.type_check_quantity <= self.sub_weapon_list[TAIL_SHOT] and self.select_sub_weapon_id == TAIL_SHOT and (pyxel.frame_count % 6) == 0:#もしテイルショットが全く存在しないのなら発射する！！！
-                  new_missile = Missile()
-                  new_missile.update(4,self.my_x - 4,self.my_y,   -2,0,   3,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
-                  self.missile.append(new_missile)#テイルショット育成
+              self.count_missile_type(4,4,4,4) #ミサイルタイプ4(テイルショット）がいくつ存在するのか調べる    
+              if self.type_check_quantity < self.sub_weapon_tail_shot_level_data_list[self.sub_weapon_list[TAIL_SHOT]-1][1] and self.select_sub_weapon_id == TAIL_SHOT and (pyxel.frame_count % 6) == 0:#もしテイルショットが全く存在しないのなら発射する！！！
+                  level = self.sub_weapon_list[TAIL_SHOT]
+                  speed = self.sub_weapon_tail_shot_level_data_list[level - 1][2]
+                  way =   self.sub_weapon_tail_shot_level_data_list[level - 1][4]
+                  if way == 1 or way == 3: #真後ろにテイルショット発射
+                       new_missile = Missile()
+                       new_missile.update(4,self.my_x - 4,self.my_y,   -2*speed,0,   3,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
+                       self.missile.append(new_missile)#真後ろに射出されるテイルショット育成
+                       if way == 3: #3wayの場合は更に後ろ斜め方向にテイルショット発射
+                            new_missile = Missile()
+                            new_missile.update(4,self.my_x - 4,self.my_y - 2,   -2*speed,-0.5,   3,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
+                            self.missile.append(new_missile)#斜め後ろのテイルショット(上)育成
+
+                            new_missile = Missile()
+                            new_missile.update(4,self.my_x - 4,self.my_y + 2,   -2*speed, 0.5,   3,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
+                            self.missile.append(new_missile)#斜め後ろのテイルショット(下)育成
+
+
+                  
+                  
+                  
+                  
+                  elif way == 2: #ツインテイルショット発射
+                       new_missile = Missile()
+                       new_missile.update(4,self.my_x - 4,self.my_y - 2,   -2*speed,0,   3,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
+                       self.missile.append(new_missile)#ツインテイルショット(上)育成
+
+                       new_missile = Missile()
+                       new_missile.update(4,self.my_x - 4,self.my_y + 2,   -2*speed,0,   3,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
+                       self.missile.append(new_missile)#ツインテイルショット(下)育成
 
               self.count_missile_type(6,6,6,6) #ミサイルタイプ6(サーチレーザー）がいくつ存在するのか調べる
               if self.type_check_quantity <= 1 and self.select_sub_weapon_id == SEARCH_LASER and pyxel.frame_count % 32 == 0: #サーチレーザーが全く存在しないのなら発射する！！！
@@ -8276,33 +8319,42 @@ class App:
                     elif self.obtain_item[i].item_type == ITEM_TAIL_SHOT_POWER_UP: #テイルショットパワーアップの処理
                          pyxel.play(0,0)              #パワーアップアイテムゲットの音を鳴らすのだ
                          del self.obtain_item[i]      #インスタンスを破棄する(アイテム消滅)
-                         self.sub_weapon_list[0] += 1  #サブウェポンリスト内のテイルショットの所持数を１増やす
+                         self.sub_weapon_list[TAIL_SHOT] += 1  #サブウェポンリスト内のテイルショットの所持数を１増やす
+                         self.sub_weapon_list[TAIL_SHOT] = self.sub_weapon_list[TAIL_SHOT] % (SUB_WEAPON_LEVEL_MAXIMUM + 1) #サブウェポンのレベルを最大値を超えないよう補正します
                          if self.select_sub_weapon_id == -1: #もしサブウェポンを何も所持していない状態でアイテムを取ったのなら・・・
-                              self.select_sub_weapon_id = 0 #強制的にテイルショットを選択させる
+                              self.select_sub_weapon_id = TAIL_SHOT #強制的にテイルショットを選択させる
+                    
                     elif self.obtain_item[i].item_type == ITEM_PENETRATE_ROCKET_POWER_UP: #ペネトレートロケットパワーアップの処理
                          pyxel.play(0,0)              #パワーアップアイテムゲットの音を鳴らすのだ
                          del self.obtain_item[i]      #インスタンスを破棄する(アイテム消滅)
-                         self.sub_weapon_list[1] += 1  #サブウェポンリスト内のペネトレートロケットの所持数を１増やす
+                         self.sub_weapon_list[PENETRATE_ROCKET] += 1  #サブウェポンリスト内のペネトレートロケットの所持数を１増やす
+                         self.sub_weapon_list[PENETRATE_ROCKET] = self.sub_weapon_list[PENETRATE_ROCKET] % (SUB_WEAPON_LEVEL_MAXIMUM + 1) #サブウェポンのレベルを最大値を超えないよう補正します
                          if self.select_sub_weapon_id == -1: #もしサブウェポンを何も所持していない状態でアイテムを取ったのなら・・・
-                              self.select_sub_weapon_id = 1 #強制的にペネトレートロケットを選択させる
+                              self.select_sub_weapon_id = PENETRATE_ROCKET #強制的にペネトレートロケットを選択させる
+                    
                     elif self.obtain_item[i].item_type == ITEM_SEARCH_LASER_POWER_UP: #サーチレーザーパワーアップの処理
                          pyxel.play(0,0)              #パワーアップアイテムゲットの音を鳴らすのだ
                          del self.obtain_item[i]      #インスタンスを破棄する(アイテム消滅)
-                         self.sub_weapon_list[2] += 1  #サブウェポンリスト内のサーチレーザーの所持数を１増やす
+                         self.sub_weapon_list[SEARCH_LASER] += 1  #サブウェポンリスト内のサーチレーザーの所持数を１増やす
+                         self.sub_weapon_list[SEARCH_LASER] = self.sub_weapon_list[SEARCH_LASER] % (SUB_WEAPON_LEVEL_MAXIMUM + 1) #サブウェポンのレベルを最大値を超えないよう補正します
                          if self.select_sub_weapon_id == -1: #もしサブウェポンを何も所持していない状態でアイテムを取ったのなら・・・
-                              self.select_sub_weapon_id = 2 #強制的にサーチレーザーを選択させる
+                              self.select_sub_weapon_id = SEARCH_LASER #強制的にサーチレーザーを選択させる
+                    
                     elif self.obtain_item[i].item_type == ITEM_HOMING_MISSILE_POWER_UP: #ホーミングミサイルパワーアップの処理
                          pyxel.play(0,0)              #パワーアップアイテムゲットの音を鳴らすのだ
                          del self.obtain_item[i]      #インスタンスを破棄する(アイテム消滅)
-                         self.sub_weapon_list[3] += 1  #サブウェポンリスト内のホーミングミサイルの所持数を１増やす
+                         self.sub_weapon_list[HOMING_MISSILE] += 1  #サブウェポンリスト内のホーミングミサイルの所持数を１増やす
+                         self.sub_weapon_list[HOMING_MISSILE] = self.sub_weapon_list[HOMING_MISSILE] % (SUB_WEAPON_LEVEL_MAXIMUM + 1) #サブウェポンのレベルを最大値を超えないよう補正します
                          if self.select_sub_weapon_id == -1: #もしサブウェポンを何も所持していない状態でアイテムを取ったのなら・・・
-                              self.select_sub_weapon_id = 3 #強制的にホーミングミサイルを選択させる
+                              self.select_sub_weapon_id = HOMING_MISSILE #強制的にホーミングミサイルを選択させる
+                    
                     elif self.obtain_item[i].item_type == ITEM_SHOCK_BUMPER_POWER_UP: #ショックバンバーパワーアップの処理
                          pyxel.play(0,0)              #パワーアップアイテムゲットの音を鳴らすのだ
                          del self.obtain_item[i]      #インスタンスを破棄する(アイテム消滅)
-                         self.sub_weapon_list[4] += 1  #サブウェポンリスト内のショックバンバーの所持数を１増やす
+                         self.sub_weapon_list[SHOCK_BUMPER] += 1  #サブウェポンリスト内のショックバンバーの所持数を１増やす
+                         self.sub_weapon_list[SHOCK_BUMPER] = self.sub_weapon_list[SHOCK_BUMPER] % (SUB_WEAPON_LEVEL_MAXIMUM + 1) #サブウェポンのレベルを最大値を超えないよう補正します
                          if self.select_sub_weapon_id == -1: #もしサブウェポンを何も所持していない状態でアイテムを取ったのなら・・・
-                              self.select_sub_weapon_id = 4 #強制的にショックバンバーを選択させる
+                              self.select_sub_weapon_id = SHOCK_BUMPER #強制的にショックバンバーを選択させる
      
      #パワーアップアイテム類と敵弾の当たり判定(難易度によってパワーアップアイテムは敵弾を消す効果あり)
      def update_collision_obtain_item_enemy_shot(self):
