@@ -2713,7 +2713,7 @@ class App:
 
                     for i in range(8): #漢字フォントの横ドット数8
                          for j in range(12): #漢字フォントの縦ドット数12
-                              if 0 == self.kanji_fonts[(sy-1)*12+j][sx*8+i]: #フォントのデータは 7=白が透明で 0=黒が描画する線なので0だったらpsetで点を打ちます
+                              if self.kanji_fonts[(sy-1)*12+j][sx*8+i] == 7: #フォントのデータは 0=黒が透明で 7=白が描画する点なので色コードが7だったらpsetで点を打ちます
                                    pyxel.pset(x+i,y+j,col)
                     x += 8
                     if char == '\n':
@@ -9753,18 +9753,19 @@ class App:
           #ランクの表示
           pyxel.text(160-16,73,"RA" + str(self.rank), 7)
 
-          #漢字表示テスト
-          self.kanji_text(0,36,"文字列を分割できる関数",7)
-          self.kanji_text(0,50,"関数を使って文字列を編集",6)
-          self.kanji_text(0,63,"文字列を分割できる関数",9)
-          self.kanji_text(0,76,"文字列を大文字・小文字に変換できる",3)
-          self.kanji_text(0,88,"保存したキャンバス",13)
+          # 漢字表示テスト
+          # self.kanji_text(0,36,"文字列を分割できる関数",7)
+          # self.kanji_text(0,50,"関数を使って文字列を編集",6)
+          # self.kanji_text(0,63,"文字列を分割できる関数",9)
+          # self.kanji_text(0,76,"文字列を大文字・小文字に変換できる",3)
+          # self.kanji_text(0,88,"保存したキャンバス",13)
           
           #漢字フォントデータの表示テスト
           # for y in range(120):
                # for x in range(160):
                     # col = self.kanji_fonts[y+pyxel.frame_count % 900][x+pyxel.frame_count % 300]
-                    # pyxel.pset(x,y,col)
+                    # if col == 7:
+                         # pyxel.pset(x,y,col)
 
           #1番目のクローの座標の表示
           if self.claw_number >= 1:

@@ -1,10 +1,20 @@
-#美咲フォントのpng画像のカッティングを行います
+#美咲フォントpng画像は白地に黒色なので反転して黒地に白文字にします
+#そしてそのあとpyxeleditorで読み込める256x256ドットサイズのpngに分割してやります
 
 import cv2
  
 img = cv2.imread('assets/fonts/k8x12s_jisx0208.png')
 cv2.imshow('original_font', img)
+#反転作業
+for y in range(752):
+    for x in range(1128):
+        pic_col_blue = img[x,y,0] #座標(x,y)の青色の画素値を取得
+        if int(pic_col_blue) == 255: #255だと白い点だということなので・・
+            img[x,y] = [0,0,0] #黒色のデータを書き込む
+        else:
+            img[x,y] = [255,255,255] #元が黒色なら白色のデータを書き込む
 
+cv2.imshow('reverse_font', img)
 
 #img[top:bottom, left:right]
 #左上の座標がx1,y1 右下の座標がx2,y2の場合は・・・
