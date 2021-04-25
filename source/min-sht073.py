@@ -78,6 +78,7 @@
 
 #todo900 BGMの作成(無理そう.........)
 #実装完了済み！
+#todo91a 美咲フォントを使用した日本語テキスト表示関数の実装→コード変換表の作成とフォント画像ファイルの作成終了 2021 04/25→表示関数の実装に入ります→
 
 from random import randint
 from random import random
