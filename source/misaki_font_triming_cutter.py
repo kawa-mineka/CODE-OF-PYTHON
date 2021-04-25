@@ -80,6 +80,10 @@ cv2.imshow('font__003c', img3c)
 
 x1,y1 = 512,768
 x2,y2 = 752,1024
+img4c = img[y1:y2, x1:x2]
+cv2.imwrite('assets/fonts/k8x12s_jisx0208___004c.png',img4c)
+cv2.imshow('font__004c', img4c)
+
 #-----------------------------------wait
 cv2.waitKey(0)
 cv2.destroyAllWindows()
