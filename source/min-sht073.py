@@ -2420,6 +2420,20 @@ class App:
                [10,   3*3,      1.3,     2.5,      3,       1     ],
           ]
           
+          #    [レベル,連射数 ,スピード ,攻撃力 ,1-2-3-5way?,加速度]
+          self.sub_weapon_homing_missile_level_data_list = [
+               [ 1,     4,      0.7,     0.2,      1,       1     ],
+               [ 2,     4,      0.9,     0.3,      1,       1     ],
+               [ 3,     4,      1.0,     0.4,      1,       1     ],
+               [ 4,   4*2,      0.9,     0.3,      2,       1     ],
+               [ 5,   4*2,      1.0,     0.4,      2,       1     ],
+               [ 6,   4*2,      1.1,     0.5,      2,       1     ],
+               [ 7,   4*3,      0.8,     0.2,      3,       1     ],
+               [ 8,   4*3,      0.9,     0.3,      3,       1     ],
+               [ 9,   4*3,      1.1,     0.4,      3,       1     ],
+               [10,   4*4,      1.8,     0.3,      3,       1     ],
+          ]
+          
           #各機体のデータリスト
           #
           #
@@ -4342,7 +4356,7 @@ class App:
          self.missile_rapid_of_fire = 1     #自機ミサイルの連射数  初期値は1連射
          
          self.select_sub_weapon_id = 0       #現在使用しているサブウェポンのIDナンバー -1だと何も所有していない状態
-         self.sub_weapon_list = [1,1,1,1,1]   #どのサブウェポンを所持しているかのリスト(インデックスオフセット値)
+         self.sub_weapon_list = [10,1,1,10,1]   #どのサブウェポンを所持しているかのリスト(インデックスオフセット値)
                                               #0=テイルショット 1=ペネトレートロケット 2=サーチレーザー 3=ホーミングミサイル 4=ショックバンバー
          self.star_scroll_speed = 1           #背景の流れる星のスクロールスピード 1=通常スピード 0.5なら半分のスピードとなります
          self.pow_item_bounce_num = 6         #パワーアップアイテムが画面の左端で跳ね返って戻ってくる回数
@@ -5153,22 +5167,26 @@ class App:
                   self.missile.append(new_missile)#サーチレーザー育成
 
               self.count_missile_type(7,7,7,7) #ミサイルタイプ7(ホーミングミサイル）がいくつ存在するのか調べる
-              if self.type_check_quantity <= (self.sub_weapon_list[HOMING_MISSILE] * 4) - 4 and self.select_sub_weapon_id == HOMING_MISSILE and pyxel.frame_count % 8 == 0: #ホーミングミサイルの個数が1以下なら発射する！！！
+              if self.type_check_quantity <= self.sub_weapon_homing_missile_level_data_list[self.sub_weapon_list[HOMING_MISSILE]-1][1] - 4 and self.select_sub_weapon_id == HOMING_MISSILE and pyxel.frame_count % 8 == 0: #ホーミングミサイルの個数が1以下なら発射する！！！
+                  level = self.sub_weapon_list[HOMING_MISSILE] #現在のホーミングミサイルのレベルを取得する
+                  #ホーミングミサイルのレベルデータリストから現時点のレベルに応じたデータを取得する
+                  speed = self.sub_weapon_homing_missile_level_data_list[level - 1][2] #スピード
+                  power = self.sub_weapon_homing_missile_level_data_list[level - 1][3] #攻撃力
                   new_missile = Missile()
-                  new_missile.update(7,self.my_x - 4,self.my_y,   -2,1,   0.5,1,   0,0,   0,0,   8,8,      200,60,   2,1)
+                  new_missile.update(7,self.my_x - 4,self.my_y,   -2*speed,1*speed,   power,1,   0,0,   0,0,   8,8,      200,60,   2,1)
                   self.missile.append(new_missile)#ホーミングミサイル育成
 
                   new_missile = Missile()
-                  new_missile.update(7,self.my_x - 4,self.my_y,   -2,-1,   0.5,1,   0,0,   0,0,   8,8,      200,60,   2,1)
+                  new_missile.update(7,self.my_x - 4,self.my_y,   -2*speed,-1*speed,   power,1,   0,0,   0,0,   8,8,      200,60,   2,1)
                   self.missile.append(new_missile)#ホーミングミサイル育成
 
 
                   new_missile = Missile()
-                  new_missile.update(7,self.my_x + 4,self.my_y + 2,   0,2,   0.5,1,   0,0,   0,0,   8,8,      200,60,   2,1)
+                  new_missile.update(7,self.my_x + 4,self.my_y + 2,   0*speed,2*speed,   power,1,   0,0,   0,0,   8,8,      200,60,   2,1)
                   self.missile.append(new_missile)#ホーミングミサイル育成
 
                   new_missile = Missile()
-                  new_missile.update(7,self.my_x + 4,self.my_y - 2,   0,-2,   0.5,1,   0,0,   0,0,   8,8,      200,60,   2,1)
+                  new_missile.update(7,self.my_x + 4,self.my_y - 2,   0*speed,-2*speed,   power,1,   0,0,   0,0,   8,8,      200,60,   2,1)
                   self.missile.append(new_missile)#ホーミングミサイル育成
 
               if len(self.shots) < (self.shot_rapid_of_fire + (self.shot_level) * 2):#バルカンショットの発射
