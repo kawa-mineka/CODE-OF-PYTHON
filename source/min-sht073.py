@@ -266,6 +266,8 @@ LIST_RETURN_BULLET_START_LOOP     =14 #撃ち返しを始めてくるループ�
 LIST_RETURN_BULLET_START_STAGE    =15 #撃ち返しを始めてくるステージ数
 LIST_RANK_DOWN_NEED_DAMAGE        =16 #1ランクダウンに必要なダメージ数
 LIST_LOOP_POWER_CONTROL           =17 #次のループに移る時のパワーアップ調整関連の動作の仕方とか
+LIST_ITEM_RANGE_OF_ATTRACTION     =18 #アイテムを引き寄せる範囲
+LIST_ITEM_BOUNCE_NUM              =19 #アイテムの跳ね返り回数(左端に当たったら何回まで跳ね返るかの数値)
 
 #難易度名の定数定義
 GAME_VERY_EASY = 0
@@ -2288,15 +2290,15 @@ class App:
           #難易度ごとの各種設定数値のリスト
           #フォーマット
           #[  s=start b=bonusの略です
-          # [難易度名,sショットb,sミサイルb,sシールドb,クロー初期値,ステージ後に回復するシールド値,撃ち返し弾の有無,       スコア倍率, ランク上昇frame,sランク数,被弾後無敵時間,アイテム取得後無敵時間,アイテム敵弾消去,ランク限界,撃ち返し開始loop,撃ち返し開始stage,1ランクダウンに必要なダメージ数,ループ時の動作]
+          # [難易度名,sショットb,sミサイルb,sシールドb,クロー初期値,ステージ後に回復するシールド値,撃ち返し弾の有無,       スコア倍率, ランク上昇frame,sランク数,被弾後無敵時間,アイテム取得後無敵時間,アイテム敵弾消去,ランク限界,撃ち返し開始loop,撃ち返し開始stage,1ランクダウンに必要なダメージ数,ループ時の動作,         アイテムが接近開始してくる距離, アイテムバウンド数        ]
           #]
           self.game_difficulty_list = [
-              [GAME_VERY_EASY,6,6,6,                THREE_CLAW, REPAIR_SHIELD3,             RETURN_BULLET_NONE,     1.0,       3000,           0,      60,          10,                  1,              50,       2,               6,                1,                        LOOP_POWER_CONTINUE           ], 
-              [GAME_EASY     ,3,3,3,                ONE_CLAW,   REPAIR_SHIELD2,             RETURN_BULLET_NONE,     1.0,       2400,           0,      45,          5,                   1,              50,       2,               4,                1,                        LOOP_ONE_LEVEL_DOWN     ],
-              [GAME_NORMAL   ,0,0,0,                NO_CLAW,    REPAIR_SHIELD2,             RETURN_BULLET_AIM,      1.0,       2000,           0,      30,          3,                   0,              60,       2,               1,                2,                        LOOP_TWO_LEVEL_DOWN     ],
-              [GAME_HARD     ,0,0,0,                NO_CLAW,    REPAIR_SHIELD1,             RETURN_BULLET_AIM,      1.0,       1800,          10,      29,          2,                   0,              70,       1,               8,                2,                        LOOP_THREE_LEVEL_DOWN   ],
-              [GAME_VERY_HARD,0,0,0,                NO_CLAW,    REPAIR_SHIELD1,             RETURN_BULLET_DELAY_AIM,2.0,       1200,          20,      26,          0,                   0,              80,       1,               6,                3,                        LOOP_FIVE_LEVEL_DOWN    ],
-              [GAME_INSAME   ,0,0,0,                NO_CLAW,    REPAIR_SHIELD0,             RETURN_BULLET_DELAY_AIM,3.0,        900,          40,      23,          0,                   0,              99,       1,               2,                4,                        LOOP_ALL_RESET          ],
+              [GAME_VERY_EASY,6,6,6,                THREE_CLAW, REPAIR_SHIELD3,             RETURN_BULLET_NONE,     1.0,       3000,           0,      60,          10,                  1,              50,       2,               6,                1,                        LOOP_POWER_CONTINUE,   1600,                         8], 
+              [GAME_EASY     ,3,3,3,                ONE_CLAW,   REPAIR_SHIELD2,             RETURN_BULLET_NONE,     1.0,       2400,           0,      45,          5,                   1,              50,       2,               4,                1,                        LOOP_ONE_LEVEL_DOWN,   900,                          7],
+              [GAME_NORMAL   ,0,0,0,                NO_CLAW,    REPAIR_SHIELD2,             RETURN_BULLET_AIM,      1.0,       2000,           0,      30,          3,                   0,              60,       2,               1,                2,                        LOOP_TWO_LEVEL_DOWN,   800,                          6],
+              [GAME_HARD     ,0,0,0,                NO_CLAW,    REPAIR_SHIELD1,             RETURN_BULLET_AIM,      1.0,       1800,          10,      29,          2,                   0,              70,       1,               8,                2,                        LOOP_THREE_LEVEL_DOWN, 700,                          5],
+              [GAME_VERY_HARD,0,0,0,                NO_CLAW,    REPAIR_SHIELD1,             RETURN_BULLET_DELAY_AIM,2.0,       1200,          20,      26,          0,                   0,              80,       1,               6,                3,                        LOOP_FIVE_LEVEL_DOWN,  600,                          4],
+              [GAME_INSAME   ,0,0,0,                NO_CLAW,    REPAIR_SHIELD0,             RETURN_BULLET_DELAY_AIM,3.0,        900,          40,      23,          0,                   0,              99,       1,               2,                3,                        LOOP_ALL_RESET,        500,                          3],
               ]
           #ランク値による各種設定数値のリスト
           #フォーマット
@@ -3799,6 +3801,9 @@ class App:
          self.return_bullet_start_loop = self.game_difficulty_list[self.game_difficulty][LIST_RETURN_BULLET_START_LOOP]     #撃ち返しを始めてくるループ数をリストを参照し難易度に合わせて取得、変数に代入する
          self.return_bullet_start_stage= self.game_difficulty_list[self.game_difficulty][LIST_RETURN_BULLET_START_STAGE]    #撃ち返しを始めてくるステージ数をリストを参照し難易度に合わせて取得、変数に代入する
          self.rank_down_need_damage    = self.game_difficulty_list[self.game_difficulty][LIST_RANK_DOWN_NEED_DAMAGE]        #1ランクダウンに必要なダメージ数をリストを参照し難易度に合わせて取得、変数に代入する
+         self.loop_power_control       = self.game_difficulty_list[self.game_difficulty][LIST_LOOP_POWER_CONTROL]           #次のループに移る時のパワーアップ調整関連の動作の仕方をリストを参照し難易度に合わせて取得、変数に代入する
+         self.item_range_of_attraction = self.game_difficulty_list[self.game_difficulty][LIST_ITEM_RANGE_OF_ATTRACTION]     #アイテムを引き寄せる範囲をリストを参照し難易度に合わせて取得、変数に代入する
+         self.pow_item_bounce_num      = self.game_difficulty_list[self.game_difficulty][LIST_ITEM_BOUNCE_NUM]              #アイテムの跳ね返り回数をリストを参照し難易度に合わせて取得、変数に代入する
      
      #ステージデータリストから各ステージの設定データを取り出す
      def get_stage_data(self):
@@ -4356,10 +4361,10 @@ class App:
          self.missile_rapid_of_fire = 1     #自機ミサイルの連射数  初期値は1連射
          
          self.select_sub_weapon_id = 0       #現在使用しているサブウェポンのIDナンバー -1だと何も所有していない状態
-         self.sub_weapon_list = [10,1,1,10,1]   #どのサブウェポンを所持しているかのリスト(インデックスオフセット値)
+         self.sub_weapon_list = [10,10,10,10,10]   #どのサブウェポンを所持しているかのリスト(インデックスオフセット値)
                                               #0=テイルショット 1=ペネトレートロケット 2=サーチレーザー 3=ホーミングミサイル 4=ショックバンバー
          self.star_scroll_speed = 1           #背景の流れる星のスクロールスピード 1=通常スピード 0.5なら半分のスピードとなります
-         self.pow_item_bounce_num = 6         #パワーアップアイテムが画面の左端で跳ね返って戻ってくる回数
+     #     self.pow_item_bounce_num = 6         #パワーアップアイテムが画面の左端で跳ね返って戻ってくる回数
                                               #初期値は6でアップグレードすると増えていくです
 
          self.playtime_frame_counter    = 0 #プレイ時間(フレームのカウンター) 60フレームで＝1秒         
@@ -8441,7 +8446,7 @@ class App:
                         self.obtain_item[i].bounce -= 1 #跳ね返る回数を1減らす
                    #dに自機とアイテムの距離を計算した値を代入！ 
                    d = abs(math.sqrt((self.obtain_item[i].posx - self.my_x) * (self.obtain_item[i].posx - self.my_x) + (self.obtain_item[i].posy - self.my_y) * (self.obtain_item[i].posy - self.my_y)))
-                   if d <= 800: #アイテムと自機との距離が800以内の場合アイテムのx,y座標を自機の方向へ向かうよう補正を入れる
+                   if d <= self.item_range_of_attraction: #アイテムと自機との距離がitem_range_of_attraction以内の場合アイテムのx,y座標を自機の方向へ向かう様に補正を入れる
                         self.obtain_item[i].posy += ((self.my_y >= self.obtain_item[i].posy) - (self.my_y <= self.obtain_item[i].posy)) / (d / 5)
                         self.obtain_item[i].posx += ((self.my_x >= self.obtain_item[i].posx) - (self.my_x <= self.obtain_item[i].posx)) / (d / 5)
                
