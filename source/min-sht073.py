@@ -80,7 +80,7 @@
 #実装完了済み！
 #todo91a 美咲フォントを使用した日本語テキスト表示関数の実装→コード変換表の作成とフォント画像ファイルの作成終了 2021 04/25→表示関数の実装に入ります
 #todo91b 美咲フォントを使用した日本語テキスト表示関数の実装→実装完了と言いたいけど半角文字や特定の文字で文字化けする模様・・・orz 2021 04/25
-
+#todo    難易度によるアイテム引き寄せ範囲の変化、アイテムのバウンド回数の変化の実装 2021 04/27
 
 from random import randint
 from random import random
@@ -207,8 +207,8 @@ WARRIOR            = 7 #ウォーリア 勇士
 SWORDMAN           = 8 #ソードマン 剣士
 HERO               = 9 #ヒーロー 英雄
 SWASHBUCKLER       =10 #スワッシュバックラー 暴れ者
-MYRMIDON           =11 #マーミダン 忠臣
 CHAMPION           =12 #チャンピオン 勝者
+MYRMIDON           =11 #マーミダン 忠臣
 SUPERHERO          =13 #スーパーヒーロー 勇者
 PALADIN            =14 #パラディン 親衛隊騎士
 LOAD               =15 #ロード 君主
@@ -337,6 +337,20 @@ FADE_OUT = 1
 IMG0 = 0 #イメージバンク0
 IMG1 = 1 #イメージバンク1
 IMG2 = 2 #イメージバンク2
+
+#パッド入力でのリプレイデータ記録に使用する定数定義
+PAD_UP      =    1 #0b 0000 0000 0000 0001
+PAD_DOWN    =    2 #0b 0000 0000 0000 0010
+PAD_LEFT    =    4 #0b 0000 0000 0000 0100
+PAD_RIGHT   =    8 #0b 0000 0000 0000 1000
+PAD_A       =   16 #0b 0000 0000 0001 0000
+PAD_B       =   32 #0b 0000 0000 0010 0000
+PAD_X       =   64 #0b 0000 0000 0100 0000
+PAD_Y       =  128 #0b 0000 0000 1000 0000
+PAD_SELECT  =  256 #0b 0000 0001 0000 0000
+PAD_START   =  512 #0b 0000 0010 0000 0000
+PAD_LEFT_S  = 1024 #0b 0000 0100 0000 0000
+PAD_RIGHT_S = 2048 #0b 0000 1000 0000 0000
 
 #パーティクルの種類
 PARTICLE_DOT = 0                 #パーティクルタイプ 1~2ドット描画タイプ(破壊後のエフェクト)
@@ -3830,6 +3844,17 @@ class App:
           elif self.stage_number == 2:
                pygame.mixer.music.load("assets/music/BGM056-081012-kakeroginnnogennya.wav")  #STAGE2 BGMファイルの読み込み
   
+     #0~9の範囲の乱数関数
+     def rnd0_9(self):
+          num = self.rnd0_9_num
+          return(self,num)
+
+     #0~99の範囲の乱数関数
+     def rnd0_99(self):
+          num = self.rnd0_99_num
+          return(self,num)
+     
+
      ################################################################ボツ関数群・・・・・・(涙)##########################################################
      #外積を計算する関数 self.cpに結果が入る(バグありなので使えないっぽい・・・この関数)
      def cross_product_calc_function(self,ax,ay,bx,by,cx,cy):
@@ -3912,6 +3937,8 @@ class App:
           self.stars = []                           #タイトル表示時も背景の星を流したいのでリストをここで初期化してやります
           self.star_scroll_speed = 1                #背景の流れる星のスクロールスピード 1=通常スピード 0.5なら半分のスピードとなります
           self.window = []                          #タイトル表示時もメッセージウィンドウを使いたいのでリストをここで初期化してあげます
+          
+          self.replay_input_data = []     #リプレイ保存用のパッド入力リストを初期化します
 
           self.bg_cls_color = 0           #BGをCLS(クリアスクリーン)するときの色の指定(通常は0=黒色です)ゲーム時に初期値から変更されることがあるのでここで初期化する
 
@@ -4331,6 +4358,7 @@ class App:
                     self.cursor_max_item = self.cursor_pre_max_item           #
                     self.cursor_decision_item = -1
                     self.cursor_pre_decision_item = -1
+     
      #!ゲームスタート時の初期化#########################################
      def update_game_start_init(self):
          self.score = 0                 #スコア
@@ -4362,16 +4390,16 @@ class App:
          
          self.select_sub_weapon_id = 0       #現在使用しているサブウェポンのIDナンバー -1だと何も所有していない状態
          self.sub_weapon_list = [10,10,10,10,10]   #どのサブウェポンを所持しているかのリスト(インデックスオフセット値)
-                                              #0=テイルショット 1=ペネトレートロケット 2=サーチレーザー 3=ホーミングミサイル 4=ショックバンバー
+                                                   #0=テイルショット 1=ペネトレートロケット 2=サーチレーザー 3=ホーミングミサイル 4=ショックバンバー
          self.star_scroll_speed = 1           #背景の流れる星のスクロールスピード 1=通常スピード 0.5なら半分のスピードとなります
-     #     self.pow_item_bounce_num = 6         #パワーアップアイテムが画面の左端で跳ね返って戻ってくる回数
+         #self.pow_item_bounce_num = 6         #パワーアップアイテムが画面の左端で跳ね返って戻ってくる回数
                                               #初期値は6でアップグレードすると増えていくです
 
          self.playtime_frame_counter    = 0 #プレイ時間(フレームのカウンター) 60フレームで＝1秒         
          self.one_game_playtime_seconds = 0 #1プレイでのゲームプレイ時間(秒単位)
          
          self.game_play_count = 0 #ゲーム開始から経過したフレームカウント数(1フレームは60分の1秒)1面～今プレイしている面までのトータルフレームカウント数です
-
+         self.rnd09_num = 0       #乱数0~9ルーレットの初期化
          self.claw_type = 0               # クローのタイプ 
                                           # 0=ローリングクロー 1=トレースクロー 2=フィックスクロー 3=リバースクロー
          self.claw_number = 0             # クローの装備数 0=装備無し 1=1機 2=2機 3=3機 4=4機
@@ -4425,6 +4453,11 @@ class App:
          self.my_y = 50    #自機のy座標の初期値
          self.my_vx = 1    #自機のx方向の移動量
          self.my_vy = 0    #自機のy方向の移動量
+
+         self.pad_data = 0b0000000000000000  #パッド入力用ビットパターンデータを初期化します
+                                             #各ビットの詳細
+                                             # 上から 0,0,0,0, RS,LS,START,SELECT,   BY,BX,BB,BA, R,L,D,U
+                                             # U=上 D=下 L=左 R=右 BA~BY=各ボタン START,SELECT=スタート,セレクト LS,RS=左ショルダー,右ショルダーボタン
          
          #各ステージに応じた数値をリストから取得する
          self.get_stage_data() #ステージデータリストからステージごとに設定された数値を取り出す関数の呼び出し
@@ -4441,6 +4474,9 @@ class App:
          self.auto_move_mode = 0                           #自動移動モードのフラグ
                                                            #0 = パッドやキーボード入力によって移動 
                                                            #1 = イベントによる自動移動モードとなり設定された位置まで自動で移動して行きます
+                                                           #2 = パッドやキーボード入力によって移動し、さらにリプレイデータも記録します
+                                                           #4 = リプレイデータを読み出しそのデータで自動移動しリプレイデータを再現します
+
          self.auto_move_mode_x,self.auto_move_mode_y = 0,0 #自動移動モードがonの時はこの座標に向かって毎フレームごと自動で移動して行きます
          self.auto_move_mode_complete = 0                  #自動移動モードで目標座標まで移動したらこのフラグを立てます
 
@@ -4945,20 +4981,27 @@ class App:
                if pyxel.btn(pyxel.KEY_LEFT) or pyxel.btn(pyxel.GAMEPAD_1_LEFT) or pyxel.btn(pyxel.GAMEPAD_2_LEFT):
                     self.my_moved_flag = 1#自機移動フラグOn
                     self.my_vx = -1
+                    self.pad_data += PAD_LEFT
+
                # 右入力されたら  ｘ座標を  my_speedの数値だけ増やす
                if pyxel.btn(pyxel.KEY_RIGHT) or pyxel.btn(pyxel.GAMEPAD_1_RIGHT) or pyxel.btn(pyxel.GAMEPAD_2_RIGHT):
                     self.my_moved_flag = 1#自機移動フラグOn
                     self.my_vx = 1
+                    self.pad_data += PAD_RIGHT
+
                # 上入力されたら  y座標を  my_speedの数値だけ減らす
                if pyxel.btn(pyxel.KEY_UP) or pyxel.btn(pyxel.GAMEPAD_1_UP) or pyxel.btn(pyxel.GAMEPAD_2_UP):
                     self.my_rolling_flag = 2
                     self.my_moved_flag = 1#自機移動フラグOn
                     self.my_vy = -1
+                    self.pad_data += PAD_UP
+
                # 下入力されたら  y座標を  my_speedの数値だけ増やす
                if pyxel.btn(pyxel.KEY_DOWN) or pyxel.btn(pyxel.GAMEPAD_1_DOWN) or pyxel.btn(pyxel.GAMEPAD_2_DOWN):
                     self.my_rolling_flag = 1
                     self.my_moved_flag = 1#自機移動フラグOn
                     self.my_vy = 1
+                    self.pad_data += PAD_DOWN
           
                self.my_x += self.my_vx * self.my_speed #自機の移動量(vx,vy)と自機の速度(speed)を使って自機の座標を更新する（移動！）
                self.my_y += self.my_vy * self.my_speed
@@ -5027,10 +5070,11 @@ class App:
                self.level_up_my_missile() #自機ミサイルの経験値を調べ可能な場合はレベルアップさせる関数を呼び出す
                if self.missile_level > 2:
                     self.missile_level = 0
-     
+
      #キーボードの3かゲームパッドの「SELECT」ボタンが入力されたらが押されたらスピード変化させる    KEY 3  GAMEPAD SELECT
      def update_change_speed(self):
           if pyxel.btnp(pyxel.KEY_3) or pyxel.btnp(pyxel.GAMEPAD_1_SELECT) or pyxel.btnp(pyxel.GAMEPAD_2_SELECT):
+               self.pad_data += PAD_SELECT #パッド入力データのSELECTボタンの情報ビットを立てる
                if self.my_speed == 1:
                     self.my_speed = 1.5
                elif self.my_speed == 1.5:
@@ -5040,7 +5084,8 @@ class App:
      
      #スペースキーかゲームバットＡが押されたらショットを発射する
      def update_fire_shot(self):
-          if pyxel.btn(pyxel.KEY_SPACE) or pyxel.btn(pyxel.GAMEPAD_1_A) or pyxel.btn(pyxel.GAMEPAD_2_A):     
+          if pyxel.btn(pyxel.KEY_SPACE) or pyxel.btn(pyxel.GAMEPAD_1_A) or pyxel.btn(pyxel.GAMEPAD_2_A):
+              self.pad_data += PAD_A #コントロールパッド入力記録にAボタンを押した情報ビットを立てて記録
               if self.shot_level == SHOT_LV7_WAVE_CUTTER_LV1:#ウェーブカッターLv1発射
                    if len(self.shots) < self.shot_rapid_of_fire:
                    #if self.shot_type_count(self.shot_level) < 3: 
@@ -5248,6 +5293,7 @@ class App:
      #スペースキーかゲームバットＢボタンが押されたらミサイルを発射する
      def update_fire_missile(self): 
           if pyxel.btn(pyxel.KEY_SPACE) or pyxel.btn(pyxel.GAMEPAD_1_B) or pyxel.btn(pyxel.GAMEPAD_2_B):
+              self.pad_data += PAD_B #コントロールパッド入力記録にBボタンを押した情報ビットを立てて記録
               if (pyxel.frame_count % 10) == 0:
                    self.count_missile_type(0,1,2,3)#ミサイルタイプ0,1,2,3の合計数を数える
                    if self.type_check_quantity < (self.missile_level + 1) * self.missile_rapid_of_fire:  #初期段階では２発以上は出せないようにする
@@ -8392,6 +8438,7 @@ class App:
      #ゲームパッドのYが推されたらサブウェポンを切り替える                     GAMEPAD Y
      def update_change_sub_weapon(self):
           if pyxel.btnp(pyxel.GAMEPAD_1_Y) or pyxel.btnp(pyxel.GAMEPAD_2_Y) and self.select_sub_weapon_id != -1:#サブウェポン切り替えボタンが押された＆サブウェポンを一つでも所維持しているのなら以下の命令を実行する
+               self.pad_data += PAD_Y #パッド入力データのYボタンの情報ビットを立てる
                for __i in range(5):#5回繰り返す
                    self.select_sub_weapon_id += 1#サブウェポンIDを増やして切り替えていく
                    if self.select_sub_weapon_id >= 5:#idナンバーが5以上になったら
@@ -8540,40 +8587,44 @@ class App:
                     elif self.obtain_item[i].item_type == ITEM_TAIL_SHOT_POWER_UP: #テイルショットパワーアップの処理
                          pyxel.play(0,0)              #パワーアップアイテムゲットの音を鳴らすのだ
                          del self.obtain_item[i]      #インスタンスを破棄する(アイテム消滅)
-                         self.sub_weapon_list[TAIL_SHOT] += 1  #サブウェポンリスト内のテイルショットの所持数を１増やす
-                         self.sub_weapon_list[TAIL_SHOT] = self.sub_weapon_list[TAIL_SHOT] % (SUB_WEAPON_LEVEL_MAXIMUM + 1) #サブウェポンのレベルを最大値を超えないよう補正します
+                         if self.sub_weapon_list[TAIL_SHOT] < SUB_WEAPON_LEVEL_MAXIMUM:#テイルショットのレベルがサブウェポンのレベル最大値を超えていないのならば
+                              self.sub_weapon_list[TAIL_SHOT] += 1  #サブウェポンリスト内のテイルショットの所持数を１増やす
                          if self.select_sub_weapon_id == -1: #もしサブウェポンを何も所持していない状態でアイテムを取ったのなら・・・
                               self.select_sub_weapon_id = TAIL_SHOT #強制的にテイルショットを選択させる
                     
+
                     elif self.obtain_item[i].item_type == ITEM_PENETRATE_ROCKET_POWER_UP: #ペネトレートロケットパワーアップの処理
                          pyxel.play(0,0)              #パワーアップアイテムゲットの音を鳴らすのだ
                          del self.obtain_item[i]      #インスタンスを破棄する(アイテム消滅)
-                         self.sub_weapon_list[PENETRATE_ROCKET] += 1  #サブウェポンリスト内のペネトレートロケットの所持数を１増やす
-                         self.sub_weapon_list[PENETRATE_ROCKET] = self.sub_weapon_list[PENETRATE_ROCKET] % (SUB_WEAPON_LEVEL_MAXIMUM + 1) #サブウェポンのレベルを最大値を超えないよう補正します
+                         if self.sub_weapon_list[PENETRATE_ROCKET] < SUB_WEAPON_LEVEL_MAXIMUM:#ペネトレートロケットのレベルがサブウェポンのレベル最大値を超えていないのならば
+                              self.sub_weapon_list[PENETRATE_ROCKET] += 1  #サブウェポンリスト内のペネトレートロケットの所持数を１増やす
                          if self.select_sub_weapon_id == -1: #もしサブウェポンを何も所持していない状態でアイテムを取ったのなら・・・
                               self.select_sub_weapon_id = PENETRATE_ROCKET #強制的にペネトレートロケットを選択させる
                     
+
                     elif self.obtain_item[i].item_type == ITEM_SEARCH_LASER_POWER_UP: #サーチレーザーパワーアップの処理
                          pyxel.play(0,0)              #パワーアップアイテムゲットの音を鳴らすのだ
                          del self.obtain_item[i]      #インスタンスを破棄する(アイテム消滅)
-                         self.sub_weapon_list[SEARCH_LASER] += 1  #サブウェポンリスト内のサーチレーザーの所持数を１増やす
-                         self.sub_weapon_list[SEARCH_LASER] = self.sub_weapon_list[SEARCH_LASER] % (SUB_WEAPON_LEVEL_MAXIMUM + 1) #サブウェポンのレベルを最大値を超えないよう補正します
+                         if self.sub_weapon_list[SEARCH_LASER] < SUB_WEAPON_LEVEL_MAXIMUM:#ーチレーザーのレベルがサブウェポンのレベル最大値を超えていないのならば
+                              self.sub_weapon_list[SEARCH_LASER] += 1  #サブウェポンリスト内のサーチレーザーの所持数を１増やす
                          if self.select_sub_weapon_id == -1: #もしサブウェポンを何も所持していない状態でアイテムを取ったのなら・・・
                               self.select_sub_weapon_id = SEARCH_LASER #強制的にサーチレーザーを選択させる
                     
+
                     elif self.obtain_item[i].item_type == ITEM_HOMING_MISSILE_POWER_UP: #ホーミングミサイルパワーアップの処理
                          pyxel.play(0,0)              #パワーアップアイテムゲットの音を鳴らすのだ
                          del self.obtain_item[i]      #インスタンスを破棄する(アイテム消滅)
-                         self.sub_weapon_list[HOMING_MISSILE] += 1  #サブウェポンリスト内のホーミングミサイルの所持数を１増やす
-                         self.sub_weapon_list[HOMING_MISSILE] = self.sub_weapon_list[HOMING_MISSILE] % (SUB_WEAPON_LEVEL_MAXIMUM + 1) #サブウェポンのレベルを最大値を超えないよう補正します
+                         if self.sub_weapon_list[HOMING_MISSILE] < SUB_WEAPON_LEVEL_MAXIMUM:#ホーミングミサイルのレベルがサブウェポンのレベル最大値を超えていないのならば
+                              self.sub_weapon_list[HOMING_MISSILE] += 1  #サブウェポンリスト内のホーミングミサイルの所持数を１増やす
                          if self.select_sub_weapon_id == -1: #もしサブウェポンを何も所持していない状態でアイテムを取ったのなら・・・
                               self.select_sub_weapon_id = HOMING_MISSILE #強制的にホーミングミサイルを選択させる
                     
+
                     elif self.obtain_item[i].item_type == ITEM_SHOCK_BUMPER_POWER_UP: #ショックバンバーパワーアップの処理
                          pyxel.play(0,0)              #パワーアップアイテムゲットの音を鳴らすのだ
                          del self.obtain_item[i]      #インスタンスを破棄する(アイテム消滅)
-                         self.sub_weapon_list[SHOCK_BUMPER] += 1  #サブウェポンリスト内のショックバンバーの所持数を１増やす
-                         self.sub_weapon_list[SHOCK_BUMPER] = self.sub_weapon_list[SHOCK_BUMPER] % (SUB_WEAPON_LEVEL_MAXIMUM + 1) #サブウェポンのレベルを最大値を超えないよう補正します
+                         if self.sub_weapon_list[SHOCK_BUMPER] < SUB_WEAPON_LEVEL_MAXIMUM:#ショックバンバーのレベルがサブウェポンのレベル最大値を超えていないのならば
+                              self.sub_weapon_list[SHOCK_BUMPER] += 1  #サブウェポンリスト内のショックバンバーの所持数を１増やす
                          if self.select_sub_weapon_id == -1: #もしサブウェポンを何も所持していない状態でアイテムを取ったのなら・・・
                               self.select_sub_weapon_id = SHOCK_BUMPER #強制的にショックバンバーを選択させる
      
@@ -8886,6 +8937,19 @@ class App:
           
           if pyxel.btnp(pyxel.KEY_SPACE) or pyxel.btnp(pyxel.GAMEPAD_1_A) or pyxel.btnp(pyxel.GAMEPAD_2_A) or pyxel.btnp(pyxel.GAMEPAD_1_B) or pyxel.btnp(pyxel.GAMEPAD_2_B):
                self.cursor_decision_item = self.cursor_item #ボタンが押されて決定されたら、いま指示しているアイテムナンバーをcursor_decision_itemに代入！
+     
+     #リプレイデータの記録
+     def update_record_replay_data(self):
+          self.replay_input_data.append(self.pad_data) #リプレイデータリストにパッド入力データを記録追加します
+          self.pad_data = 0b0000000000000000           #次のフレーム時の記録のためにデータを初期化してあげます
+     
+     #乱数0_9関数(0~9)の更新
+     def update_rnd0_9(self):
+          self.rnd0_9_num  = pyxel.frame_count %  10 #フレームカウント数を 10で割った余りが変数rnd0_9_numに入ります(0~9の数値が1フレームごとに変化する)
+     
+     #乱数099関数(0~999)の更新
+     def update_rnd0_99(self):
+          self.rnd0_99_num = pyxel.frame_count % 100 #フレームカウント数を100で割った余りが変数rnd0_99_numに入ります(0~99の数値が1フレームごとに変化する)
 
      #!###############################################################################################################################
      #!################################################################################################################################
@@ -9775,6 +9839,40 @@ class App:
 
           #ランクの表示
           pyxel.text(160-16,73,"RA" + str(self.rank), 7)
+          
+          #リプレイデータのサイズ表示
+          num = "{:>8}".format(int(len(self.replay_input_data)))
+          pyxel.text(40,120-26,num,8)
+
+          #コントロールパッド操作データの表示
+          replay_count = len(self.replay_input_data)
+          input_pad_data = bin(self.replay_input_data[replay_count-1]) #パッド入力データを2進数に変換します
+          input_pad_data = input_pad_data.lstrip("0b")               #文字列の頭からバイナリー文字の"ob"を取り除きます lstripで先頭から取り除くって判りにくい・・・lstripのlってなんやねん・・・
+          input_pad_data = "{:0>12}".format(input_pad_data)          #文字列を整形します 0ゼロ埋め >右寄せ 12桁          
+          pyxel.text(0,120-26,input_pad_data, 10)
+           
+          #コントロールパッド操作データ履歴の表示
+          input_pad_data = bin(self.replay_input_data[replay_count-2])
+          input_pad_data = input_pad_data.lstrip("0b")
+          input_pad_data = "{:0>12}".format(input_pad_data)
+          pyxel.text(0,120-33  ,input_pad_data, 7)
+
+          if replay_count >= 3:
+               input_pad_data = bin(self.replay_input_data[replay_count-3])
+               input_pad_data = input_pad_data.lstrip("0b")
+               input_pad_data = "{:0>12}".format(input_pad_data)
+               pyxel.text(0,120-33-7,input_pad_data, 7)
+          if replay_count >= 4:
+               input_pad_data = bin(self.replay_input_data[replay_count-4])
+               input_pad_data = input_pad_data.lstrip("0b")
+               input_pad_data = "{:0>12}".format(input_pad_data)
+               pyxel.text(0,120-33-14,input_pad_data, 7)
+          if replay_count >= 5:
+               input_pad_data = bin(self.replay_input_data[replay_count-5])
+               input_pad_data = input_pad_data.lstrip("0b")
+               input_pad_data = "{:0>12}".format(input_pad_data)
+               pyxel.text(0,120-33-21,input_pad_data, 7)
+
 
           # 漢字表示テスト
           # self.kanji_text(0,36,"文字列を分割できる関数",7)
@@ -9799,6 +9897,11 @@ class App:
                pyxel.text(72,WINDOW_H - 13,str(self.claw[1].posx),5)
                pyxel.text(72,WINDOW_H - 20,str(self.claw[1].posy),5)
           
+          #乱数0_9ルーレットの表示
+          pyxel.text(80,120-26,str(self.rnd0_9_num),9)
+          #乱数0_99ルーレットの表示
+          pyxel.text(90,120-26,str(self.rnd0_99_num),10)
+
      #BGチップデータ書き換えアニメーション実装のために作ったダミーテスト関数 画面左から2列目の縦1列を取得し、そのＢＧデータを画面左端1列目に表示する
      def draw_dummy_put_bg_xy(self):
           if self.scroll_type == SCROLL_TYPE_8FREEWAY_SCROLL_AND_RASTER: #全方向フリースクロール＋ラスタースクロールの場合
@@ -10214,7 +10317,12 @@ class App:
                #マップチップナンバー書き換えによるアニメーション関連の更新######################################################################
                self.update_bg_rewrite_animation()          #BG書き換えによるアニメーション関数の呼び出し
                # self.update_dummy_bg_animation()          #BG 座標直接指定による書き換えダミーテスト
-               
+               #リプレイデータの記録########################################################################################################
+               self.update_record_replay_data()            #パッド＆キーボード入力によるリプレイデータの記録を行う関数を呼び出します
+               #乱数ルーレットの更新########################################################################################################
+               self.update_rnd0_9()                        #乱数ルーレット( 0~9)の更新
+               self.update_rnd0_99()                       #乱数ルーレット(0~99)の更新
+
           if     self.game_status == SCENE_PLAY\
               or self.game_status == SCENE_BOSS_APPEAR\
               or self.game_status == SCENE_BOSS_BATTLE\
