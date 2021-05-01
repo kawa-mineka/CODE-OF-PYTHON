@@ -82,8 +82,8 @@
 #todo91b 美咲フォントを使用した日本語テキスト表示関数の実装→実装完了と言いたいけど半角文字や特定の文字で文字化けする模様・・・orz 2021 04/25
 #todo    難易度によるアイテム引き寄せ範囲の変化、アイテムのバウンド回数の変化の実装 2021 04/27
 
-from random import randint
-from random import random
+from random import randint   #random.randint(n,m) と呼ぶと、nからm(m自身を含む)までの間の整数が 等しい確率で、ランダムに返される
+from random import random    #random.random() と呼ぶと、0から1の範囲(1は含まない)のランダムな実数が返される
 import math
 
 import pyxel
@@ -3854,6 +3854,9 @@ class App:
           num = self.rnd0_99_num
           return(self,num)
      
+     #線形合同法を使用した乱数関数 (0~65535のランダムな数値がself.rnd_seedに代入される)この乱数の周期は32768
+     def s_rnd(self):
+          self.rnd_seed = (self.rnd_seed * 48828125 + 129) % 65536 #129のように足す数値は絶対に奇数にするように出ないと奇数と偶数の乱数が交互に育成されるようになってしまうからね
 
      ################################################################ボツ関数群・・・・・・(涙)##########################################################
      #外積を計算する関数 self.cpに結果が入る(バグありなので使えないっぽい・・・この関数)
@@ -4458,6 +4461,9 @@ class App:
                                              #各ビットの詳細
                                              # 上から 0,0,0,0, RS,LS,START,SELECT,   BY,BX,BB,BA, R,L,D,U
                                              # U=上 D=下 L=左 R=右 BA~BY=各ボタン START,SELECT=スタート,セレクト LS,RS=左ショルダー,右ショルダーボタン
+         
+         self.rnd_seed = pyxel.frame_count % 256 #線形合同法を使った乱数関数で使用する乱数種を現在のフレーム数とします(0~255の範囲)
+         self.master_rnd_seed = self.rnd_seed    #リプレイデータ記録用として元となる乱数種を保存しておきます
          
          #各ステージに応じた数値をリストから取得する
          self.get_stage_data() #ステージデータリストからステージごとに設定された数値を取り出す関数の呼び出し
@@ -9901,6 +9907,13 @@ class App:
           pyxel.text(80,120-26,str(self.rnd0_9_num),9)
           #乱数0_99ルーレットの表示
           pyxel.text(90,120-26,str(self.rnd0_99_num),10)
+          
+          #線形合同法で最初に使用した元となる乱数種の表示
+          pyxel.text(140,120-35,"SD" + str(self.master_rnd_seed),11)
+          #線形合同法乱数の表示
+          self.s_rnd()#線形合同法による乱数関数の呼び出し
+          rd_num = "{:>6}".format(str(self.rnd_seed))
+          pyxel.text(136,120-29,rd_num,3)
 
      #BGチップデータ書き換えアニメーション実装のために作ったダミーテスト関数 画面左から2列目の縦1列を取得し、そのＢＧデータを画面左端1列目に表示する
      def draw_dummy_put_bg_xy(self):
