@@ -2649,9 +2649,15 @@ class App:
                                                      #将来的には「起動処理中」とか「タイトル表示中」にする予定
           
           #再スタートで初期化してはいけない変数はここ(appクラスの__init__関数)で定義します###################################
-          self.hi_score =  100                      #ハイスコア
-          # self.total_game_playtime_seconds = 0      #トータルゲームプレイ時間 (秒)
-
+          self.hi_score =  100                       #ハイスコア
+          # self.total_game_playtime_seconds = 0     #トータルゲームプレイ時間 (秒)
+          self.backup_replay_data = []               #リプレイデータのバックアップ用リストを初期化します   
+          
+          self.auto_move_mode = 0                          #自動移動モードのフラグ
+                                                           #0 = パッドやキーボード入力によって移動 
+                                                           #1 = イベントによる自動移動モードとなり設定された位置まで自動で移動して行きます
+                                                           #2 = パッドやキーボード入力によって移動し、さらにリプレイデータも記録します
+                                                           #4 = リプレイデータを読み出しそのデータで自動移動しリプレイデータを再現します
           #####IPL関連の変数を初期化#####################################################################################
           self.display_ipl_time = 200              #IPLメッセージを表示する時間 200
           self.text_console_scroll_counter = 0     #テキストコンソールでスクロールして画面上に消えて行った行数
@@ -3863,7 +3869,7 @@ class App:
      def s_rnd(self):
           self.rnd_seed = (self.rnd_seed * 48828125 + 129) % 65536 #129のように足す数値は絶対に奇数にするように！でないと奇数と偶数の乱数が交互に育成されるようになってしまうからね
 
-     #s_rndint(min,max) と呼ぶと、minからmax(max自身を含む)までの間の整数が 等しい確率で、ランダムに返される
+     #s_rndint(min,max) と呼ぶと、minからmax(max自身を含む)までの間の整数が 等しい確率でランダムに返される
      def s_rndint(self,min,max):
           global num   #なんやようわからんが・・・global命令で 「numはグローバル変数やで～」って宣言したら上手くいくようになった、なんでや・・・？？謎
           self.s_rnd()
@@ -4027,7 +4033,7 @@ class App:
                "BOSS MODE",DISP_CENTER,0,7,\
                "HITBOX",DISP_CENTER,0,7,\
                "DIFFICULTY",DISP_CENTER,0,7,\
-               "",DISP_CENTER,0,7,\
+               "REPLAY",DISP_CENTER,0,7,\
                44,52,   0,0,  8*8,7*8,   2,1, 1,1,   0,0,    0,0)
                self.window.append(new_window)                           #「SELECT MENU」を育成する
                
@@ -4036,7 +4042,7 @@ class App:
                self.cursor_y = 64
                self.cursor_item = 0                                     #いま指示しているアイテムナンバーは0の「YES」
                self.cursor_decision_item = -1                           #まだボタンも押されておらず未決定状態なのでdecision_itemは-1
-               self.cursor_max_item = 5                                 #最大項目数は「GAME START」「SELECT STAGE」「SELECT LOOP NUMBER」「BOSS MODE」「HITBOX」「DIFFICULTY」の6項目なので 6-1=5を代入
+               self.cursor_max_item = 6                                 #最大項目数は「GAME START」「SELECT STAGE」「SELECT LOOP NUMBER」「BOSS MODE」「HITBOX」「DIFFICULTY」「REPLAY」の7項目なので 7-1=6を代入
                self.cursor_menu_layer = 0                               #メニューの階層は最初は0にします
                self.game_status = SCENE_TITLE_MENU_SELECT #ゲームステータスを「TITLE_MENU_SELECT」(タイトルでメニューを選択中)」にする
                     
@@ -4045,6 +4051,7 @@ class App:
           if self.cursor_menu_layer == 0: #メニューが0階層目の選択分岐
                if   self.cursor_decision_item == 0:               #GAME STARTが押されたら
                     self.cursor_show = False                      #セレクトカーソルの表示をoffにする
+                    self.auto_move_mode = 0                       #移動モードを通常ゲーム時の移動にする
                     self.game_status = SCENE_GAME_START_INIT      #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
                
                elif self.cursor_decision_item == 1:               #SELECT STAGEが押されたら
@@ -4187,8 +4194,14 @@ class App:
                     self.cursor_max_item = 5                                 #最大項目数は6項目なので 6-1=5を代入
                     
                     self.cursor_menu_layer = 1                               #メニューの階層が増えたので0から1にします
-           
-          
+               elif self.cursor_decision_item == 6:               #REPLAYが押されたら
+                    self.cursor_show = False                      #セレクトカーソルの表示をoffにする
+                    self.auto_move_mode = 4                       #移動モードを「リプレイによる自動移動再生」にする
+                    # if not self.backup_replay_data:               #リプレイデータのバックアップ用リストが空だったらリプレイ再生できないので
+                         # self.auto_move_mode = 0                  #移動モードを通常ゲーム時の移動にする
+                    
+                    self.game_status = SCENE_GAME_START_INIT      #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
+                    
           elif self.cursor_menu_layer == 1: #メニューが1階層目の選択分岐
                if self.cursor_pre_decision_item == 1 and self.cursor_decision_item == 0:
                     #「SELECT STAGE」→「1」
@@ -4227,7 +4240,6 @@ class App:
                     self.cursor_decision_item = -1
                     self.cursor_pre_decision_item = -1
                
-
                elif self.cursor_pre_decision_item == 2 and self.cursor_decision_item == 0:
                     #「SELECT LOOP NUMBER」→「1」
                     self.stage_loop = 1  #ループ数に1週目を代入
@@ -4426,8 +4438,8 @@ class App:
          self.playtime_frame_counter    = 0 #プレイ時間(フレームのカウンター) 60フレームで＝1秒         
          self.one_game_playtime_seconds = 0 #1プレイでのゲームプレイ時間(秒単位)
          
-         self.game_play_count = 0 #ゲーム開始から経過したフレームカウント数(1フレームは60分の1秒)1面～今プレイしている面までのトータルフレームカウント数です
-         self.rnd09_num = 0       #乱数0~9ルーレットの初期化
+         self.game_play_count = 0         #ゲーム開始から経過したフレームカウント数(1フレームは60分の1秒)1面～今プレイしている面までのトータルフレームカウント数です
+         self.rnd09_num = 0               #乱数0~9ルーレットの初期化
          self.claw_type = 0               # クローのタイプ 
                                           # 0=ローリングクロー 1=トレースクロー 2=フィックスクロー 3=リバースクロー
          self.claw_number = 0             # クローの装備数 0=装備無し 1=1機 2=2機 3=3機 4=4機
@@ -4489,6 +4501,8 @@ class App:
          
          self.rnd_seed = pyxel.frame_count % 256 #線形合同法を使った乱数関数で使用する乱数種を現在のフレーム数とします(0~255の範囲)
          self.master_rnd_seed = self.rnd_seed    #リプレイデータ記録用として元となる乱数種を保存しておきます
+
+         self.replay_farame = 0                  #リプレイ時のリストインデックス値を初期化
          
          #各ステージに応じた数値をリストから取得する
          self.get_stage_data() #ステージデータリストからステージごとに設定された数値を取り出す関数の呼び出し
@@ -4502,8 +4516,8 @@ class App:
 
          self.timer_flare_flag = 0             #タイマーフレア（触れると物質の時間経過が遅くなるフレア）を放出するかどうかのフラグ
           
-         self.auto_move_mode = 0                           #自動移動モードのフラグ
-                                                           #0 = パッドやキーボード入力によって移動 
+     #     self.auto_move_mode = 0                           #自動移動モードのフラグ
+                                                       #     0 = パッドやキーボード入力によって移動 
                                                            #1 = イベントによる自動移動モードとなり設定された位置まで自動で移動して行きます
                                                            #2 = パッドやキーボード入力によって移動し、さらにリプレイデータも記録します
                                                            #4 = リプレイデータを読み出しそのデータで自動移動しリプレイデータを再現します
@@ -5037,6 +5051,29 @@ class App:
                self.my_x += self.my_vx * self.my_speed #自機の移動量(vx,vy)と自機の速度(speed)を使って自機の座標を更新する（移動！）
                self.my_y += self.my_vy * self.my_speed
           
+          elif self.auto_move_mode == 4: #リプレイモードの処理
+               self.my_vx,self.my_vy = 0,0 #自機の自機の移動量(vx,vy)を0に初期化する
+               #リプレイデータを調べて左入力だったのなら  x座標を  my_speedの数値だけ減らす
+               if self.backup_replay_data[self.replay_farame] & 0b0000000000000100 == 0b0000000000000100:
+                    self.my_moved_flag = 1#自機移動フラグOn
+                    self.my_vx = -1
+               #リプレイデータを調べて右入力だったのなら x座標を  my_speedの数値だけ増やす
+               if self.backup_replay_data[self.replay_farame] & 0b0000000000001000 == 0b0000000000001000:
+                    self.my_moved_flag = 1#自機移動フラグOn
+                    self.my_vx = 1
+               #リプレイデータを調べて上入力だったのなら y座標を  my_speedの数値だけ減らす
+               if self.backup_replay_data[self.replay_farame] & 0b0000000000000001 == 0b0000000000000001:
+                    self.my_rolling_flag = 2
+                    self.my_moved_flag = 1#自機移動フラグOn
+                    self.my_vy = -1
+               #リプレイデータを調べて下入力だったのなら y座標を  my_speedの数値だけ増やす
+               if self.backup_replay_data[self.replay_farame] & 0b0000000000000010 == 0b0000000000000010:
+                    self.my_rolling_flag = 1
+                    self.my_moved_flag = 1#自機移動フラグOn
+                    self.my_vy = 1
+               self.my_x += self.my_vx * self.my_speed #自機の移動量(vx,vy)と自機の速度(speed)を使って自機の座標を更新する（移動！）
+               self.my_y += self.my_vy * self.my_speed
+          
           elif self.auto_move_mode == 1 and self.auto_move_mode_complete == 0: #自動移動モード＆まだ移動完了フラグが建っていなかったら・・・
                self.my_vx,self.my_vy = 0,0 #自機の自機の移動量(vx,vy)を0に初期化する
 
@@ -5113,10 +5150,19 @@ class App:
                else:
                     self.my_speed = 1
      
-     #スペースキーかゲームバットＡが押されたらショットを発射する
+     
+     #スペースキーかゲームパッドAが押されたかどうか？もしくはリプレイモードでショット発射したのか調べる
+     def update_check_fire_shot(self):
+          if self.auto_move_mode == 0: #手動移動モードの場合は
+               if pyxel.btn(pyxel.KEY_SPACE) or pyxel.btn(pyxel.GAMEPAD_1_A) or pyxel.btn(pyxel.GAMEPAD_2_A): #パッドAかスペースキーが押されたか？
+                    self.pad_data += PAD_A #コントロールパッド入力記録にAボタンを押した情報ビットを立てて記録する
+                    self.update_fire_shot() #ショット発射関数呼び出し！
+          elif self.auto_move_mode == 4: #リプレイモードの場合は
+               if self.backup_replay_data[self.replay_farame] & 0b0000000000010000 == 0b0000000000010000: #リプレイデータを調べてPAD Aが押された記録だったのなら...
+                    self.update_fire_shot() #ショット発射関数呼び出し！
+     
+     #ショットを発射する!!!!!
      def update_fire_shot(self):
-          if pyxel.btn(pyxel.KEY_SPACE) or pyxel.btn(pyxel.GAMEPAD_1_A) or pyxel.btn(pyxel.GAMEPAD_2_A):
-              self.pad_data += PAD_A #コントロールパッド入力記録にAボタンを押した情報ビットを立てて記録
               if self.shot_level == SHOT_LV7_WAVE_CUTTER_LV1:#ウェーブカッターLv1発射
                    if len(self.shots) < self.shot_rapid_of_fire:
                    #if self.shot_type_count(self.shot_level) < 3: 
@@ -5321,10 +5367,18 @@ class App:
                               new_shot.update(self.shot_level,self.my_x + 6,self.my_y + 2,    5,1,      8,8,     0,  1,1)
                               self.shots.append(new_shot)
 
-     #スペースキーかゲームバットＢボタンが押されたらミサイルを発射する
-     def update_fire_missile(self): 
-          if pyxel.btn(pyxel.KEY_SPACE) or pyxel.btn(pyxel.GAMEPAD_1_B) or pyxel.btn(pyxel.GAMEPAD_2_B):
-              self.pad_data += PAD_B #コントロールパッド入力記録にBボタンを押した情報ビットを立てて記録
+     #スペースキーかゲームバットＢボタンが押さたかどうか？もしくはリプレイモードでミサイル発射したのか調べる
+     def update_check_fire_missile(self):
+          if self.auto_move_mode == 0: #手動移動モードの場合は
+               if pyxel.btn(pyxel.KEY_SPACE) or pyxel.btn(pyxel.GAMEPAD_1_B) or pyxel.btn(pyxel.GAMEPAD_2_B): #パッドBかスペースキーが押されたか？
+                    self.pad_data += PAD_B #コントロールパッド入力記録にBボタンを押した情報ビットを立てて記録する
+                    self.update_fire_missile() #ミサイル発射関数呼び出し！
+          elif self.auto_move_mode == 4: #リプレイモードの場合は
+               if self.backup_replay_data[self.replay_farame] & 0b0000000000100000 == 0b0000000000100000: #リプレイデータを調べてPAD Bが押された記録だったのなら...
+                    self.update_fire_missile() #ミサイル発射関数呼び出し！
+                    
+     #ミサイルを発射する!!!!!
+     def update_fire_missile(self):
               if (pyxel.frame_count % 10) == 0:
                    self.count_missile_type(0,1,2,3)#ミサイルタイプ0,1,2,3の合計数を数える
                    if self.type_check_quantity < (self.missile_level + 1) * self.missile_rapid_of_fire:  #初期段階では２発以上は出せないようにする
@@ -6176,10 +6230,18 @@ class App:
                               else:#クローが１～３機のときは固定位置は変化させない
                                    self.claw[i].posy = self.claw[i].posy + 0.2 * (self.my_y + self.claw[i].offset_y - self.claw[i].posy)
  
-     #クローが弾を発射する処理
+     #クローが弾を発射するのか調べる関数
+     def update_check_fire_claw_shot(self):
+          if self.auto_move_mode == 0: #手動移動モードの場合は
+               if pyxel.btn(pyxel.KEY_SPACE) or pyxel.btn(pyxel.GAMEPAD_1_A) or pyxel.btn(pyxel.GAMEPAD_2_A): #パッドAかスペースキーが押されたか？
+                    self.update_fire_claw_shot() #クローショット発射関数呼び出し！
+          elif self.auto_move_mode == 4: #リプレイモードの場合は
+               if self.backup_replay_data[self.replay_farame] & 0b0000000000010000 == 0b0000000000010000: #リプレイデータを調べてPAD Aが押された記録だったのなら...
+                    self.update_fire_claw_shot() #クローショット発射関数呼び出し！
+     
+     #クローが弾を発射!!!!!!
      def update_fire_claw_shot(self):
-          if pyxel.btn(pyxel.KEY_SPACE) or pyxel.btn(pyxel.GAMEPAD_1_A) or pyxel.btn(pyxel.GAMEPAD_2_A):
-              if (pyxel.frame_count % 16) == 0:#発射ボタンが押され尚且つ8フレーム毎だったら クローショットを育成する
+              if (pyxel.frame_count % 16) == 0: #16フレーム毎だったら クローショットを育成する
                   if len(self.claw_shot) < CLAW_RAPID_FIRE_NUMBER * (self.claw_number):#クローショットの要素数がクローの数x２以下なら弾を発射する
                       #ここからクローが弾を発射する実処理
                       claw_count = len(self.claw)#クローの数を数える
@@ -8977,6 +9039,10 @@ class App:
           self.replay_input_data.append(self.pad_data) #リプレイデータリストにパッド入力データを記録追加します
           self.pad_data = 0b0000000000000000           #次のフレーム時の記録のためにデータを初期化してあげます
      
+     #リプレイデータをバックアップする(プッシュする感じみたいな？？？)
+     def update_backup_replay_data(self):
+          self.backup_replay_data = self.replay_input_data
+     
      #乱数0_9関数(0~9)の更新
      def update_rnd0_9(self):
           self.rnd0_9_num  = pyxel.frame_count %  10 #フレームカウント数を 10で割った余りが変数rnd0_9_numに入ります(0~9の数値が1フレームごとに変化する)
@@ -10361,11 +10427,13 @@ class App:
                #マップチップナンバー書き換えによるアニメーション関連の更新######################################################################
                self.update_bg_rewrite_animation()          #BG書き換えによるアニメーション関数の呼び出し
                # self.update_dummy_bg_animation()          #BG 座標直接指定による書き換えダミーテスト
-               #リプレイデータの記録########################################################################################################
+               #リプレイデータの記録と再生###################################################################################################
                self.update_record_replay_data()            #パッド＆キーボード入力によるリプレイデータの記録を行う関数を呼び出します
+               self.replay_farame += 1                     #リプレイ用のリストインデックスフレームカウントを1進める
                #乱数ルーレットの更新########################################################################################################
                self.update_rnd0_9()                        #乱数ルーレット( 0~9)の更新
                self.update_rnd0_99()                       #乱数ルーレット(0~99)の更新
+
 
           if     self.game_status == SCENE_PLAY\
               or self.game_status == SCENE_BOSS_APPEAR\
@@ -10379,13 +10447,13 @@ class App:
                #自機シールドのチェック###############################################
                self.update_check_my_shield()                #自機のシールドが残っているのかチェックする関数を呼び出す
                #武器発射関連の処理##################################################
-               self.update_fire_shot()                 #ショットを発射する関数を呼び出す
-               self.update_fire_missile()              #ミサイルを発射する関数を呼び出す
-               self.update_fire_claw_shot()            #クローが弾を発射する関数を呼び出す
+               self.update_check_fire_shot()           #ショットを発射したかどうかを調べる関数を呼び出す
+               self.update_check_fire_missile()        #ミサイルを発射したかどうかを調べる関数を呼び出す
+               self.update_check_fire_claw_shot()      #クローが弾を発射したかどうかを調べる関数を呼び出す
 
                self.update_change_sub_weapon()          #サブウェポンの切り替え関数を呼び出す
                #デバッグモードによる敵や敵弾の追加発生（ボタンを押したら敵が出てくる！？）###################################################
-               # self.update_debug_mode_enemy_append()   #デバッグモードによる敵＆敵弾追加発生
+               # self.update_debug_mode_enemy_append()  #デバッグモードによる敵＆敵弾追加発生
                #プレイ時間の計算#####################################################
                self.update_calc_playtime()             #プレイ時間を計算する関数を呼び出す
                #ハイスコアの更新チェック##############################################
@@ -10394,6 +10462,7 @@ class App:
                self.update_timer_flare()               #タイマーフレア放出の更新処理関数を呼び出す
                #大気圏突入時の火花の発生#############################################
                self.update_atmospheric_entry_spark()   #大気圏突入時の火花を発せさせる関数の呼び出し
+
 
           if self.game_status == SCENE_BOSS_EXPLOSION:           #「BOSS_EXPLOSION」の時は
                self.uddate_present_repair_item()                 #リペアアイテムを出現させる関数の呼び出し
@@ -10446,11 +10515,13 @@ class App:
                   self.game_status = SCENE_TITLE_INIT            #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
                   self.game_playing_flag = 0                     #ゲームプレイ中のフラグを降ろす
                   self.save_system_data()                        #システムデータをセーブする関数の呼び出し
+                  self.update_backup_replay_data()               #リプレイデータをバックアップリプレイデータリストに保管します
 
               if self.cursor_decision_item == 0:                 #メニューでアイテムナンバー0の「YES」が押されたら
                   self.game_status = SCENE_TITLE_INIT            #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
                   self.game_playing_flag = 0                     #ゲームプレイ中のフラグを降ろす
                   self.save_system_data()                        #システムデータをセーブする関数の呼び出し
+                  self.update_backup_replay_data()               #リプレイデータをバックアップリプレイデータリストに保管します
 
           #########ステージクリア後の処理#################
           if self.game_status == SCENE_STAGE_CLEAR_FADE_OUT:     #「SCENE_STAGE_CLEAR_FADE_OUT」の時は
