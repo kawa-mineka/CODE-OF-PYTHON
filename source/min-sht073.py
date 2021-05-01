@@ -6738,6 +6738,8 @@ class App:
                  self.debug_menu_status = 1
              elif self.debug_menu_status == 1:
                  self.debug_menu_status = 2
+             elif self.debug_menu_status == 2:
+                 self.debug_menu_status = 3
              else:
                  self.debug_menu_status = 0
      
@@ -9850,42 +9852,43 @@ class App:
           num = "{:>8}".format(int(len(self.replay_input_data)))
           pyxel.text(40,120-26,num,8)
 
-          #コントロールパッド操作データの表示
-          replay_count = len(self.replay_input_data)
-          input_pad_data = bin(self.replay_input_data[replay_count-1]) #パッド入力データを2進数に変換します
-          input_pad_data = input_pad_data.lstrip("0b")               #文字列の頭からバイナリー文字の"ob"を取り除きます lstripで先頭から取り除くって判りにくい・・・lstripのlってなんやねん・・・
-          input_pad_data = "{:0>12}".format(input_pad_data)          #文字列を整形します 0ゼロ埋め >右寄せ 12桁          
-          pyxel.text(0,120-26,input_pad_data, 10)
+          if self.debug_menu_status == 2: #デバッグメニュー表示ステータスが2の時だけ表示する
+               #コントロールパッド操作データの表示
+               replay_count = len(self.replay_input_data)
+               input_pad_data = bin(self.replay_input_data[replay_count-1]) #パッド入力データを2進数に変換します
+               input_pad_data = input_pad_data.lstrip("0b")               #文字列の頭からバイナリー文字の"ob"を取り除きます lstripで先頭から取り除くって判りにくい・・・lstripのlってなんやねん・・・
+               input_pad_data = "{:0>12}".format(input_pad_data)          #文字列を整形します 0ゼロ埋め >右寄せ 12桁          
+               pyxel.text(0,120-26,input_pad_data, 10)
            
-          #コントロールパッド操作データ履歴の表示
-          input_pad_data = bin(self.replay_input_data[replay_count-2])
-          input_pad_data = input_pad_data.lstrip("0b")
-          input_pad_data = "{:0>12}".format(input_pad_data)
-          pyxel.text(0,120-33  ,input_pad_data, 7)
-
-          if replay_count >= 3:
-               input_pad_data = bin(self.replay_input_data[replay_count-3])
+               #コントロールパッド操作データ履歴の表示
+               input_pad_data = bin(self.replay_input_data[replay_count-2])
                input_pad_data = input_pad_data.lstrip("0b")
                input_pad_data = "{:0>12}".format(input_pad_data)
-               pyxel.text(0,120-33-7,input_pad_data, 7)
-          if replay_count >= 4:
-               input_pad_data = bin(self.replay_input_data[replay_count-4])
-               input_pad_data = input_pad_data.lstrip("0b")
-               input_pad_data = "{:0>12}".format(input_pad_data)
-               pyxel.text(0,120-33-14,input_pad_data, 7)
-          if replay_count >= 5:
-               input_pad_data = bin(self.replay_input_data[replay_count-5])
-               input_pad_data = input_pad_data.lstrip("0b")
-               input_pad_data = "{:0>12}".format(input_pad_data)
-               pyxel.text(0,120-33-21,input_pad_data, 7)
+               pyxel.text(0,120-33  ,input_pad_data, 7)
 
+               if replay_count >= 3:
+                    input_pad_data = bin(self.replay_input_data[replay_count-3])
+                    input_pad_data = input_pad_data.lstrip("0b")
+                    input_pad_data = "{:0>12}".format(input_pad_data)
+                    pyxel.text(0,120-33-7,input_pad_data, 7)
+               if replay_count >= 4:
+                    input_pad_data = bin(self.replay_input_data[replay_count-4])
+                    input_pad_data = input_pad_data.lstrip("0b")
+                    input_pad_data = "{:0>12}".format(input_pad_data)
+                    pyxel.text(0,120-33-14,input_pad_data, 7)
+               if replay_count >= 5:
+                    input_pad_data = bin(self.replay_input_data[replay_count-5])
+                    input_pad_data = input_pad_data.lstrip("0b")
+                    input_pad_data = "{:0>12}".format(input_pad_data)
+                    pyxel.text(0,120-33-21,input_pad_data, 7)
 
-          # 漢字表示テスト
-          # self.kanji_text(0,36,"文字列を分割できる関数",7)
-          # self.kanji_text(0,50,"関数を使って文字列を編集",6)
-          # self.kanji_text(0,63,"文字列を分割できる関数",9)
-          # self.kanji_text(0,76,"文字列を大文字・小文字に変換できる",3)
-          # self.kanji_text(0,88,"保存したキャンバス",13)
+          if self.debug_menu_status == 3: #デバッグメニュー表示ステータスが3の時だけ表示する
+               #漢字表示テスト
+               self.kanji_text(0,36,"文字列を分割できる関数",7)
+               self.kanji_text(0,50,"関数を使って文字列を編集",6)
+               self.kanji_text(0,63,"文字列を分割できる関数",9)
+               self.kanji_text(0,76,"文字列を大文字・小文字に変換できる",3)
+               self.kanji_text(0,88,"保存したキャンバス",13)
           
           #漢字フォントデータの表示テスト
           # for y in range(120):
