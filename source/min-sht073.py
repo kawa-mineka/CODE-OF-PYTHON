@@ -82,8 +82,8 @@
 #todo91b 美咲フォントを使用した日本語テキスト表示関数の実装→実装完了と言いたいけど半角文字や特定の文字で文字化けする模様・・・orz 2021 04/25
 #todo    難易度によるアイテム引き寄せ範囲の変化、アイテムのバウンド回数の変化の実装 2021 04/27
 
-from random import randint   #random.randint(n,m) と呼ぶと、nからm(m自身を含む)までの間の整数が 等しい確率で、ランダムに返される
-from random import random    #random.random() と呼ぶと、0から1の範囲(1は含まない)のランダムな実数が返される
+# from random import randint   #random.randint(n,m) と呼ぶと、nからm(m自身を含む)までの間の整数が 等しい確率で、ランダムに返される
+from random import random    #random.random() と呼ぶと、0から1の範囲(1は含まない)のランダムな実数が返される(主にパーティクル系で使用します)
 import math
 
 import pyxel
@@ -2096,6 +2096,8 @@ class App:
           pyxel.mouse(False)               #マウスカーソルを非表示にする
           self.bg_cls_color = 0            #BGをCLS(クリアスクリーン)するときの色の指定(通常は0=黒色です)
           self.bg_transparent_color = 0    #BGタイルマップを敷き詰めるときに指定する透明色です
+
+          self.rnd_seed = 0                #乱数の種を初期化
           
           #ゲーム中で絶対に変化することのないリスト群はここで作成します#######################################
           #サブウェポンセレクターカーソルなどで使用する点滅用カラーリスト群(pyxelのカラーナンバーだよ)
@@ -2925,7 +2927,7 @@ class App:
 
      #狙い撃ち弾(ゲームランクに依存）を射出する関数定義 
      def enemy_aim_bullet_rank(self,ex,ey,div_type,div_count,div_num,stop_count,accel):
-         if randint(0,self.run_away_bullet_probability) != 0:
+         if self.s_rndint(0,self.run_away_bullet_probability) != 0:
               return
          else:
               self.enemy_aim_bullet(ex,ey,div_type,div_count,div_num,stop_count,accel)
@@ -3151,6 +3153,7 @@ class App:
          if (self.bg_chip // 4) >= self.bg_obstacle_y: #(bg_chip // 4)でキャラチップのＹ座標になるんです
                 self.collision_flag = 1                #y座標がbg_obstacle_yより大きかったら障害物に当たったとみなす
          return(self,x,y,bg_chip,collision_flag)
+     
      #背景マップチップを消去する(0を書き込む) x,yはキャラ単位 x=(0~255) y=(0~15)
      def delete_map_chip(self,x,y):
          pyxel.tilemap(self.reference_tilemap).set(x,y + (self.stage_loop - 1)* 16,0)#マップチップを消去する（0=何もない空白）を書き込む
@@ -3383,13 +3386,13 @@ class App:
          #オマケで背景の星も追加するぞ～～☆彡
          if len(self.stars) < 600:
               new_stars = Star()
-              new_stars.update(WINDOW_W - 1,randint(0,WINDOW_H),randint(1,50))
+              new_stars.update(WINDOW_W - 1,self.s_rndint(0,WINDOW_H),self.s_rndint(1,50))
               self.stars.append(new_stars)
 
          if self.boss[e].main_hp <= 0:#ボス本体のHPが0以下になったのなら
              for _number in range(60):#爆発パターンを60個育成
                  new_explosion = Explosion()
-                 new_explosion.update(EXPLOSION_NORMAL,PRIORITY_FRONT,self.boss[e].posx + self.boss[e].width / 2 + randint(0,50) -25,self.boss[e].posy + self.boss[e].height / 2 + randint(0,50) -25,0,0,10,RETURN_BULLET_NONE,0, 1,1)
+                 new_explosion.update(EXPLOSION_NORMAL,PRIORITY_FRONT,self.boss[e].posx + self.boss[e].width / 2 + self.s_rndint(0,50) -25,self.boss[e].posy + self.boss[e].height / 2 + self.s_rndint(0,50) -25,0,0,10,RETURN_BULLET_NONE,0, 1,1)
                  self.explosions.append(new_explosion)
              
              #ゲームステータス(状態遷移)を「SCENE_BOSS_EXPLOSION」ボスキャラ爆発中！にする
@@ -3846,17 +3849,39 @@ class App:
   
      #0~9の範囲の乱数関数
      def rnd0_9(self):
+          global num
           num = self.rnd0_9_num
-          return(self,num)
+          return(num)
 
      #0~99の範囲の乱数関数
      def rnd0_99(self):
+          global num
           num = self.rnd0_99_num
-          return(self,num)
+          return(num)
      
      #線形合同法を使用した乱数関数 (0~65535のランダムな数値がself.rnd_seedに代入される)この乱数の周期は32768
      def s_rnd(self):
-          self.rnd_seed = (self.rnd_seed * 48828125 + 129) % 65536 #129のように足す数値は絶対に奇数にするように出ないと奇数と偶数の乱数が交互に育成されるようになってしまうからね
+          self.rnd_seed = (self.rnd_seed * 48828125 + 129) % 65536 #129のように足す数値は絶対に奇数にするように！でないと奇数と偶数の乱数が交互に育成されるようになってしまうからね
+
+     #s_rndint(min,max) と呼ぶと、minからmax(max自身を含む)までの間の整数が 等しい確率で、ランダムに返される
+     def s_rndint(self,min,max):
+          global num   #なんやようわからんが・・・global命令で 「numはグローバル変数やで～」って宣言したら上手くいくようになった、なんでや・・・？？謎
+          self.s_rnd()
+          num_zero_to_max = self.rnd_seed % (max - min) #  0 から(max - min)までの乱数を取得
+          num_min_to_max  = num_zero_to_max + min       #min から max       までの乱数を取得
+          num = num_min_to_max                          #整数化します
+          return (num)
+     
+     #s_random() と呼ぶと、0から1の範囲(1は含まない)のランダムな実数が返される(パーティクル系で使おうとしたけど結構動作が遅いので標準ライブラリ使ったほうがいいなぁ→結局random()を使う事にしました)
+     def s_random(self):
+          global num
+          num_0_1  =  self.rnd0_9() /10          #小数点1桁目の乱数を取得(0~9)
+          num_0_01 =  self.rnd0_9() / 100        #小数点2桁目の乱数を取得(0~9)
+          num_0_001 =  self.rnd0_9() / 1000      #小数点3桁目の乱数を取得(0~9)
+          num_0_0001 =  self.rnd0_9() / 10000    #小数点4桁目の乱数を取得(0~9)
+          num_0_00001 =  self.rnd0_9() / 100000  #小数点5桁目の乱数を取得(0~9)
+          num = num_0_1 + num_0_01 + num_0_001 + num_0_0001 + num_0_00001 #全ての桁数を足し合わせると小数点5桁までの乱数となる(0.00000~0.99999)
+          return (num)
 
      ################################################################ボツ関数群・・・・・・(涙)##########################################################
      #外積を計算する関数 self.cpに結果が入る(バグありなので使えないっぽい・・・この関数)
@@ -6717,7 +6742,8 @@ class App:
           if (pyxel.frame_count % 3) == 0:
                if len(self.stars) < 600:
                     new_stars = Star()
-                    new_stars.update(WINDOW_W + 1,randint(0,WINDOW_H),randint(1,50))
+                    new_stars.update(WINDOW_W + 1,self.s_rndint(0,WINDOW_H),self.s_rndint(1,50))
+                    # new_stars.update(WINDOW_W + 1,randint(0,WINDOW_H),randint(1,50))
                     self.stars.append(new_stars)
 
      #背景の星の更新（移動）
@@ -6750,7 +6776,7 @@ class App:
                if pyxel.btn(pyxel.KEY_4) or pyxel.btn(pyxel.GAMEPAD_1_LEFT_SHOULDER) or pyxel.btn(pyxel.GAMEPAD_2_LEFT_SHOULDER):
                     if len(self.enemy) < 400:
 
-                         self.posy = randint(0,WINDOW_H - 8)
+                         self.posy = self.s_rndint(0,WINDOW_H - 8)
                          for number in range(10):
                               new_enemy = Enemy()
                               new_enemy.update(CIR_COIN,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W - 1 + (number * 12),self.posy,0,0,     0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,0,   -1,1,     0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8, 1,0,    0, HP01,  0,0, E_SIZE_NORMAL,   30,0,0 ,    0,0,0,0,   E_SHOT_POW,self.current_formation_id ,0,0,0,    0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
@@ -6763,7 +6789,7 @@ class App:
                if pyxel.btn(pyxel.KEY_5):
                     if len(self.enemy) < 400:
 
-                         self.posy = randint(0,WINDOW_H)
+                         self.posy = self.s_rndint(0,WINDOW_H)
                          for number in range(3):
                               new_enemy = Enemy()
                               new_enemy.update(SAISEE_RO,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W + 10,((self.posy)-36) + (number * 12),0,0,     0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,0,   0,0,        0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   1,0,   0,  HP01,   0,0,  E_SIZE_NORMAL,0.5,0.05,0,     0,0,0,0,   E_NO_POW,ID00 ,0,0,0    ,0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
@@ -6772,7 +6798,7 @@ class App:
           if (pyxel.frame_count % 3) == 0:
                if pyxel.btn(pyxel.KEY_6):
                     if len(self.enemy) < 400:
-                         self.posy = randint(0,WINDOW_H)
+                         self.posy = self.s_rndint(0,WINDOW_H)
                          new_enemy = Enemy()
                          new_enemy.update(6,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,self.posy,0,0,    0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0, 0,0,       0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   1,0,   0,  HP01,   0,0,  E_SIZE_NORMAL,   0.5,0.05,0,     0,0,0,0,    E_NO_POW,ID00 ,0,0,0,     0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                          self.enemy.append(new_enemy)         
@@ -6780,7 +6806,7 @@ class App:
           if (pyxel.frame_count % 3) == 0:
                if pyxel.btn(pyxel.KEY_Z):
                     if len(self.enemy) < 400:
-                         self.posy = randint(0,WINDOW_H)
+                         self.posy = self.s_rndint(0,WINDOW_H)
                          new_enemy = Enemy()
                          new_enemy.update(TWIN_ARROW,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,self.posy,0,0,      0,0,0,0,0,0,0,0,      0,0,0,0,0,0,0,0,0,0, 0,0,        0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   1.5,0,  0,    HP01,     0,0,   E_SIZE_NORMAL,  0,  0, 1.3,    0,0,0,0,     E_NO_POW,ID00 ,0,0,0,    0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                          self.enemy.append(new_enemy)
@@ -6798,14 +6824,14 @@ class App:
                          #enemy_count1を出現してから突進タイプの敵を出すまでの時間のカウンタで使用します（射出開始カウンタ）
                          #enemy_count2を射出する敵の総数です（敵総数カウンタ）
                          new_enemy = Enemy()
-                         new_enemy.update(10,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,    170,96,0,0,     0,0,0,0,0,0,0,0,      0,0,0,0,0,0,0,0,0,0,   0,0,        0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_24,SIZE_26,   0.5,0,   0,    HP10,     0,0,   E_SIZE_MIDDLE32,  (randint(0,130) + 10),  6, 20,     0,0,0,0,       E_NO_POW,ID00 ,0,0,0,     0  ,0,0,0,     0,GROUND_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
+                         new_enemy.update(10,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,    170,96,0,0,     0,0,0,0,0,0,0,0,      0,0,0,0,0,0,0,0,0,0,   0,0,        0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_24,SIZE_26,   0.5,0,   0,    HP10,     0,0,   E_SIZE_MIDDLE32,  (self.s_rndint(0,130) + 10),  6, 20,     0,0,0,0,       E_NO_POW,ID00 ,0,0,0,     0  ,0,0,0,     0,GROUND_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                          self.enemy.append(new_enemy)
           #敵タイプ12の発生 レイブラスター  レーザービームを出して高速で逃げていく敵      KEY D ++++++
           if (pyxel.frame_count % 8) == 0:
                if pyxel.btn(pyxel.KEY_D) or pyxel.btn(pyxel.GAMEPAD_1_RIGHT_SHOULDER) or pyxel.btn(pyxel.GAMEPAD_2_RIGHT_SHOULDER):
                     if len(self.enemy) < 400:
                          new_enemy = Enemy()
-                         new_enemy.update(RAY_BLASTER,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W + 8,randint(0,WINDOW_H),0,0,    0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,   -2,(randint(0,1)-0.5),        0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   0.98,0,    0,    HP01,  0,0,    E_SIZE_NORMAL,   80 + randint(0,40),0,0,      0,0,0,0,       E_NO_POW,ID00 ,0,0,0,    0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
+                         new_enemy.update(RAY_BLASTER,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W + 8,self.s_rndint(0,WINDOW_H),0,0,    0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,   -2,(self.s_rndint(0,1)-0.5),        0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   0.98,0,    0,    HP01,  0,0,    E_SIZE_NORMAL,   80 + self.s_rndint(0,40),0,0,      0,0,0,0,       E_NO_POW,ID00 ,0,0,0,    0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                          self.enemy.append(new_enemy)
           #敵タイプ16の発生 2機一体で挟みこみ攻撃をしてくるクランパリオン                KEY T ++++++++
           if (pyxel.frame_count % 24) == 0:
@@ -6884,7 +6910,7 @@ class App:
           if(pyxel.frame_count % 1) == 0:
                if pyxel.btn(pyxel.KEY_S):
                     if len(self.enemy_shot) < 800:
-                         posy = randint(0,WINDOW_H)
+                         posy = self.s_rndint(0,WINDOW_H)
                          for number in range(6):
                              new_enemy_shot = Enemy_shot()
                              new_enemy_shot.update(ENEMY_SHOT_LASER,ID00, WINDOW_W,posy,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8, 0,0,  -2,0,   1,  1,1,   0,0,0,    1,0,0,  0,number * 2,PRIORITY_FRONT,  0,0,  0,0,0,0, 0,0, 0, 0,0, 0, 0,0, 0,0,   0,0)
@@ -7001,8 +7027,8 @@ class App:
           if(pyxel.frame_count % 16) == 0:
                if pyxel.btn(pyxel.KEY_Q):
                    new_window = Window()
-                   x = randint(0,100)
-                   y = randint(0,100)
+                   x = self.s_rndint(0,100)
+                   y = self.s_rndint(0,100)
                    new_window.update(ID00,ID00,2,WINDOW_OPEN,\
                                      "RETURN TITLE??",DISP_CENTER,\
                                      
@@ -7021,19 +7047,19 @@ class App:
           #パーティクルを発生させる                                     KEY P
           if(pyxel.frame_count % 1) == 0:
                if pyxel.btn(pyxel.KEY_P):
-                    x = randint(0,160)
-                    y = randint(0,120)
+                    x = self.s_rndint(0,160)
+                    y = self.s_rndint(0,120)
                     
                     self.update_append_particle(PARTICLE_LINE,x,y,  0,0,0,0,0)
                     
-                    #particle_number = randint(0,10) + 50
+                    #particle_number = self.s_rndint(0,10) + 50
                     #for number in range(particle_number):
                     #     self.update_append_particle(PARTICLE_DOT,x,y,-0.5,-0.5, 0,0,0)        
           #背景オブジェクト雲１を発生させる                              KEY E
           if(pyxel.frame_count % 6) == 0:
                if pyxel.btn(pyxel.KEY_E):
-                    t = randint(0,20)
-                    y = randint(0,120+30)
+                    t = self.s_rndint(0,20)
+                    y = self.s_rndint(0,120+30)
                     
                     new_background_object = Background_object()
                     new_background_object.update(t, 160+10,y,  0,    1.009,1,0,0,0,0,0,0,   -3,-0.25,  0,0,   0,0,0,0,0,   0,0,0, 0,0,0,  0,0,0)
@@ -7042,17 +7068,17 @@ class App:
           #パワーアップアイテム類を発生させる                            KEY U I O
           if(pyxel.frame_count % 8) == 0:
                if pyxel.btn(pyxel.KEY_U): #ショットアイテム
-                    y = randint(0,120)
+                    y = self.s_rndint(0,120)
                     new_obtain_item = Obtain_item()
                     new_obtain_item.update(ITEM_SHOT_POWER_UP,WINDOW_W-20,y, 0.5,0,   SIZE_8,SIZE_8,   1,   0.9,  0.3,   0,0,  0.05,0,0,0,0,   1,0,0,  0,0,0, self.pow_item_bounce_num,0)
                     self.obtain_item.append(new_obtain_item)     
                elif pyxel.btn(pyxel.KEY_I): #ミサイルアイテム
-                    y = randint(0,120)
+                    y = self.s_rndint(0,120)
                     new_obtain_item = Obtain_item()
                     new_obtain_item.update(ITEM_MISSILE_POWER_UP,WINDOW_W-20,y, 0.5,0,   SIZE_8,SIZE_8,   1,   0.9,  0.3,   0,0,  0.05,0,0,0,0,   0,1,0,  0,0,0, self.pow_item_bounce_num,0)
                     self.obtain_item.append(new_obtain_item) 
                elif pyxel.btn(pyxel.KEY_O): #シールドアイテム
-                    y = randint(0,120)
+                    y = self.s_rndint(0,120)
                     new_obtain_item = Obtain_item()
                     new_obtain_item.update(ITEM_SHIELD_POWER_UP,WINDOW_W-20,y, 0.5,0,   SIZE_8,SIZE_8,   1,   0.9,  0.3,   0,0,  0.05,0,0,0,0,   0,0,1,  0,0,0, self.pow_item_bounce_num,0)
                     self.obtain_item.append(new_obtain_item) 
@@ -7065,7 +7091,7 @@ class App:
           if (pyxel.frame_count % 8) == 0:
                if pyxel.btn(pyxel.KEY_0):
                     new_event_append_request = Event_append_request()
-                    new_event_append_request.update(self.stage_count + 10,EVENT_ENEMY,CIR_COIN,WINDOW_W + 8,randint(0,WINDOW_H - 8),10)
+                    new_event_append_request.update(self.stage_count + 10,EVENT_ENEMY,CIR_COIN,WINDOW_W + 8,self.s_rndint(0,WINDOW_H - 8),10)
                     self.event_append_request.append(new_event_append_request)#現在のstage_countから10カウント過ぎた時点でサーコインが発生するようイベントアペンドリストに追加する
                          
      #クローの追加
@@ -7168,7 +7194,7 @@ class App:
                          self.enemy.append(new_enemy)
                     elif self.event_list[self.event_index][2] == RAY_BLASTER:    #レイブラスター 直進して画面前方のどこかで停止→レーザービーム射出→急いで後退するレーザー系
                          new_enemy = Enemy()
-                         new_enemy.update(RAY_BLASTER,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   self.event_list[self.event_index][3],self.event_list[self.event_index][4],0,0,      0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,    -2,(randint(0,1)-0.5),        0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   0.98,0,  0,  HP02 * self.enemy_hp_mag,   0,0,  E_SIZE_NORMAL,80 + randint(0,40),0,0,      0,0,0,0,      E_NO_POW,ID00 ,0,0,0,      0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
+                         new_enemy.update(RAY_BLASTER,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   self.event_list[self.event_index][3],self.event_list[self.event_index][4],0,0,      0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,    -2,(self.s_rndint(0,1)-0.5),        0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   0.98,0,  0,  HP02 * self.enemy_hp_mag,   0,0,  E_SIZE_NORMAL,80 + self.s_rndint(0,40),0,0,      0,0,0,0,      E_NO_POW,ID00 ,0,0,0,      0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                          self.enemy.append(new_enemy)
                     elif self.event_list[self.event_index][2] == VOLDAR:         #ボルダー 硬めの弾バラマキ重爆撃機
                          new_enemy = Enemy()
@@ -7327,13 +7353,13 @@ class App:
                                              
                   elif self.bg_chip == (64 /8) * 32 +(80 / 8):#マップチップx80y64(E)だったら   敵10を出現させる(地上スクランブルハッチ)
                          new_enemy = Enemy()
-                         new_enemy.update(10,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,       0,0,0,0,0,0,0,0,       0,0,0,0,0,0,0,0,0,0,    0,0,      0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,     SIZE_24,SIZE_16,   0.5,0,   0,    HP10 * self.enemy_hp_mag,   0,0,   E_SIZE_MIDDLE32,  (randint(0,130) + 10),  6, 20,      0,0,0,0,      E_NO_POW,ID00 ,0,0,0,     0  ,0,0,0,     0,GROUND_OBJ,  PT01,PT01,PT01,  PT01,PT10,PT01)
+                         new_enemy.update(10,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,       0,0,0,0,0,0,0,0,       0,0,0,0,0,0,0,0,0,0,    0,0,      0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,     SIZE_24,SIZE_16,   0.5,0,   0,    HP10 * self.enemy_hp_mag,   0,0,   E_SIZE_MIDDLE32,  (self.s_rndint(0,130) + 10),  6, 20,      0,0,0,0,      E_NO_POW,ID00 ,0,0,0,     0  ,0,0,0,     0,GROUND_OBJ,  PT01,PT01,PT01,  PT01,PT10,PT01)
                          self.enemy.append(new_enemy)
                          self.delete_map_chip(self.bgx,i)#敵を出現させたら（「敵出現」情報）のキャラチップは不要なのでそこに（0=何もない空白）を書き込む
                                                
                   elif self.bg_chip == (64 /8) * 32 +(88 / 8):#マップチップx88y64(F)だったら   敵11を出現させる(天井スクランブルハッチ)
                          new_enemy = Enemy()
-                         new_enemy.update(11,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,      0,0,0,0,0,0,0,0,       0,0,0,0,0,0,0,0,0,0,    0,0,     0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,      SIZE_24,SIZE_16,   0.5,0,   0,    HP10 * self.enemy_hp_mag,   0,0,   E_SIZE_MIDDLE32_Y_REV,  (randint(0,130) + 10),  6, 20,      0,0,0,0,      E_NO_POW,ID00 ,0,0,0,     0  ,0,0,0,     0,GROUND_OBJ,  PT01,PT01,PT01,  PT01,PT10,PT01)
+                         new_enemy.update(11,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,      0,0,0,0,0,0,0,0,       0,0,0,0,0,0,0,0,0,0,    0,0,     0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,      SIZE_24,SIZE_16,   0.5,0,   0,    HP10 * self.enemy_hp_mag,   0,0,   E_SIZE_MIDDLE32_Y_REV,  (self.s_rndint(0,130) + 10),  6, 20,      0,0,0,0,      E_NO_POW,ID00 ,0,0,0,     0  ,0,0,0,     0,GROUND_OBJ,  PT01,PT01,PT01,  PT01,PT10,PT01)
                          self.enemy.append(new_enemy)
                          self.delete_map_chip(self.bgx,i)#敵を出現させたら（「敵出現」情報）のキャラチップは不要なのでそこに（0=何もない空白）を書き込む
                                   
@@ -7378,7 +7404,7 @@ class App:
                   
                   elif self.bg_chip == (64 /8) * 32 +(104/ 8):#マップチップx104y64(H)だったら  敵12を出現させる(直進して画面前方のどこかで停止→レーザービーム射出→急いで後退)
                          new_enemy = Enemy()
-                         new_enemy.update(RAY_BLASTER,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W + 8,i * 8,0,0,       0,0,0,0,0,0,0,0,        0,0,0,0,0,0,0,0,0,0,     -2,(randint(0,1)-0.5),      0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,      SIZE_8,SIZE_8,   0.98,0,     0,    HP01 * self.enemy_hp_mag,  0,0,    E_SIZE_NORMAL,   80 + randint(0,40),0,0,      0,0,0,0,      E_NO_POW,ID00 ,0,0,0,     0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
+                         new_enemy.update(RAY_BLASTER,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W + 8,i * 8,0,0,       0,0,0,0,0,0,0,0,        0,0,0,0,0,0,0,0,0,0,     -2,(self.s_rndint(0,1)-0.5),      0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,      SIZE_8,SIZE_8,   0.98,0,     0,    HP01 * self.enemy_hp_mag,  0,0,    E_SIZE_NORMAL,   80 + self.s_rndint(0,40),0,0,      0,0,0,0,      E_NO_POW,ID00 ,0,0,0,     0  ,0,0,0,     0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                          self.enemy.append(new_enemy)
                          self.delete_map_chip(self.bgx,i)#敵を出現させたら（「敵出現」情報）のキャラチップは不要なのでそこに（0=何もない空白）を書き込む
                   
@@ -7485,7 +7511,7 @@ class App:
 
                     else:#斜め後退処理が終わったら高速で右方向に逃げていく
                               self.enemy[i].posx = self.enemy[i].posx + 2#2ドットの増分で右方向に逃げていく
-                              if self.enemy[i].posx > WINDOW_W -8 and (randint(0,self.run_away_bullet_probability) == 0):
+                              if self.enemy[i].posx > WINDOW_W -8 and (self.s_rndint(0,self.run_away_bullet_probability) == 0):
                                   self.ex = self.enemy[i].posx
                                   self.ey = self.enemy[i].posy
                                   self.enemy_aim_bullet(self.ex,self.ey,0,0,0,0,1)#後退時に自機狙いの弾を射出して去っていく
@@ -7497,14 +7523,14 @@ class App:
             elif self.enemy[i].enemy_type ==  3:#敵タイプ3の更新   固定砲台ホウダ（地面に張り付く１連射タイプ）
                  #敵３を背景スクロールに合わせて左へ移動させる
                  self.enemy[i].posx -= self.side_scroll_speed * 0.5
-                 if self.enemy[i].posx < WINDOW_W -80 and (randint(0,(self.run_away_bullet_probability) * 50) == 0):
+                 if self.enemy[i].posx < WINDOW_W -80 and (self.s_rndint(0,(self.run_away_bullet_probability) * 50) == 0):
                                   self.ex = self.enemy[i].posx
                                   self.ey = self.enemy[i].posy
                                   self.enemy_aim_bullet(self.ex,self.ey,0,0,0,0,1)#画面端から出現して８０ドット進んだら、自機狙いの弾を射出
             elif self.enemy[i].enemy_type ==  4:#敵タイプ4の更新   固定砲台ホウダ（天井に張り付く１連射タイプ）
                  #敵４を背景スクロールに合わせて左へ移動させる
                  self.enemy[i].posx -= self.side_scroll_speed * 0.5
-                 if self.enemy[i].posx < WINDOW_W -80 and (randint(0,(self.run_away_bullet_probability) * 50) == 0):
+                 if self.enemy[i].posx < WINDOW_W -80 and (self.s_rndint(0,(self.run_away_bullet_probability) * 50) == 0):
                                   self.ex = self.enemy[i].posx
                                   self.ey = self.enemy[i].posy
                                   self.enemy_aim_bullet(self.ex,self.ey,0,0,0,0,1)#画面端から出現して８０ドット進んだら、自機狙いの弾を射出
@@ -7565,7 +7591,7 @@ class App:
                                         
                                   self.enemy[i].enemy_count3 = 20#地面に留まる踏ん張りカウントを１０に設定
                                   self.enemy[i].posy -= 1#なんだかわかんないけど地面にめり込んでいくので強制的にＹ軸を上方向に移動させてやる（－１補正を入れる）
-                                  if randint(0,self.run_away_bullet_probability) == 0:
+                                  if self.s_rndint(0,self.run_away_bullet_probability) == 0:
                                       self.ex = self.enemy[i].posx
                                       self.ey = self.enemy[i].posy
                                       self.enemy_aim_bullet_rank(self.ex,self.ey,0,0,0,0,1)#自機狙いの弾発射！
@@ -7844,7 +7870,7 @@ class App:
             elif self.enemy[i].enemy_type == 15:#敵タイプ15の更新  ムーロボ 地面を左右に動きながらチョット進んできて弾を撃つ移動砲台
                  #敵１５を背景スクロールに合わせて移動させる（地上キャラなので不自然が無いように・・・）
                  self.enemy[i].posx -= self.side_scroll_speed * 0.5
-                 if self.enemy[i].posx < WINDOW_W -80 and (randint(0,(self.run_away_bullet_probability) * 50) == 0):
+                 if self.enemy[i].posx < WINDOW_W -80 and (self.s_rndint(0,(self.run_away_bullet_probability) * 50) == 0):
                                   self.ex = self.enemy[i].posx
                                   self.ey = self.enemy[i].posy
                                   self.enemy_aim_bullet(self.ex,self.ey,0,0,0,0,1)#画面端から出現して８０ドット進んだら、自機狙いの弾を射出
@@ -8089,7 +8115,7 @@ class App:
                          pyxel.play(3,11)
 
                          new_explosion = Explosion()
-                         new_explosion.update(EXPLOSION_NORMAL,PRIORITY_FRONT,self.boss[i].posx + self.boss[i].width / 2 + randint(0,50) -25,self.boss[i].posy + self.boss[i].height / 2 + randint(0,20) -15,0,0,10,RETURN_BULLET_NONE,0, 1,1)
+                         new_explosion.update(EXPLOSION_NORMAL,PRIORITY_FRONT,self.boss[i].posx + self.boss[i].width / 2 + self.s_rndint(0,50) -25,self.boss[i].posy + self.boss[i].height / 2 + self.s_rndint(0,20) -15,0,0,10,RETURN_BULLET_NONE,0, 1,1)
                          self.explosions.append(new_explosion)
 
                          self.boss[i].posx += self.boss[i].vx
@@ -8107,7 +8133,7 @@ class App:
                          pyxel.playm(1)
                          #ランダムな場所に爆発パターンを育成
                          new_explosion = Explosion()
-                         new_explosion.update(EXPLOSION_NORMAL,PRIORITY_FRONT,self.boss[i].posx + self.boss[i].width / 2 + randint(0,50) -25,self.boss[i].posy + self.boss[i].height / 2 + randint(0,20) -15,0,0,10,RETURN_BULLET_NONE,0, 1,1)
+                         new_explosion.update(EXPLOSION_NORMAL,PRIORITY_FRONT,self.boss[i].posx + self.boss[i].width / 2 + self.s_rndint(0,50) -25,self.boss[i].posy + self.boss[i].height / 2 + self.s_rndint(0,20) -15,0,0,10,RETURN_BULLET_NONE,0, 1,1)
                          self.explosions.append(new_explosion)
 
                          self.boss[i].status = BOSS_STATUS_BLAST_SPLIT #ボスステータスを「爆発分離」にします
@@ -8115,16 +8141,16 @@ class App:
                     elif self.boss[i].status == BOSS_STATUS_BLAST_SPLIT:           #ボスステータスが「爆発分離」の処理
                          #ランダムな場所に爆発パターンを育成
                          new_explosion = Explosion()
-                         new_explosion.update(EXPLOSION_NORMAL,PRIORITY_FRONT,self.boss[i].posx + self.boss[i].width / 2 + randint(0,50) -25,self.boss[i].posy + self.boss[i].height / 2 + randint(0,20) -15,0,0,10,RETURN_BULLET_NONE,0,  1,1)
+                         new_explosion.update(EXPLOSION_NORMAL,PRIORITY_FRONT,self.boss[i].posx + self.boss[i].width / 2 + self.s_rndint(0,50) -25,self.boss[i].posy + self.boss[i].height / 2 + self.s_rndint(0,20) -15,0,0,10,RETURN_BULLET_NONE,0,  1,1)
                          self.explosions.append(new_explosion)
                          
                          #ボスの爆発破片3を育成 ホワイト系のスパーク
                          if self.boss[i].count2 % 3 == 0:
-                             self.update_append_particle(PARTICLE_BOSS_DEBRIS3,self.boss[i].posx + 30 + randint(0,30) -15 ,self.boss[i].posy + 10,(random()- 0.5) /2,random() * 2,12,0,0)
+                             self.update_append_particle(PARTICLE_BOSS_DEBRIS3,self.boss[i].posx + 30 + self.s_rndint(0,30) -15 ,self.boss[i].posy + 10,(random()- 0.5) /2,random() * 2,12,0,0)
 
                          #ボスの爆発破片4を育成 橙色系の落下する火花
                          if self.boss[i].count2 % 1 == 0:
-                             self.update_append_particle(PARTICLE_BOSS_DEBRIS4,self.boss[i].posx + 30 + randint(0,40) -20 ,self.boss[i].posy + 10,(random()- 0.5) /2,random() * 2,8,0,0)
+                             self.update_append_particle(PARTICLE_BOSS_DEBRIS4,self.boss[i].posx + 30 + self.s_rndint(0,40) -20 ,self.boss[i].posy + 10,(random()- 0.5) /2,random() * 2,8,0,0)
 
                          
                          self.boss[i].posx += self.boss[i].vx / 1.5
@@ -8242,7 +8268,7 @@ class App:
                          pyxel.play(3,11)
 
                          new_explosion = Explosion()
-                         new_explosion.update(EXPLOSION_NORMAL,PRIORITY_FRONT,self.boss[i].posx + self.boss[i].width / 2 + randint(0,50) -25,self.boss[i].posy + self.boss[i].height / 2 + randint(0,20) -15,0,0,10,RETURN_BULLET_NONE,0,  1,1)
+                         new_explosion.update(EXPLOSION_NORMAL,PRIORITY_FRONT,self.boss[i].posx + self.boss[i].width / 2 + self.s_rndint(0,50) -25,self.boss[i].posy + self.boss[i].height / 2 + self.s_rndint(0,20) -15,0,0,10,RETURN_BULLET_NONE,0,  1,1)
                          self.explosions.append(new_explosion)
 
                          self.boss[i].posx += self.boss[i].vx
@@ -8260,7 +8286,7 @@ class App:
                          pyxel.playm(1)
                          #ランダムな場所に爆発パターンを育成
                          new_explosion = Explosion()
-                         new_explosion.update(EXPLOSION_NORMAL,PRIORITY_FRONT,self.boss[i].posx + self.boss[i].width / 2 + randint(0,50) -25,self.boss[i].posy + self.boss[i].height / 2 + randint(0,20) -15,0,0,10,RETURN_BULLET_NONE,0,  1,1)
+                         new_explosion.update(EXPLOSION_NORMAL,PRIORITY_FRONT,self.boss[i].posx + self.boss[i].width / 2 + self.s_rndint(0,50) -25,self.boss[i].posy + self.boss[i].height / 2 + self.s_rndint(0,20) -15,0,0,10,RETURN_BULLET_NONE,0,  1,1)
                          self.explosions.append(new_explosion)
 
                          self.boss[i].status = BOSS_STATUS_BLAST_SPLIT #ボスステータスを「爆発分離」にします
@@ -8268,16 +8294,16 @@ class App:
                     elif self.boss[i].status == BOSS_STATUS_BLAST_SPLIT:           #ボスステータスが「爆発分離」の処理
                          #ランダムな場所に爆発パターンを育成
                          new_explosion = Explosion()
-                         new_explosion.update(EXPLOSION_NORMAL,PRIORITY_FRONT,self.boss[i].posx + self.boss[i].width / 2 + randint(0,50) -25,self.boss[i].posy + self.boss[i].height / 2 + randint(0,20) -15,0,0,10,RETURN_BULLET_NONE,0,  1,1)
+                         new_explosion.update(EXPLOSION_NORMAL,PRIORITY_FRONT,self.boss[i].posx + self.boss[i].width / 2 + self.s_rndint(0,50) -25,self.boss[i].posy + self.boss[i].height / 2 + self.s_rndint(0,20) -15,0,0,10,RETURN_BULLET_NONE,0,  1,1)
                          self.explosions.append(new_explosion)
                          
                          #ボスの爆発破片3を育成 ホワイト系のスパーク
                          if self.boss[i].count2 % 3 == 0:
-                             self.update_append_particle(PARTICLE_BOSS_DEBRIS3,self.boss[i].posx + 30 + randint(0,30) -15 ,self.boss[i].posy + 10,(random()- 0.5) /2,random() * 2,12,0,0)
+                             self.update_append_particle(PARTICLE_BOSS_DEBRIS3,self.boss[i].posx + 30 + self.s_rndint(0,30) -15 ,self.boss[i].posy + 10,(random()- 0.5) /2,random() * 2,12,0,0)
 
                          #ボスの爆発破片4を育成 橙色系の落下する火花
                          if self.boss[i].count2 % 1 == 0:
-                             self.update_append_particle(PARTICLE_BOSS_DEBRIS4,self.boss[i].posx + 30 + randint(0,40) -20 ,self.boss[i].posy + 10,(random()- 0.5) /2,random() * 2,8,0,0)
+                             self.update_append_particle(PARTICLE_BOSS_DEBRIS4,self.boss[i].posx + 30 + self.s_rndint(0,40) -20 ,self.boss[i].posy + 10,(random()- 0.5) /2,random() * 2,8,0,0)
 
                          
                          self.boss[i].posx += self.boss[i].vx / 1.5
@@ -8667,9 +8693,9 @@ class App:
          if self.present_repair_item_flag == 0: #ボーナスアイテムを出したフラグがまだ建っていないのなら
              #ボーナスアイテムを出現させる
              for _i in range(self.repair_shield):
-                    y = randint(30,80)
+                    y = self.s_rndint(30,80)
                     new_obtain_item = Obtain_item()
-                    new_obtain_item.update(ITEM_SHIELD_POWER_UP,WINDOW_W,y, 0.5+ (randint(0,1)-0.5)* 0.2,0 + (randint(0,4)-2) * 0.6,   SIZE_8,SIZE_8,   1,   0.9,  0.3,   0,0,  0.05,0,0,0,0,   0,0,1,  0,0,0, self.pow_item_bounce_num,0)
+                    new_obtain_item.update(ITEM_SHIELD_POWER_UP,WINDOW_W,y, 0.5+ (self.s_rndint(0,1)-0.5)* 0.2,0 + (self.s_rndint(0,4)-2) * 0.6,   SIZE_8,SIZE_8,   1,   0.9,  0.3,   0,0,  0.05,0,0,0,0,   0,0,1,  0,0,0, self.pow_item_bounce_num,0)
                     self.obtain_item.append(new_obtain_item)
              self.present_repair_item_flag = 1 #フラグを立ててもう出ないようにする
 
@@ -8680,7 +8706,7 @@ class App:
               #爆発パターンを背景スクロールに合わせて移動させる
               self.explosions[i].posx -= self.side_scroll_speed * 0.5#基本BGスクロールスピードは0.5、それと倍率扱いのside_scroll_speedを掛け合わせてスクロールと同じように移動させてやる（地面スクロールに引っ付いた状態で爆発してるように見せるため）           
               self.explosions[i].explosion_count -= 1#爆発育成時に設定したカウントを1減らす
-              fire_rnd = randint(0,100)
+              fire_rnd = self.s_rndint(0,100)
               if     self.explosions[i].explosion_count == 9\
                    and self.stage_loop * ALL_STAGE_NUMBER + self.stage_number >= self.return_bullet_start_loop * ALL_STAGE_NUMBER + self.return_bullet_start_stage\
                    and fire_rnd <= self.return_bullet_probability: 
@@ -8708,7 +8734,7 @@ class App:
               if self.explosions[i].explosion_type == EXPLOSION_MIDDLE: #中間サイズの爆発パターンの場合は
                   #1フレームごとに通常爆発パターンを追加発生させる
                   new_explosion = Explosion()
-                  new_explosion.update(EXPLOSION_NORMAL,PRIORITY_FRONT,self.explosions[i].posx + 4 + randint(0,24)-12,self.explosions[i].posy + 4 + randint(0,12)-6,0,0,10,RETURN_BULLET_NONE,0,  1,1)
+                  new_explosion.update(EXPLOSION_NORMAL,PRIORITY_FRONT,self.explosions[i].posx + 4 + self.s_rndint(0,24)-12,self.explosions[i].posy + 4 + self.s_rndint(0,12)-6,0,0,10,RETURN_BULLET_NONE,0,  1,1)
                   self.explosions.append(new_explosion)
 
               if self.explosions[i].explosion_count == 0: #カウントが0の時は....
@@ -8719,7 +8745,7 @@ class App:
           if len(self.particle) < 1000: #パーティクルの総数が1000以下なら追加発生させる
                if particle_type == PARTICLE_DOT or particle_type == PARTICLE_CIRCLE: #ドットパーティクル 円形パーティクルの追加
                     new_particle = Particle()
-                    new_particle.update(particle_type, x+4,y+4,    randint(0,1),     random() * 2 - 0.5 + dx,    random() * 2 - 1 + dy,   randint(5,20), 0,  randint(1,14))
+                    new_particle.update(particle_type, x+4,y+4,    self.s_rndint(0,1),     random() * 2 - 0.5 + dx,    random() * 2 - 1 + dy,   self.s_rndint(5,20), 0,  self.s_rndint(1,14))
                     self.particle.append(new_particle)
                
                elif particle_type == PARTICLE_LINE: #ラインパーティクル（線状の尾を引くようなパーティクルです）
@@ -8828,13 +8854,13 @@ class App:
      def update_append_cloud(self):
          if (pyxel.frame_count % self.cloud_append_interval) == 0 and self.display_cloud_flag == 1: #表示インタバールが0になった&表示フラグがonだったのなら
              if self.cloud_quantity == 0: #雲の量が0の時は「雲小」のみ表示する
-                 t = randint(BG_OBJ_CLOUD1,BG_OBJ_CLOUD10)
+                 t = self.s_rndint(BG_OBJ_CLOUD1,BG_OBJ_CLOUD10)
              elif self.cloud_quantity == 1: #雲の量が1の時は「雲小～中」まで表示する
-                 t = randint(BG_OBJ_CLOUD1,BG_OBJ_CLOUD18)
+                 t = self.s_rndint(BG_OBJ_CLOUD1,BG_OBJ_CLOUD18)
              elif self.cloud_quantity == 2: #雲の量が2の時は「雲小～中～大」まで表示する
-                 t = randint(BG_OBJ_CLOUD1,BG_OBJ_CLOUD21)
+                 t = self.s_rndint(BG_OBJ_CLOUD1,BG_OBJ_CLOUD21)
              
-             y = randint(0,120+30)
+             y = self.s_rndint(0,120+30)
                     
              new_background_object = Background_object()
              new_background_object.update(t, 160+10,y,  0,    1.009,1,0,0,0,0,0,0,   -3*self.cloud_flow_speed,self.cloud_how_flow,  0,0,   0,0,0,0,0,   0,0,0, 0,0,0,  0,0,0)
@@ -9002,7 +9028,7 @@ class App:
           stars_count = len(self.stars)
           for i in range(stars_count):
                pyxel.pset(self.stars[i].posx, self.stars[i].posy,self.stars[i].posx  // 4 % 15) 
-               #pyxel.pset(self.stars[i].posx, self.stars[i].posy,randint(0,7)) 
+               #pyxel.pset(self.stars[i].posx, self.stars[i].posy,self.s_rndint(0,7)) 
      
      #敵の表示
      def draw_enemy(self):
@@ -9917,6 +9943,8 @@ class App:
           self.s_rnd()#線形合同法による乱数関数の呼び出し
           rd_num = "{:>6}".format(str(self.rnd_seed))
           pyxel.text(136,120-29,rd_num,3)
+          
+          pyxel.text(0,120-39,str(self.s_rndint(10,600)),8)
 
      #BGチップデータ書き換えアニメーション実装のために作ったダミーテスト関数 画面左から2列目の縦1列を取得し、そのＢＧデータを画面左端1列目に表示する
      def draw_dummy_put_bg_xy(self):
@@ -10018,7 +10046,7 @@ class App:
           self.star_scroll_speed -= 0.01 #ポーズをかけると星のスクロールスピードの倍率を毎フレームごと0.01減らしていく
           if self.star_scroll_speed < 0:
                self.star_scroll_speed = 0 #0以下になったら強制的に0を代入
-          #a=randint(0,100)
+          #a=self.s_rndint(0,100)
           #if a == 0:
           pyxel.text(0, 62, "The space-time interference system still",7)
           pyxel.text(0, 70, "  seems to take a long time to work on",7)
