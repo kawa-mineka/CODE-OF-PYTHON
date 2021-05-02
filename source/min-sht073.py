@@ -770,10 +770,10 @@ class Claw:#クローのクラス設定
         self.roll_vy = 0
         self.fix_vx = 0
         self.fix_vy = 0
-
+        
         self.reverse_vx = 0
         self.reverse_vy = 0
-
+        
         self.offset_x = 0#クローの現時点での座標オフセット値
         self.offset_y = 0
         self.offset_roll_x = 0      #ローリングクローの処理開始の座標（オフセット値）
@@ -887,7 +887,7 @@ class Enemy:#敵キャラ達のクラス設定
         self.offset_p3y = 0
         self.offset_p4x = 0 #パーツ4のオフセット座標値(p4x,p4y)
         self.offset_p4y = 0
-
+        
         self.ax = 0 #移動元の座標
         self.ay = 0
         self.bx = 0 #予約座標1
@@ -901,7 +901,7 @@ class Enemy:#敵キャラ達のクラス設定
         self.vx = 0 #敵の速度ベクトル(vx,vy)
         self.vy = 0
         
-
+        
         self.o1x = 0 #移動元の座標1(origin1_x,y)(リストを使わずにインスタンス育成時に座標を指定してベジェ曲線移動するときに使うメンバ変数)とりあえず5点まで移動できるように変数を確保してます
         self.o1y = 0 
         self.d1x = 0 #移動先の座標1(destination1_x,y)
@@ -909,7 +909,7 @@ class Enemy:#敵キャラ達のクラス設定
         self.q1x = 0 #2次ベジェ曲線の制御点q1として使用
         self.q1y = 0
         self.a1  = 0 #加速度(acceleration1)
-
+        
         self.o2x = 0 #移動元の座標2(origin2_x,y)
         self.o2y = 0 
         self.d2x = 0 #移動先の座標2(destination2_x,y)
@@ -941,7 +941,7 @@ class Enemy:#敵キャラ達のクラス設定
         self.q5x = 0 #2次ベジェ曲線の制御点q5として使用
         self.q5y = 0
         self.a5  = 0 #加速度(acceleration5)      
-
+        
         self.width = 0  #敵の横幅
         self.height = 0 #敵の縦幅
         self.move_speed       = 0 #敵の全体的な移動スピード
@@ -985,7 +985,7 @@ class Enemy:#敵キャラ達のクラス設定
             offset_p4x,offset_p4y,
             ax,ay,bx,by,cx,cy,dx,dy,qx,qy,
             vx, vy,
-
+            
             o1x,o1y,d1x,d1y,q1x,q1y,a1,
             o2x,o2y,d2x,d2y,q2x,q2y,a2,
             o3x,o3y,d3x,d3y,q3x,q3y,a3,
@@ -1000,7 +1000,7 @@ class Enemy:#敵キャラ達のクラス設定
             enemy_size,
             enemy_count1, enemy_count2, enemy_count3,
             parts1_flag,parts2_flag,parts3_flag,parts4_flag,
-
+            
             item,formation_id,
             timer,speed,intensity,
             acceleration,
@@ -1035,7 +1035,7 @@ class Enemy:#敵キャラ達のクラス設定
         self.qy = qy
         self.vx = vx
         self.vy = vy
-
+        
         self.o1x = o1x
         self.o1y = o1y 
         self.d1x = d1x
@@ -1059,7 +1059,7 @@ class Enemy:#敵キャラ達のクラス設定
         self.q3x = q3x
         self.q3y = q3y
         self.a3  = a3
-
+        
         self.o4x = o4x
         self.o4y = o4y 
         self.d4x = d4x
@@ -1163,10 +1163,10 @@ class Boss:#ボスキャラのクラス設定
         
         self.col_damage_point2_x,self.col_damage_point2_y = 0,0 #ボスの弱点位置2 始点x,y座標
         self.col_damage_point2_w,self.col_damage_point2_h = 0,0 #    弱点位置2 横の長さ,縦の長さ w=0の場合は当たり判定として使用しない
-
+        
         self.col_damage_point3_x,self.col_damage_point3_y = 0,0 #ボスの弱点位置3 始点x,y座標
         self.col_damage_point3_w,self.col_damage_point3_h = 0,0 #    弱点位置3 横の長さ,縦の長さ w=0の場合は当たり判定として使用しない
-
+        
         self.col_damage_point4_x,self.col_damage_point4_y = 0,0 #ボスの弱点位置3 始点x,y座標
         self.col_damage_point4_w,self.col_damage_point4_h = 0,0 #    弱点位置3 横の長さ,縦の長さ w=0の場合は当たり判定として使用しない
         
@@ -1174,42 +1174,42 @@ class Boss:#ボスキャラのクラス設定
         self.col_main1_y = 0 #             始点y          
         self.col_main1_w = 0 #            横の長さ 横の長さが0の場合は当たり判定として使用しない
         self.col_main1_h = 0 #            縦の長さ
-
+        
         self.col_main2_x = 0 #本体2当たり判定の始点x
         self.col_main2_y = 0 #             始点y          
         self.col_main2_w = 0 #            横の長さ 横の長さが0の場合は当たり判定として使用しない
         self.col_main2_h = 0 #            縦の長さ
-
+        
         self.col_main3_x = 0 #本体3当たり判定の始点x
         self.col_main3_y = 0 #             始点y          
         self.col_main3_w = 0 #            横の長さ 横の長さが0の場合は当たり判定として使用しない
         self.col_main3_h = 0 #            縦の長さ
-
+        
         self.col_main4_x = 0 #本体4当たり判定の始点x
         self.col_main4_y = 0 #             始点y          
         self.col_main4_w = 0 #            横の長さ 横の長さが0の場合は当たり判定として使用しない
         self.col_main4_h = 0 #            縦の長さ
-
+        
         self.col_main5_x = 0 #本体5当たり判定の始点x
         self.col_main5_y = 0 #             始点y          
         self.col_main5_w = 0 #            横の長さ 横の長さが0の場合は当たり判定として使用しない
         self.col_main5_h = 0 #            縦の長さ
-
+        
         self.col_main6_x = 0 #本体6当たり判定の始点x
         self.col_main6_y = 0 #             始点y          
         self.col_main6_w = 0 #            横の長さ 横の長さが0の場合は当たり判定として使用しない
         self.col_main6_h = 0 #            縦の長さ
-
+        
         self.col_main7_x = 0 #本体7当たり判定の始点x
         self.col_main7_y = 0 #             始点y          
         self.col_main7_w = 0 #            横の長さ 横の長さが0の場合は当たり判定として使用しない
         self.col_main7_h = 0 #            縦の長さ
-
+        
         self.col_main8_x = 0 #本体8当たり判定の始点x
         self.col_main8_y = 0 #             始点y          
         self.col_main8_w = 0 #            横の長さ 横の長さが0の場合は当たり判定として使用しない
         self.col_main8_h = 0 #            縦の長さ
-
+        
         
         self.col_parts1_x = 0 #パーツ1当たり判定の始点x
         self.col_parts1_y = 0 #パーツ1当たり判定の始点y          
@@ -1230,7 +1230,7 @@ class Boss:#ボスキャラのクラス設定
         self.col_parts4_y = 0 #パーツ4当たり判定の始点y          
         self.col_parts4_w = 0 #パーツ4当たり判定(横の長さ）
         self.col_parts4_h = 0 #パーツ4当たり判定(縦の長さ)
-
+        
         self.col_parts5_x = 0 #パーツ5当たり判定の始点x
         self.col_parts5_y = 0 #パーツ5当たり判定の始点y          
         self.col_parts5_w = 0 #パーツ5当たり判定(横の長さ）
@@ -1250,14 +1250,14 @@ class Boss:#ボスキャラのクラス設定
         self.col_parts8_y = 0 #パーツ8当たり判定の始点y          
         self.col_parts8_w = 0 #パーツ8当たり判定(横の長さ）
         self.col_parts8_h = 0 #パーツ8当たり判定(縦の長さ)
-
+        
         self.col_parts9_x = 0 #パーツ9当たり判定の始点x
         self.col_parts9_y = 0 #パーツ9当たり判定の始点y          
         self.col_parts9_w = 0 #パーツ9当たり判定(横の長さ）
         self.col_parts9_h = 0 #パーツ9当たり判定(縦の長さ)
-
+        
         self.main_hp_bar_offset_x,  self.main_hp_bar_offset_y   = 0,0 #本体のHPバーを表示する座標のオフセット値
-
+        
         self.parts1_hp_bar_offset_x,self.parts1_hp_bar_offset_y = 0,0 #パーツ1のHPバーを表示する座標のオフセット値
         self.parts2_hp_bar_offset_x,self.parts2_hp_bar_offset_y = 0,0 #パーツ2のHPバーを表示する座標のオフセット値
         self.parts3_hp_bar_offset_x,self.parts3_hp_bar_offset_y = 0,0 #パーツ3のHPバーを表示する座標のオフセット値
@@ -1322,7 +1322,7 @@ class Boss:#ボスキャラのクラス設定
             parts4_score,parts5_score,parts6_score,
             parts7_score,parts8_score,parts9_score,
             level,
-
+            
             weapon1_status,weapon1_interval,weapon1_rapid_num,weapon1_cool_down_time,weapon1_omen_count,
             weapon2_status,weapon2_interval,weapon2_rapid_num,weapon2_cool_down_time,weapon2_omen_count,
             weapon3_status,weapon3_interval,weapon3_rapid_num,weapon3_cool_down_time,weapon3_omen_count,
@@ -1344,7 +1344,7 @@ class Boss:#ボスキャラのクラス設定
             col_main6_x ,col_main6_y ,col_main6_w ,col_main6_h,
             col_main7_x ,col_main7_y ,col_main7_w ,col_main7_h,
             col_main8_x ,col_main8_y ,col_main8_w ,col_main8_h,
-
+            
             col_parts1_x,col_parts1_y,col_parts1_w,col_parts1_h,
             col_parts2_x,col_parts2_y,col_parts2_w,col_parts2_h,
             col_parts3_x,col_parts3_y,col_parts3_w,col_parts3_h,
@@ -1354,9 +1354,9 @@ class Boss:#ボスキャラのクラス設定
             col_parts7_x,col_parts7_y,col_parts7_w,col_parts7_h,
             col_parts8_x,col_parts8_y,col_parts8_w,col_parts8_h,
             col_parts9_x,col_parts9_y,col_parts9_w,col_parts9_h,
-
+            
             main_hp_bar_offset_x,main_hp_bar_offset_y,
-
+            
             parts1_hp_bar_offset_x,parts1_hp_bar_offset_y,
             parts2_hp_bar_offset_x,parts2_hp_bar_offset_y,
             parts3_hp_bar_offset_x,parts3_hp_bar_offset_y,
@@ -1366,7 +1366,7 @@ class Boss:#ボスキャラのクラス設定
             parts7_hp_bar_offset_x,parts7_hp_bar_offset_y,
             parts8_hp_bar_offset_x,parts8_hp_bar_offset_y,
             parts9_hp_bar_offset_x,parts9_hp_bar_offset_y,
-
+            
             size,priority,attack_method,direction,acceleration,timer,degree,radian,speed,radius,
             flag1,flag2,flag3,flag4,
             count1,count2,count3,count4,
@@ -1406,7 +1406,7 @@ class Boss:#ボスキャラのクラス設定
         self.parts8_score = parts8_score
         self.parts9_score = parts9_score
         self.level = level
-
+        
         self.weapon1_status        = weapon1_status
         self.weapon1_interval      = weapon1_interval
         self.weapon1_rapid_num     = weapon1_rapid_num
@@ -1460,17 +1460,17 @@ class Boss:#ボスキャラのクラス設定
         self.col_damage_point1_y = col_damage_point1_y
         self.col_damage_point1_w = col_damage_point1_w
         self.col_damage_point1_h = col_damage_point1_h
-
+        
         self.col_damage_point2_x = col_damage_point2_x
         self.col_damage_point2_y = col_damage_point2_y
         self.col_damage_point2_w = col_damage_point2_w
         self.col_damage_point2_h = col_damage_point2_h
-
+        
         self.col_damage_point3_x = col_damage_point3_x
         self.col_damage_point3_y = col_damage_point3_y
         self.col_damage_point3_w = col_damage_point3_w
         self.col_damage_point3_h = col_damage_point3_h
-
+        
         self.col_damage_point4_x = col_damage_point4_x
         self.col_damage_point4_y = col_damage_point4_y
         self.col_damage_point4_w = col_damage_point4_w
@@ -1480,7 +1480,7 @@ class Boss:#ボスキャラのクラス設定
         self.col_main1_y = col_main1_y
         self.col_main1_w = col_main1_w
         self.col_main1_h = col_main1_h
-
+        
         self.col_main2_x = col_main2_x
         self.col_main2_y = col_main2_y
         self.col_main2_w = col_main2_w
@@ -1495,7 +1495,7 @@ class Boss:#ボスキャラのクラス設定
         self.col_main4_y = col_main4_y
         self.col_main4_w = col_main4_w
         self.col_main4_h = col_main4_h
-
+        
         self.col_main5_x = col_main5_x
         self.col_main5_y = col_main5_y
         self.col_main5_w = col_main5_w
@@ -1520,7 +1520,7 @@ class Boss:#ボスキャラのクラス設定
         self.col_parts1_y = col_parts1_y
         self.col_parts1_w = col_parts1_w
         self.col_parts1_h = col_parts1_h
-
+        
         self.col_parts2_x = col_parts2_x
         self.col_parts2_y = col_parts2_y
         self.col_parts2_w = col_parts2_w
@@ -1535,12 +1535,12 @@ class Boss:#ボスキャラのクラス設定
         self.col_parts4_y = col_parts4_y
         self.col_parts4_w = col_parts4_w
         self.col_parts4_h = col_parts4_h
-
+        
         self.col_parts5_x = col_parts5_x
         self.col_parts5_y = col_parts5_y
         self.col_parts5_w = col_parts5_w
         self.col_parts5_h = col_parts5_h
-
+        
         self.col_parts6_x = col_parts6_x
         self.col_parts6_y = col_parts6_y
         self.col_parts6_w = col_parts6_w
@@ -1555,18 +1555,18 @@ class Boss:#ボスキャラのクラス設定
         self.col_parts8_y = col_parts8_y
         self.col_parts8_w = col_parts8_w
         self.col_parts8_h = col_parts8_h
-
+        
         self.col_parts9_x = col_parts9_x
         self.col_parts9_y = col_parts9_y
         self.col_parts9_w = col_parts9_w
         self.col_parts9_h = col_parts9_h
-
+        
         self.main_hp_bar_offset_x = main_hp_bar_offset_x  
         self.main_hp_bar_offset_y = main_hp_bar_offset_y
-
+        
         self.parts1_hp_bar_offset_x = parts1_hp_bar_offset_x
         self.parts1_hp_bar_offset_y = parts1_hp_bar_offset_y
-
+        
         self.parts2_hp_bar_offset_x = parts2_hp_bar_offset_x
         self.parts2_hp_bar_offset_y = parts2_hp_bar_offset_y
         
@@ -1575,10 +1575,10 @@ class Boss:#ボスキャラのクラス設定
         
         self.parts4_hp_bar_offset_x = parts4_hp_bar_offset_x
         self.parts4_hp_bar_offset_y = parts4_hp_bar_offset_y
-
+        
         self.parts5_hp_bar_offset_x = parts5_hp_bar_offset_x
         self.parts5_hp_bar_offset_y = parts5_hp_bar_offset_y
-
+        
         self.parts6_hp_bar_offset_x = parts6_hp_bar_offset_x
         self.parts6_hp_bar_offset_y = parts6_hp_bar_offset_y
         
@@ -1587,10 +1587,10 @@ class Boss:#ボスキャラのクラス設定
         
         self.parts8_hp_bar_offset_x = parts8_hp_bar_offset_x
         self.parts8_hp_bar_offset_y = parts8_hp_bar_offset_y
-
+        
         self.parts9_hp_bar_offset_x = parts9_hp_bar_offset_x
         self.parts9_hp_bar_offset_y = parts9_hp_bar_offset_y
-
+        
         self.size = size
         self.priority = priority
         self.attack_method = attack_method
@@ -1825,42 +1825,42 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         self.window_status = 0
         self.window_title = ""
         self.window_title_flag = 0
-
+        
         self.mes1 = ""
         self.mes1_flag = 0
         self.mes1_ox = 0
         self.mes1_color = 0
-
+        
         self.mes2 = ""
         self.mes2_flag = 0
         self.mes2_ox = 0
         self.mes2_color = 0
-
+        
         self.mes3 = ""
         self.mes3_flag = 0
         self.mes3_ox = 0
         self.mes3_color = 0
-
+        
         self.mes4 = ""
         self.mes4_flag = 0
         self.mes4_ox = 0
         self.mes4_color = 0
-
+        
         self.mes5 = ""
         self.mes5_flag = 0
         self.mes5_ox = 0
         self.mes5_color = 0
-
+        
         self.mes6 = ""
         self.mes6_flag = 0
         self.mes6_ox = 0
         self.mes6_color = 0
-
+        
         self.mes7 = ""
         self.mes7_flag = 0
         self.mes7_ox = 0
         self.mes7_color = 0
-
+        
         self.posx = 0
         self.posy = 0
         self.width = 0
@@ -1890,43 +1890,43 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         self.window_status = window_status
         self.window_title = window_title
         self.window_title_flag = window_title_flag
-
+        
         self.mes1 = mes1
         self.mes1_flag = mes1_flag
         self.mes1_ox = mes1_ox
         self.mes1_color = mes1_color
-
+        
         self.mes2 = mes2
         self.mes2_flag = mes2_flag
         self.mes2_ox = mes2_ox
         self.mes2_color = mes2_color
-
+        
         self.mes3 = mes3
         self.mes3_flag = mes3_flag
         self.mes3_ox = mes3_ox
         self.mes3_color = mes3_color
-
+        
         self.mes4 = mes4
         self.mes4_flag = mes4_flag
         self.mes4_ox = mes4_ox
         self.mes4_color = mes4_color
-
+        
         self.mes5 = mes5
         self.mes5_flag = mes5_flag
         self.mes5_ox = mes5_ox
         self.mes5_color = mes5_color
-
+        
         self.mes6 = mes6
         self.mes6_flag = mes6_flag
         self.mes6_ox = mes6_ox
         self.mes6_color = mes6_color
-
+        
         self.mes7 = mes7
         self.mes7_flag = mes7_flag
         self.mes7_ox = mes7_ox
         self.mes7_color = mes7_color
-
-
+        
+        
         self.posx = x
         self.posy = y
         self.width = width
@@ -2082,8 +2082,6 @@ class System_data: #ゲーム関連のシステムデータ関連のクラス設
                                                                         #例 J_PYTHONはIDナンバー0なので リスト先頭の1番目の数値となる  (0始まりなので)
                                                                         #   FIRST_BASICはIDナンバー8なのでリスト先頭の9番目の数値となる(0始まりなので)
 class App:
-    
-    
     ##########################################################################################################################################
     #関数を定義沢山定義するところだよ############################################################################################################
     #なんかpythonではこのあたり（Appクラスの __init__関数定義が終わったあたり）で定義しないとエラーが出るらしい
@@ -2092,14 +2090,14 @@ class App:
     def __init__(self):
         pygame.mixer.init()  #pygameミキサー関連の初期化 pyxel.initよりも先にpygameをinitしないと上手く動かないみたい・・・
         pyxel.init(WINDOW_W,WINDOW_H,caption="mineka shooting game",fps=60) #ゲームウィンドウのタイトルバーの表示とfpsの設定(60fpsにした)
-
+        
         self.load_system_data()        #システムデータをロードする関数の呼び出し
         pyxel.mouse(False)            #マウスカーソルを非表示にする
         self.bg_cls_color = 0          #BGをCLS(クリアスクリーン)するときの色の指定(通常は0=黒色です)
         self.bg_transparent_color = 0    #BGタイルマップを敷き詰めるときに指定する透明色です
-
+        
         self.rnd_seed = 0             #線形合同法で使用する乱数の種を初期化します
-
+        
         #ゲーム中で絶対に変化することのないリスト群はここで作成します#######################################
         #サブウェポンセレクターカーソルなどで使用する点滅用カラーリスト群(pyxelのカラーナンバーだよ)
         self.blinking_color        = [0,1,5,12, 6,7,6,12,5,1]
@@ -2108,10 +2106,10 @@ class App:
         self.yellow_flash_color    = [0,2,4,9,9,10,9,9,4,2,0]
         self.monochrome_flash_color = [0,0,1,5,12,13,15,7,7,15,13,12,5,1,0]
         self.rainbow_flash_color    = [3,4,5,6,7,8,9,10,11,12,13,14,15,1,2]
-
+        
         #サブウェポンアイテムの外を回っている四角形描画で使用するための「おっきくなったり、ちいさくなったりするオフセット数値」のリスト群(単位はドット)
         self.expansion_shrink_number = [1,1,1,2,2,2,3,3,3,4,   4,5,5,6,6,7,8,9,10,9,   8,7,6,6,5,5,4,4,3,3,   3,2,2,2,1,1,1,1,1,1,1,1]
-
+        
         #いきなり美咲フォントコードテーブルを直接代入という破天荒なコード・・・・
         self.font_code_table = (
             "　、。,.・:;?!゛゜´`¨^‾_ヽヾゝゞ〃仝々〆〇ー—‐/\〜‖|…‥‘’“”()〔〕[]{}〈〉《》「」『』【】+−±×÷=≠<>≦≧∞∴♂♀°′″℃¥$¢£%#&*@§☆★○●◎◇\n"
@@ -2248,9 +2246,9 @@ class App:
         #敵17用
         self.enemy_move_data17 = [
             [ 160, 10,    160,  120,    20,  60,    240,   1.0,1.01,   ENEMY_ATTACK_NO_FIRE],
-
+            
             [9999],]
-
+        
         #敵の移動データリスト(タイプナンバーの並びで各リストへ渡すテーブルリストとなっています)(意味不明な日本語・・・自分でも言ってる意味が分からない）
         self.enemy_move_data_list = [[ 0,self.enemy_move_data_dummy],[ 1,self.enemy_move_data_dummy],[ 2,self.enemy_move_data_dummy],
                                 [ 3,self.enemy_move_data_dummy],[ 4,self.enemy_move_data_dummy],[ 5,self.enemy_move_data_dummy],
@@ -2295,7 +2293,7 @@ class App:
             RASTER_SCROLL_ON,
             DISP_ON,DISP_ON,DISP_ON,
             SPARK_ON],
-
+            
             [STAGE_ADVANCE_BASE,   88 ,IMG0,
             SCROLL_TYPE_TRIPLE_SCROLL_AND_STAR    ,STAR_SCROLL_ON,
             RASTER_SCROLL_OFF,
@@ -2458,7 +2456,7 @@ class App:
         #   [機体名,     機体分類,        移動スピードの倍率,最大移動スピード,最大ショット経験値,最大ミサイル経験値,最大クロー数,メダルスロット数]
         self.my_ship_data_list = [
             [J_PYTHON,    SHIP_FIRST_STEP,    1,            3,           71,             71,           2,          1,          ]
-
+        
             ]
         #ショットパワーアップテーブルのフォーマット
         #
@@ -2468,7 +2466,7 @@ class App:
         # 8個入手(24exp)で初期シングルショットバルカンからレーザー
         #更に8個入手(合計16個)(48exp)でレーザーからウェーブカッター
         #更に8個入手(合計24個)(72exp)でウェーブカッターLv4になる感じなのです
-
+        
         #Justice Pythonのショット・パワーアップテーブル表
         self.j_python_shot_table_list = [
             [0,  1,1, 1],[0,  1,2, 1],[0,1.1,2, 1],
@@ -2479,7 +2477,7 @@ class App:
             [2,1.3,3, 1],[2,1.3,3, 1],[2,1.3,3, 1],
             [3,1.3,3, 1],[3,1.3,3, 1],[3,1.4,3, 1],
             [3,1.4,3, 1],[3,1.4,3, 1],[3,1.5,3, 1],
-
+            
             [4,1.5,3, 1],[4,1.5,3, 1],[4,1.5,3, 1],
             [4,1.5,3, 1],[4,1.5,3, 1],[4,1.5,3, 1],
             [4,1.5,3, 1],[4,1.5,3, 1],[4,1.5,3, 1],
@@ -2488,7 +2486,7 @@ class App:
             [5,1.5,3, 1],[5,1.5,3, 1],[5,1.5,3, 1],
             [5,1.5,3, 1],[6,1.5,3, 1],[6,1.5,3, 1],
             [6,1.5,3, 1],[6,1.5,3, 1],[6,1.5,3, 1],
-
+            
             [ 7,1.2,3, 1],[ 7,1.2,3, 1],[ 7,1.2,3, 1],
             [ 7,1.3,3, 1],[ 7,1.3,3, 1],[ 7,1.3,3, 1],
             [ 8,1.3,2, 1],[ 8,1.3,3, 1],[ 8,1.3,2, 1],
@@ -2498,7 +2496,7 @@ class App:
             [10,1.4,2, 1],[10,1.4,2, 1],[10,1.5,2, 1],
             [10,1.5,2, 1],[10,1.5,2, 1],[10,1.5,3, 1],
             [99999],]
-
+        
         #ミサイルパワーアップテーブルのフォーマット
         #
         #x軸 [ミサイルレベル,ミサイルスピード(倍率),ミサイルの連射数,ミサイルの攻撃力(倍率)]
@@ -2517,7 +2515,7 @@ class App:
             [0,1.8,2, 1],[0,1.9,2, 1],[0,2.0,2, 1],
             [0,2.1,2, 1],[0,2.2,2, 1],[0,2.3,2, 1],
             [0,2.4,3, 1],[0,2.6,3, 1],[0,2.7,3, 1],
-
+            
             [1,1.9,2, 1],[1,1.9,2, 1],[1,1.9,2, 1],
             [1,2.0,2, 1],[1,2.0,2, 1],[1,2.1,2, 1],
             [1,2.1,2, 1],[1,2.2,2, 1],[1,2.2,2, 1],
@@ -2526,7 +2524,7 @@ class App:
             [1,2.5,2, 1],[1,2.5,2, 1],[1,2.5,2, 1],
             [1,2.5,2, 1],[1,2.6,2, 1],[1,2.7,2, 1],
             [1,2.7,2, 1],[1,2.8,3, 1],[1,2.9,3, 1],
-
+            
             [2,2.1,2, 1],[2,2.2,2, 1],[2,2.2,2, 1],
             [2,2.3,2, 1],[2,2.4,2, 1],[2,2.5,2, 1],
             [2,2.6,2, 1],[2,2.6,2, 1],[2,2.6,2, 1],
@@ -2641,7 +2639,7 @@ class App:
             
             
             ]
-
+        
         
         self.game_status = SCENE_IPL            #ゲームステータスを「IPL表示」にする
         #self.game_status = SCENE_GAME_START_INIT   #ゲームの状況ステータスを表してます（ゲームそのもの自体の状態遷移フラグとして使用します）
@@ -2663,7 +2661,7 @@ class App:
         self.text_console_scroll_counter = 0    #テキストコンソールでスクロールして画面上に消えて行った行数
         self.ipl_mes_write_line_num = 0        #スクリーンに表示したIPLメッセージデータの行数
         self.text_screen = []                #テキストスクリーン用のリストを初期化して使えるようにします
-
+        
         self.scroll_type = 0                  #スクロールの種類が入る変数を初期化
         self.game_playing_flag = 0             #ゲーム中なのか？それ以外の状態なのか？を示すフラグです 0=プレイ以外 1=プレイ中
         self.star_scroll_flag  = 0             #背景のスクロールする星々を表示するかのフラグを初期化
@@ -2675,14 +2673,14 @@ class App:
         #毎フレームごとにupdateとdrawを呼び出す
         pyxel.run(self.update,self.draw)#この命令でこれ以降は１フレームごとに自動でupdate関数とdraw関数が交互に実行されることとなります
                                         #近年のゲームエンジンはみんなこんな感じらしい？？？unityやUEもこんな感じなのかな？？使ったことないけど
-    
+
     #漢字フォントデータの読み込み
     def load_kanji_font_data(self):
-
+        
         pyxel.load("assets/fonts/misaki_font_k8x12s_001.pyxres") #漢字フォントデータ(その1)を読み込みます
         # self.kanji_fonts = [] #漢字フォントリストデータをまずは初期化して使えるようにします この方法だとダメだわ
         self.kanji_fonts = [[None for col in range(752)] for row in range(1128)] #横752,縦1128の空っぽの漢字フォントデータリストを作成します(Pythonクックブックで奨められている書き方ですのんって、判りにくいよなぁ・・これ)
-
+        
         for y in range(256): #左端A列のk8x12s_jisx0208___001a.pngを読みだしてフォントデータリストに書き込んでいきます 書き込みオフセット値は(0,0)
             for x in range(256):
                 col = pyxel.image(0).get(x,y)
@@ -2737,9 +2735,9 @@ class App:
             for x in range(752-512):
                 col = pyxel.image(2).get(x,y)
                 self.kanji_fonts[y+768][x+512] = col
-    
+        
         # print(self.kanji_fonts) #ターミナルにフォントデータの中身をプリント
-    
+
     #漢字テキストの表示
     def kanji_text(self,x,y,text,col):
         base_x,base_y = x,y
@@ -2748,11 +2746,12 @@ class App:
             if found >= 0 and char != '\n': #文字を見つけて尚且つ改行コードでないのなら漢字を描画し始めます
                 sy = self.font_code_table[:found].count('\n') #対応表のリストの先頭から改行コードの数を数えるとその数値がY座標となります
                 sx = self.font_code_table.split('\n')[sy].find(char)
-
+                
                 for i in range(8): #漢字フォントの横ドット数8
                     for j in range(12): #漢字フォントの縦ドット数12
                         if self.kanji_fonts[(sy-1)*12+j][sx*8+i] == 7: #フォントのデータは 0=黒が透明で 7=白が描画する点なので色コードが7だったらpsetで点を打ちます
                             pyxel.pset(x+i,y+j,col)
+                
                 x += 8
                 if char == '\n':
                     x = base_x
@@ -2768,7 +2767,7 @@ class App:
             num += n * a
             a = a * 10
         return(num)
-    
+
     #システムデータへの数値書き込み
     def write_system_data_num(self,x,y,digit,num): #x,yは1の位の座標です digitは桁数 numは書き込む数値です(整数を推奨)
         a = 10
@@ -2809,7 +2808,7 @@ class App:
         h = hour_1000 * 1000 + hour_100 * 100 + hour_10 * 10 + hour_1
         t_sec = h * 3600 + m * 60 + s
         self.total_game_playtime_seconds = t_sec
-
+        
         #総開発テスト時間(分)を計算する
         min_1  = pyxel.tilemap(0).get(7,3) - 16 #分の  1の位取得
         min_10 = pyxel.tilemap(0).get(6,3) - 16 #分の  10の位取得
@@ -2822,7 +2821,7 @@ class App:
         h = hour_10000 * 10000 + hour_1000 * 1000 + hour_100 * 100 + hour_10 * 10 + hour_1
         t_min = h * 60 + m
         self.total_development_testtime_min = t_min
-
+        
         #デバッグモード＆ゴッドモード用のフラグやパラメーターの初期化とか宣言はこちらで行うようにします
         #debug_menu_status                  #デバッグパラメータの表示ステータス
                                             #0=表示しない 1=フル表示タイプ 2=簡易表示タイプ
@@ -2840,9 +2839,9 @@ class App:
                                             #0=マップスクロールによって敵が発生します
                                             #1=                    発生しません        
         self.no_enemy_mode                = (pyxel.tilemap(0).get(0,130)) - 16
-
-        # self.test_read_num = self.read_system_data_num(15,156,16) #数値の読み取りテストです
         
+        # self.test_read_num = self.read_system_data_num(15,156,16) #数値の読み取りテストです
+
     #システムデータのセーブ
     def save_system_data(self):
         pyxel.load("assets/system/system-data.pyxres") #システムデータにアクセスするためにローディングだけしてやります(グラフイック関連のアセットをローディングしている時がほとんどなので)
@@ -2855,7 +2854,7 @@ class App:
         pyxel.tilemap(0).set(0,128,self.bg_collision_Judgment_flag + 16)     #BGとの当たり判定フラグ書き込み
         pyxel.tilemap(0).set(0,129,self.boss_test_mode + 16)               #ボステストモードフラグ書き込み
         pyxel.tilemap(0).set(0,130,self.no_enemy_mode + 16)                #敵が出ないモードフラグ書き込み
-
+        
         #総ゲームプレイ時間(秒)のそれぞれの桁の数値を計算する (自分でも訳が分からないよ・・・)------------------------------
         t_sec = self.total_game_playtime_seconds
         se = t_sec % 60       #se 秒は 総秒数を60で割った余り
@@ -2879,7 +2878,7 @@ class App:
         pyxel.tilemap(0).set(2,5,hour_10 + 16) #時の   10の位を書き込む
         pyxel.tilemap(0).set(1,5,hour_100 + 16) #時の   100の位を書き込む
         pyxel.tilemap(0).set(0,5,hour_1000 + 16) #時の   1000の位を書き込む
-
+        
         #総開発テストプレイ時間(分)を計算します------------------------------------------------------
         self.total_development_testtime_min += self.one_game_playtime_seconds // 60 #今プレイしているゲームの時間(分)を総ゲームテスト時間に加算
         t_dev_min = self.total_development_testtime_min
@@ -2901,18 +2900,18 @@ class App:
         pyxel.tilemap(0).set(2,3,hour_100 + 16) #時の   100の位を書き込む
         pyxel.tilemap(0).set(1,3,hour_1000 + 16) #時の   1000の位を書き込む
         pyxel.tilemap(0).set(0,3,hour_10000 + 16) #時の   10000の位を書き込む
-
+        
         self.write_system_data_num(16,152,16,8777992360588341)   #!############################ test write
-
+        
         pyxel.save("assets/system/system-data.pyxres") #システムデータを書き込み
-    
+
     #自機との距離を求める関数定義
     def to_my_ship_distance(self,x,y):
         dx = x - self.my_x
         dy = y - self.my_y
         distance = math.sqrt(dx * dx + dy * dy)
         return(distance)   #最初この行を return(self,distance)って記述しててエラーが出て、どうやったら良いのかわかんなかった・・・この場合はタプルになるらしい！？(良く判るって無いｗ)
-    
+
     #狙い撃ち弾を射出する関数定義 
     def enemy_aim_bullet(self,ex,ey,div_type,div_count,div_num,stop_count,accel):
         if len(self.enemy_shot) < 800:
@@ -2937,7 +2936,7 @@ class App:
             return
         else:
             self.enemy_aim_bullet(ex,ey,div_type,div_count,div_num,stop_count,accel)
-        
+
     #前方3way弾を射出する関数定義 
     def enemy_forward_3way_bullet(self,ex,ey):
         if len(self.enemy_shot) < 800:
@@ -2957,11 +2956,11 @@ class App:
     def enemy_forward_5way_bullet(self,ex,ey):
         if len(self.enemy_shot) < 800:
             self.enemy_forward_3way_bullet(ex,ey) #まずは前方3way弾を射出
-
+            
             new_enemy_shot = Enemy_shot()
             new_enemy_shot.update(ENEMY_SHOT_NORMAL,ID00,ex,ey,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8,0,0,-1*0.9,0.2,    1,1,1,1,0,0,1,0,0,0,0,PRIORITY_FRONT,0,0,0,0,0,0, 0,0, 0, 0,0, 0, 0,0, 0,0,   0,0)
             self.enemy_shot.append(new_enemy_shot)
-
+            
             new_enemy_shot = Enemy_shot()
             new_enemy_shot.update(ENEMY_SHOT_NORMAL,ID00,ex,ey,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8,0,0,-1*0.9,-0.2,    1,1,1,1,0,0,1,0,0,0,0,PRIORITY_FRONT,0,0,0,0,0,0, 0,0, 0, 0,0, 0, 0,0, 0,0,   0,0)
             self.enemy_shot.append(new_enemy_shot)
@@ -2982,14 +2981,14 @@ class App:
                 #敵と自機との距離とx座標、y座標との差から中心の基本速度ベクトル(cvx,cvx)を計算するcentralvx,centralvy
                 cvx = ((self.my_x - ex) / (d * 1))
                 cvy = ((self.my_y - ey) / (d * 1))
-
+                
                 if n % 2 == 1:
                     #奇数弾の処理#######3way弾とか5way弾とか7way弾とか##################################
                     #まず最初に中央の弾を発射する
                     new_enemy_shot = Enemy_shot()
                     new_enemy_shot.update(ENEMY_SHOT_NORMAL,ID00,ex,ey,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8,0,0,cvx,cvy,  1,1,1,1,1,0,1,0,0,0,stop_count,PRIORITY_FRONT,0,0,0,0,0,0, div_type,div_count, 0, div_count,div_num, 0, 0,0, 0,0,   0,0)
                     self.enemy_shot.append(new_enemy_shot)#敵弾リストに中央狙い弾の情報を書き込む
-
+                    
                     for i in range((n+1) // 2):
                         #時計回り方向に i*(theta*n)度 回転させたベクトルを計算してRotatevx,Rotatevyに代入する
                         rvx = cvx * math.cos(theta*i*0.0174) - cvy * math.sin(theta*i*0.0174)
@@ -2997,14 +2996,14 @@ class App:
                         new_enemy_shot = Enemy_shot()
                         new_enemy_shot.update(ENEMY_SHOT_NORMAL,ID00,ex,ey,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8,0,0,rvx,rvy,  1,1,1,1,1,0,1,0,0,0,stop_count,PRIORITY_FRONT,0,0,0,0,0,0, div_type,div_count, 0, div_count,div_num, 0, 0,0, 0,0,   0,0)
                         self.enemy_shot.append(new_enemy_shot)#敵弾リストに時計回りに回転させた弾の情報を書き込む
-
-
+                        
                         #反時計回り方向に -i*(theta*n)度 回転させたベクトルを計算してRotatevx,Rotatevyに代入する
                         rvx = cvx * math.cos(-(theta*i*0.0174)) - cvy * math.sin(-(theta*i*0.0174))
                         rvy = cvx * math.sin(-(theta*i*0.0174)) + cvy * math.cos(-(theta*i*0.0174))
                         new_enemy_shot = Enemy_shot()
                         new_enemy_shot.update(ENEMY_SHOT_NORMAL,ID00,ex,ey,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8,0,0,rvx,rvy,  1,1,1,1,1,0,1,0,0,0,stop_count,PRIORITY_FRONT,0,0,0,0,0,0, div_type,div_count, 0, div_count,div_num, 0, 0,0, 0,0,   0,0)
                         self.enemy_shot.append(new_enemy_shot)#敵弾リストに時計回りに回転させた弾の情報を書き込む
+                    
                 else:
                     #偶数弾の処理#######2way弾とか4ay弾とか6way弾とか##################################
                     for i in range(n // 2):
@@ -3014,49 +3013,48 @@ class App:
                         new_enemy_shot = Enemy_shot()
                         new_enemy_shot.update(ENEMY_SHOT_NORMAL,ID00,ex,ey,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8,0,0,rvx,rvy,  1,1,1,1,1,0,1,0,0,0,stop_count,PRIORITY_FRONT,0,0,0,0,0,0, div_type,div_count, 0, div_count,div_num, 0, 0,0, 0,0,   0,0)
                         self.enemy_shot.append(new_enemy_shot)#敵弾リストに時計回りに回転させた弾の情報を書き込む
-
-
+                        
                         #反時計回り方向に -i*(theta//2*n)度 回転させたベクトルを計算してRotatevx,Rotatevyに代入する
                         rvx = cvx * math.cos(-(theta // 2 * (i+1) * 0.0174)) - cvy * math.sin(-(theta // 2*(i+1)*0.0174))
                         rvy = cvx * math.sin(-(theta // 2 * (i+1) * 0.0174)) + cvy * math.cos(-(theta // 2*(i+1)*0.0174))
                         new_enemy_shot = Enemy_shot()
                         new_enemy_shot.update(ENEMY_SHOT_NORMAL,ID00,ex,ey,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8,0,0,rvx,rvy,   1,1,1,1,1,0,1,0,0,0,stop_count,PRIORITY_FRONT,0,0,0,0,0,0, div_type,div_count, 0, div_count,div_num, 0, 0,0, 0,0,   0,0)
                         self.enemy_shot.append(new_enemy_shot)#敵弾リストに時計回りに回転させた弾の情報を書き込む
-        
+
     #レーザービームを発射する関数定義
     def enemy_laser(self,ex,ey,length,speed):
         if len(self.enemy_shot) < 800: 
-                    for number in range(length):
-                        new_enemy_shot = Enemy_shot()
-                        new_enemy_shot.update(ENEMY_SHOT_LASER,ID00, ex,ey,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8, 0,0, -(speed),0,    1,1,1,   0,0,0,    speed,0,0,  0, number * 2 ,PRIORITY_BOSS_FRONT, 0,0,0,0,0,0, 0,0, 0, 0,0, 0, 0,0, 0,0,   0,0)
-                        self.enemy_shot.append(new_enemy_shot)
+            for number in range(length):
+                new_enemy_shot = Enemy_shot()
+                new_enemy_shot.update(ENEMY_SHOT_LASER,ID00, ex,ey,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8, 0,0, -(speed),0,    1,1,1,   0,0,0,    speed,0,0,  0, number * 2 ,PRIORITY_BOSS_FRONT, 0,0,0,0,0,0, 0,0, 0, 0,0, 0, 0,0, 0,0,   0,0)
+                self.enemy_shot.append(new_enemy_shot)
         return()
-    
+
     #サイン弾を射出する関数定義 
     def enemy_sin_bullet(self,ex,ey,timer,speed,intensity):
         if len(self.enemy_shot) < 800:
             new_enemy_shot = Enemy_shot()
             new_enemy_shot.update(ENEMY_SHOT_SIN,ID00,ex,ey,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8,0,0, 0,0,  1,1,1, 1,1,   timer,speed,intensity,  0, 0,   0,PRIORITY_FRONT, 0,0,0,0,0,0, 0,0, 0, 0,0, 0, 0,0, 0,0,   0,0)
             self.enemy_shot.append(new_enemy_shot)#敵弾リストに新しい弾の情報を書き込む
-    
+
     #ボス用のレッドレーザービームを発射する関数定義
     def enemy_red_laser(self,ex,ey,length,speed):
         if len(self.enemy_shot) < 800: 
-                    for number in range(length):
-                        new_enemy_shot = Enemy_shot()
-                        new_enemy_shot.update(ENEMY_SHOT_RED_LASER,ID00, ex,ey,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8,0,0,  -(speed),0,   1,1,1,   0,0,0,    speed,0,0,  0,number * 2 ,PRIORITY_BOSS_BACK,   0,0,0,0,0,0, 0,0, 0, 0,0, 0, 0, 0,0,0,   0,0)
-                        self.enemy_shot.append(new_enemy_shot)
+            for number in range(length):
+                new_enemy_shot = Enemy_shot()
+                new_enemy_shot.update(ENEMY_SHOT_RED_LASER,ID00, ex,ey,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8,0,0,  -(speed),0,   1,1,1,   0,0,0,    speed,0,0,  0,number * 2 ,PRIORITY_BOSS_BACK,   0,0,0,0,0,0, 0,0, 0, 0,0, 0, 0, 0,0,0,   0,0)
+                self.enemy_shot.append(new_enemy_shot)
         return()
 
     #ボス用のグリーンレーザービームを発射する関数定義
     def enemy_green_laser(self,ex,ey,length,speed):
         if len(self.enemy_shot) < 800: 
-                    for number in range(length):
-                        new_enemy_shot = Enemy_shot()
-                        new_enemy_shot.update(ENEMY_SHOT_GREEN_LASER,ID00, ex,ey,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8,0,0,  -(speed),0,   1,1,1,   0,0,0,    speed,0,0,  0,number * 2 ,PRIORITY_BOSS_BACK,  0,0,0,0,0,0, 0,0, 0, 0,0, 0, 0, 0,0,0,   0,0)
-                        self.enemy_shot.append(new_enemy_shot)
+            for number in range(length):
+                new_enemy_shot = Enemy_shot()
+                new_enemy_shot.update(ENEMY_SHOT_GREEN_LASER,ID00, ex,ey,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8,0,0,  -(speed),0,   1,1,1,   0,0,0,    speed,0,0,  0,number * 2 ,PRIORITY_BOSS_BACK,  0,0,0,0,0,0, 0,0, 0, 0,0, 0, 0, 0,0,0,   0,0)
+                self.enemy_shot.append(new_enemy_shot)
         return()
-    
+
     #ミサイルリスト内から同じタイプのミサイルが何発存在するのか数をカウントする関数定義
     def count_missile_type(self,missile_type1,missile_type2,missile_type3,missile_type4):
         quantity = 0
@@ -3066,7 +3064,7 @@ class App:
             if     self.missile[i].missile_type == missile_type1 or self.missile[i].missile_type == missile_type2\
                 or self.missile[i].missile_type == missile_type3 or self.missile[i].missile_type == missile_type4:
                 quantity += 1#変数（個数）を１増やして勘定していく
-        
+            
             self.type_check_quantity = quantity
         return (self,quantity)
 
@@ -3084,7 +3082,7 @@ class App:
                     self.search_laser_flag = 1
                     self.search_laser_y_direction = -1
         return()
-    
+
     #与えられたcx,cy座標を元に敵の全x,y座標から距離を求め一番近い敵の座標を調べる関数（ホーミングミサイル向け）
     def search_homing_missile_enemy_cordinate(self,cx,cy):
         self.search_homing_missile_flag = 0 #狙い撃つ敵を発見したかどうかのフラグ 0=未発見 1=発見
@@ -3099,7 +3097,7 @@ class App:
                 self.min_distance = d#敵までの距離の最小値を更新したので記録する
                 self.search_homing_missile_tx = self.enemy[i].posx#狙い撃つ敵の座標をtx,tyに代入する
                 self.search_homing_missile_ty = self.enemy[i].posy
-
+                
                 self.search_homing_missile_flag = 1 #狙い撃つ敵を発見したのでフラグを立てる
             
         return()
@@ -3109,7 +3107,7 @@ class App:
         self.bgx = (((self.scroll_count // 8) -256) // 2) + x // 8
         #x座標を8で割った切り捨て値がBGマップでのx座標となる
         #(self.scroll_count // 8) -256) // 2)      この数値がスクロールした分x座標オフセット値となる
-
+        
         self.bgy = (y // 8)
         #Y座標を8で割った切り捨て数値がBGマップでのy座標となる
         #bgxがMAPの外に存在するときは強制的にbgxを0にしちゃう(マイナスの値や256以上だとエラーになるため)
@@ -3129,6 +3127,7 @@ class App:
             self.bgy += 32
         self.bg_chip = pyxel.tilemap(self.reference_tilemap).get(self.bgx,self.bgy)
         return(self,x,y,bg_chip)
+
     #背景（ＢＧタイルマップのキャラチップ）を取得し、更に障害物かどうかを判別する
     def check_bg_collision(self,x,y,bg_chip,collision_flag):
         self.collision_flag = 0#コリジョンフラグ（障害物と接触したかどうかのフラグ）を初期化 (0=当たってない 1=接触しちゃった！)
@@ -3155,15 +3154,16 @@ class App:
         
         self.bg_chip = pyxel.tilemap(0).get(self.bgx,self.bgy)
         #bgx,bgyの座標のキャラチップナンバーをゲット！
-
+        
         if (self.bg_chip // 4) >= self.bg_obstacle_y: #(bg_chip // 4)でキャラチップのＹ座標になるんです
             self.collision_flag = 1             #y座標がbg_obstacle_yより大きかったら障害物に当たったとみなす
+        
         return(self,x,y,bg_chip,collision_flag)
-    
+
     #背景マップチップを消去する(0を書き込む) x,yはキャラ単位 x=(0~255) y=(0~15)
     def delete_map_chip(self,x,y):
         pyxel.tilemap(self.reference_tilemap).set(x,y + (self.stage_loop - 1)* 16,0)#マップチップを消去する（0=何もない空白）を書き込む
-    
+
     #背景（ＢＧタイルマップのキャラチップ）を取得する (8方向フリースクロール専用)
     def get_bg_chip_free_scroll(self,x,y,bg_chip):
         #x座標を8で割った切り捨て値がBGマップでのx座標となる
@@ -3186,11 +3186,11 @@ class App:
         
         self.bg_chip = pyxel.tilemap(self.reference_tilemap).get(self.bgx,self.bgy)
         return(self,x,y,bg_chip)
-    
+
     #背景マップチップに書き込む関数 （8方向フリースクロール専用） x,yはキャラ単位 x=(0~255) y=(0~255) n=(0~255)マップチップナンバー
     def write_map_chip_free_scroll(self,x,y,n):
         pyxel.tilemap(self.reference_tilemap).set(x,y,n)#マップチップナンバーnを座標x,yに書き込む
-    
+
     #自機ショットの経験値を調べ可能な場合レベルアップをさせる関数
     def level_up_my_shot(self):
         if self.shot_exp > SHOT_EXP_MAXIMUM:  #自機ショットの経験値は最大経験値を超えないように補正してやります
@@ -3201,7 +3201,7 @@ class App:
         self.shot_level            = self.shot_table_list[self.shot_exp][0] #テーブルリストを参照して経験値に対応したショットレベルを代入する
         self.shot_speed_magnification = self.shot_table_list[self.shot_exp][1] #テーブルリストを参照して経験値に対応したショットスピード倍率を代入する
         self.shot_rapid_of_fire      = self.shot_table_list[self.shot_exp][2] #テーブルリストを参照して経験値に対応したショット連射数を代入する
-        
+
     #自機ミサイルの経験値を調べ可能な場合レベルアップをさせる関数
     def level_up_my_missile(self):
         if self.missile_exp > MISSILE_EXP_MAXIMUM:  #自機ミサイルの経験値は最大経験値を超えないように補正してやります
@@ -3212,7 +3212,7 @@ class App:
         self.missile_level            = self.missile_table_list[self.missile_exp][0] #テーブルリストを参照して経験値に対応したミサイルレベルを代入する
         self.missile_speed_magnification = self.missile_table_list[self.missile_exp][1] #テーブルリストを参照して経験値に対応したミサイルスピード倍率を代入する
         self.missile_rapid_of_fire      = self.missile_table_list[self.missile_exp][2] #テーブルリストを参照して経験値に対応したミサイル連射数を代入する
-        
+
     #敵編隊出現時、現在の編隊IDナンバーとIDナンバーに対応した編隊数、そして現在の生存編隊数をenemy_formationクラスに登録する関数
     def record_enemy_formation(self,num):
         #編隊なので編隊のＩＤナンバーと編隊の総数、現在の編隊生存数をEnemy_formationリストに登録します
@@ -3232,7 +3232,7 @@ class App:
                     self.enemy_extermination_flag = 1 #殲滅フラグを建てる
                     del self.enemy_formation[i]     #該当した編隊リストは必要ないのでインスタンスを消去する
                     break                       #もうこれ以上リストを調べ上げる必要はないのでbreakしてループから抜け出す
-    
+
     #敵が画面から消える時、編隊ＩＤをみて編隊リストに登録されていた「画面上に存在する編隊数」を減少させ0になったらインスタンスを破棄する関数です
     #まぁ所属する編隊idナンバーを見て編隊がもう存在しなかったリストからインスタンスを破棄するって事ですわん
     def check_enemy_formation_exists(self,id):
@@ -3274,6 +3274,7 @@ class App:
         #編隊機の場合は撃墜するべき総数に達したのかどうかを調べ上げる（編隊全部殲滅した？）
         if self.enemy[e].formation_id != 0:#編隊機の場合は以下の処理をする
             self.check_enemy_formation_shoot_down_number(self.enemy[e].formation_id) 
+        
         #早回しの条件チェック
         if self.enemy_extermination_flag == 1 and self.fast_forward_destruction_num !=0: #もし編隊殲滅フラグON,「敵編隊殲滅必要数」が0以外ならば
             self.fast_forward_destruction_num -= 1                               #1編隊を殲滅させたので「敵編隊殲滅必要数」を1減少さる
@@ -3283,11 +3284,9 @@ class App:
                 #早回し処理は行わずそのままの値にしておく
                 if self.stage_count < self.event_list[self.event_index + i][0] - self.fast_forward_destruction_count:
                     self.event_list[self.event_index + i][0] -= self.fast_forward_destruction_count
-
+            
             if self.fast_forward_destruction_num == 0: #「敵編隊殲滅必要数」が0になったら・・・・
                 self.add_appear_flag = 1 #「早回し敵発生フラグ」をonにする
-
-        
         
         #アイテム育成############################################################
         if (self.enemy[e].formation_id   == 0 and self.enemy[e].item == E_SHOT_POW) or (self.enemy_extermination_flag == 1 and self.enemy[e].item == E_SHOT_POW):
@@ -3305,45 +3304,36 @@ class App:
             new_obtain_item = Obtain_item()
             new_obtain_item.update(ITEM_SHIELD_POWER_UP,self.enemy[e].posx,self.enemy[e].posy, 0.5,0,   8,8,   1,   0.9,  0.3,   0,0,  0.05,0,0,0,0,   0,0,1,  0,0,0, self.pow_item_bounce_num,0)
             self.obtain_item.append(new_obtain_item)
-
-
         elif (self.enemy[e].formation_id == 0 and self.enemy[e].item == E_CLAW_POW) or (self.enemy_extermination_flag == 1 and self.enemy[e].item == E_CLAW_POW):
             #クローアイテムを持っているのならアイテムを育成する
             new_obtain_item = Obtain_item()
             new_obtain_item.update(ITEM_CLAW_POWER_UP,self.enemy[e].posx,self.enemy[e].posy, 0.5,0,   8,8,   1,   0.9,  0.3,   0,0,  0.05,0,0,0,0,   0,0,0,  0,0,0, self.pow_item_bounce_num,0)
             self.obtain_item.append(new_obtain_item)
-
         elif (self.enemy[e].formation_id == 0 and self.enemy[e].item == E_TRIANGLE_POW) or (self.enemy_extermination_flag == 1 and self.enemy[e].item == E_TRIANGLE_POW):
             #トライアングルアイテムを持っているのならアイテムを育成する
             new_obtain_item = Obtain_item()
             new_obtain_item.update(ITEM_TRIANGLE_POWER_UP,self.enemy[e].posx,self.enemy[e].posy, 0.3,0,   8,8,   1,   0.9,  0.3,   0,0,  0.5,0,15, 0,0,   1,1,1,  0,0,2 * 60, self.pow_item_bounce_num,0)
             self.obtain_item.append(new_obtain_item)
-
-
         elif (self.enemy[e].formation_id == 0 and self.enemy[e].item == E_TAIL_SHOT_POW) or (self.enemy_extermination_flag == 1 and self.enemy[e].item == E_TAIL_SHOT_POW):
             #テイルショットアイテムを持っているのならアイテムを育成する
             new_obtain_item = Obtain_item()
             new_obtain_item.update(ITEM_TAIL_SHOT_POWER_UP,self.enemy[e].posx,self.enemy[e].posy, 0.5,0,   8,8,   1,   0.9,  0.3,   0,0,  0.05,10,10,0,0,   0,0,0,  0,0,0, self.pow_item_bounce_num,0)
             self.obtain_item.append(new_obtain_item)
-
         elif (self.enemy[e].formation_id == 0 and self.enemy[e].item == E_PENETRATE_ROCKET_POW) or (self.enemy_extermination_flag == 1 and self.enemy[e].item == E_PENETRATE_ROCKET_POW):
             #ペネトレートロケットアイテムを持っているのならアイテムを育成する
             new_obtain_item = Obtain_item()
             new_obtain_item.update(ITEM_PENETRATE_ROCKET_POWER_UP,self.enemy[e].posx,self.enemy[e].posy, 0.5,0,   8,8,   1,   0.9,  0.3,   0,0,  0.05,10,10,0,0,   0,0,0,  0,0,0, self.pow_item_bounce_num,0)
             self.obtain_item.append(new_obtain_item)
-
         elif (self.enemy[e].formation_id == 0 and self.enemy[e].item == E_SEARCH_LASER_POW) or (self.enemy_extermination_flag == 1 and self.enemy[e].item == E_SEARCH_LASER_POW):
             #サーチレーザーアイテムを持っているのならアイテムを育成する
             new_obtain_item = Obtain_item()
             new_obtain_item.update(ITEM_SEARCH_LASER_POWER_UP,self.enemy[e].posx,self.enemy[e].posy, 0.5,0,   8,8,   1,   0.9,  0.3,   0,0,  0.05,10,10,0,0,   0,0,0,  0,0,0, self.pow_item_bounce_num,0)
             self.obtain_item.append(new_obtain_item)
-
         elif (self.enemy[e].formation_id == 0 and self.enemy[e].item == E_HOMING_MISSILE_POW) or (self.enemy_extermination_flag == 1 and self.enemy[e].item == E_HOMING_MISSILE_POW):
             #ホーミングミサイルアイテムを持っているのならアイテムを育成する
             new_obtain_item = Obtain_item()
             new_obtain_item.update(ITEM_HOMING_MISSILE_POWER_UP,self.enemy[e].posx,self.enemy[e].posy, 0.5,0,   8,8,   1,   0.9,  0.3,   0,0,  0.05,10,10,0,0,   0,0,0,  0,0,0, self.pow_item_bounce_num,0)
             self.obtain_item.append(new_obtain_item)
-
         elif (self.enemy[e].formation_id == 0 and self.enemy[e].item == E_SHOCK_BUMPER_POW) or (self.enemy_extermination_flag == 1 and self.enemy[e].item == E_SHOCK_BUMPER_POW):
             #ショックバンパーアイテムを持っているのならアイテムを育成する
             new_obtain_item = Obtain_item()
@@ -3359,12 +3349,12 @@ class App:
         self.enemy[i].dy           = self.enemy_move_data[self.enemy[i].move_index][3]
         self.enemy[i].qx           = self.enemy_move_data[self.enemy[i].move_index][4]#リストから2次ベジェ曲線用の制御点座標を登録する
         self.enemy[i].qy           = self.enemy_move_data[self.enemy[i].move_index][5]
-
+        
         self.enemy[i].obj_totaltime  = self.enemy_move_data[self.enemy[i].move_index][6]#リストから移動に掛けるトータルタイムを取得し登録する
-
+        
         self.enemy[i].move_speed    = self.enemy_move_data[self.enemy[i].move_index][7]#リストから移動スピードを取得し登録する
         self.enemy[i].acceleration   = self.enemy_move_data[self.enemy[i].move_index][8]#リストから加速度を取得し登録する
-
+        
         self.enemy[i].attack_method  = self.enemy_move_data[self.enemy[i].move_index][9]#リストから攻撃方法を取得し登録する
 
     #敵17をベジェ曲線で移動させるために必要な座標をリストから取得する関数
@@ -3375,14 +3365,14 @@ class App:
         self.enemy[i].dy           = self.enemy_move_data17[self.enemy[i].move_index][3]
         self.enemy[i].qx           = self.enemy_move_data17[self.enemy[i].move_index][4]#リストから2次ベジェ曲線用の制御点座標を登録する
         self.enemy[i].qy           = self.enemy_move_data17[self.enemy[i].move_index][5]
-
+        
         self.enemy[i].obj_totaltime  = self.enemy_move_data17[self.enemy[i].move_index][6]#リストから移動に掛けるトータルタイムを取得し登録する
-
+        
         self.enemy[i].move_speed    = self.enemy_move_data17[self.enemy[i].move_index][7]#リストから移動スピードを取得し登録する
         self.enemy[i].acceleration   = self.enemy_move_data17[self.enemy[i].move_index][8]#リストから加速度を取得し登録する
-
+        
         self.enemy[i].attack_method  = self.enemy_move_data17[self.enemy[i].move_index][9]#リストから攻撃方法を取得し登録する
-    
+
     #ボスにショットを当てた後の処理(ドットパーティクル育成、背景の星をオマケで追加,ボス本体のHPが0以下になった時の処理などなど)
     def boss_processing_after_hitting(self,e,hit_x,hit_y,hit_vx,hit_vy): #e=ボスのクラスのインデックス値 hit_x,hit_y=パーティクル育成座標 hit_vx,hit_vy=パーティクル育成時に使用する散らばり具合の速度
         #ドットパーティクル生成
@@ -3394,13 +3384,13 @@ class App:
             new_stars = Star()
             new_stars.update(WINDOW_W - 1,self.s_rndint(0,WINDOW_H),self.s_rndint(1,50))
             self.stars.append(new_stars)
-
+        
         if self.boss[e].main_hp <= 0:#ボス本体のHPが0以下になったのなら
             for _number in range(60):#爆発パターンを60個育成
                 new_explosion = Explosion()
                 new_explosion.update(EXPLOSION_NORMAL,PRIORITY_FRONT,self.boss[e].posx + self.boss[e].width / 2 + self.s_rndint(0,50) -25,self.boss[e].posy + self.boss[e].height / 2 + self.s_rndint(0,50) -25,0,0,10,RETURN_BULLET_NONE,0, 1,1)
                 self.explosions.append(new_explosion)
-
+            
             #ゲームステータス(状態遷移)を「SCENE_BOSS_EXPLOSION」ボスキャラ爆発中！にする
             self.game_status = SCENE_BOSS_EXPLOSION           
             #ボスの状態遷移フラグステータスを「BOSS_STATUS_EXPLOSION_START」ボス撃破！爆発開始！にしてやる
@@ -3409,9 +3399,9 @@ class App:
             self.boss[e].invincible = 1
             #スコア加算（あとあといろんなスコアシステム実装する予定だよ）
             self.score += 1
-                        
+            
         pyxel.play(0,2)#変な爆発音を出すのだ～～～☆彡
-    
+
     #各面のボスをBossクラスに定義して出現させる
     def born_boss(self):
         #col_main1_x, col_main1_y, col_main1_w, col_main1_h  = 1*8,1*8,5*8,2*8
@@ -3438,12 +3428,12 @@ class App:
             offset_x,offset_y = 0,0
             ax,ay, bx,by, cx,cy, dx,dy, qx,qy, vx,vy = 0,0, 0,0, 0,0, 0,0, 0,0, 0,0
             width,height = 14*8,6*8
-
+            
             col_damage_point1_x,col_damage_point1_y,col_damage_point1_w,col_damage_point1_h =  5 ,3*8,1*8,1*8
             col_damage_point2_x,col_damage_point2_y,co2_damage_point2_w,col_damage_point2_h = 7*8,2*8,1*8,1*8
             col_damage_point3_x,col_damage_point3_y,co3_damage_point3_w,col_damage_point3_h = 0,0,0,0
             col_damage_point4_x,col_damage_point4_y,co4_damage_point4_w,col_damage_point4_h = 0,0,0,0
-
+            
             col_main1_x, col_main1_y, col_main1_w, col_main1_h  = 1*8  ,1*8+5,    6*8-2,2*8
             col_main2_x, col_main2_y, col_main2_w, col_main2_h  = 2*8  ,4*8  ,    6*8,2*8-2
             col_main3_x, col_main3_y, col_main3_w, col_main3_h  = 7*8  ,3*8  ,   4*8  ,1*8 
@@ -3452,7 +3442,7 @@ class App:
             col_main6_x, col_main6_y, col_main6_w, col_main6_h  =   0  ,    0,    0,    0
             col_main7_x, col_main7_y, col_main7_w, col_main7_h  =   0  ,    0,    0,    0
             col_main8_x, col_main8_y, col_main8_w, col_main8_h  =   0  ,    0,    0,    0
-
+            
             col_parts1_x,col_parts1_y,col_parts1_w,col_parts1_h =10*8 ,5*8,  8,  8
             col_parts2_x,col_parts2_y,col_parts2_w,col_parts2_h =9*8-4,5*8,  8,  8
             col_parts3_x,col_parts3_y,col_parts3_w,col_parts3_h =5*8-3,  2,  8,  8
@@ -3462,11 +3452,9 @@ class App:
             col_parts7_x,col_parts7_y,col_parts7_w,col_parts7_h =    0,  0,  0,  0
             col_parts8_x,col_parts8_y,col_parts8_w,col_parts8_h =    0,  0,  0,  0
             col_parts9_x,col_parts9_y,col_parts9_w,col_parts9_h =    0,  0,  0,  0
-
-
-
+            
             main_hp_bar_offset_x,main_hp_bar_offset_y    = 8,-3
-
+            
             parts1_hp_bar_offset_x,parts1_hp_bar_offset_y = 10*8  ,5*8+10
             parts2_hp_bar_offset_x,parts2_hp_bar_offset_y =  9*8-4,5*8+10
             parts3_hp_bar_offset_x,parts3_hp_bar_offset_y =  5*8-3, -2
@@ -3476,7 +3464,7 @@ class App:
             parts7_hp_bar_offset_x,parts7_hp_bar_offset_y =     0,  0
             parts8_hp_bar_offset_x,parts8_hp_bar_offset_y =     0,  0
             parts9_hp_bar_offset_x,parts9_hp_bar_offset_y =     0,  0
-
+            
             size = 0
             priority = 0
             attack_method = BOSS_ATTACK_FRONT_5WAY
@@ -3503,7 +3491,7 @@ class App:
             display_time_parts5_hp_bar,display_time_parts6_hp_bar = 0,0
             display_time_parts7_hp_bar,display_time_parts8_hp_bar = 0,0
             display_time_parts9_hp_bar = 0
-
+            
             new_boss.update(boss_id,boss_type,boss_status,
                 parts_number,
                 main_hp,
@@ -3514,7 +3502,7 @@ class App:
                 parts4_score,parts5_score,parts6_score,
                 parts7_score,parts8_score,parts9_score,
                 level,
-
+                
                 weapon1_status,weapon1_interval,weapon1_rapid_num,weapon1_cool_down_time,weapon1_omen_count,
                 weapon2_status,weapon2_interval,weapon2_rapid_num,weapon2_cool_down_time,weapon2_omen_count,
                 weapon3_status,weapon3_interval,weapon3_rapid_num,weapon3_cool_down_time,weapon3_omen_count,
@@ -3546,7 +3534,7 @@ class App:
                 col_parts7_x,col_parts7_y,col_parts7_w,col_parts7_h,
                 col_parts8_x,col_parts8_y,col_parts8_w,col_parts8_h,
                 col_parts9_x,col_parts9_y,col_parts9_w,col_parts9_h,
-
+                
                 main_hp_bar_offset_x,main_hp_bar_offset_y,
                 parts1_hp_bar_offset_x,parts1_hp_bar_offset_y,
                 parts2_hp_bar_offset_x,parts2_hp_bar_offset_y,
@@ -3557,7 +3545,7 @@ class App:
                 parts7_hp_bar_offset_x,parts7_hp_bar_offset_y,
                 parts8_hp_bar_offset_x,parts8_hp_bar_offset_y,
                 parts9_hp_bar_offset_x,parts9_hp_bar_offset_y,
-
+                
                 size,priority,attack_method,direction,acceleration,timer,degree,radian,speed,radius,
                 flag1,flag2,flag3,flag4,
                 count1,count2,count3,count4,
@@ -3574,7 +3562,7 @@ class App:
                 display_time_parts7_hp_bar,display_time_parts8_hp_bar,display_time_parts9_hp_bar
                 )
             self.boss.append(new_boss)      
-        
+            
         elif     self.stage_number == STAGE_ADVANCE_BASE:
             new_boss = Boss()
             boss_id = 0
@@ -3600,12 +3588,12 @@ class App:
             offset_x,offset_y = 0,0
             ax,ay, bx,by, cx,cy, dx,dy, qx,qy, vx,vy = 0,0, 0,0, 0,0, 0,0, 0,0, 0,0
             width,height = 8*8,5*8
-
+            
             col_damage_point1_x,col_damage_point1_y,col_damage_point1_w,col_damage_point1_h = 1*8,1*8,5*8,2*8
             col_damage_point2_x,col_damage_point2_y,co2_damage_point2_w,col_damage_point2_h = 6*8,2*8,1*8,1*8
             col_damage_point3_x,col_damage_point3_y,co3_damage_point3_w,col_damage_point3_h = 3*8,3*8,3*8,1*8
             col_damage_point4_x,col_damage_point4_y,co4_damage_point4_w,col_damage_point4_h = 2*8,  6,  8,  6
-
+            
             col_main1_x, col_main1_y, col_main1_w, col_main1_h  = 1*8+4,1*8,5*8-4,2*8
             col_main2_x, col_main2_y, col_main2_w, col_main2_h  = 6*8+4,2*8,1*8-4,1*8
             col_main3_x, col_main3_y, col_main3_w, col_main3_h  = 3*8+4,3*8,3*8-4,1*8 
@@ -3614,7 +3602,7 @@ class App:
             col_main6_x, col_main6_y, col_main6_w, col_main6_h  =   8,  8,  0,  0
             col_main7_x, col_main7_y, col_main7_w, col_main7_h  =   8,  8,  0,  0 
             col_main8_x, col_main8_y, col_main8_w, col_main8_h  =   8,  8,  0,  0 
-
+            
             col_parts1_x,col_parts1_y,col_parts1_w,col_parts1_h =   0,2*8,2*8,  8
             col_parts2_x,col_parts2_y,col_parts2_w,col_parts2_h = 1*8,  0,2*8,  8
             col_parts3_x,col_parts3_y,col_parts3_w,col_parts3_h = 1*8,3*8,  8,  8
@@ -3624,10 +3612,9 @@ class App:
             col_parts7_x,col_parts7_y,col_parts7_w,col_parts7_h =   0,  0,  0,  0
             col_parts8_x,col_parts8_y,col_parts8_w,col_parts8_h =   0,  0,  0,  0
             col_parts9_x,col_parts9_y,col_parts9_w,col_parts9_h =   0,  0,  0,  0
-
-
+            
             main_hp_bar_offset_x  ,main_hp_bar_offset_y   = 8,-2
-
+            
             parts1_hp_bar_offset_x,parts1_hp_bar_offset_y = 0,24
             parts2_hp_bar_offset_x,parts2_hp_bar_offset_y = 0,4
             parts3_hp_bar_offset_x,parts3_hp_bar_offset_y = 8,32
@@ -3637,7 +3624,7 @@ class App:
             parts7_hp_bar_offset_x,parts7_hp_bar_offset_y = 0,0
             parts8_hp_bar_offset_x,parts8_hp_bar_offset_y = 0,0
             parts9_hp_bar_offset_x,parts9_hp_bar_offset_y = 0,0
-
+            
             size = 0
             priority = 0
             attack_method = 0
@@ -3675,7 +3662,7 @@ class App:
                 parts4_score,parts5_score,parts6_score,
                 parts7_score,parts8_score,parts9_score,
                 level,
-
+                
                 weapon1_status,weapon1_interval,weapon1_rapid_num,weapon1_cool_down_time,weapon1_omen_count,
                 weapon2_status,weapon2_interval,weapon2_rapid_num,weapon2_cool_down_time,weapon2_omen_count,
                 weapon3_status,weapon3_interval,weapon3_rapid_num,weapon3_cool_down_time,weapon3_omen_count,
@@ -3717,7 +3704,7 @@ class App:
                 parts7_hp_bar_offset_x,parts7_hp_bar_offset_y,
                 parts8_hp_bar_offset_x,parts8_hp_bar_offset_y,
                 parts9_hp_bar_offset_x,parts9_hp_bar_offset_y,
-
+                
                 size,priority,attack_method,direction,acceleration,timer,degree,radian,speed,radius,
                 flag1,flag2,flag3,flag4,
                 count1,count2,count3,count4,
@@ -3734,7 +3721,7 @@ class App:
                 display_time_parts7_hp_bar,display_time_parts8_hp_bar,display_time_parts9_hp_bar
                 )
             self.boss.append(new_boss)
-                
+
     #ボスをベジェ曲線で移動させるために必要な座標をリストから取得する関数
     def boss_get_bezier_curve_coordinate(self,i):                    
         self.boss[i].ax           = self.boss_move_data1[self.boss[i].move_index][0]#リストから新たな移動元座標を登録する
@@ -3743,19 +3730,19 @@ class App:
         self.boss[i].dy           = self.boss_move_data1[self.boss[i].move_index][3]
         self.boss[i].qx           = self.boss_move_data1[self.boss[i].move_index][4]#リストから2次ベジェ曲線用の制御点座標を登録する
         self.boss[i].qy           = self.boss_move_data1[self.boss[i].move_index][5]
-
+        
         self.boss[i].obj_totaltime  = self.boss_move_data1[self.boss[i].move_index][6]#リストから移動に掛けるトータルタイムを取得し登録する
-
+        
         self.boss[i].speed        = self.boss_move_data1[self.boss[i].move_index][7]#リストから移動スピードを取得し登録する
         self.boss[i].acceleration   = self.boss_move_data1[self.boss[i].move_index][8]#リストから加速度を取得し登録する
-
+        
         self.boss[i].attack_method  = self.boss_move_data1[self.boss[i].move_index][9]#リストから攻撃方法を取得し登録する
 
     #ボスの耐久力バーの表示（ボスの付近にＨＰバーを描画する）
     def display_boss_hp_bar(self,x,y,hp):
         pyxel.rectb(x-1,y-1, 32+2,3, self.blinking_color[pyxel.frame_count // 8 % 10]) #点滅四角線描画
         pyxel.line(x,y, x + hp,y, 8) #赤色の耐久力バーの表示
-    
+
     #ボスの各部位耐久力バーの表示（破壊可能部位の付近にＨＰバーを描画する）短いタイプ横16ドット
     def display_boss_hp_short_bar(self,x,y,hp):
         pyxel.line(x,y + 1, x + 12,y + 1, self.red_flash_color[pyxel.frame_count // 8 % 10]) #点滅線描画
@@ -3765,7 +3752,7 @@ class App:
     def display_boss_hp_short2_bar(self,x,y,hp):
         pyxel.line(x,y + 1, x + 4,y + 1, self.red_flash_color[pyxel.frame_count // 8 % 10]) #点滅線描画
         pyxel.line(x,y    , x + hp,y    ,8) #赤色の耐久力バーの表示
-    
+
     #スコア加算処理
     def add_score(self,point):
         self.score += int(point * self.score_magnification) #スコアをpoint*スコア倍率分加算する(整数値で)
@@ -3783,7 +3770,7 @@ class App:
             new_raster_scroll = Raster_scroll()
             new_raster_scroll.update(1,RASTER_NORMAL,1,RASTER_SCROLL_ON,  i,23,  0,0,  0,-80,  IMG1,   96,112+i,   160,1,    -0.05 -(0.01 * i) ,15,    0,0,0)
             self.raster_scroll.append(new_raster_scroll)  #成層圏と大気圏の境目のラスタースクロール用の横ライン（縦24ライン分）を育成する（湖面と同じグラフイックだけど・・）
-
+        
         for i in range(40-1):
             new_raster_scroll = Raster_scroll()
             new_raster_scroll.update(2,RASTER_WAVE,0,RASTER_SCROLL_ON,    i,39,  0,0,   0,-38,  IMG1,   144,72+i,   14*8,1,    -0.35,13,    0,0.02,(i-20)*0.4)
@@ -3795,7 +3782,7 @@ class App:
         for i in range(raster_scroll_count): #ラスタースクロールクラスに登録されたインスタンスのdisplayを調べていきます
             if self.raster_scroll[i].scroll_id == id: #scroll_idと調べるidが一致したのなら
                 self.raster_scroll[i].display = flag #flag(0=表示しない 1=表示する)を書き込む
-    
+
     #ランクに応じた数値をリストから取得する
     def get_rank_data(self):
         self.enemy_speed_mag         = self.game_rank_data_list[self.rank][LIST_RANK_E_SPEED_MAG]            #敵スピード倍率をリストを参照してランク数で取得、変数に代入する
@@ -3805,7 +3792,7 @@ class App:
         self.enemy_bullet_append      = self.game_rank_data_list[self.rank][LIST_RANK_E_BULLET_APPEND]         #弾追加数をリストを参照してランク数で取得、変数に代入する
         self.enemy_bullet_interval    = self.game_rank_data_list[self.rank][LIST_RANK_E_BULLET_INTERVAL]        #弾発射間隔減少パーセントをリストを参照してランク数で取得、変数に代入する
         self.enemy_nway_level        = self.game_rank_data_list[self.rank][LIST_RANK_NWAY_LEVEL]             #nWAY弾のレベルをリストを参照してランク数で取得、変数に代入する
-    
+
     #難易度に応じた数値をリストから取得する
     def get_difficulty_data(self):
         self.start_bonus_shot        = self.game_difficulty_list[self.game_difficulty][LIST_START_BONUS_SHOT]           #初期ショットボーナスをリストを参照し難易度に合わせて取得、変数に代入する
@@ -3827,7 +3814,7 @@ class App:
         self.loop_power_control      = self.game_difficulty_list[self.game_difficulty][LIST_LOOP_POWER_CONTROL]         #次のループに移る時のパワーアップ調整関連の動作の仕方をリストを参照し難易度に合わせて取得、変数に代入する
         self.item_range_of_attraction = self.game_difficulty_list[self.game_difficulty][LIST_ITEM_RANGE_OF_ATTRACTION]    #アイテムを引き寄せる範囲をリストを参照し難易度に合わせて取得、変数に代入する
         self.pow_item_bounce_num     = self.game_difficulty_list[self.game_difficulty][LIST_ITEM_BOUNCE_NUM]            #アイテムの跳ね返り回数をリストを参照し難易度に合わせて取得、変数に代入する
-    
+
     #ステージデータリストから各ステージの設定データを取り出す
     def get_stage_data(self):
         self.bg_obstacle_y             = self.stage_data_list[self.stage_number - 1][1] #BG障害物とみなすＹ座標位置をリストを参照して取得、変数に代入する
@@ -3839,7 +3826,7 @@ class App:
         self.disp_flag_bg_middle        = self.stage_data_list[self.stage_number - 1][7] #BG背景(中間)を表示するかどうかのフラグをリストを参照して取得、変数に代入する
         self.disp_flag_bg_back          = self.stage_data_list[self.stage_number - 1][8] #BG背景(奥)を表示するかどうかのフラグをリストを参照して取得、変数に代入する
         self.atmospheric_entry_spark_flag = self.stage_data_list[self.stage_number - 1][9] #大気圏突入時の火花を発生させるかどうかのフラグをリストを参照して取得、変数に代入する
-        
+
     #ランクダウンさせる関数
     def rank_down(self):
         if self.rank > 0: #ランク数が0より大きいのならば
@@ -3864,7 +3851,7 @@ class App:
         global num
         num = self.rnd0_99_num
         return(num)
-    
+
     #線形合同法を使用した乱数関数 (0~65535のランダムな数値がself.rnd_seedに代入される)この乱数の周期は32768
     def s_rnd(self):
         self.rnd_seed = (self.rnd_seed * 48828125 + 129) % 65536 #129のように足す数値は絶対に奇数にするように！でないと奇数と偶数の乱数が交互に育成されるようになってしまうからね
@@ -3877,7 +3864,7 @@ class App:
         num_min_to_max  = num_zero_to_max + min      #min から max      までの乱数を取得
         num = num_min_to_max                     #整数化します
         return (num)
-    
+
     #s_random() と呼ぶと、0から1の範囲(1は含まない)のランダムな実数が返される(パーティクル系で使おうとしたけど結構動作が遅いので標準ライブラリ使ったほうがいいなぁ→結局random()を使う事にしました)
     def s_random(self):
         global num
@@ -3894,6 +3881,7 @@ class App:
     def cross_product_calc_function(self,ax,ay,bx,by,cx,cy):
         self.cp = (ax - cx) * (by - cy) - (bx - cx) * (ay - cy)
         return()
+
     #三角形と点の当たり判定を行う関数(ax,ay)(bx,by)(cx,cy)=三角形の各頂点の座標,px,py=三角形の中か外にあるかどうかを判定するポイント用座標)
     #(バグあるので使えないっいぽい。。。この関数・・・ボツダナ)
     def point_in_triangle(self,px,py,ax,ay,bx,by,cx,cy):
@@ -3936,7 +3924,7 @@ class App:
         else:
             self.point_inside_triangle_flag = 0 #三角形の外側だった・・・・のでフラグをoff   
     #自機を追尾してくる敵キャラ用のvx,vyの増分とdir（方向）を求める関数   まだ未完成
-    
+
     #!###############################################################################################################################
     #!###############################################################################################################################
     #!update関数から呼び出される関数群 ################################################################################################
@@ -3947,14 +3935,14 @@ class App:
         self.display_ipl_time -= 1    #IPLメッセージを表示する時間カウンターを1減らす
         if self.display_ipl_time <= 0: #カウンターが0以下になったら・・・
             self.game_status = SCENE_TITLE_INIT #ゲームステータスを「SCENE_TITLE_INIT(タイトル表示に必要な変数を初期化)」にする
-
+        
         if (pyxel.frame_count % 10) == 0:
             if len(self.ipl_mes1) > self.ipl_mes_write_line_num: #まだ書き込むべき文字列があるのなら・・・
                 text_mes = str(self.ipl_mes1[self.ipl_mes_write_line_num][0])
                 text_col =    self.ipl_mes1[self.ipl_mes_write_line_num][1]
                 self.text_screen.append([text_mes,text_col]) #文字列群をテキストスクリーンのリストに追加する
                 self.ipl_mes_write_line_num +=1  #スクリーンに表示したIPLメッセージデータの行数カウンタを1インクリメント
-    
+
     #タイトル表示に必要な変数を設定＆初期化する##############
     def update_title_init(self):
         pyxel.load("assets/graphic/min-sht2.pyxres") #タイトル＆ステージ1＆2のリソースファイルを読み込む
@@ -3973,9 +3961,9 @@ class App:
         self.window = []                     #タイトル表示時もメッセージウィンドウを使いたいのでリストをここで初期化してあげます
         
         self.replay_input_data = []    #リプレイ保存用のパッド入力リストを初期化します
-
+        
         self.bg_cls_color = 0         #BGをCLS(クリアスクリーン)するときの色の指定(通常は0=黒色です)ゲーム時に初期値から変更されることがあるのでここで初期化する
-
+        
         # セレクトカーソル関連の変数宣言   タイトル画面でセレクトカーソルを使いたいのでここで変数などを宣言＆初期化します
         self.cursor_show = False        #セレクトカーソルを表示するかしないかのフラグ用
         self.cursor_x = 0              #セレクトカーソルのx座標
@@ -4045,7 +4033,7 @@ class App:
             self.cursor_max_item = 6                           #最大項目数は「GAME START」「SELECT STAGE」「SELECT LOOP NUMBER」「BOSS MODE」「HITBOX」「DIFFICULTY」「REPLAY」の7項目なので 7-1=6を代入
             self.cursor_menu_layer = 0                         #メニューの階層は最初は0にします
             self.game_status = SCENE_TITLE_MENU_SELECT #ゲームステータスを「TITLE_MENU_SELECT」(タイトルでメニューを選択中)」にする
-                
+
     #タイトルメニューの選択中の更新#####################################
     def update_title_menu_select(self):
         if self.cursor_menu_layer == 0: #メニューが0階層目の選択分岐
@@ -4053,7 +4041,7 @@ class App:
                 self.cursor_show = False                  #セレクトカーソルの表示をoffにする
                 self.auto_move_mode = 0                   #移動モードを通常ゲーム時の移動にする
                 self.game_status = SCENE_GAME_START_INIT     #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
-            
+                
             elif self.cursor_decision_item == 1:            #SELECT STAGEが押されたら
                 self.cursor_pre_x = self.cursor_x                    #新しいウィンドウを開く前に現在のカーソル関連の変数を記憶しておきます
                 self.cursor_pre_y = self.cursor_y                    #
@@ -4197,7 +4185,7 @@ class App:
                     self.auto_move_mode = 4               #移動モードを「リプレイによる自動移動再生」にする
                     self.update_restore_replay_data()       #リプレイデータをリストア(復元)する関数を呼び出す                
                     self.game_status = SCENE_GAME_START_INIT #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
-                     
+            
         elif self.cursor_menu_layer == 1: #メニューが1階層目の選択分岐
             if self.cursor_pre_decision_item == 1 and self.cursor_decision_item == 0:
                 #「SELECT STAGE」→「1」
@@ -5043,7 +5031,7 @@ class App:
                 self.my_moved_flag = 1#自機移動フラグOn
                 self.my_vy = 1
                 self.pad_data += PAD_DOWN
-                
+            
             self.my_x += self.my_vx * self.my_speed #自機の移動量(vx,vy)と自機の速度(speed)を使って自機の座標を更新する（移動！）
             self.my_y += self.my_vy * self.my_speed
             
@@ -5158,208 +5146,210 @@ class App:
 
     #ショットを発射する!!!!!
     def update_fire_shot(self):
-            if self.shot_level == SHOT_LV7_WAVE_CUTTER_LV1:#ウェーブカッターLv1発射
-                if len(self.shots) < self.shot_rapid_of_fire:
-                #if self.shot_type_count(self.shot_level) < 3: 
-                    if (pyxel.frame_count % 8) == 0:
-                        pyxel.play(2,5)
-                        new_shot = Shot()
-                        new_shot.update(self.shot_level,self.my_x + 5,self.my_y -4,      3,0,  8,16,  0,   2,1)
-                        
-                        self.shots.append(new_shot)
-                        
-            if self.shot_level == SHOT_LV8_WAVE_CUTTER_LV2:#ウェーブカッターLv2発射
-                if len(self.shots) < self.shot_rapid_of_fire:
-                    if (pyxel.frame_count % 8) == 0:
-                        pyxel.play(2,5)
-                        new_shot = Shot()
-                        new_shot.update(self.shot_level,self.my_x + 5,self.my_y -8,      3,0,  8,24,  0,   2,1)
-                        self.shots.append(new_shot)
-                        
-            if self.shot_level == SHOT_LV9_WAVE_CUTTER_LV3:#ウェーブカッターLv3発射
-                if len(self.shots) < self.shot_rapid_of_fire:
-                    if (pyxel.frame_count % 8) == 0:
-                        pyxel.play(2,5)
-                        new_shot = Shot()
-                        new_shot.update(self.shot_level,self.my_x + 5,self.my_y -12,      3,0,  8,32,  0,   2,1)
-                        self.shots.append(new_shot)
-                        
-            if self.shot_level == SHOT_LV10_WAVE_CUTTER_LV4:#ウェーブカッターLv4発射
-                if len(self.shots) < self.shot_rapid_of_fire:
-                    if (pyxel.frame_count % 6) == 0:
-                        pyxel.play(2,5)
-                        new_shot = Shot()
-                        new_shot.update(self.shot_level,self.my_x + 5,self.my_y -12,      4,0,  8,32,  0,   2,1)
-                        self.shots.append(new_shot)
-                        
-            if self.shot_level == SHOT_LV4_LASER:#レーザー発射
-                if len(self.shots) < 20:
-                    if (pyxel.frame_count % 2) == 0:
-                        pyxel.play(2,4)
-                        new_shot = Shot()
-                        new_shot.update(self.shot_level,self.my_x + 5,self.my_y,         3,1,  8,8,  0,   0.3,1)
-                        self.shots.append(new_shot)
-                        
-            if self.shot_level == SHOT_LV5_TWIN_LASER:#ツインレーザー発射
-                if len(self.shots) < 40:
-                    if (pyxel.frame_count % 2) == 0:
-                        pyxel.play(2,4)
-                        new_shot = Shot()
-                        new_shot.update(self.shot_level,self.my_x + 5,self.my_y - 3,     3,1,  8,8,  -3,  0.3,1)
-                        self.shots.append(new_shot)
-                        
-                        new_shot = Shot()
-                        new_shot.update(self.shot_level,self.my_x + 5,self.my_y + 3,     3,1,  8,8,    3, 0.3,1)
-                        self.shots.append(new_shot)
-                        
-            if self.shot_level == SHOT_LV6_3WAY_LASER:#３ＷＡＹレーザー発射
-                if len(self.shots) < 80:
-                    if (pyxel.frame_count % 2) == 0:
-                        pyxel.play(2,4)
-                        new_shot = Shot()
-                        new_shot.update(self.shot_level,self.my_x + 1,self.my_y  -1,    1,-1.08,   8,8,   -1,  0.2,1)
-                        self.shots.append(new_shot)
-                        
-                        new_shot = Shot()
-                        new_shot.update(self.shot_level,self.my_x + 6,self.my_y,       3,1,      8,8,    0,  0.3,1)
-                        self.shots.append(new_shot)
-                        
-                        pyxel.play(2,4)
-                        new_shot = Shot()
-                        new_shot.update(self.shot_level,self.my_x + 6,self.my_y + 1,    2, 1.07,   8,8,    1,  0.2,1)
-                        self.shots.append(new_shot)
-                        
-                        
-            self.count_missile_type(5,5,5,5) #ミサイルタイプ5(ペネトレートロケット）がいくつ存在するのか調べる
-            if self.type_check_quantity == 0 and self.select_sub_weapon_id == PENETRATE_ROCKET:#もしペネトレートロケットが全く存在しないのなら発射する！！！
+        if self.shot_level == SHOT_LV7_WAVE_CUTTER_LV1:#ウェーブカッターLv1発射
+            if len(self.shots) < self.shot_rapid_of_fire:
+            #if self.shot_type_count(self.shot_level) < 3: 
+                if (pyxel.frame_count % 8) == 0:
+                    pyxel.play(2,5)
+                    new_shot = Shot()
+                    new_shot.update(self.shot_level,self.my_x + 5,self.my_y -4,      3,0,  8,16,  0,   2,1)
+                    
+                    self.shots.append(new_shot)
+        
+        if self.shot_level == SHOT_LV8_WAVE_CUTTER_LV2:#ウェーブカッターLv2発射
+            if len(self.shots) < self.shot_rapid_of_fire:
+                if (pyxel.frame_count % 8) == 0:
+                    pyxel.play(2,5)
+                    new_shot = Shot()
+                    new_shot.update(self.shot_level,self.my_x + 5,self.my_y -8,      3,0,  8,24,  0,   2,1)
+                    self.shots.append(new_shot)
+        
+        if self.shot_level == SHOT_LV9_WAVE_CUTTER_LV3:#ウェーブカッターLv3発射
+            if len(self.shots) < self.shot_rapid_of_fire:
+                if (pyxel.frame_count % 8) == 0:
+                    pyxel.play(2,5)
+                    new_shot = Shot()
+                    new_shot.update(self.shot_level,self.my_x + 5,self.my_y -12,      3,0,  8,32,  0,   2,1)
+                    self.shots.append(new_shot)
+        
+        if self.shot_level == SHOT_LV10_WAVE_CUTTER_LV4:#ウェーブカッターLv4発射
+            if len(self.shots) < self.shot_rapid_of_fire:
+                if (pyxel.frame_count % 6) == 0:
+                    pyxel.play(2,5)
+                    new_shot = Shot()
+                    new_shot.update(self.shot_level,self.my_x + 5,self.my_y -12,      4,0,  8,32,  0,   2,1)
+                    self.shots.append(new_shot)
+        
+        if self.shot_level == SHOT_LV4_LASER:#レーザー発射
+            if len(self.shots) < 20:
+                if (pyxel.frame_count % 2) == 0:
+                    pyxel.play(2,4)
+                    new_shot = Shot()
+                    new_shot.update(self.shot_level,self.my_x + 5,self.my_y,         3,1,  8,8,  0,   0.3,1)
+                    self.shots.append(new_shot)
+        
+        if self.shot_level == SHOT_LV5_TWIN_LASER:#ツインレーザー発射
+            if len(self.shots) < 40:
+                if (pyxel.frame_count % 2) == 0:
+                    pyxel.play(2,4)
+                    new_shot = Shot()
+                    new_shot.update(self.shot_level,self.my_x + 5,self.my_y - 3,     3,1,  8,8,  -3,  0.3,1)
+                    self.shots.append(new_shot)
+                    
+                    new_shot = Shot()
+                    new_shot.update(self.shot_level,self.my_x + 5,self.my_y + 3,     3,1,  8,8,    3, 0.3,1)
+                    self.shots.append(new_shot)
+        
+        if self.shot_level == SHOT_LV6_3WAY_LASER:#３ＷＡＹレーザー発射
+            if len(self.shots) < 80:
+                if (pyxel.frame_count % 2) == 0:
+                    pyxel.play(2,4)
+                    new_shot = Shot()
+                    new_shot.update(self.shot_level,self.my_x + 1,self.my_y  -1,    1,-1.08,   8,8,   -1,  0.2,1)
+                    self.shots.append(new_shot)
+                    
+                    new_shot = Shot()
+                    new_shot.update(self.shot_level,self.my_x + 6,self.my_y,       3,1,      8,8,    0,  0.3,1)
+                    self.shots.append(new_shot)
+                    
+                    pyxel.play(2,4)
+                    new_shot = Shot()
+                    new_shot.update(self.shot_level,self.my_x + 6,self.my_y + 1,    2, 1.07,   8,8,    1,  0.2,1)
+                    self.shots.append(new_shot)
+        
+        self.count_missile_type(5,5,5,5) #ミサイルタイプ5(ペネトレートロケット）がいくつ存在するのか調べる
+        if self.type_check_quantity == 0 and self.select_sub_weapon_id == PENETRATE_ROCKET:#もしペネトレートロケットが全く存在しないのなら発射する！！！
+            new_missile = Missile()
+            new_missile.update(5,self.my_x + 4,self.my_y,   -0.8,-0.7,   6,    1   ,0,0,   0,1,   8,8, 0,0,  0,0) #ペネトレートロケット
+            self.missile.append(new_missile)#ペネトレートロケット育成
+            
+            new_missile = Missile()
+            new_missile.update(5,self.my_x + 4,self.my_y,   -0.8,-0.7,   6,    1   ,0,0,   0,-1,  8,8, 0,0,  0,0) #ペネトレートロケット
+            self.missile.append(new_missile)#ペネトレートロケット育成
+            
+            new_missile = Missile()
+            new_missile.update(5,self.my_x + 4,self.my_y,   -1,-0.8,   6,    1   ,0,0,   0,1,    8,8, 0,0,  0,0) #ペネトレートロケット
+            self.missile.append(new_missile)#ペネトレートロケット育成
+            
+            new_missile = Missile()
+            new_missile.update(5,self.my_x + 4,self.my_y,   -1,-0.8,   6,    1   ,0,0,   0,-1,    8,8, 0,0,  0,0) #ペネトレートロケット
+            self.missile.append(new_missile)#ペネトレートロケット育成
+        
+        self.count_missile_type(4,4,4,4) #ミサイルタイプ4(テイルショット）がいくつ存在するのか調べる    
+        if self.type_check_quantity < self.sub_weapon_tail_shot_level_data_list[self.sub_weapon_list[TAIL_SHOT]-1][1] and self.select_sub_weapon_id == TAIL_SHOT and (pyxel.frame_count % 6) == 0:#もしテイルショットが全く存在しないのなら発射する！！！
+            level = self.sub_weapon_list[TAIL_SHOT] #現在のテイルショットのレベルを取得する
+            #テイルショットのレベルデータリストから現時点のレベルに応じたデータを取得する
+            speed = self.sub_weapon_tail_shot_level_data_list[level - 1][2] #スピード
+            power = self.sub_weapon_tail_shot_level_data_list[level - 1][3] #攻撃力
+            n_way = self.sub_weapon_tail_shot_level_data_list[level - 1][4] #n_way数
+            if n_way == 1 or n_way == 3: #真後ろにテイルショット発射
                 new_missile = Missile()
-                new_missile.update(5,self.my_x + 4,self.my_y,   -0.8,-0.7,   6,    1   ,0,0,   0,1,   8,8, 0,0,  0,0) #ペネトレートロケット
-                self.missile.append(new_missile)#ペネトレートロケット育成
-                
-                new_missile = Missile()
-                new_missile.update(5,self.my_x + 4,self.my_y,   -0.8,-0.7,   6,    1   ,0,0,   0,-1,  8,8, 0,0,  0,0) #ペネトレートロケット
-                self.missile.append(new_missile)#ペネトレートロケット育成
-                
-                new_missile = Missile()
-                new_missile.update(5,self.my_x + 4,self.my_y,   -1,-0.8,   6,    1   ,0,0,   0,1,    8,8, 0,0,  0,0) #ペネトレートロケット
-                self.missile.append(new_missile)#ペネトレートロケット育成
-                
-                new_missile = Missile()
-                new_missile.update(5,self.my_x + 4,self.my_y,   -1,-0.8,   6,    1   ,0,0,   0,-1,    8,8, 0,0,  0,0) #ペネトレートロケット
-                self.missile.append(new_missile)#ペネトレートロケット育成
-                
-                
-            self.count_missile_type(4,4,4,4) #ミサイルタイプ4(テイルショット）がいくつ存在するのか調べる    
-            if self.type_check_quantity < self.sub_weapon_tail_shot_level_data_list[self.sub_weapon_list[TAIL_SHOT]-1][1] and self.select_sub_weapon_id == TAIL_SHOT and (pyxel.frame_count % 6) == 0:#もしテイルショットが全く存在しないのなら発射する！！！
-                level = self.sub_weapon_list[TAIL_SHOT] #現在のテイルショットのレベルを取得する
-                #テイルショットのレベルデータリストから現時点のレベルに応じたデータを取得する
-                speed = self.sub_weapon_tail_shot_level_data_list[level - 1][2] #スピード
-                power = self.sub_weapon_tail_shot_level_data_list[level - 1][3] #攻撃力
-                n_way = self.sub_weapon_tail_shot_level_data_list[level - 1][4] #n_way数
-                if n_way == 1 or n_way == 3: #真後ろにテイルショット発射
+                new_missile.update(4,self.my_x - 4,self.my_y,   -2*speed,0,   power,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
+                self.missile.append(new_missile)#真後ろに射出されるテイルショット育成
+                if n_way == 3: #3wayの場合は更に斜め後ろ方向にテイルショット発射
                     new_missile = Missile()
-                    new_missile.update(4,self.my_x - 4,self.my_y,   -2*speed,0,   power,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
-                    self.missile.append(new_missile)#真後ろに射出されるテイルショット育成
-                    if n_way == 3: #3wayの場合は更に斜め後ろ方向にテイルショット発射
-                        new_missile = Missile()
-                        new_missile.update(4,self.my_x - 4,self.my_y - 2,   -2*speed,-0.5,   power,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
-                        self.missile.append(new_missile)#斜め後ろ(上)のテイルショット育成
-                        
-                        new_missile = Missile()
-                        new_missile.update(4,self.my_x - 4,self.my_y + 2,   -2*speed, 0.5,   power,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
-                        self.missile.append(new_missile)#斜め後ろ(下)のテイルショット育成
-                elif n_way == 2: #ツインテイルショット発射
-                    new_missile = Missile()
-                    new_missile.update(4,self.my_x - 4,self.my_y - 2,   -2*speed,0,   power,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
-                    self.missile.append(new_missile)#ツインテイルショット(上)育成
+                    new_missile.update(4,self.my_x - 4,self.my_y - 2,   -2*speed,-0.5,   power,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
+                    self.missile.append(new_missile)#斜め後ろ(上)のテイルショット育成
                     
                     new_missile = Missile()
-                    new_missile.update(4,self.my_x - 4,self.my_y + 2,   -2*speed,0,   power,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
-                    self.missile.append(new_missile)#ツインテイルショット(下)育成
+                    new_missile.update(4,self.my_x - 4,self.my_y + 2,   -2*speed, 0.5,   power,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
+                    self.missile.append(new_missile)#斜め後ろ(下)のテイルショット育成
+                
+            elif n_way == 2: #ツインテイルショット発射
+                new_missile = Missile()
+                new_missile.update(4,self.my_x - 4,self.my_y - 2,   -2*speed,0,   power,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
+                self.missile.append(new_missile)#ツインテイルショット(上)育成
+                
+                new_missile = Missile()
+                new_missile.update(4,self.my_x - 4,self.my_y + 2,   -2*speed,0,   power,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
+                self.missile.append(new_missile)#ツインテイルショット(下)育成
+        
+        self.count_missile_type(6,6,6,6) #ミサイルタイプ6(サーチレーザー）がいくつ存在するのか調べる
+        if self.type_check_quantity <= 1 and self.select_sub_weapon_id == SEARCH_LASER and pyxel.frame_count % 32 == 0: #サーチレーザーが全く存在しないのなら発射する！！！
+            new_missile = Missile()
+            new_missile.update(6,self.my_x + 14,self.my_y,   2,0,   1,1,   0,1,   0,0,   16,8,  0,0,  0,0) #サーチレーザー(flag2=1なのでちょっとｘ軸前方向に対して索敵する)
+            self.missile.append(new_missile)#サーチレーザー育成
+            
+            new_missile = Missile()
+            new_missile.update(6,self.my_x    ,self.my_y,   2,0,   1,1,   0,0,   0,0,   16,8,  0,0,  0,0) #サーチレーザー
+            self.missile.append(new_missile)#サーチレーザー育成
+        
+        self.count_missile_type(7,7,7,7) #ミサイルタイプ7(ホーミングミサイル）がいくつ存在するのか調べる
+        if self.type_check_quantity <= self.sub_weapon_homing_missile_level_data_list[self.sub_weapon_list[HOMING_MISSILE]-1][1] - 4 and self.select_sub_weapon_id == HOMING_MISSILE and pyxel.frame_count % 8 == 0: #ホーミングミサイルの個数が1以下なら発射する！！！
+            level = self.sub_weapon_list[HOMING_MISSILE] #現在のホーミングミサイルのレベルを取得する
+            #ホーミングミサイルのレベルデータリストから現時点のレベルに応じたデータを取得する
+            speed = self.sub_weapon_homing_missile_level_data_list[level - 1][2] #スピード
+            power = self.sub_weapon_homing_missile_level_data_list[level - 1][3] #攻撃力
+            new_missile = Missile()
+            new_missile.update(7,self.my_x - 4,self.my_y,   -2*speed,1*speed,   power,1,   0,0,   0,0,   8,8,     200,60,   2,1)
+            self.missile.append(new_missile)#ホーミングミサイル育成
+            
+            new_missile = Missile()
+            new_missile.update(7,self.my_x - 4,self.my_y,   -2*speed,-1*speed,   power,1,   0,0,   0,0,   8,8,     200,60,   2,1)
+            self.missile.append(new_missile)#ホーミングミサイル育成
+            
+            
+            new_missile = Missile()
+            new_missile.update(7,self.my_x + 4,self.my_y + 2,   0*speed,2*speed,   power,1,   0,0,   0,0,   8,8,     200,60,   2,1)
+            self.missile.append(new_missile)#ホーミングミサイル育成
+            
+            new_missile = Missile()
+            new_missile.update(7,self.my_x + 4,self.my_y - 2,   0*speed,-2*speed,   power,1,   0,0,   0,0,   8,8,     200,60,   2,1)
+            self.missile.append(new_missile)#ホーミングミサイル育成
+        
+        if len(self.shots) < (self.shot_rapid_of_fire + (self.shot_level) * 2):#バルカンショットの発射
+            if (pyxel.frame_count % 6) == 0:    
+                if self.shot_level == SHOT_LV0_VULCAN_SHOT:#初期ショット バルカンショット1連装
+                    pyxel.play(2,1)
+                    new_shot = Shot()
+                    new_shot.update(self.shot_level,self.my_x + 4,self.my_y    ,4,0,  8,8,    0, 1,1)
+                    self.shots.append(new_shot)
+                
+                if self.shot_level == SHOT_LV1_TWIN_VULCAN_SHOT:#ツインバルカンショット 2連装
+                    pyxel.play(2,1)
+                    new_shot = Shot()
+                    new_shot.update(self.shot_level,self.my_x + 6,self.my_y - 2,4,0,  8,8,    0,  1,1)
+                    self.shots.append(new_shot)
                     
-            self.count_missile_type(6,6,6,6) #ミサイルタイプ6(サーチレーザー）がいくつ存在するのか調べる
-            if self.type_check_quantity <= 1 and self.select_sub_weapon_id == SEARCH_LASER and pyxel.frame_count % 32 == 0: #サーチレーザーが全く存在しないのなら発射する！！！
-                new_missile = Missile()
-                new_missile.update(6,self.my_x + 14,self.my_y,   2,0,   1,1,   0,1,   0,0,   16,8,  0,0,  0,0) #サーチレーザー(flag2=1なのでちょっとｘ軸前方向に対して索敵する)
-                self.missile.append(new_missile)#サーチレーザー育成
+                    new_shot = Shot()
+                    new_shot.update(self.shot_level,self.my_x + 6,self.my_y + 2,4,0,  8,8,     0,  1,1)
+                    self.shots.append(new_shot)
                 
-                new_missile = Missile()
-                new_missile.update(6,self.my_x    ,self.my_y,   2,0,   1,1,   0,0,   0,0,   16,8,  0,0,  0,0) #サーチレーザー
-                self.missile.append(new_missile)#サーチレーザー育成
+                if self.shot_level == SHOT_LV2_3WAY_VULCAN_SHOT:#３ＷＡＹバルカンショット
+                    pyxel.play(2,1)
+                    new_shot = Shot()
+                    new_shot.update(self.shot_level,self.my_x + 6,self.my_y - 2  ,5,-0.3,  8,8,    0,  1,1)
+                    self.shots.append(new_shot)
+                    
+                    new_shot = Shot()
+                    new_shot.update(self.shot_level,self.my_x + 6,self.my_y     ,5,0,    8,8,    0,  1,1)
+                    self.shots.append(new_shot)
+                    
+                    new_shot = Shot()
+                    new_shot.update(self.shot_level,self.my_x + 6,self.my_y + 2  ,5,0.3,   8,8,    0,  1,1)
+                    self.shots.append(new_shot)
                 
-            self.count_missile_type(7,7,7,7) #ミサイルタイプ7(ホーミングミサイル）がいくつ存在するのか調べる
-            if self.type_check_quantity <= self.sub_weapon_homing_missile_level_data_list[self.sub_weapon_list[HOMING_MISSILE]-1][1] - 4 and self.select_sub_weapon_id == HOMING_MISSILE and pyxel.frame_count % 8 == 0: #ホーミングミサイルの個数が1以下なら発射する！！！
-                level = self.sub_weapon_list[HOMING_MISSILE] #現在のホーミングミサイルのレベルを取得する
-                #ホーミングミサイルのレベルデータリストから現時点のレベルに応じたデータを取得する
-                speed = self.sub_weapon_homing_missile_level_data_list[level - 1][2] #スピード
-                power = self.sub_weapon_homing_missile_level_data_list[level - 1][3] #攻撃力
-                new_missile = Missile()
-                new_missile.update(7,self.my_x - 4,self.my_y,   -2*speed,1*speed,   power,1,   0,0,   0,0,   8,8,     200,60,   2,1)
-                self.missile.append(new_missile)#ホーミングミサイル育成
-                
-                new_missile = Missile()
-                new_missile.update(7,self.my_x - 4,self.my_y,   -2*speed,-1*speed,   power,1,   0,0,   0,0,   8,8,     200,60,   2,1)
-                self.missile.append(new_missile)#ホーミングミサイル育成
-                
-                
-                new_missile = Missile()
-                new_missile.update(7,self.my_x + 4,self.my_y + 2,   0*speed,2*speed,   power,1,   0,0,   0,0,   8,8,     200,60,   2,1)
-                self.missile.append(new_missile)#ホーミングミサイル育成
-                
-                new_missile = Missile()
-                new_missile.update(7,self.my_x + 4,self.my_y - 2,   0*speed,-2*speed,   power,1,   0,0,   0,0,   8,8,     200,60,   2,1)
-                self.missile.append(new_missile)#ホーミングミサイル育成
-                
-            if len(self.shots) < (self.shot_rapid_of_fire + (self.shot_level) * 2):#バルカンショットの発射
-                if (pyxel.frame_count % 6) == 0:    
-                    if self.shot_level == SHOT_LV0_VULCAN_SHOT:#初期ショット バルカンショット1連装
-                        pyxel.play(2,1)
-                        new_shot = Shot()
-                        new_shot.update(self.shot_level,self.my_x + 4,self.my_y    ,4,0,  8,8,    0, 1,1)
-                        self.shots.append(new_shot)
-                    if self.shot_level == SHOT_LV1_TWIN_VULCAN_SHOT:#ツインバルカンショット 2連装
-                        pyxel.play(2,1)
-                        new_shot = Shot()
-                        new_shot.update(self.shot_level,self.my_x + 6,self.my_y - 2,4,0,  8,8,    0,  1,1)
-                        self.shots.append(new_shot)
-                        
-                        new_shot = Shot()
-                        new_shot.update(self.shot_level,self.my_x + 6,self.my_y + 2,4,0,  8,8,     0,  1,1)
-                        self.shots.append(new_shot)
-                    if self.shot_level == SHOT_LV2_3WAY_VULCAN_SHOT:#３ＷＡＹバルカンショット
-                        pyxel.play(2,1)
-                        new_shot = Shot()
-                        new_shot.update(self.shot_level,self.my_x + 6,self.my_y - 2  ,5,-0.3,  8,8,    0,  1,1)
-                        self.shots.append(new_shot)
-                        
-                        new_shot = Shot()
-                        new_shot.update(self.shot_level,self.my_x + 6,self.my_y     ,5,0,    8,8,    0,  1,1)
-                        self.shots.append(new_shot)
-                        
-                        new_shot = Shot()
-                        new_shot.update(self.shot_level,self.my_x + 6,self.my_y + 2  ,5,0.3,   8,8,    0,  1,1)
-                        self.shots.append(new_shot)
-                    if self.shot_level == SHOT_LV3_5WAY_VULCAN_SHOT:#５ＷＡＹバルカンショット
-                        pyxel.play(2,1)
-                        new_shot = Shot()
-                        new_shot.update(self.shot_level,self.my_x + 6,self.my_y - 2,    5,-1,    8,8,    0,  1,1)
-                        self.shots.append(new_shot)
-                        
-                        new_shot = Shot()
-                        new_shot.update(self.shot_level,self.my_x + 6,self.my_y - 1,    5,-0.3,   8,8,    0,  1,1)
-                        self.shots.append(new_shot)
-                        
-                        new_shot = Shot()
-                        new_shot.update(self.shot_level,self.my_x + 6,self.my_y,       5,0,     8,8,    0,  1,1)
-                        self.shots.append(new_shot)
-                        
-                        new_shot = Shot()
-                        new_shot.update(self.shot_level,self.my_x + 6,self.my_y + 1,    5,0.3,    8,8,    0,  1,1)
-                        self.shots.append(new_shot)
-                        
-                        new_shot = Shot()
-                        new_shot.update(self.shot_level,self.my_x + 6,self.my_y + 2,    5,1,     8,8,    0,  1,1)
-                        self.shots.append(new_shot)
+                if self.shot_level == SHOT_LV3_5WAY_VULCAN_SHOT:#５ＷＡＹバルカンショット
+                    pyxel.play(2,1)
+                    new_shot = Shot()
+                    new_shot.update(self.shot_level,self.my_x + 6,self.my_y - 2,    5,-1,    8,8,    0,  1,1)
+                    self.shots.append(new_shot)
+                    
+                    new_shot = Shot()
+                    new_shot.update(self.shot_level,self.my_x + 6,self.my_y - 1,    5,-0.3,   8,8,    0,  1,1)
+                    self.shots.append(new_shot)
+                    
+                    new_shot = Shot()
+                    new_shot.update(self.shot_level,self.my_x + 6,self.my_y,       5,0,     8,8,    0,  1,1)
+                    self.shots.append(new_shot)
+                    
+                    new_shot = Shot()
+                    new_shot.update(self.shot_level,self.my_x + 6,self.my_y + 1,    5,0.3,    8,8,    0,  1,1)
+                    self.shots.append(new_shot)
+                    
+                    new_shot = Shot()
+                    new_shot.update(self.shot_level,self.my_x + 6,self.my_y + 2,    5,1,     8,8,    0,  1,1)
+                    self.shots.append(new_shot)
 
     #スペースキーかゲームバットＢボタンが押さたかどうか？もしくはリプレイモードでミサイル発射したのか調べる
     def update_check_fire_missile(self):
@@ -5370,48 +5360,48 @@ class App:
         elif self.auto_move_mode == 4: #リプレイモードの場合は
             if self.backup_replay_data[self.replay_farame] & 0b0000000000100000 == 0b0000000000100000: #リプレイデータを調べてPAD Bが押された記録だったのなら...
                 self.update_fire_missile() #ミサイル発射関数呼び出し！
-                
+
     #ミサイルを発射する!!!!!
     def update_fire_missile(self):
-            if (pyxel.frame_count % 10) == 0:
-                self.count_missile_type(0,1,2,3)#ミサイルタイプ0,1,2,3の合計数を数える
-                if self.type_check_quantity < (self.missile_level + 1) * self.missile_rapid_of_fire:  #初期段階では２発以上は出せないようにする
-                    if self.missile_level == MISSILE_LV0_NORMAL_MISSILE:
-                        pyxel.play(2,1)
-                        
-                        new_missile = Missile()
-                        new_missile.update(0,self.my_x + 4,self.my_y,   0.7,0.7,   3,    1   ,0,0,    1,1,  8,8  ,0,0,   0,0) #前方右下に落ちていくミサイル
-                        self.missile.append(new_missile)#ミサイル育成
-                        
-                    elif self.missile_level == MISSILE_LV1_TWIN_MISSILE:
-                        pyxel.play(2,1)
-                        
-                        new_missile = Missile()
-                        new_missile.update(0,self.my_x + 2,self.my_y +2,   0.7,0.7,   3,    1   ,0,0,    1,1,  8,8,  0,0,   0,0) #前方右下に落ちていくミサイル
-                        self.missile.append(new_missile)#ミサイル育成
-                        
-                        new_missile = Missile()
-                        new_missile.update(1,self.my_x + 2,self.my_y -2,   0.7,0.7,   3,    1   ,0,0    ,1,-1,  8,8,  0,0,  0,0) #前方右上に飛んでいくミサイル
-                        self.missile.append(new_missile)#ミサイル育成
-                        
-                    elif self.missile_level == MISSILE_LV2_MULTI_MISSILE:
-                        pyxel.play(2,1)
-                        
-                        new_missile = Missile()
-                        new_missile.update(0,self.my_x +2,self.my_y +2,   0.7,0.7,    3,    1   ,0,0,    1,1,   8,8,  0,0,  0,0) #前方右下に落ちていくミサイル
-                        self.missile.append(new_missile)#ミサイル育成
-                        
-                        new_missile = Missile()
-                        new_missile.update(1,self.my_x +2,self.my_y -2,   0.7,0.7,    3,    1   ,0,0    ,1,-1,   8,8,  0,0,  0,0) #前方右上に飛んでいくミサイル
-                        self.missile.append(new_missile)#ミサイル育成
-                        
-                        new_missile = Missile()
-                        new_missile.update(2,self.my_x -2,self.my_y +2,   -0.7,0.7,   3,    1   ,0,0,    -1,1,    8,8,  0,0,   0,0) #後方左下に落ちていくミサイル
-                        self.missile.append(new_missile)#ミサイル育成
-                        
-                        new_missile = Missile()
-                        new_missile.update(3,self.my_x -2,self.my_y -2,   -0.7,0.7,   3,    1   ,0,0    ,-1,-1,   8,8,  0,0,   0,0) #後方左上に飛んでいくミサイル
-                        self.missile.append(new_missile)#ミサイル育成
+        if (pyxel.frame_count % 10) == 0:
+            self.count_missile_type(0,1,2,3)#ミサイルタイプ0,1,2,3の合計数を数える
+            if self.type_check_quantity < (self.missile_level + 1) * self.missile_rapid_of_fire:  #初期段階では２発以上は出せないようにする
+                if self.missile_level == MISSILE_LV0_NORMAL_MISSILE:
+                    pyxel.play(2,1)
+                    
+                    new_missile = Missile()
+                    new_missile.update(0,self.my_x + 4,self.my_y,   0.7,0.7,   3,    1   ,0,0,    1,1,  8,8  ,0,0,   0,0) #前方右下に落ちていくミサイル
+                    self.missile.append(new_missile)#ミサイル育成
+                    
+                elif self.missile_level == MISSILE_LV1_TWIN_MISSILE:
+                    pyxel.play(2,1)
+                    
+                    new_missile = Missile()
+                    new_missile.update(0,self.my_x + 2,self.my_y +2,   0.7,0.7,   3,    1   ,0,0,    1,1,  8,8,  0,0,   0,0) #前方右下に落ちていくミサイル
+                    self.missile.append(new_missile)#ミサイル育成
+                    
+                    new_missile = Missile()
+                    new_missile.update(1,self.my_x + 2,self.my_y -2,   0.7,0.7,   3,    1   ,0,0    ,1,-1,  8,8,  0,0,  0,0) #前方右上に飛んでいくミサイル
+                    self.missile.append(new_missile)#ミサイル育成
+                    
+                elif self.missile_level == MISSILE_LV2_MULTI_MISSILE:
+                    pyxel.play(2,1)
+                    
+                    new_missile = Missile()
+                    new_missile.update(0,self.my_x +2,self.my_y +2,   0.7,0.7,    3,    1   ,0,0,    1,1,   8,8,  0,0,  0,0) #前方右下に落ちていくミサイル
+                    self.missile.append(new_missile)#ミサイル育成
+                    
+                    new_missile = Missile()
+                    new_missile.update(1,self.my_x +2,self.my_y -2,   0.7,0.7,    3,    1   ,0,0    ,1,-1,   8,8,  0,0,  0,0) #前方右上に飛んでいくミサイル
+                    self.missile.append(new_missile)#ミサイル育成
+                    
+                    new_missile = Missile()
+                    new_missile.update(2,self.my_x -2,self.my_y +2,   -0.7,0.7,   3,    1   ,0,0,    -1,1,    8,8,  0,0,   0,0) #後方左下に落ちていくミサイル
+                    self.missile.append(new_missile)#ミサイル育成
+                    
+                    new_missile = Missile()
+                    new_missile.update(3,self.my_x -2,self.my_y -2,   -0.7,0.7,   3,    1   ,0,0    ,-1,-1,   8,8,  0,0,   0,0) #後方左上に飛んでいくミサイル
+                    self.missile.append(new_missile)#ミサイル育成
 
     #自機をはみ出さないようにする
     def update_clip_my_ship(self):
@@ -5427,7 +5417,7 @@ class App:
                 self.my_x = 0
             if self.my_x >= WINDOW_W - MOVE_LIMIT:
                 self.my_x = WINDOW_W - MOVE_LIMIT - 1
-            
+        
         if self.my_y < 0:
             self.my_y = 0
         if self.my_y >= WINDOW_H - SHIP_H:
@@ -5438,27 +5428,24 @@ class App:
     def update_my_shot(self):
         shot_count = len(self.shots)#弾の数を数える
         for i in reversed(range (shot_count)):
-                #弾の位置を更新！
-                if 0 <= self.shots[i].shot_type <= 3:#ショットタイプがバルカンショットの場合
-                    self.shots[i].posx += self.shots[i].vx * self.shot_speed_magnification #弾のX座標をVX*speed_magnification(倍率)分加減算して更新
-                    self.shots[i].posy += self.shots[i].vy                           #弾のY座標をVY分加減算して更新
-                    
-                elif 4 <= self.shots[i].shot_type <= 6:#ショットタイプがレーザーの場合
-                    self.shots[i].posx += self.shots[i].vx#弾のX座標をVX分加減算して更新
-                    self.shots[i].offset_y = self.shots[i].offset_y * self.shots[i].vy#Ｙ軸オフセット値 vyの倍率ごと乗算して行って上下にずらしていく
-                    self.shots[i].posy = self.my_y + self.shots[i].offset_y#自機のｙ座標+Ｙ軸オフセット値をレーザーのＹ座標としてコピーする（ワインダー処理）
-                    self.shots[i].shot_hp = 1#レーザーなのでHPは減らず強制的にＨＰ＝１にする（ゾンビ化～みたいな）
-                    
-                    
-                elif 7 <= self.shots[i].shot_type <= 10:#ショットタイプがウェーブカッターの場合
-                    self.shots[i].posx += self.shots[i].vx * self.shot_speed_magnification #弾のX座標をVX*speed_magnification(倍率)分加減算して更新
-                    self.shots[i].posy += self.shots[i].vy                           #弾のY座標をVY分加減算して更新
-                    self.shots[i].shot_hp = 1#ウェーブカッターはHPは減らず強制的にＨＰ＝１にする（ゾンビ化～みたいな）
-                    
-                    
-                    
-                if self.shots[i].shot_hp == 0:
-                    del self.shots[i]#自機弾のHPがゼロだったらインスタンスを破棄する（弾消滅） 
+            #弾の位置を更新！
+            if 0 <= self.shots[i].shot_type <= 3:#ショットタイプがバルカンショットの場合
+                self.shots[i].posx += self.shots[i].vx * self.shot_speed_magnification #弾のX座標をVX*speed_magnification(倍率)分加減算して更新
+                self.shots[i].posy += self.shots[i].vy                           #弾のY座標をVY分加減算して更新
+                
+            elif 4 <= self.shots[i].shot_type <= 6:#ショットタイプがレーザーの場合
+                self.shots[i].posx += self.shots[i].vx#弾のX座標をVX分加減算して更新
+                self.shots[i].offset_y = self.shots[i].offset_y * self.shots[i].vy#Ｙ軸オフセット値 vyの倍率ごと乗算して行って上下にずらしていく
+                self.shots[i].posy = self.my_y + self.shots[i].offset_y#自機のｙ座標+Ｙ軸オフセット値をレーザーのＹ座標としてコピーする（ワインダー処理）
+                self.shots[i].shot_hp = 1#レーザーなのでHPは減らず強制的にＨＰ＝１にする（ゾンビ化～みたいな）
+                
+            elif 7 <= self.shots[i].shot_type <= 10:#ショットタイプがウェーブカッターの場合
+                self.shots[i].posx += self.shots[i].vx * self.shot_speed_magnification #弾のX座標をVX*speed_magnification(倍率)分加減算して更新
+                self.shots[i].posy += self.shots[i].vy                           #弾のY座標をVY分加減算して更新
+                self.shots[i].shot_hp = 1#ウェーブカッターはHPは減らず強制的にＨＰ＝１にする（ゾンビ化～みたいな）
+            
+            if self.shots[i].shot_hp == 0:
+                del self.shots[i]#自機弾のHPがゼロだったらインスタンスを破棄する（弾消滅） 
 
     #自機弾のはみだしチェック（はみ出て画面外に出てしまったら消去する)
     def update_clip_my_shot(self):
@@ -5691,7 +5678,7 @@ class App:
                         self.boss_processing_after_hitting(e,hit_x,hit_y,hit_vx,hit_vy) #ボスにショットを当てた後の処理の関数を呼び出す！
                         self.shots[h].shot_hp = 0#自機弾のＨＰをゼロにして自機弾移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する    
-    
+
     #自機弾と背景障害物の当たり判定
     def update_collision_my_shot_bg(self):
         if  0 <= self.shot_level <= 6:#ウェーブカッターの場合は背景は貫通する
@@ -5701,7 +5688,7 @@ class App:
                 if self.collision_flag == 1:
                     self.update_append_particle(PARTICLE_LINE,self.shots[i].posx,self.shots[i].posy,0,0, 0,0,0)
                     del self.shots[i]    
-    
+
     #################################自機ミサイル関連の処理関数##########################################
     #自機ミサイルのはみだしチェック（はみ出て画面外に出てしまったら消去する）
     def update_clip_my_missile(self):
@@ -5918,7 +5905,7 @@ class App:
                         self.boss_processing_after_hitting(e,hit_x,hit_y,hit_vx,hit_vy) #ボスにミサイルを当てた後の処理の関数を呼び出す！ 
                         self.missile[h].missile_hp = 0#ミサイルのＨＰをゼロしてミサイル移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する    
-    
+
     #自機ミサイルの更新（背景障害物との当たり判定も行っています）
     def update_my_missile(self):
         missile_count = len(self.missile)#ミサイルの総数を数える
@@ -5933,7 +5920,7 @@ class App:
                     self.missile[i].vy = 0#縦方向の移動量vyを0にして横方向だけに進むようにする
                     if  2 <= self.missile[i].missile_type <= 3:
                         self.missile[i].vx = -1
-                        
+                
                 #ミサイルの進行先が地形かどうか？チェック
                 self.check_bg_collision(self.missile[i].posx + (self.missile[i].x_reverse * 8),self.missile[i].posy + 4,0,0)
                 
@@ -5956,8 +5943,9 @@ class App:
                         self.missile[i].posx += self.missile[i].vx * self.missile_speed_magnification #ミサイルのX座標を(VX*倍率補正)分加減算して更新
                     else:   
                         self.missile[i].posx += self.missile[i].vx #上下に落ちていくときはミサイルのX座標をVXだけ加減算して更新
-                        
-                    self.missile[i].posy += self.missile[i].vy                             #ミサイルのY座標をVY分加減算して更新                       
+                    
+                    self.missile[i].posy += self.missile[i].vy                             #ミサイルのY座標をVY分加減算して更新
+                
             elif    self.missile[i].missile_type == 4:#テイルショットの処理        
                 #テイルショットの位置が地形かどうか？チェック
                 self.check_bg_collision(self.missile[i].posx,self.missile[i].posy,0,0)
@@ -5989,7 +5977,7 @@ class App:
                             if self.search_laser_flag == 1:#敵機索敵ＯＫ！のフラグが立っていたのなら
                                 self.missile[i].missile_flag1 = 1 #状態遷移を(屈折中=1)にする                  
                                 self.missile[i].y_reverse = self.search_laser_y_direction #Y軸加算用の反転フラグ(-1=上方向 1=下方向)もそのまま代入
-                                
+                        
                     elif self.missile[i].missile_flag1 == 1:#状態遷移が（屈折中=1)なら
                         self.missile[i].vx = 0 #x軸（横）に移動はさせないようvxに0を強制代入
                         self.missile[i].missile_flag1 = 2 #状態遷移を（縦に進行中=2)にする
@@ -6000,7 +5988,8 @@ class App:
                     elif self.missile[i].missile_flag1 == 2:#状態遷移が（縦に進行中=2)なら
                         self.missile[i].vx = 0 #x軸（横）に移動はさせないようvxに0を強制代入
                         #self.missile[i].posx += self.missile[i].vx          #サーチレーザーのX座標をVX分加減算して更新
-                        self.missile[i].posy += self.missile[i].y_reverse * 2#サーチレーザーのY座標をy_reverse分加減算して更新    
+                        self.missile[i].posy += self.missile[i].y_reverse * 2#サーチレーザーのY座標をy_reverse分加減算して更新
+                
             elif    self.missile[i].missile_type == 7:#ホーミングミサイルの処理        
                 if self.missile[i].missile_hp == 0:
                     del self.missile[i]#ホーミングミサイルのＨＰが0だったらインスタンスを破棄する（ホーミングミサイル消滅） 
@@ -6013,7 +6002,7 @@ class App:
                     #ホーミングミサイルを目標位置まで追尾させる
                     vx0 = self.missile[i].vx
                     vy0 = self.missile[i].vy #ホーミングミサイルの速度(vx,vy)を(vx0,vy0)に退避する
-
+                    
                     #目標までの距離を求める dに距離が入る
                     #狙うターゲットとなる座標(tx,ty)
                     self.d = math.sqrt((self.missile[i].tx - self.missile[i].posx) * (self.missile[i].tx - self.missile[i].posx) + (self.missile[i].ty - self.missile[i].posy) * (self.missile[i].ty - self.missile[i].posy))
@@ -6039,10 +6028,10 @@ class App:
                     self.missile[i].theta += 0.2 #旋回できる角度を増やしていく
                     if self.missile[i].theta > 360:
                         self.missile[i].theta = 360 #旋回可能角度は360度を超えないようにする
-
+                    
                     vx2 = math.cos(self.rad) * vx0 - math.sin(self.rad) * vy0
                     vy2 = math.sin(self.rad) * vx0 + math.cos(self.rad) * vy0
-
+                    
                     #ターゲット方向に曲がるのか？ それとも旋回角度上限一杯（面舵一杯！とか取り舵一杯！とかそういう表現）で曲がるのか判別する
                     if vx0 * vx1 + vy0 * vy1 >= vx0 * vx2 + vy0 * vy2:
                         #ターゲット方向が旋回可能範囲内の場合の処理
@@ -6054,11 +6043,11 @@ class App:
                         #左回り（取り舵方向）の旋回角度上限の速度ベクトルvx3,vy3を求める
                         vx3 =  math.cos(self.rad) * vx0 + math.sin(self.rad) * vy0
                         vy3 = -math.sin(self.rad) * vx0 + math.cos(self.rad) * vy0
-
+                        
                         #ホーミングミサイルからターゲットへの相対ベクトル(px,py)を求める
                         px = self.missile[i].tx - self.missile[i].posx
                         py = self.missile[i].ty - self.missile[i].posy
-
+                        
                         #右回りか左回りを決める
                         #右回りの速度ベクトルの内積(p,v2)と左回りの速度ベクトルの内積(p,v3)の比較で右回りか左回りか判断する
                         #旋回角度が小さいほうが内積が大きくなるのでそちらの方に曲がるようにする
@@ -6070,9 +6059,11 @@ class App:
                             #左回り（取り舵方向）の場合
                             self.missile[i].vx = vx3
                             self.missile[i].vy = vy3
+                    
                     #ホーミングミサイルの座標(posx,posy)を増分(vx,vy)を加減算更新して敵を移動させる(座標更新！)
                     self.missile[i].posx += self.missile[i].vx#ホーミングミサイルのX座標をVX分加減算して更新
-                    self.missile[i].posy += self.missile[i].vy#ホーミングミサイルのY座標をVY分加減算して更新    
+                    self.missile[i].posy += self.missile[i].vy#ホーミングミサイルのY座標をVY分加減算して更新
+
     #################################クロー関連の処理関数################################################
     #クローの更新
     def update_claw(self):
@@ -6112,12 +6103,12 @@ class App:
                         self.claw[i].offset_y += 1
                     elif self.claw[i].offset_y > self.claw[i].offset_roll_y:
                         self.claw[i].offset_y -= 1
-
+                    
                     self.claw[i].posx = self.my_x + self.claw[i].offset_x
                     self.claw[i].posy = self.my_y + self.claw[i].offset_y#クローのX,Y座標をオフセット分だけ加減算させていって回転開始位置まで移動させてやる
                     if  int(self.claw[i].offset_x) == int(self.claw[i].offset_roll_x) and int(self.claw[i].offset_y) == int(self.claw[i].offset_roll_y):
                         self.claw[i].status = 1#ローリングクロー回転開始初期位置のオフセット値まで行ったのならステータスを回転開始！！(1)にする 比較するときはint()を使って切り捨てた整数値で比較する
-
+                    
                 elif  self.claw[i].status == 1:#ステータスが(1)の場合は回転開始！
                     if self.claw[i].angle_difference == self.claw_difference:
                         self.claw[i].degree -= self.claw[i].speed#クローの個数に応じた回転間隔
@@ -6125,25 +6116,25 @@ class App:
                         self.claw[i].degree -= self.claw[i].speed - 1
                     else:
                         self.claw[i].degree -= self.claw[i].speed + 1
-
+                    
                     self.claw[i].degree = self.claw[i].degree % 360#角度は３６０で割った余りとする(0~359)
                     #極座標(r,θ)から直交座標(x,y)への変換は
                     #     x = r cos θ
                     #     y = r sin θ
                     self.claw[i].offset_x = self.claw[i].radius *   math.cos(math.radians(self.claw[i].degree))
                     self.claw[i].offset_y = self.claw[i].radius *  -math.sin(math.radians(self.claw[i].degree))
-
+                    
                     #クローの座標を自機の座標を中心としオフセット値を足した物とする
                     #線形補間値0.2で線形補間してやる（ピッタリ自機に付いてくる）
                     self.claw[i].posx = self.claw[i].posx + 0.2 * ((self.my_x + self.claw[i].offset_x) - self.claw[i].posx)
                     self.claw[i].posy = self.claw[i].posy + 0.2 * ((self.my_y + self.claw[i].offset_y) - self.claw[i].posy)
-
+            
         elif self.claw_type == 1:#トレースクローの時のみ実行
             for i in range(self.claw_number):#iの値は0からクローの数まで増えてイクです  ハイ！
                 self.claw[i].status = 1#トレースクローは出現と同時に移動開始のステータスにする
                 self.claw[i].posx = self.claw_coordinates[self.trace_claw_index + (TRACE_CLAW_BUFFER_SIZE - self.trace_claw_distance) - self.trace_claw_distance * i].posx#クローの座標をオフセット値のＸＹ座標とする
                 self.claw[i].posy = self.claw_coordinates[self.trace_claw_index + (TRACE_CLAW_BUFFER_SIZE - self.trace_claw_distance) - self.trace_claw_distance * i].posy
-
+            
         elif self.claw_type == 2:#フィックスクローの時のみ実行
             claw_count = len(self.claw)#クローの数を数える
             for i in range(claw_count):
@@ -6157,13 +6148,13 @@ class App:
                         self.claw[i].offset_y += 0.5
                     elif self.claw[i].offset_y > self.claw[i].offset_fix_y:
                         self.claw[i].offset_y -= 0.5
-
+                    
                     self.claw[i].posx = self.my_x + self.claw[i].offset_x
                     self.claw[i].posy = self.my_y + self.claw[i].offset_y#クローのX,Y座標をオフセット分だけ加減算させていってクロ―固定位置まで移動させてやる
                     
                     if  -0.5 <= self.claw[i].offset_x - self.claw[i].offset_fix_x <= 0.5 and -0.5 <= self.claw[i].offset_y - self.claw[i].offset_fix_y <= 0.5:
                         self.claw[i].status = 1#クロー固定位置のオフセット値付近(+-0.5)まで行ったのならステータスをクロー固定完了！！(1)にする
-                
+                    
                 elif self.claw[i].status == 1:#ステータスが(1)の場合はフイックスクローの固定は完了したので弾を発射とかしちゃう
                     if i <=1:
                         #クローの座標を自機の座標を中心としオフセット値を足した物とする
@@ -6175,7 +6166,7 @@ class App:
                         #クローナンバー2と3（外側のクロー）は線形補間値0.1で線形補間してやる（ちょっと遅れて自機に引っ付いてくる）
                         self.claw[i].posx = self.claw[i].posx + 0.1 * (self.my_x + self.claw[i].offset_x - self.claw[i].posx)
                         self.claw[i].posy = self.claw[i].posy + 0.1 * (self.my_y + (self.claw[i].offset_y * self.fix_claw_magnification) - self.claw[i].posy)
-
+            
         elif self.claw_type == 3:#リバースクローの時のみ実行
             claw_count = len(self.claw)#クローの数を数える
             for i in range(claw_count):
@@ -6189,13 +6180,13 @@ class App:
                         self.claw[i].offset_y += 0.5
                     elif self.claw[i].offset_y > self.claw[i].offset_reverse_y:
                         self.claw[i].offset_y -= 0.5
-
+                    
                     self.claw[i].posx = self.my_x + self.claw[i].offset_x
                     self.claw[i].posy = self.my_y + self.claw[i].offset_y#クローのX,Y座標をオフセット分だけ加減算させていってクロ―固定位置まで移動させてやる
                     
                     if  -0.5 <= self.claw[i].offset_x - self.claw[i].offset_reverse_x <= 0.5 and -0.5 <= self.claw[i].offset_y - self.claw[i].offset_reverse_y <= 0.5:
                         self.claw[i].status = 1#リバースクローの開始のオフセット値付近(+-0.5)まで行ったのならステータスをクロー固定完了！！(1)にする
-                
+                    
                 elif self.claw[i].status == 1:#ステータスが(1)の場合はリバースクローの固定は完了したので弾を発射とかしちゃう
                     if i == 1 or i == 2:
                         #クローの座標を自機の座標を中心としオフセット値を足した物とする
@@ -6221,11 +6212,11 @@ class App:
         elif self.auto_move_mode == 4: #リプレイモードの場合は
             if self.backup_replay_data[self.replay_farame] & 0b0000000000010000 == 0b0000000000010000: #リプレイデータを調べてPAD Aが押された記録だったのなら...
                 self.update_fire_claw_shot() #クローショット発射関数呼び出し！
-    
+
     #クローが弾を発射!!!!!!
     def update_fire_claw_shot(self):
             if (pyxel.frame_count % 16) == 0: #16フレーム毎だったら クローショットを育成する
-               if len(self.claw_shot) < CLAW_RAPID_FIRE_NUMBER * (self.claw_number):#クローショットの要素数がクローの数x２以下なら弾を発射する
+                if len(self.claw_shot) < CLAW_RAPID_FIRE_NUMBER * (self.claw_number):#クローショットの要素数がクローの数x２以下なら弾を発射する
                     #ここからクローが弾を発射する実処理
                     claw_count = len(self.claw)#クローの数を数える
                     for i in range(claw_count):
@@ -6242,17 +6233,17 @@ class App:
     def update_claw_shot(self):
         claw_shot_count = len(self.claw_shot)#クローの弾の数を数える
         for i in reversed(range (claw_shot_count)):
-                #クローの弾の位置を更新！
-                self.claw_shot[i].posx += self.claw_shot[i].vx * self.claw_shot_speed #弾のX座標をVX*claw_shot_speed分加減算して更新
-                self.claw_shot[i].posy += self.claw_shot[i].vy * self.claw_shot_speed #弾のY座標をVY*claw_shot_speed分加減算して更新
-                
-                if self.claw_shot[i].shot_hp != 0:
-                    if (-16 < self.claw_shot[i].posx < WINDOW_W + 16 ) and (-16 <self.claw_shot[i].posy < WINDOW_H + 16):
-                        continue
-                    else:
-                        del self.claw_shot[i]#クローショットが画面外まで飛んで行ってはみ出ていたのならインスタンス破棄（クローショット消滅）
+            #クローの弾の位置を更新！
+            self.claw_shot[i].posx += self.claw_shot[i].vx * self.claw_shot_speed #弾のX座標をVX*claw_shot_speed分加減算して更新
+            self.claw_shot[i].posy += self.claw_shot[i].vy * self.claw_shot_speed #弾のY座標をVY*claw_shot_speed分加減算して更新
+            
+            if self.claw_shot[i].shot_hp != 0:
+                if (-16 < self.claw_shot[i].posx < WINDOW_W + 16 ) and (-16 <self.claw_shot[i].posy < WINDOW_H + 16):
+                    continue
                 else:
-                    del self.claw_shot[i]#クローショットのHPがゼロだったらインスタンスを破棄する（クローショット消滅）
+                    del self.claw_shot[i]#クローショットが画面外まで飛んで行ってはみ出ていたのならインスタンス破棄（クローショット消滅）
+            else:
+                del self.claw_shot[i]#クローショットのHPがゼロだったらインスタンスを破棄する（クローショット消滅）
 
     #クローショットと敵の当たり判定
     def update_collision_claw_shot_enemy(self):
@@ -6262,7 +6253,7 @@ class App:
             for e in reversed(range (enemy_hit)):
                 if     self.enemy[e].posx <= self.claw_shot[h].posx + 4 <= self.enemy[e].posx + self.enemy[e].width\
                     and self.enemy[e].posy <= self.claw_shot[h].posy + 4 <= self.enemy[e].posy + self.enemy[e].height:
-
+                    
                     self.enemy[e].enemy_hp -= self.claw_shot[h].shot_power #敵の耐久力をクローショットパワーの分だけ減らす
                     if self.enemy[e].enemy_hp <= 0:
                         self.enemy_destruction(e) #敵破壊処理関数呼び出し！
@@ -6272,7 +6263,7 @@ class App:
                     
                     del self.enemy[e]#敵リストから破壊した敵をＤＥＬ消去破壊！
                     self.score += 1#スコア加算（あとあといろんなスコアシステム実装する予定だよ）
-                
+                    
                     self.claw_shot[h].shot_hp = 0#クローショットのＨＰをゼロにしてクローショット移動時にチェックしリストから消去させるため
                     pyxel.play(0,2)#ミサイルが敵を破壊した音！
                 else:
@@ -6460,7 +6451,7 @@ class App:
                         self.boss_processing_after_hitting(e,hit_x,hit_y,hit_vx,hit_vy) #ボスにクローショットを当てた後の処理の関数を呼び出す！ 
                         self.claw_shot[h].shot_hp = 0#クローショットのＨＰをゼロにして移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する    
-    
+
     #クローショットと背景との当たり判定
     def update_collision_claw_shot_bg(self):
         claw_shot_count = len(self.claw_shot)
@@ -6512,6 +6503,7 @@ class App:
                     
                     vx1 = ((self.my_x - self.enemy_shot[i].posx) / (d * self.enemy_shot[i].speed))
                     vy1 = ((self.my_y - self.enemy_shot[i].posy) / (d * self.enemy_shot[i].speed))
+                
                 #右回り旋回角度上限の速度ベクトル(vx2,vy2)を求める
                 #math.piはπ（円周率3.141592......)
                 self.rad = 3.14 / 180 * self.enemy_shot[i].turn_theta #rad = 角度degree（theta）をラジアンradianに変換
@@ -6547,7 +6539,7 @@ class App:
                         #左回り（取り舵方向）の場合
                         self.enemy_shot[i].vx = vx3
                         self.enemy_shot[i].vy = vy3
-                        
+                
                 #誘導弾orホーミングレーザーの座標(posx,posy)に速度ベクトル(vx,vy)を加減算して移動させる(座標を更新！)
                 self.enemy_shot[i].posx += self.enemy_shot[i].vx
                 self.enemy_shot[i].posy += self.enemy_shot[i].vy
@@ -6558,19 +6550,21 @@ class App:
                     if self.enemy_shot[i].turn_theta < 0:
                         self.enemy_shot[i].turn_theta = 0 #turn_thetaはマイナスにならないようにする
                     self.enemy_shot[i].count1 = 0 #誘導性能を落として行くカウンタ数を初期化
-                        
+                
                 if self.enemy_shot[i].enemy_shot_type == ENEMY_SHOT_HOMING_LASER: #ホーミングレーザーの場合は
                     #ホーミングレーザーの尻尾部分を育成する
                     if (pyxel.frame_count % 3) == 0:
                         new_enemy_shot = Enemy_shot()
                         new_enemy_shot.update(ENEMY_SHOT_HOMING_LASER_TAIL,ID00,self.enemy_shot[i].posx,self.enemy_shot[i].posy,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8,  0,0, 0,0,   0,  1,1, 0,0,  0,0,0, 0, 60,0,PRIORITY_FRONT, 0,0,0,0,0,0, 0,0, 0, 0,0, 0, 0,0, 0,0,   0,0)
-                        self.enemy_shot.append(new_enemy_shot)     
+                        self.enemy_shot.append(new_enemy_shot)
+                
             #ホーミングレーザーの尻尾の場合
             elif self.enemy_shot[i].enemy_shot_type == ENEMY_SHOT_HOMING_LASER_TAIL:
                 self.enemy_shot[i].disappearance_count -= 1 #消滅カウンターを1減少させる
                 if self.enemy_shot[i].disappearance_count <= 0:#消滅カウンターが0以下になったのなら
                     del self.enemy_shot[i]    #インスタンスを消滅させる 古い尻尾から消えていく・・・
                     continue                #これ以下の処理はせずにループを続けていく
+                
             #サーチレーザーの場合
             elif self.enemy_shot[i].enemy_shot_type == ENEMY_SHOT_SEARCH_LASER:
                 if self.enemy_shot[i].search_flag == 0: #サーチフラグがまだだっていないのなら自機とのx座標の比較を以下行っていく
@@ -6581,20 +6575,22 @@ class App:
                             self.enemy_shot[i].vy = 1 #自機がサーチレーザーより下方向にあるのでvy=1にして下方向に曲がらせる
                         else:
                             self.enemy_shot[i].vy = -1 #自機がサーチレーザーより上方向にあるのでvy=-1にして上方向に曲がらせる
-                            
+                
                 self.enemy_shot[i].posx += self.enemy_shot[i].vx#敵の弾のx座標をvx分加減算して更新
                 self.enemy_shot[i].posy += self.enemy_shot[i].vy#敵の弾のy座標をvy分加減算して更新
                 #サーチレーザーの尻尾部分を育成する
                 if (pyxel.frame_count % 4) == 0:
                     new_enemy_shot = Enemy_shot()
                     new_enemy_shot.update(ENEMY_SHOT_SEARCH_LASER_TAIL,ID00,self.enemy_shot[i].posx,self.enemy_shot[i].posy,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8,  0,0, 0,self.enemy_shot[i].vy, 0,  1,1, 0,0,  0,0,0, 0, 60,0,PRIORITY_FRONT,0,self.enemy_shot[i].search_flag,0,0,0,0, 0,0, 0, 0,0, 0, 0,0, 0,0,   0,0) #search_flagとvyはdraw時に使用するのでそのままコピーします
-                    self.enemy_shot.append(new_enemy_shot)           
+                    self.enemy_shot.append(new_enemy_shot)
+                
             #サーチレーザーの尻尾の場合
             elif self.enemy_shot[i].enemy_shot_type == ENEMY_SHOT_SEARCH_LASER_TAIL:
                 self.enemy_shot[i].disappearance_count -= 1 #消滅カウンターを1減少させる
                 if self.enemy_shot[i].disappearance_count <= 0:#消滅カウンターが0以下になったのなら
                     del self.enemy_shot[i]    #インスタンスを消滅させる 古い尻尾から消えていく・・・
                     continue                #これ以下の処理はせずにループを続けていく
+                
             #回転弾の場合
             elif self.enemy_shot[i].enemy_shot_type == ENEMY_SHOT_CIRCLE_BULLET:
                 self.enemy_shot[i].rotation_omega += self.enemy_shot[i].rotation_omega_incremental #rotation_omega_incrementalの分だけ角度を増加させていく(回転していく)
@@ -6613,6 +6609,7 @@ class App:
                 #中心cx,cy半径radius回転角度rotation_omegaから現在の敵弾の座標(posx.posy)を求める
                 self.enemy_shot[i].posx = self.enemy_shot[i].cx+ self.enemy_shot[i].radius * math.cos(math.radians(self.enemy_shot[i].rotation_omega))
                 self.enemy_shot[i].posy = self.enemy_shot[i].cy+ self.enemy_shot[i].radius * math.sin(math.radians(self.enemy_shot[i].rotation_omega))
+                
             #落下弾の場合
             elif self.enemy_shot[i].enemy_shot_type == ENEMY_SHOT_DROP_BULLET:
                 #速度ベクトルを加速度で掛け合わせて加速もしくは減速させる x軸の速度ベクトルは変化させない
@@ -6630,9 +6627,10 @@ class App:
                     if self.enemy_shot[i].width >= self.enemy_shot[i].width_max: #widthはwidth_maxを超えないようにします
                         self.enemy_shot[i].width = self.enemy_shot[i].width_max #幅は最大値とする
                         self.enemy_shot[i].vx = 0                         #最大幅まで広くなったのでもう横方向の移動は無し
-                        
+                    
                 else:
                     self.enemy_shot[i].stop_count -= 1#ストップカウントがまだ残っていたら１減らし、座標の更新は行わずそのままの位置で留まる
+                
             #ベクトルレーザーの場合
             elif self.enemy_shot[i].enemy_shot_type == ENEMY_SHOT_VECTOR_LASER:
                 if self.enemy_shot[i].stop_count == 0:#もしストップカウントが0で動き出しても良いのなら・・・
@@ -6644,9 +6642,10 @@ class App:
                     if self.enemy_shot[i].height >= self.enemy_shot[i].height_max: #heightはheight_maxを超えないようにします
                         self.enemy_shot[i].height = self.enemy_shot[i].height_max #幅は最大値とする
                         self.enemy_shot[i].vy = 0                         #最大幅まで広くなったのでもう縦方向の移動は無し
-                        
+                    
                 else:
                     self.enemy_shot[i].stop_count -= 1#ストップカウントがまだ残っていたら１減らし、座標の更新は行わずそのままの位置で留まる
+                
             #その他の敵弾の場合
             else: 
                 if self.enemy_shot[i].stop_count == 0:#もしストップカウントが0で動き出しても良いのなら・・・
@@ -6672,6 +6671,7 @@ class App:
                             self.enemy_aim_bullet_nway(ex,ey,theta,n,div_type,div_count,div_num,stop_count) #自機狙い3way分裂弾育成
                             del self.enemy_shot[i] #元の弾のインスタンスは消去する
                             continue #ループはそのまま続けるのでcontinue
+                        
                     elif self.enemy_shot[i].division_type == ENEMY_SHOT_DIVISION_5WAY: #5way分裂弾を生み出す
                         self.enemy_shot[i].division_count -= 1 #分裂までのカウントをデクリメント
                         if self.enemy_shot[i].division_count == 0: #分裂カウントが0になったのなら・・・
@@ -6690,6 +6690,7 @@ class App:
                             self.enemy_aim_bullet_nway(ex,ey,theta,n,div_type,div_count,div_num,stop_count) #自機狙い5way分裂弾育成
                             del self.enemy_shot[i] #元の弾のインスタンスは消去する
                             continue #ループはそのまま続けるのでcontinue
+                        
                     elif self.enemy_shot[i].division_type == ENEMY_SHOT_DIVISION_7WAY: #7way分裂弾を生み出す
                         self.enemy_shot[i].division_count -= 1 #分裂までのカウントをデクリメント
                         if self.enemy_shot[i].division_count == 0: #分裂カウントが0になったのなら・・・
@@ -6708,6 +6709,7 @@ class App:
                             self.enemy_aim_bullet_nway(ex,ey,theta,n,div_type,div_count,div_num,stop_count) #自機狙い7way分裂弾育成
                             del self.enemy_shot[i] #元の弾のインスタンスは消去する
                             continue #ループはそのまま続けるのでcontinue
+                        
                     elif self.enemy_shot[i].division_type == ENEMY_SHOT_DIVISION_9WAY: #9way分裂弾を生み出す
                         self.enemy_shot[i].division_count -= 1 #分裂までのカウントをデクリメント
                         if self.enemy_shot[i].division_count == 0: #分裂カウントが0になったのなら・・・
@@ -6726,6 +6728,7 @@ class App:
                             self.enemy_aim_bullet_nway(ex,ey,theta,n,div_type,div_count,div_num,stop_count) #自機狙い9way分裂弾育成
                             del self.enemy_shot[i] #元の弾のインスタンスは消去する
                             continue #ループはそのまま続けるのでcontinue
+                    
                 else:
                     self.enemy_shot[i].stop_count -= 1#ストップカウントがまだ残っていたら１減らし、座標の更新は行わずそのままの位置で留まる
             
@@ -6735,10 +6738,11 @@ class App:
                     self.ls_shield_hp -= 1#シールドエナジーを1減らす
                     del self.enemy_shot[i]
                     continue
-                    
+            
             #敵の弾が自機に当たっているか判別###########################################################
             if self.invincible_counter > 0: #無敵時間が残っていた場合は・・・
                 continue                #衝突判定はせずループだけ続ける(continue)・・・無敵っていいよね・・・うん、うん.....
+            
             if self.enemy_shot[i].collision_type == ESHOT_COL_MIN88: #最小の正方形8x8ドットでの当たり判定の場合
                 #敵の弾と自機の位置の2点間の距離を求める
                 self.dx = (self.enemy_shot[i].posx + 4) - (self.my_x + 4)
@@ -6746,6 +6750,7 @@ class App:
                 self.distance = math.sqrt(self.dx * self.dx + self.dy * self.dy)
                 if self.distance < 3:
                     self.update_my_ship_damage(1) #敵弾と自機の位置の距離が3以下なら衝突したと判定し自機のシールド値を１減らす
+                
             elif self.enemy_shot[i].collision_type == ESHOT_COL_BOX: #長方形での当たり判定の場合
                 if      0 <= (self.my_x+4) - (self.enemy_shot[i].posx+4) <= self.enemy_shot[i].width\
                     and 0 <= (self.my_y+4) - (self.enemy_shot[i].posy+4) <= self.enemy_shot[i].height:
@@ -6829,6 +6834,7 @@ class App:
                     
                     #編隊なので編隊のＩＤナンバーと編隊の総数、現在の編隊生存数をEnemy_formationリストに登録します
                     self.record_enemy_formation(10)
+        
         #敵タイプ2サイシーロの発生  サインカーブを描く3機編隊                     KEY 5 ++++++
         if (pyxel.frame_count % 8) == 0:
             if pyxel.btn(pyxel.KEY_5):
@@ -6838,6 +6844,7 @@ class App:
                         new_enemy = Enemy()
                         new_enemy.update(SAISEE_RO,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W + 10,((self.posy)-36) + (number * 12),0,0,    0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,0,   0,0,       0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   1,0,   0,  HP01,   0,0,  E_SIZE_NORMAL,0.5,0.05,0,    0,0,0,0,   E_NO_POW,ID00 ,0,0,0    ,0  ,0,0,0,    0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                         self.enemy.append(new_enemy)        
+        
         #敵タイプ6の発生（謎の飛翔体Ｍ54）                                   KEY 6 ++++++
         if (pyxel.frame_count % 3) == 0:
             if pyxel.btn(pyxel.KEY_6):
@@ -6846,6 +6853,7 @@ class App:
                     new_enemy = Enemy()
                     new_enemy.update(6,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,self.posy,0,0,    0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,0, 0,0,      0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   1,0,   0,  HP01,   0,0,  E_SIZE_NORMAL,   0.5,0.05,0,    0,0,0,0,    E_NO_POW,ID00 ,0,0,0,    0  ,0,0,0,    0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                     self.enemy.append(new_enemy)        
+        
         #敵タイプ8ツインアローの発生 追尾戦闘機                               KEY Z ++++++
         if (pyxel.frame_count % 3) == 0:
             if pyxel.btn(pyxel.KEY_Z):
@@ -6854,6 +6862,7 @@ class App:
                     new_enemy = Enemy()
                     new_enemy.update(TWIN_ARROW,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,self.posy,0,0,     0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0, 0,0,       0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   1.5,0,  0,    HP01,    0,0,   E_SIZE_NORMAL,  0,  0, 1.3,    0,0,0,0,    E_NO_POW,ID00 ,0,0,0,    0  ,0,0,0,    0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                     self.enemy.append(new_enemy)
+        
         #敵タイプ9の発生 縦軸合わせ突進タイプ                                KEY X ++++++
         if (pyxel.frame_count % 16) == 0:
             if pyxel.btn(pyxel.KEY_X):
@@ -6861,6 +6870,7 @@ class App:
                     new_enemy = Enemy()
                     new_enemy.update(9,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,    80,40,0,0,     0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,  0,0,       0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   0.5,0,   0,    HP01,    0,0,   E_SIZE_NORMAL,  0,  0, 0,    0,0,0,0,    E_NO_POW,ID00 ,0,0,0,    0  ,0,0,0,    0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                     self.enemy.append(new_enemy)
+        
         #敵タイプ10の発生 地面のスクランブルハッチ                             KEY C +++++
         if (pyxel.frame_count % 64) == 0:
             if pyxel.btn(pyxel.KEY_C):
@@ -6870,6 +6880,7 @@ class App:
                     new_enemy = Enemy()
                     new_enemy.update(10,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,    170,96,0,0,    0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,   0,0,       0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_24,SIZE_26,   0.5,0,   0,    HP10,    0,0,   E_SIZE_MIDDLE32,  (self.s_rndint(0,130) + 10),  6, 20,    0,0,0,0,      E_NO_POW,ID00 ,0,0,0,    0  ,0,0,0,    0,GROUND_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                     self.enemy.append(new_enemy)
+        
         #敵タイプ12の発生 レイブラスター  レーザービームを出して高速で逃げていく敵     KEY D ++++++
         if (pyxel.frame_count % 8) == 0:
             if pyxel.btn(pyxel.KEY_D) or pyxel.btn(pyxel.GAMEPAD_1_RIGHT_SHOULDER) or pyxel.btn(pyxel.GAMEPAD_2_RIGHT_SHOULDER):
@@ -6877,6 +6888,7 @@ class App:
                     new_enemy = Enemy()
                     new_enemy.update(RAY_BLASTER,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W + 8,self.s_rndint(0,WINDOW_H),0,0,    0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,0,   -2,(self.s_rndint(0,1)-0.5),       0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   0.98,0,    0,    HP01,  0,0,    E_SIZE_NORMAL,   80 + self.s_rndint(0,40),0,0,     0,0,0,0,      E_NO_POW,ID00 ,0,0,0,    0  ,0,0,0,    0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                     self.enemy.append(new_enemy)
+        
         #敵タイプ16の発生 2機一体で挟みこみ攻撃をしてくるクランパリオン             KEY T ++++++++
         if (pyxel.frame_count % 24) == 0:
             if pyxel.btn(pyxel.KEY_T):
@@ -6884,10 +6896,11 @@ class App:
                     new_enemy = Enemy()
                     new_enemy.update(CLAMPARION,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,    WINDOW_W,0,0,0,       0,0,0,0,0,0,0,0,        0,0,0,0,0,0,0,0,0,0,  -1.1,0,       0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   0.997,0,    0,    HP01,  0,0,    E_SIZE_NORMAL,   0,0,0,     0,0,0,0,    E_NO_POW,   ID00    ,0,0,0,    0  ,0,0,0,    0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                     self.enemy.append(new_enemy)
-
+                    
                     new_enemy = Enemy()
                     new_enemy.update(CLAMPARION,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,    WINDOW_W,WINDOW_H-8,0,0,     0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,  -1.1,0,       0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   0.997,0,   0,    HP01,  0,0,    E_SIZE_NORMAL,   0,0,0,    0,0,0,0,    E_NO_POW,   ID00    ,0,0,0,    0  ,0,0,0,    0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                     self.enemy.append(new_enemy)
+        
         #敵タイプ17の発生 ロールブリッツ あらかじめ決められた場所へスプライン曲線移動   KEY Y ++++++++
         if (pyxel.frame_count % 24) == 0:
             if pyxel.btn(pyxel.KEY_Y):
@@ -6903,6 +6916,7 @@ class App:
                     new_enemy = Enemy()
                     new_enemy.update(ROLL_BLITZ,ID00,ENEMY_STATUS_MOVE_COORDINATE_INIT,ENEMY_ATTCK_ANY,    0,0,0,16,    0,0,0,0,0,0,0,0,        0,0,0,0,0,0,0,0,0,0,  0,0,       0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   0,0.95,   0,    HP01,  0,0,    E_SIZE_NORMAL,   0,0,0,    0,0,0,0,    E_NO_POW,   ID00    ,0,0,0,    0  ,0,0,0,    0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                     self.enemy.append(new_enemy)
+        
         #敵タイプ18の発生 ボルダー 硬めの弾バラマキ重爆撃機                      KEY R ++++++++
         if (pyxel.frame_count % 24) == 0:
             if pyxel.btn(pyxel.KEY_R):
@@ -6911,6 +6925,7 @@ class App:
                     new_enemy.update(VOLDAR,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   170,10,0,0,       0,0,0,0,0,0,0,0,        0,0,0,0,0,0,0,0,0,0,  0,0,      0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_40,SIZE_24,   -0.07,1,   0,    HP30,  0,0,    E_SIZE_HI_MIDDLE53,   0,0,0,    0,0,0,0,    E_NO_POW,   ID00    ,1,0.007,0.6,    0  ,0,0,0,    0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                     self.enemy.append(new_enemy)
                     
+        
         #敵弾1(前方加速弾&落下弾&サインコサイン弾&グリーンカッター)の発生           KEY A ----------------
         if(pyxel.frame_count % 3) == 0:
             if pyxel.btn(pyxel.KEY_A):
@@ -6937,6 +6952,7 @@ class App:
                     new_enemy_shot = Enemy_shot()
                     new_enemy_shot.update(ENEMY_SHOT_GREEN_CUTTER,ID00,140,60,ESHOT_COL_BOX,ESHOT_SIZE8,ESHOT_SIZE12,    0,0,  -0.3,0,      1.01,    1,1,    0,0,  0,0,0,            0,   0,0,PRIORITY_FRONT,   0,0, 0,0,0,0, 0,0, 0, 0,0, 0, 0,0, 0,0,   0,0)
                     self.enemy_shot.append(new_enemy_shot)
+        
         #敵弾2(自機狙い6way弾)の発生                         KEY B ----------------
         if(pyxel.frame_count % 3) == 0:
             if pyxel.btn(pyxel.KEY_B):
@@ -6950,6 +6966,7 @@ class App:
                     division_num = 0
                     stop_count = 0
                     self.enemy_aim_bullet_nway(ex,ey,theta,n,division_type,division_count,division_num,stop_count)    
+        
         #敵弾3(前方レーザービーム)の発生                       KEY S ----------------
         if(pyxel.frame_count % 1) == 0:
             if pyxel.btn(pyxel.KEY_S):
@@ -6959,6 +6976,7 @@ class App:
                         new_enemy_shot = Enemy_shot()
                         new_enemy_shot.update(ENEMY_SHOT_LASER,ID00, WINDOW_W,posy,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8, 0,0,  -2,0,   1,  1,1,   0,0,0,    1,0,0,  0,number * 2,PRIORITY_FRONT,  0,0,  0,0,0,0, 0,0, 0, 0,0, 0, 0,0, 0,0,   0,0)
                         self.enemy_shot.append(new_enemy_shot)
+        
         #敵弾4(ホーミングレーザー)の発生                       KEY F -----------------
         if(pyxel.frame_count % 100) == 0:
             if pyxel.btn(pyxel.KEY_F):
@@ -6967,6 +6985,7 @@ class App:
                     new_enemy_shot = Enemy_shot()
                     new_enemy_shot.update(ENEMY_SHOT_HOMING_LASER,ID00, WINDOW_W,posy,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8, 0,0,   0.5,0.5,   1,    1,1,   0,20,0,    1,0,0,  0,0,PRIORITY_MORE_FRONT, 8,0,  0,0,0,0, 0,0, 0, 0,0, 0, 0,0, 0,0,   0,0)
                     self.enemy_shot.append(new_enemy_shot)
+        
         #敵弾5(サーチレーザー)の発生                          KEY G ------------------
         if(pyxel.frame_count % 100) == 0:
             if pyxel.btn(pyxel.KEY_G):
@@ -6976,6 +6995,7 @@ class App:
                     new_enemy_shot = Enemy_shot()
                     new_enemy_shot.update(ENEMY_SHOT_SEARCH_LASER,ID00, posx,posy,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8, 0,0,   -0.75,0,   1,    1,1,   0,0, 0,    1,0,0,  0,0,PRIORITY_MORE_FRONT, 0,0,  0,0,0,0, 0,0, 0, 0,0, 0, 0,0, 0,0,   0,0)
                     self.enemy_shot.append(new_enemy_shot)
+        
         #敵弾6(回転弾)の発生                                KEY H ------------------
         if(pyxel.frame_count % 3) == 0:
             if pyxel.btn(pyxel.KEY_H):
@@ -6999,6 +7019,7 @@ class App:
                     new_enemy_shot = Enemy_shot()
                     new_enemy_shot.update(ENEMY_SHOT_CIRCLE_BULLET,ID00, cx+radius,cy,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8, cx,cy,  -0.05,0,   1,    1,1,   0,0, 0,    1,0,0,  0,0,PRIORITY_FRONT, 0,0,  0,rotation_omega_incremental,radius,radius_max, 0,0, radius_incremental, 0,0, 0, 0,0, 0,0,   0,0)
                     self.enemy_shot.append(new_enemy_shot)
+        
         #敵弾7(分裂弾)の発生                                KEY J ----------------
         if(pyxel.frame_count % 3) == 0:
             if pyxel.btn(pyxel.KEY_J):
@@ -7011,6 +7032,7 @@ class App:
                     division_num        = 10    #分裂する回数(ひ孫まで)
                     new_enemy_shot.update(ENEMY_SHOT_NORMAL,ID00, ex,ey,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8, 0,0, -2,0,     0.96,     1,1,    1,0, 0,1,0,        0,   0,0,PRIORITY_FRONT,   0,0,0,0,0,0, division_type,division_count,  0, division_count_origin,division_num, 0, 0,0, 0,0,   0,0)
                     self.enemy_shot.append(new_enemy_shot)            
+        
         #敵弾8(狙い撃ち分裂弾弾)の発生                        KEY K ----------------
         if(pyxel.frame_count % 3) == 0:
             if pyxel.btn(pyxel.KEY_K):
@@ -7021,6 +7043,7 @@ class App:
                 stop_count    = 20 #その場に留まるカウント数
                 accel        = 1.02 #加速係数
                 self.enemy_aim_bullet(ex,ey,div_type,div_count,div_num,stop_count,accel)
+        
         #敵弾9(アップ&ダウンレーザー)の発生                    KEY L ----------------
         if(pyxel.frame_count % 28) == 0:
             if pyxel.btn(pyxel.KEY_L):
@@ -7050,6 +7073,7 @@ class App:
                     height_max          = 3
                     new_enemy_shot.update(ENEMY_SHOT_DOWN_LASER,ID00, ex,ey,ESHOT_COL_BOX,ESHOT_SIZE8,ESHOT_SIZE3, 0,0, vx,vy,     1,     1,1,    1,0, 0,1,0,        0,   0,0,PRIORITY_FRONT,   0,0,0,0,0,0, division_type,division_count,  0, division_count_origin,division_num, 0, expansion,0,width_max,height_max,   0,0)
                     self.enemy_shot.append(new_enemy_shot)
+        
         #敵弾10(ベクトルレーザー)の発生                        KEY M ----------------
         if(pyxel.frame_count % 10) == 0:
             if pyxel.btn(pyxel.KEY_M):
@@ -7066,7 +7090,7 @@ class App:
                     height_max          = 90
                     new_enemy_shot.update(ENEMY_SHOT_VECTOR_LASER,ID00, ex,ey,ESHOT_COL_BOX,ESHOT_SIZE3,ESHOT_SIZE3, 0,0, vx,vy,     0.996,     1,1,    1,0, 0,1,0,        0,   0,0,PRIORITY_TOP,   0,0,0,0,0,0, division_type,division_count,  0, division_count_origin,division_num, 0, expansion,0,width_max,height_max,   0,0)
                     self.enemy_shot.append(new_enemy_shot)
-                    
+        
         #メッセージウィンドウを発生させる                        KEY Q
         if(pyxel.frame_count % 16) == 0:
             if pyxel.btn(pyxel.KEY_Q):
@@ -7085,9 +7109,10 @@ class App:
                             "!",DISP_CENTER,10,8,\
                             
                             43,68   -32,   0,0,  8*8,3*8  +40,   2,1, 1,1,   0,0,    0,0)
-                            
+                
                 #new_window.update(0,1,  24,24,  0,0, 64,64, 0,0,0)
-                self.window.append(new_window)        
+                self.window.append(new_window)
+        
         #パーティクルを発生させる                              KEY P
         if(pyxel.frame_count % 1) == 0:
             if pyxel.btn(pyxel.KEY_P):
@@ -7098,7 +7123,8 @@ class App:
                 
                 #particle_number = self.s_rndint(0,10) + 50
                 #for number in range(particle_number):
-                #    self.update_append_particle(PARTICLE_DOT,x,y,-0.5,-0.5, 0,0,0)       
+                #    self.update_append_particle(PARTICLE_DOT,x,y,-0.5,-0.5, 0,0,0)
+        
         #背景オブジェクト雲１を発生させる                        KEY E
         if(pyxel.frame_count % 6) == 0:
             if pyxel.btn(pyxel.KEY_E):
@@ -7108,7 +7134,7 @@ class App:
                 new_background_object = Background_object()
                 new_background_object.update(t, 160+10,y,  0,    1.009,1,0,0,0,0,0,0,   -3,-0.25,  0,0,   0,0,0,0,0,   0,0,0, 0,0,0,  0,0,0)
                 self.background_object.append(new_background_object)
-                
+        
         #パワーアップアイテム類を発生させる                       KEY U I O
         if(pyxel.frame_count % 8) == 0:
             if pyxel.btn(pyxel.KEY_U): #ショットアイテム
@@ -7126,11 +7152,11 @@ class App:
                 new_obtain_item = Obtain_item()
                 new_obtain_item.update(ITEM_SHIELD_POWER_UP,WINDOW_W-20,y, 0.5,0,   SIZE_8,SIZE_8,   1,   0.9,  0.3,   0,0,  0.05,0,0,0,0,   0,0,1,  0,0,0, self.pow_item_bounce_num,0)
                 self.obtain_item.append(new_obtain_item) 
-                
+        
         #自機クローを追加する                                KEY V
         if pyxel.btnp(pyxel.KEY_V):
             self.update_append_claw()
-            
+        
         #キーボード入力によるイベントアペンドリスト書き込み  サーコイン10機編隊   KEY 0
         if (pyxel.frame_count % 8) == 0:
             if pyxel.btn(pyxel.KEY_0):
@@ -7149,7 +7175,7 @@ class App:
             new_claw.update(0,   self.claw_type,0,    posx,posy,  0,-1,   -1,-1,  -1,0,      0,0,  0,-12,  -2,-12,    -2,-12,   -12,-1,  0,0,    90,0,2,12,    self.claw_difference,0,   0,1,   0)
             self.claw.append(new_claw)
             return
-            
+        
         if len(self.claw) == 1:#2機目のクローの発生
             posx = self.my_x
             posy = self.my_y
@@ -7159,7 +7185,7 @@ class App:
             new_claw.update(1,   self.claw_type,0,    posx,posy,  0,-1,   -1,1,  0,-1,       0,0, 0,-12,    -2,12,  -2,12,   -3,-9, 0,0,       90,0,2,12,    self.claw_difference,0,   0,1,   0)
             self.claw.append(new_claw)
             return
-            
+        
         if len(self.claw) == 2:#3機目のクローの発生
             posx = self.my_x
             posy = self.my_y
@@ -7169,7 +7195,7 @@ class App:
             new_claw.update(2,   self.claw_type,0,    posx,posy,  0,-1,   -1,-1,  0,1,       0,0,  0,-12,    -6,-24, -6,-24,  -3,8,   0,0,      90,0,2,12,    self.claw_difference,0,   0,1,    0)
             self.claw.append(new_claw)
             return
-            
+        
         if len(self.claw) == 3:#4機目のクローの発生
             posx = self.my_x
             posy = self.my_y
@@ -7221,7 +7247,7 @@ class App:
                         new_enemy = Enemy()
                         new_enemy.update(CIR_COIN,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W - 1 + (number * 12),self.event_list[self.event_index][4],0,0,     0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,0, -1,1,     0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8, 1*self.enemy_speed_mag,0,   0, HP01 * self.enemy_hp_mag,  0,0, E_SIZE_NORMAL,   30,0,0,    0,0,0,0,    E_SHOT_POW,self.current_formation_id ,0,0,0,     0  ,0,0,0,    0,AERIAL_OBJ,  PT01,PT02,PT02,  PT01,PT01,PT03)
                         self.enemy.append(new_enemy) 
-                        
+                    
                     #編隊なので編隊のIDナンバーと編隊の総数、現在の編隊生存数をenemy_formationリストに登録します
                     self.record_enemy_formation(self.event_list[self.event_index][5]) 
                 elif self.event_list[self.event_index][2] == TWIN_ARROW:    #追尾戦闘機ツインアロー出現
@@ -7244,6 +7270,7 @@ class App:
                     new_enemy = Enemy()
                     new_enemy.update(VOLDAR,ID00,     ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   self.event_list[self.event_index][3],self.event_list[self.event_index][4],0,0,     0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,0,    0,0,       0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_40,SIZE_24,   -0.07*self.enemy_speed_mag,1,  0,  HP59 * self.enemy_hp_mag,   0,0,  E_SIZE_HI_MIDDLE53,  0,0,0,     0,0,0,0,     E_SHOT_POW,ID00    ,1,0.007,0.6,     0  ,0,0,0,    0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT10)
                     self.enemy.append(new_enemy)
+                
             elif self.event_list[self.event_index][1] == EVENT_FAST_FORWARD_NUM:  #イベント「早回し編隊パラメーター設定」の場合
                 self.fast_forward_destruction_num   = self.event_list[self.event_index][2] #早回しの条件を満たすのに必要な「敵編隊殲滅必要数」を変数に代入する
                 self.fast_forward_destruction_count = self.event_list[self.event_index][3] #敵編隊を早回しで破壊した時にどれだけ出現時間が速くなるのか？そのカウントを変数に代入する         
@@ -7259,7 +7286,7 @@ class App:
                             
                         #編隊なので編隊のIDナンバーと編隊の総数、現在の編隊生存数をenemy_formationリストに登録します
                         self.record_enemy_formation(self.event_list[self.event_index][5]) 
-                        
+                
                 self.fast_forward_destruction_num = 0       #
                 self.fast_forward_destruction_count = 0     #
                 self.add_appear_flag = 0                 #早回し関連のパラメーター数値、フラグは全てリセットします
@@ -7287,7 +7314,8 @@ class App:
                     self.side_scroll_speed_set_value    = self.event_list[self.event_index][3] #横スクロールスピードの設定値を代入
                     self.side_scroll_speed_variation    = self.event_list[self.event_index][4] #横スクロールスピードの変化量を代入
                     self.vertical_scroll_speed_set_value = self.event_list[self.event_index][5] #縦スクロールスピードの設定値を代入
-                    self.vertical_scroll_speed_variation = self.event_list[self.event_index][6] #縦スクロールスピードの変化量を代入            
+                    self.vertical_scroll_speed_variation = self.event_list[self.event_index][6] #縦スクロールスピードの変化量を代入
+                
             elif self.event_list[self.event_index][1] == EVENT_DISPLAY_STAR:              #イベントが「EVENT_DISPLAY_STAR」の場合
                 self.star_scroll_flag = self.event_list[self.event_index][2] #星スクロールのon/offのフラグを代入する
             elif self.event_list[self.event_index][1] == EVENT_CHANGE_BG_CLS_COLOR:        #イベントが「EVENT_CHANGE_BG_CLS_COLOR」の場合
@@ -7307,6 +7335,7 @@ class App:
                 #雲の表示を停止する
                 elif self.event_list[self.event_index][2] == CLOUD_STOP:
                     self.display_cloud_flag = 0 #雲の表示フラグをoffにします
+                
             elif self.event_list[self.event_index][1] == EVENT_RASTER_SCROLL:    #イベントが「ラスタースクロールの制御」の場合
                 search_id = self.event_list[self.event_index][3] #ラスタスクロールのidを変数に代入
                 #IDごとにラスタスクロールの表示をon/offする
@@ -7314,6 +7343,7 @@ class App:
                     self.disp_control_raster_scroll(search_id,RASTER_SCROLL_ON) #idを元にラスタスクロールの表示フラグを変更する関数の呼び出し
                 elif self.event_list[self.event_index][2] == RASTER_SCROLL_OFF:   #ラスタスクロールoff
                     self.disp_control_raster_scroll(search_id,RASTER_SCROLL_OFF)#idを元にラスタスクロールの表示フラグを変更する関数の呼び出し
+                
             elif self.event_list[self.event_index][1] == EVENT_BG_SCREEN_ON_OFF:  #イベントが「BGスクリーンオンオフ」の場合
                 if   self.event_list[self.event_index][2] == BG_FRONT: #[2]で指定された数値をもとにして、各disp_flagへ、[3]に入っているDISP_OFF(0)またはDISP_ON(1)の数値を代入する
                     self.disp_flag_bg_front  = self.event_list[self.event_index][3]
@@ -7321,6 +7351,7 @@ class App:
                     self.disp_flag_bg_middle = self.event_list[self.event_index][3]
                 elif self.event_list[self.event_index][2] == BG_BACK:
                     self.disp_flag_bg_back   = self.event_list[self.event_index][3]
+                
             elif self.event_list[self.event_index][1] == EVENT_ENTRY_SPARK_ON_OFF:#イベントが「大気圏突入の火花エフェクト表示のオンオフ」の場合
                 self.atmospheric_entry_spark_flag = self.event_list[self.event_index][2] #火花エフェクトのon/offのフラグを代入する
             elif self.event_list[self.event_index][1] == EVENT_WARNING:         #イベントが「WARNING表示」の場合
@@ -7375,7 +7406,7 @@ class App:
                 elif self.bg_chip == (224 /8) *32 + (128 /8): #マップチップx128y224だったらシールドアイテム情報を付加せよの命令のマップチップなので
                     item_number = E_SHIELD_POW  #シールドアイテム
                     self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
-                    
+                
                 self.get_bg_chip(WINDOW_W,i*8,0)#bgxの値が変化したので再度bgチップナンバーを取得する関数を呼び出す
                 new_enemy = Enemy()
                 new_enemy.update(4,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,     0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,0,   0,0,     0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,  1,0,  0,  HP01 * self.enemy_hp_mag,    0,0,E_SIZE_NORMAL,0,0,0,    0,0,0,0,    item_number,ID00 ,0,0,0,    0  ,0,0,0,    0,GROUND_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
@@ -7436,7 +7467,7 @@ class App:
                 elif self.bg_chip == (232 /8) *32 + (104 /8): #マップチップx104y232だったらトライアイングルアイテム情報を付加せよの命令のマップチップなので
                     item_number = E_TRIANGLE_POW #トライアングルアイテム
                     self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
-                    
+                
                 self.get_bg_chip(WINDOW_W,i*8,0)#bgxの値が変化したので再度bgチップナンバーを取得する関数を呼び出す
                 new_enemy = Enemy()
                 new_enemy.update(14,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,     0,0,0,0,0,0,0,0,       0,0,0,0,0,0,0,0,0,0,    -0.44,0,     0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_24,SIZE_8,   0,0,   0,    HP10,   0,0,   E_SIZE_NORMAL,  0,0,0,   0,0,0,0,     item_number,ID00 ,0,0,0,    0  ,0,0,0,    0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
@@ -7454,7 +7485,7 @@ class App:
                 new_enemy.update(15,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,       0,0,0,0,0,0,0,0,       0,0,0,0,0,0,0,0,0,0,    0,0,     0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,     SIZE_8,SIZE_8,   0.8*self.enemy_speed_mag,0,    -1,    HP01 * self.enemy_hp_mag,  70,80,    E_SIZE_NORMAL,   70,80,0,     0,0,0,0,       E_NO_POW,ID00 ,0,0,0,    0  ,0,0,0,    0,MOVING_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                 self.enemy.append(new_enemy)
                 self.delete_map_chip(self.bgx,i)#敵を出現させたら（「敵出現」情報）のキャラチップは不要なのでそこに（0=何もない空白）を書き込む
-    
+
     #BGマップチップデータ書き換えによる背景アニメーション
     def update_bg_rewrite_animation(self):
         #今表示したマップに書き換え対象のキャラチップが含まれていたらＢＧデータナンバーを1増やしてアニメーションさせる
@@ -7474,7 +7505,6 @@ class App:
                             #bg_ani_speed毎フレームに従ってbg_ani_numパターン数のアニメーションを行います
                             self.write_map_chip_free_scroll(self.bgx,self.bgy,(bg_ani_y // 8) * 32 + (bg_ani_x // 8) + pyxel.frame_count // bg_ani_speed % bg_ani_num)
             
-            
             #中間の山脈の流れる滝のアニメーション
             #マップ座標のY=250だけ山脈遠景滝BGアニメーションチップを置くルールにしているのでy座標250だけ目的のマップチップがあるかをサーチして書き換える
             #
@@ -7492,17 +7522,17 @@ class App:
                 self.bgy = 0
             if self.bgy > 255:
                 self.bgy = 255  
-
+            
             self.mountain_x = self.bgx
             for w in range (WINDOW_W // 8 + 1):# x座表は理論的には0~20で行けるはずなんだけど20の時書き換えると微妙に画面右端で書き換えていないのかバレるので +1してます、ハイ！
                 bg_animation_count = len(self.bg_animation_list) #bg_animation_listのなかにどれだけのリストが入っているのか数える
                 for i in range(bg_animation_count):
                     self.bg_chip = pyxel.tilemap(self.reference_tilemap).get(self.bgx + w,self.bgy) #座標(bgx+w,bgy)のマップチップのBGナンバーを取得する
-                    bg_ani_x =    self.bg_animation_list[i][0] #BGアニメーションを開始するチップのx座標を変数に代入
-                    bg_ani_y =    self.bg_animation_list[i][1] #                         y座標を変数に代入
+                    bg_ani_x     = self.bg_animation_list[i][0] #BGアニメーションを開始するチップのx座標を変数に代入
+                    bg_ani_y     = self.bg_animation_list[i][1] #                         y座標を変数に代入
                     bg_ani_speed = self.bg_animation_list[i][2] #                        スピードを変数に代入
-                    bg_ani_num =   self.bg_animation_list[i][3] #                        パターン数を変数に代入
-                        
+                    bg_ani_num   = self.bg_animation_list[i][3] #                        パターン数を変数に代入
+                    
                     if (bg_ani_y / 8) * 32 + (bg_ani_x / 8) <= self.bg_chip <= (bg_ani_y / 8) * 32 + (bg_ani_x / 8 + bg_ani_num): #マップチップナンバーがーアニメーションするべきチップナンバーの範囲内だったのなら
                         #bg_ani_speed毎フレームに従ってbg_ani_numパターン数のアニメーションを行い,該当するチップナンバーを書き込みます
                         pyxel.tilemap(self.reference_tilemap).set(self.bgx + w,self.bgy, (bg_ani_y // 8) * 32 + (bg_ani_x // 8) + pyxel.frame_count // bg_ani_speed % bg_ani_num)
@@ -7525,7 +7555,7 @@ class App:
                             new_enemy = Enemy()
                             new_enemy.update(CIR_COIN,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W - 1 + (e * 12),self.event_append_request[i].posy,0,0,     0,0,0,0,0,0,0,0,      0,0,0,0,0,0,0,0,0,0,  -1,1,    0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8, 1,0,   0, HP01,  0,0, E_SIZE_NORMAL,   30,0,0,     0,0,0,0,        E_NO_POW,self.current_formation_id ,0,0,0,    0  ,0,0,0,    0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                             self.enemy.append(new_enemy) 
-                        
+                    
                     #編隊なので編隊のIDナンバーと編隊の総数、現在の編隊生存数をenemy_formationリストに登録します
                     self.record_enemy_formation(self.event_append_request[i].number)
                     del self.event_append_request[i] #敵を追加発生リクエストをリストから消去します
@@ -7534,10 +7564,7 @@ class App:
     def update_enemy(self):
         enemy_count = len(self.enemy)
         for i in range (enemy_count):
-        
-        
-        
-            if self.enemy[i].enemy_type ==  1:#敵タイプ1の更新   サーコイン 直進して斜め後退→勢いよく後退していく10機編隊
+            if   self.enemy[i].enemy_type ==  1:#敵タイプ1の更新   サーコイン 直進して斜め後退→勢いよく後退していく10機編隊
                 if self.enemy[i].enemy_flag1 == 0:
                 #敵１を前進させる
                     self.enemy[i].posx = self.enemy[i].posx - self.enemy[i].move_speed#X座標をmove_speed分減らして左方向に進む
@@ -7545,6 +7572,7 @@ class App:
                         self.enemy[i].enemy_flag1 = 1 #flag1 後退フラグON
                         if self.enemy[i].posy > (WINDOW_H / 2):#画面の上半分に居るのか下半分に居るのか判別
                             self.enemy[i].vy = -1#画面上半分に居たのならVYに-1を入れて下方向に移動（初期設定ではVYには１が入っているので上方向に移動することに成る）
+                    
                 else:
                     if self.enemy[i].enemy_count1 > 0:#enemy_count1には斜め方向に移動する回数が入っている
                         self.enemy[i].enemy_count1 -= 1#斜め移動する回数を１減らす
@@ -7556,25 +7584,13 @@ class App:
                             self.ex = self.enemy[i].posx
                             self.ey = self.enemy[i].posy
                             self.enemy_aim_bullet(self.ex,self.ey,0,0,0,0,1)#後退時に自機狙いの弾を射出して去っていく
-        
-        
-        
-        
-        
-        
-        
+                
             elif self.enemy[i].enemy_type ==  2:#敵タイプ2の更新   サイシーロ サインカーブを描く3機編隊
                 #敵２をサインカーブを描きながら移動させる 
                 self.enemy[i].posx -= self.enemy[i].move_speed#X座標をmove_speed分減らして左方向に進む
                 self.enemy[i].enemy_count3 += self.enemy[i].enemy_count2#enemy_count3はタイマー enemy_count_2は速度
                 self.enemy[i].posy += self.enemy[i].enemy_count1 * math.sin(self.enemy[i].enemy_count3)#enemy_count_1は振れ幅
-        
-        
-        
-        
-        
-        
-        
+                
             elif self.enemy[i].enemy_type ==  3:#敵タイプ3の更新  固定砲台ホウダ（地面に張り付く１連射タイプ）
                 #敵３を背景スクロールに合わせて左へ移動させる
                 self.enemy[i].posx -= self.side_scroll_speed * 0.5
@@ -7582,13 +7598,7 @@ class App:
                     self.ex = self.enemy[i].posx
                     self.ey = self.enemy[i].posy
                     self.enemy_aim_bullet(self.ex,self.ey,0,0,0,0,1)#画面端から出現して８０ドット進んだら、自機狙いの弾を射出
-        
-        
-        
-        
-        
-        
-        
+                
             elif self.enemy[i].enemy_type ==  4:#敵タイプ4の更新   固定砲台ホウダ（天井に張り付く１連射タイプ）
                 #敵４を背景スクロールに合わせて左へ移動させる
                 self.enemy[i].posx -= self.side_scroll_speed * 0.5
@@ -7596,14 +7606,7 @@ class App:
                     self.ex = self.enemy[i].posx
                     self.ey = self.enemy[i].posy
                     self.enemy_aim_bullet(self.ex,self.ey,0,0,0,0,1)#画面端から出現して８０ドット進んだら、自機狙いの弾を射出
-        
-        
-        
-        
-        
-        
-        
-        
+                
             elif self.enemy[i].enemy_type ==  5:#敵タイプ5の更新   ホッパーチャンmk2
                 #敵５を背景スクロールに合わせて左へ移動させる
                 #
@@ -7623,33 +7626,31 @@ class App:
                 if self.enemy[i].enemy_count2 < -20:
                     self.enemy[i].enemy_count2 = -20
                 
-                
                 self.enemy[i].enemy_count3 -= 1
-
+                
                 if self.enemy[i].enemy_count3 <= 0:
                     self.enemy[i].vx = 1.2
                     self.enemy[i].enemy_count3 = 0
                 else:
                     self.enemy[i].vx = 0.5
-
+                
                 #x座標をVX（増加数）とdirection(-1なら左方向 1なら右方向)によって更新する
                 self.enemy[i].posx += self.enemy[i].vx * self.enemy[i].direction
-                
                 
                 if self.enemy[i].enemy_count3 <= 0:
                     self.y_tmp = self.enemy[i].posy#y_temp = y
                     self.enemy[i].posy += (self.enemy[i].posy - self.enemy[i].enemy_count1) + (self.enemy[i].enemy_count2 * self.enemy[i].move_speed) #y += ((y -y_prev) + F) * move_speed (ココが重要！)
                     self.enemy[i].enemy_count1 = self.y_tmp#y_prev = y_tmp
                     self.enemy[i].enemy_count2 = 1#F = 1
-
+                    
                     self.x = self.enemy[i].posx + 4
                     self.y = self.enemy[i].posy + 8
                     self.check_bg_collision(self.x,self.y,0,0)#ホッパー君の足元が障害物かどうかチェック
+                
                 if self.collision_flag == 0:#足元に障害物が無かった時の処理→そのままで行く
                     
-                        self.enemy_bound_collision_flag = 0#デバッグ用のバウンドフラグをＯＦＦにする
-                        
-                
+                    self.enemy_bound_collision_flag = 0#デバッグ用のバウンドフラグをＯＦＦにする
+                    
                 else:                    
                     self.x = self.enemy[i].posx + 4
                     self.y = self.enemy[i].posy - 8
@@ -7671,16 +7672,11 @@ class App:
                             self.enemy[i].enemy_count2 = -1#ジャンプ力は初期値に戻してやる
                             self.enemy[i].enemy_count1 = self.enemy[i].posy #y_prev = posy
                             self.enemy[i].enemy_count3 = 1
+                
                 pyxel.blt(135,WINDOW_H - 8, 0, 0,80, 8,8, 0)
                 if self.enemy[i].posx < 0:
                     self.enemy[i].direction = 1#もしx座標が0まで画面の左端に進んだら跳ね返りdirectionフラグを(+1右方向増加）にして右に反転後退していく
-        
-        
-        
-        
-        
-        
-        
+                
             elif self.enemy[i].enemy_type ==  6:#敵タイプ6の更新   謎の回転飛翔体Ｍ５４
                 #敵6を回転させる 
                 
@@ -7688,19 +7684,7 @@ class App:
                 self.enemy[i].posx += self.enemy[i].enemy_count1 * math.cos(self.enemy[i].enemy_count3)
                 self.enemy[i].posy += self.enemy[i].enemy_count1 * -math.sin(self.enemy[i].enemy_count3)#enemy_count_1は振れ幅(intensity)
                 self.enemy[i].posx -= 0.05
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+                
             elif self.enemy[i].enemy_type ==  7:#敵タイプ7の更新   真！(SIN)ツインアロー追尾戦闘機(サインカーブを描きつつ追尾してくる)
                 #敵７を自機に追尾させる
                 #目標までの距離を求める dに距離が入る
@@ -7715,6 +7699,7 @@ class App:
                     #敵と自機との距離とＸ座標、Ｙ座標との差からＶＸ，ＶＹの増分を計算する
                     self.vx = ((self.my_x - self.enemy[i].posx) / (self.d * self.enemy[i].move_speed))
                     self.vy = ((self.my_y - self.enemy[i].posy) / (self.d * self.enemy[i].move_speed))
+                
                 #敵の座標(posx,posy)を増分(vx,vy)を加減算更新して敵を移動させる
                 self.enemy[i].posx += self.vx
                 self.enemy[i].posy += self.vy
@@ -7722,14 +7707,7 @@ class App:
                 self.enemy[i].posx += self.enemy[i].enemy_count1 * math.cos(self.enemy[i].enemy_count3)
                 self.enemy[i].posy += self.enemy[i].enemy_count1 * -math.sin(self.enemy[i].enemy_count3)#enemy_count_1は振れ幅(intensity)
                 self.enemy[i].posx -= 0.05
-        
-        
-        
-        
-        
-        
-        
-        
+                
             elif self.enemy[i].enemy_type ==  8:#敵タイプ8の更新   ツインアロー追尾戦闘機
                 #敵８を自機に追尾させる
                 vx0 = self.enemy[i].vx
@@ -7750,6 +7728,7 @@ class App:
                     
                     vx1 = ((self.my_x - self.enemy[i].posx) / (self.d * self.enemy[i].move_speed))
                     vy1 = ((self.my_y - self.enemy[i].posy) / (self.d * self.enemy[i].move_speed))
+                
                 #右回り旋回角度上限の速度ベクトル(vx2,vy2)を求める
                 #math.piはπ（円周率3.141592......)
                 #ううううぅ・・・難しい・・・・数学赤点の私には難しい・・・・
@@ -8153,7 +8132,7 @@ class App:
               
               if self.enemy[i].enemy_flag2 == 1: #反転離脱中の時は
                   self.enemy[i].move_speed += 0.002 #加速して離脱していく
-    
+
     #画面外に出た敵を消去する
     def update_clip_enemy(self):
         enemy_count = len(self.enemy)
@@ -8166,10 +8145,10 @@ class App:
                         self.check_enemy_formation_exists(self.enemy[i].formation_id) #画面上の編隊総数を減らす関数をよびだす
                     del self.enemy[i]#敵が画面外に存在するときはインスタンスを破棄する(敵消滅)
             else:
-               if self.enemy[i].formation_id != 0: #編隊機の場合は・・・・・
+                if self.enemy[i].formation_id != 0: #編隊機の場合は・・・・・
                         self.check_enemy_formation_exists(self.enemy[i].formation_id) #画面上の編隊総数を減らす関数をよびだす
-               del self.enemy[i]
-    
+                del self.enemy[i]
+
     ####################################ボス関連の処理関数########################################
     #ボスの更新
     def update_boss(self):
@@ -8189,7 +8168,7 @@ class App:
                             self.boss[i].move_index = 0 #リストインデックス値を0にしてリセットする
                         self.boss_get_bezier_curve_coordinate(i) #ボスをベジェ曲線で移動させるために必要な座標をリストから取得する関数の呼び出し
                         t = self.boss[i].obj_time / self.boss[i].obj_totaltime #違う座標データ群を読み込んだのでt値を再計算してやる
-
+                    
                     #          A(移動元)--D(移動先)
                     #            \    点P /     
                     #(AとQの内分点)P1\     /P2(QとDの内分点)    
@@ -8207,23 +8186,23 @@ class App:
                     p1y = (1-t) * self.boss[i].ay + t * self.boss[i].dy
                     p2x = (1-t) * self.boss[i].qx + t * self.boss[i].dx
                     p2y = (1-t) * self.boss[i].qy + t * self.boss[i].dy
-
+                    
                     px = (1-t) * p1x + t * p2x
                     py = (1-t) * p1y + t * p2y
-
+                    
                     self.boss[i].posx = px 
                     self.boss[i].posy = py
-
+                    
                     self.boss[i].speed = self.boss[i].speed * self.boss[i].acceleration #スピードの値に加速度を掛け合わせ加速させたり減速させたりします
                     if self.boss[i].speed < 0.2: #スピードは0.2以下にならないように補正してやります・・(まったく動かなくなる状況にさせないため）
                         self.boss[i].speed = 0.2
                     self.boss[i].obj_time += self.boss[i].speed #タイムフレーム番号をスピード分加算していく
-                
+                    
                 elif self.boss[i].status == BOSS_STATUS_MOVE_LEMNISCATE_CURVE: #前方でレムニスケート曲線を使った上下運動をさせる
                     self.boss[i].degree += 0.009 #degree角度は0~360までの間を0.009の増分で増加させていく
                     if self.boss[i].degree >= 360:
                         self.boss[i].degree = 0
-                
+                    
                     #(x**2+y**2)**2=2a**2(x**2-y**2) (ベルヌーイのレムニスケート曲線)を使用
                     #極座標を(r,θ）とする
                     #
@@ -8249,7 +8228,7 @@ class App:
                     #横スクロールシューティングで縦に倒した状態のレムニスケート曲線を描きたいのでx座標とy座標を入れ替えて使用します
                     self.boss[i].posy = (math.sqrt(2)*math.cos(self.boss[i].degree) / (math.sin(self.boss[i].degree)**2+1)) * 35 + 50
                     self.boss[i].posx = (math.sqrt(2)*math.cos(self.boss[i].degree) * math.sin(self.boss[i].degree) / (math.sin(self.boss[i].degree)**2+1)) * 30 + 80
-                
+                    
                 elif self.boss[i].status == BOSS_STATUS_EXPLOSION_START:      #ボス撃破！爆発開始！の処理
                     self.boss[i].attack_method = BOSS_ATTACK_NO_FIRE #ボスの攻撃方法は「ノーファイア」何も攻撃しないにする、まぁ撃破したからね
                     
@@ -8257,35 +8236,35 @@ class App:
                     self.boss[i].vy = (WINDOW_H - self.boss[i].posy) / 480 - 0.3     #vyは爆発した瞬間少し上に跳び上がった感じにしたいので -0.3しています
                     self.boss[i].count1 = 240 #count1を爆裂分裂開始までのカウントとして使います
                     self.boss[i].status = BOSS_STATUS_EXPLOSION #ボスの状態遷移ステータスを「爆発中」にする
-                
+                    
                 elif self.boss[i].status == BOSS_STATUS_EXPLOSION:           #ボスステータスが「爆発中」の処理
                     #爆発中サウンド再生
                     pyxel.play(3,11)
-
+                    
                     new_explosion = Explosion()
                     new_explosion.update(EXPLOSION_NORMAL,PRIORITY_FRONT,self.boss[i].posx + self.boss[i].width / 2 + self.s_rndint(0,50) -25,self.boss[i].posy + self.boss[i].height / 2 + self.s_rndint(0,20) -15,0,0,10,RETURN_BULLET_NONE,0, 1,1)
                     self.explosions.append(new_explosion)
-
+                    
                     self.boss[i].posx += self.boss[i].vx
                     self.boss[i].posy += self.boss[i].vy
                     self.boss[i].vy += 0.001 #1フレームごとに下方向へ0.001加速して落ちていきます
-
+                    
                     self.boss[i].count1 -= 1 #count1(爆裂分裂開始までのカウント)を１減らしていきます
                     if self.boss[i].count1 <= 0: #爆裂分裂開始までのカウントが0になったのなら
                         self.boss[i].status = BOSS_STATUS_BLAST_SPLIT_START #状態遷移ステータスを「爆発分離開始」にします
-
+                    
                 elif self.boss[i].status == BOSS_STATUS_BLAST_SPLIT_START:    #ボスステータスが「爆発分離開始」の処理
                     self.boss[i].count2 = 480 #count2をボス破壊後に分裂するシーン全体のフレーム数を登録します
-
+                    
                     #爆発分離開始のサウンド再生
                     pyxel.playm(1)
                     #ランダムな場所に爆発パターンを育成
                     new_explosion = Explosion()
                     new_explosion.update(EXPLOSION_NORMAL,PRIORITY_FRONT,self.boss[i].posx + self.boss[i].width / 2 + self.s_rndint(0,50) -25,self.boss[i].posy + self.boss[i].height / 2 + self.s_rndint(0,20) -15,0,0,10,RETURN_BULLET_NONE,0, 1,1)
                     self.explosions.append(new_explosion)
-
+                    
                     self.boss[i].status = BOSS_STATUS_BLAST_SPLIT #ボスステータスを「爆発分離」にします
-                
+                    
                 elif self.boss[i].status == BOSS_STATUS_BLAST_SPLIT:         #ボスステータスが「爆発分離」の処理
                     #ランダムな場所に爆発パターンを育成
                     new_explosion = Explosion()
@@ -8295,11 +8274,10 @@ class App:
                     #ボスの爆発破片3を育成 ホワイト系のスパーク
                     if self.boss[i].count2 % 3 == 0:
                         self.update_append_particle(PARTICLE_BOSS_DEBRIS3,self.boss[i].posx + 30 + self.s_rndint(0,30) -15 ,self.boss[i].posy + 10,(random()- 0.5) /2,random() * 2,12,0,0)
-
+                    
                     #ボスの爆発破片4を育成 橙色系の落下する火花
                     if self.boss[i].count2 % 1 == 0:
                         self.update_append_particle(PARTICLE_BOSS_DEBRIS4,self.boss[i].posx + 30 + self.s_rndint(0,40) -20 ,self.boss[i].posy + 10,(random()- 0.5) /2,random() * 2,8,0,0)
-
                     
                     self.boss[i].posx += self.boss[i].vx / 1.5
                     self.boss[i].posy += self.boss[i].vy / 1.5
@@ -8308,7 +8286,7 @@ class App:
                     self.boss[i].count2 -= 1 #count2(ボス消滅までのカウント)を１減らしていきます
                     if self.boss[i].count2 <= 0: #ボス消滅までのカウントが0になったのなら
                         self.boss[i].status = BOSS_STATUS_DISAPPEARANCE #ボスステータスを「ボス消滅」にします
-                
+                    
                 elif self.boss[i].status == BOSS_STATUS_DISAPPEARANCE:        #ボスステータスが「ボス消滅」の処理
                     self.game_status = SCENE_STAGE_CLEAR_MOVE_MY_SHIP #ゲームステータス(状態遷移)を「ステージクリア自機自動移動」にする
                     
@@ -8319,26 +8297,27 @@ class App:
                     self.stage_clear_dialog_logo_time2    = 90 #グラフイックロゴ表示にかける時間を代入その2(単位は1フレーム)
                     self.stage_clear_dialog_text_time          = 180 #テキスト表示にかける時間を代入(単位は1フレーム)だんだん減っていく
                     self.stage_clear_dialog_text_time_master    = 180 #テキスト表示にかける時間を代入(単位は1フレーム)元の値が入ります
-
+                    
                     self.auto_move_mode = 1                        #自機のオートムーブモードをonにして自動移動を開始する
                     self.auto_move_mode_x,self.auto_move_mode_y = 25,40  #移動先の座標を指定 
-
+                    
                     del self.boss[i]                      #ボスのインスタンスを消去する・・・さよならボス・・（けもふれ？）
                     break                               #ループから抜け出す
-
+                
                 ####ここからはボスの攻撃パターンです############################################################
                 if   self.boss[i].attack_method == BOSS_ATTACK_FRONT_5WAY:         #画面上部を左から右に弧を描いて移動中
                     if (pyxel.frame_count % 60) == 0 and self.boss[i].parts1_flag == 1: #5way砲台が健在なら60フレーム毎に
                         ex = self.boss[i].posx
                         ey = self.boss[i].posy + 18
                         self.enemy_forward_5way_bullet(ex,ey) #前方5way発射！
+                    
                     if (pyxel.frame_count % 100) == 0 and self.boss[i].parts2_flag == 1: #尾翼レーザー部が健在なら100フレーム毎に
                         ex = self.boss[i].posx + 16
                         ey = self.boss[i].posy
                         length = 2
                         speed =  1
                         self.enemy_red_laser(ex,ey,length,speed) #レッドレーザービーム発射！
-                
+                    
                 elif self.boss[i].attack_method == BOSS_ATTACK_RIGHT_GREEN_LASER:    #背後で下から上に移動中
                     if (pyxel.frame_count % 30) == 0: #30フレーム毎に
                         ex = self.boss[i].posx + 48
@@ -8353,17 +8332,17 @@ class App:
                         length = 2
                         speed =  1
                         self.enemy_red_laser(ex,ey,length,speed) #レッドレーザービーム発射！
-                
+                    
                 elif self.boss[i].attack_method == BOSS_ATTACK_FRONT_5WAY_AIM_BULLET:#前方で上から下に移動中
                     if (pyxel.frame_count % int(40 * self.enemy_bullet_interval / 100)) == 0: #40フレーム毎に
                         ex = self.boss[i].posx + 40
                         ey = self.boss[i].posy + 18
                         self.enemy_forward_5way_bullet(ex,ey) #前方5way発射！
-
+                        
                         ex = self.boss[i].posx + 40
                         ey = self.boss[i].posy + 18
                         self.enemy_aim_bullet(ex,ey,0,0,0,0,1)        #狙い撃ち弾発射
-                
+                    
                 elif self.boss[i].attack_method == BOSS_ATTACK_FRONT_5WAY_HOMING:    #下部を右から左に弧を描いて移動中
                     if (pyxel.frame_count % 60) == 0 and self.boss[i].parts1_flag == 1: #60フレーム毎に5way砲台が健在なら
                         ex = self.boss[i].posx
@@ -8375,7 +8354,7 @@ class App:
                                 new_enemy = Enemy()#敵8ツインアローを1機生み出す
                                 new_enemy.update(TWIN_ARROW,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,    self.boss[i].posx + 48,self.boss[i].posy + 8,0,0,      0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,   1,-1,      0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   1,0,   0,    HP01,    0,0,   E_SIZE_NORMAL,  0,0,1,       0,0,0,0,        E_NO_POW,ID00 ,0,0,0,    0  ,0,0,0,    0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                                 self.enemy.append(new_enemy)#リストにアペンド追加！
-                    
+                
             elif self.boss[i].boss_type == BOSS_BREEZARDIA:    #ボスタイプ0の更新 ブリザーディア ##################################
                 #flag1  = 主砲が発射中なのかのフラグ
                 #direction = 前進か更新かの方向フラグ(1=前進 0=後進)
@@ -8400,7 +8379,7 @@ class App:
                         self.boss[i].direction = 0         #方向を後退(0)にする
                     elif self.boss[i].posx < -60:        #x座標が画面左端を超えたのなら
                         self.boss[i].direction = 1         #方向を前進(1)にする
-
+                    
                 elif self.boss[i].status == BOSS_STATUS_EXPLOSION_START:      #ボス撃破！爆発開始！の処理
                     self.boss[i].attack_method = BOSS_ATTACK_NO_FIRE #ボスの攻撃方法は「ノーファイア」何も攻撃しないにする、まぁ撃破したからね
                     
@@ -8408,35 +8387,35 @@ class App:
                     self.boss[i].vy = (WINDOW_H - self.boss[i].posy) / 480 - 0.3     #vyは爆発した瞬間少し上に跳び上がった感じにしたいので -0.3しています
                     self.boss[i].count1 = 240 #count1を爆裂分裂開始までのカウントとして使います
                     self.boss[i].status = BOSS_STATUS_EXPLOSION #ボスの状態遷移ステータスを「爆発中」にする
-                
+                    
                 elif self.boss[i].status == BOSS_STATUS_EXPLOSION:           #ボスステータスが「爆発中」の処理
                     #爆発中サウンド再生
                     pyxel.play(3,11)
-
+                    
                     new_explosion = Explosion()
                     new_explosion.update(EXPLOSION_NORMAL,PRIORITY_FRONT,self.boss[i].posx + self.boss[i].width / 2 + self.s_rndint(0,50) -25,self.boss[i].posy + self.boss[i].height / 2 + self.s_rndint(0,20) -15,0,0,10,RETURN_BULLET_NONE,0,  1,1)
                     self.explosions.append(new_explosion)
-
+                    
                     self.boss[i].posx += self.boss[i].vx
                     self.boss[i].posy += self.boss[i].vy
                     self.boss[i].vy += 0.001 #1フレームごとに下方向へ0.001加速して落ちていきます
-
+                    
                     self.boss[i].count1 -= 1 #count1(爆裂分裂開始までのカウント)を１減らしていきます
                     if self.boss[i].count1 <= 0: #爆裂分裂開始までのカウントが0になったのなら
                         self.boss[i].status = BOSS_STATUS_BLAST_SPLIT_START #状態遷移ステータスを「爆発分離開始」にします
-
+                    
                 elif self.boss[i].status == BOSS_STATUS_BLAST_SPLIT_START:    #ボスステータスが「爆発分離開始」の処理
                     self.boss[i].count2 = 480 #count2をボス破壊後に分裂するシーン全体のフレーム数を登録します
-
+                    
                     #爆発分離開始のサウンド再生
                     pyxel.playm(1)
                     #ランダムな場所に爆発パターンを育成
                     new_explosion = Explosion()
                     new_explosion.update(EXPLOSION_NORMAL,PRIORITY_FRONT,self.boss[i].posx + self.boss[i].width / 2 + self.s_rndint(0,50) -25,self.boss[i].posy + self.boss[i].height / 2 + self.s_rndint(0,20) -15,0,0,10,RETURN_BULLET_NONE,0,  1,1)
                     self.explosions.append(new_explosion)
-
+                    
                     self.boss[i].status = BOSS_STATUS_BLAST_SPLIT #ボスステータスを「爆発分離」にします
-                
+                    
                 elif self.boss[i].status == BOSS_STATUS_BLAST_SPLIT:         #ボスステータスが「爆発分離」の処理
                     #ランダムな場所に爆発パターンを育成
                     new_explosion = Explosion()
@@ -8446,11 +8425,10 @@ class App:
                     #ボスの爆発破片3を育成 ホワイト系のスパーク
                     if self.boss[i].count2 % 3 == 0:
                         self.update_append_particle(PARTICLE_BOSS_DEBRIS3,self.boss[i].posx + 30 + self.s_rndint(0,30) -15 ,self.boss[i].posy + 10,(random()- 0.5) /2,random() * 2,12,0,0)
-
+                    
                     #ボスの爆発破片4を育成 橙色系の落下する火花
                     if self.boss[i].count2 % 1 == 0:
                         self.update_append_particle(PARTICLE_BOSS_DEBRIS4,self.boss[i].posx + 30 + self.s_rndint(0,40) -20 ,self.boss[i].posy + 10,(random()- 0.5) /2,random() * 2,8,0,0)
-
                     
                     self.boss[i].posx += self.boss[i].vx / 1.5
                     self.boss[i].posy += self.boss[i].vy / 1.5
@@ -8459,7 +8437,7 @@ class App:
                     self.boss[i].count2 -= 1 #count2(ボス消滅までのカウント)を１減らしていきます
                     if self.boss[i].count2 <= 0: #ボス消滅までのカウントが0になったのなら
                         self.boss[i].status = BOSS_STATUS_DISAPPEARANCE #ボスステータスを「ボス消滅」にします 
-                
+                    
                 elif self.boss[i].status == BOSS_STATUS_DISAPPEARANCE:        #ボスステータスが「ボス消滅」の処理
                     self.game_status = SCENE_STAGE_CLEAR_MOVE_MY_SHIP #ゲームステータス(状態遷移)を「ステージクリア自機自動移動」にする
                     
@@ -8470,10 +8448,10 @@ class App:
                     self.stage_clear_dialog_logo_time2    = 90 #グラフイックロゴ表示にかける時間を代入その2(単位は1フレーム)
                     self.stage_clear_dialog_text_time          = 180 #テキスト表示にかける時間を代入(単位は1フレーム)だんだん減っていく
                     self.stage_clear_dialog_text_time_master    = 180 #テキスト表示にかける時間を代入(単位は1フレーム)元の値が入ります
-
+                    
                     self.auto_move_mode = 1                        #自機のオートムーブモードをonにして自動移動を開始する
                     self.auto_move_mode_x,self.auto_move_mode_y = 25,40  #移動先の座標を指定 
-
+                    
                     del self.boss[i]                      #ボスのインスタンスを消去する・・・さよならボス・・（けもふれ？）
                     break                               #ループから抜け出す
                 
@@ -8483,6 +8461,7 @@ class App:
                         ex = self.boss[i].posx
                         ey = self.boss[i].posy + 18
                         self.enemy_forward_3way_bullet(ex,ey) #前方3way発射！
+                    
                     if (pyxel.frame_count % 180) == 0 and self.boss[i].parts4_flag == 1: #上部グリーンカッターが健在なら180フレーム毎に
                         ex = self.boss[i].posx
                         ey = self.boss[i].posy
@@ -8496,7 +8475,7 @@ class App:
                         
                         if self.my_x > self.boss[i].posx + 48 and self.my_y < self.boss[i].posy + 4 and self.boss[i].weapon1_cool_down_time == 0: #自機主砲の右上に居るかどうか判別し・・・更に主砲の休憩時間が0以下になったのなら
                             self.boss[i].weapon1_status = WEAPON_FIRE #主砲発射中フラグを建てる
-                        
+                    
                     if self.boss[i].weapon1_status == WEAPON_FIRE and pyxel.frame_count % self.boss[i].weapon1_interval == 0: #主砲発射中フラグが建っており尚且つweapon1_interval(4フレームごとに)・・
                         posx = self.boss[i].posx + 48
                         posy = self.boss[i].posy + 4
@@ -8507,8 +8486,7 @@ class App:
                             self.boss[i].weapon1_rapid_num = 0    #主砲が発射した弾数をリセット
                             self.boss[i].weapon1_cool_down_time = 600  #主砲の待ち時間用カウンタを設定してやる
                             self.boss[i].weapon1_status  = WEAPON_READY    #主砲発射中フラグを降ろす
-
-
+                    
                     if self.boss[i].posx <= -30: #x座標がマイナスの時(左画面外)時,は右方向にグリーンレーザーを出す
                         if pyxel.frame_count % self.boss[i].weapon2_interval == 0:
                             ex = self.boss[i].posx + 8*13 +4
@@ -8516,11 +8494,12 @@ class App:
                             length = 2
                             speed = -2
                             self.enemy_green_laser(ex,ey,length,speed)
-                        
+
     #自機と敵との衝突判定
     def update_collision_my_ship_enemy(self):
         if self.invincible_counter > 0: #無敵時間が残っていた場合は・・・
             return                 #衝突判定はせずそのまま帰っちゃう・・・無敵最高！
+        
         enemy_count = len(self.enemy)
         for i in range (enemy_count):
             #敵が自機に当たっているか判別
@@ -8530,7 +8509,7 @@ class App:
             self.distance = math.sqrt(self.dx * self.dx + self.dy * self.dy)
             if self.distance <= self.enemy[i].enemy_size:
                 self.update_my_ship_damage(1)#自機の中心位置と敵の中心位置の距離がenemy_sizeより小さいなら衝突したと判定し自機のシールド値を１減らす
-    
+
     #自機とボスとの衝突判定
     def update_collision_my_ship_boss(self):
         if self.invincible_counter > 0: #無敵時間が残っていた場合は・・・
@@ -8559,7 +8538,7 @@ class App:
                     and self.boss[i].posy + self.boss[i].col_main4_y <= self.my_y + 4 <= self.boss[i].posy + self.boss[i].col_main4_y + self.boss[i].col_main4_h\
                     and self.boss[i].col_main4_w != 0:
                     self.update_my_ship_damage(1) #ボスの当たり判定矩形の中に自機が存在していたので衝突したと判定し自機のシールド値を１減らす            
-                
+                    
                 #ボス本体当たり判定5との判定
                 elif    self.boss[i].posx + self.boss[i].col_main5_x <= self.my_x + 4 <= self.boss[i].posx + self.boss[i].col_main5_x + self.boss[i].col_main5_w\
                     and self.boss[i].posy + self.boss[i].col_main5_y <= self.my_y + 4 <= self.boss[i].posy + self.boss[i].col_main5_y + self.boss[i].col_main5_h\
@@ -8580,10 +8559,10 @@ class App:
                     and self.boss[i].posy + self.boss[i].col_main8_y <= self.my_y + 4 <= self.boss[i].posy + self.boss[i].col_main8_y + self.boss[i].col_main8_h\
                     and self.boss[i].col_main8_w != 0:   
                     self.update_my_ship_damage(1) #ボスの当たり判定矩形の中に自機が存在していたので衝突したと判定し自機のシールド値を１減らす            
-            
-
-
-            
+                    
+                    
+                    
+                    
                 #パーツ1との当たり判定
                 elif    self.boss[i].posx + self.boss[i].col_parts1_x <= self.my_x + 4 <= self.boss[i].posx + self.boss[i].col_parts1_x + self.boss[i].col_parts1_w\
                     and self.boss[i].posy + self.boss[i].col_parts1_y <= self.my_y + 4 <= self.boss[i].posy + self.boss[i].col_parts1_y + self.boss[i].col_parts1_h\
@@ -8614,7 +8593,7 @@ class App:
         self.check_bg_collision(self.my_x + 6,self.my_y + 4,0,0)
         if self.collision_flag == 1: #コリジョンフラグが建っていたのなら
             self.update_my_ship_damage(1) #障害物に当たったので自機のシールド値を減らす
-    
+
     #ゲームパッドのYが推されたらサブウェポンを切り替える                 GAMEPAD Y
     def update_change_sub_weapon(self):
         if pyxel.btnp(pyxel.GAMEPAD_1_Y) or pyxel.btnp(pyxel.GAMEPAD_2_Y) and self.select_sub_weapon_id != -1:#サブウェポン切り替えボタンが押された＆サブウェポンを一つでも所維持しているのなら以下の命令を実行する
@@ -8623,11 +8602,11 @@ class App:
                 self.select_sub_weapon_id += 1#サブウェポンIDを増やして切り替えていく
                 if self.select_sub_weapon_id >= 5:#idナンバーが5以上になったら
                     self.select_sub_weapon_id = 0#強制的にidナンバーを0にする
-            
+                
                 if self.sub_weapon_list[self.select_sub_weapon_id] != 0:#サブウェポンを変更してそれが所持しているものならば
                     break#ブレイクしてループを抜け出す
                 #そうでないのならばサブウェポンは5種類あるので,最大5回ループして所持しているものを見つけ出すまで繰り返す
-    
+
     #自機が被弾しダメージを受け、シールドパワー減少、ダメージ音再生、ダメージを受けた後の無敵時間の設定
     def update_my_ship_damage(self,damage):
         self.my_shield -= damage#シールドパワーをdamage分減少させる
@@ -8667,7 +8646,7 @@ class App:
                 self.obtain_item[i].posx  += self.obtain_item[i].vx#X座標をvx分減らして左方向に進む
                 self.obtain_item[i].timer += self.obtain_item[i].speed
                 self.obtain_item[i].posy  += self.obtain_item[i].intensity * math.sin(self.obtain_item[i].timer)
-
+                
                 if self.obtain_item[i].posx <= 0 and self.obtain_item[i].bounce >= 1:#x座標が0以下で画面左端まで行き、bounceが1以上なら
                     self.obtain_item[i].vx = 0.2 + self.obtain_item[i].bounce * 0.2 #vxを右側のベクトルにする(跳ね返り回数の1.2倍の整数値)
                     self.obtain_item[i].bounce -= 1 #跳ね返る回数を1減らす
@@ -8676,7 +8655,7 @@ class App:
                 if d <= self.item_range_of_attraction: #アイテムと自機との距離がitem_range_of_attraction以内の場合アイテムのx,y座標を自機の方向へ向かう様に補正を入れる
                     self.obtain_item[i].posy += ((self.my_y >= self.obtain_item[i].posy) - (self.my_y <= self.obtain_item[i].posy)) / (d / 5)
                     self.obtain_item[i].posx += ((self.my_x >= self.obtain_item[i].posx) - (self.my_x <= self.obtain_item[i].posx)) / (d / 5)
-            
+                
             elif self.obtain_item[i].item_type == ITEM_TRIANGLE_POWER_UP: #トライアングルアイテムの場合
                 #flag1は正三角形の内部に自機が居るかどうかの判別で使用します(0=外部に居る 1=内部に居る)
                 #flag2は現在の三角形内部に自機が居た時間（一度でも外に出ると0に戻されます）
@@ -8699,7 +8678,7 @@ class App:
                         self.obtain_item[i].flag2 += 1  #現在の三角形内部に自機が居た時間を1増やす
                         if self.obtain_item[i].flag2 >= self.obtain_item[i].flag3:#内部に居た時間が設定時間以上になったのなら
                             self.obtain_item[i].status = 1 #状態遷移を「アイテム取得時の高速回転状態」にする
-                
+                    
                 elif self.obtain_item[i].status == 1:#状態遷移statusが「アイテム取得時の高速回転状態」の場合
                     self.obtain_item[i].posx  -= self.obtain_item[i].vx / 4    #X座標を(vx/4)分減らして左方向に進む
                     if self.obtain_item[i].speed <= 40:  #SPEED(トライアングルアイテムの場合は回転スピードとして使用してます)が10以下なら
@@ -8710,14 +8689,14 @@ class App:
                         self.obtain_item[i].radius = 6 #回転半径は6より小さくしない
                         self.obtain_item[i].animation_number = 0 #アニメーションナンバーをリセット
                         self.obtain_item[i].status = 2 #状態遷移を「取得アニメーション描画中」にする
-                
+                    
                 elif self.obtain_item[i].status == 2:#状態遷移statusが「取得アニメーション描画中」の場合
                     if pyxel.frame_count % 4 == 0: #3フレーム毎に
                         self.obtain_item[i].animation_number += 1 #アニメーションパターンオフセット値を増やしていく
                     if self.obtain_item[i].animation_number == 8: #最後のパターン数までいったのなら
                         self.obtain_item[i].status = 3 #状態遷移を「取得完了」にする
-
-
+                    
+                    
                 elif self.obtain_item[i].status == 3:#状態遷移statusが「取得完了」の場合
                     self.shot_exp    += self.obtain_item[i].shot    #ショット経験値をショットパワーの増加量の分だけパワーアップさせる
                     self.missile_exp += self.obtain_item[i].missile #ミサイル経験値をミサイルパワーの増加量の分だけパワーアップさせる
@@ -8726,7 +8705,7 @@ class App:
                     pyxel.play(0,0)            #パワーアップアイテムゲットの音を鳴らすのだ
                     self.level_up_my_shot()     #自機ショットの経験値を調べ可能な場合レベルアップをさせる関数を呼び出す
                     self.level_up_my_missile()   #自機ミサイルの経験値を調べ可能な場合レベルアップをさせる関数を呼び出す
-
+                    
                     del self.obtain_item[i]#パワーアップアイテムのインスタンスを破棄する(アイテム消滅)
                     if self.shot_level > 10:    #ショットレベルは10を超えないようにする
                         self.shot_level = 10
@@ -8752,18 +8731,18 @@ class App:
                     pyxel.play(0,0)            #パワーアップアイテムゲットの音を鳴らすのだ
                     self.level_up_my_shot()     #自機ショットの経験値を調べ可能な場合レベルアップをさせる関数を呼び出す
                     self.level_up_my_missile()   #自機ミサイルの経験値を調べ可能な場合レベルアップをさせる関数を呼び出す
-
+                    
                     del self.obtain_item[i]#パワーアップアイテムのインスタンスを破棄する(アイテム消滅)
                     if self.shot_level > 10:    #ショットレベルは10を超えないようにする
                         self.shot_level = 10
                     if self.missile_level > 2:   #ミサイルレベルは2を超えないようにする
                         self.missile_level = 2
-                
+                    
                 elif self.obtain_item[i].item_type == ITEM_CLAW_POWER_UP: #クローパワーアップの処理
                     pyxel.play(0,0)            #パワーアップアイテムゲットの音を鳴らすのだ
                     del self.obtain_item[i]     #クローアイテムのインスタンスを破棄する(アイテム消滅)
                     self.update_append_claw()    #クローの発生関数の呼び出し
-                
+                    
                 elif self.obtain_item[i].item_type == ITEM_TAIL_SHOT_POWER_UP: #テイルショットパワーアップの処理
                     pyxel.play(0,0)            #パワーアップアイテムゲットの音を鳴らすのだ
                     del self.obtain_item[i]     #インスタンスを破棄する(アイテム消滅)
@@ -8771,8 +8750,8 @@ class App:
                         self.sub_weapon_list[TAIL_SHOT] += 1  #サブウェポンリスト内のテイルショットの所持数を１増やす
                     if self.select_sub_weapon_id == -1: #もしサブウェポンを何も所持していない状態でアイテムを取ったのなら・・・
                         self.select_sub_weapon_id = TAIL_SHOT #強制的にテイルショットを選択させる
-                
-
+                    
+                    
                 elif self.obtain_item[i].item_type == ITEM_PENETRATE_ROCKET_POWER_UP: #ペネトレートロケットパワーアップの処理
                     pyxel.play(0,0)            #パワーアップアイテムゲットの音を鳴らすのだ
                     del self.obtain_item[i]     #インスタンスを破棄する(アイテム消滅)
@@ -8780,8 +8759,8 @@ class App:
                         self.sub_weapon_list[PENETRATE_ROCKET] += 1  #サブウェポンリスト内のペネトレートロケットの所持数を１増やす
                     if self.select_sub_weapon_id == -1: #もしサブウェポンを何も所持していない状態でアイテムを取ったのなら・・・
                         self.select_sub_weapon_id = PENETRATE_ROCKET #強制的にペネトレートロケットを選択させる
-                
-
+                    
+                    
                 elif self.obtain_item[i].item_type == ITEM_SEARCH_LASER_POWER_UP: #サーチレーザーパワーアップの処理
                     pyxel.play(0,0)            #パワーアップアイテムゲットの音を鳴らすのだ
                     del self.obtain_item[i]     #インスタンスを破棄する(アイテム消滅)
@@ -8789,8 +8768,8 @@ class App:
                         self.sub_weapon_list[SEARCH_LASER] += 1  #サブウェポンリスト内のサーチレーザーの所持数を１増やす
                     if self.select_sub_weapon_id == -1: #もしサブウェポンを何も所持していない状態でアイテムを取ったのなら・・・
                         self.select_sub_weapon_id = SEARCH_LASER #強制的にサーチレーザーを選択させる
-                
-
+                    
+                    
                 elif self.obtain_item[i].item_type == ITEM_HOMING_MISSILE_POWER_UP: #ホーミングミサイルパワーアップの処理
                     pyxel.play(0,0)            #パワーアップアイテムゲットの音を鳴らすのだ
                     del self.obtain_item[i]     #インスタンスを破棄する(アイテム消滅)
@@ -8798,21 +8777,22 @@ class App:
                         self.sub_weapon_list[HOMING_MISSILE] += 1  #サブウェポンリスト内のホーミングミサイルの所持数を１増やす
                     if self.select_sub_weapon_id == -1: #もしサブウェポンを何も所持していない状態でアイテムを取ったのなら・・・
                         self.select_sub_weapon_id = HOMING_MISSILE #強制的にホーミングミサイルを選択させる
-                
-
+                    
+                    
                 elif self.obtain_item[i].item_type == ITEM_SHOCK_BUMPER_POWER_UP: #ショックバンバーパワーアップの処理
                     pyxel.play(0,0)            #パワーアップアイテムゲットの音を鳴らすのだ
                     del self.obtain_item[i]     #インスタンスを破棄する(アイテム消滅)
+
                     if self.sub_weapon_list[SHOCK_BUMPER] < SUB_WEAPON_LEVEL_MAXIMUM:#ショックバンバーのレベルがサブウェポンのレベル最大値を超えていないのならば
                         self.sub_weapon_list[SHOCK_BUMPER] += 1  #サブウェポンリスト内のショックバンバーの所持数を１増やす
                     if self.select_sub_weapon_id == -1: #もしサブウェポンを何も所持していない状態でアイテムを取ったのなら・・・
                         self.select_sub_weapon_id = SHOCK_BUMPER #強制的にショックバンバーを選択させる
-    
+
     #パワーアップアイテム類と敵弾の当たり判定(難易度によってパワーアップアイテムは敵弾を消す効果あり)
     def update_collision_obtain_item_enemy_shot(self):
         if self.item_erace_bullet_flag == 0: #パワーアップアイテムが敵弾を消すフラグが立っていないのならそのままリターンする
             return
-
+        
         obtain_item_hit = len(self.obtain_item)
         for h in reversed(range(obtain_item_hit)):
             enemy_shot_hit = len(self.enemy_shot)
@@ -8822,9 +8802,9 @@ class App:
                     #敵弾消滅時のパーティクル生成
                     for _number in range(5):
                         self.update_append_particle(PARTICLE_DOT,self.enemy_shot[e].posx + 4,self.enemy_shot[e].posy + 4,self.obtain_item[h].vx / 2,self.obtain_item[h].vy / 2,   0,0,0)
-
+                    
                     del self.enemy_shot[e] #敵弾をリストから消去
-    
+
     #画面外に出たパワーアップアイテム類を消去する
     def update_clip_obtain_item(self):
         obtain_item_count = len(self.obtain_item)
@@ -8833,7 +8813,7 @@ class App:
                 continue
             else:
                 del self.obtain_item[i]#パワーアップアイテムが画面外に存在するときはインスタンスを破棄する(アイテム消滅)
-    
+
     #ボス破壊後にリペアアイテムを出現させる 
     def uddate_present_repair_item(self):
         if self.present_repair_item_flag == 0: #ボーナスアイテムを出したフラグがまだ建っていないのなら
@@ -8843,7 +8823,7 @@ class App:
                 new_obtain_item = Obtain_item()
                 new_obtain_item.update(ITEM_SHIELD_POWER_UP,WINDOW_W,y, 0.5+ (self.s_rndint(0,1)-0.5)* 0.2,0 + (self.s_rndint(0,4)-2) * 0.6,   SIZE_8,SIZE_8,   1,   0.9,  0.3,   0,0,  0.05,0,0,0,0,   0,0,1,  0,0,0, self.pow_item_bounce_num,0)
                 self.obtain_item.append(new_obtain_item)
-            
+                
             self.present_repair_item_flag = 1 #フラグを立ててもう出ないようにする
 
     #爆発パターンの更新→撃ち返し弾の発生
@@ -8873,20 +8853,20 @@ class App:
                     division_num = 0
                     stop_count = 0
                     self.enemy_aim_bullet_nway(ex,ey,theta,n,division_type,division_count,division_num,stop_count)
-
+                
                 if    self.explosions[i].return_bullet_type == RETURN_BULLET_DELAY_AIM:
                     #ディレイをかけた打ち返し弾を発射(ちょっと加速気味)
                     self.enemy_aim_bullet(self.explosions[i].posx,self.explosions[i].posy,0,0,0,10,1.01)#その場でちょっと止まって自機狙いの撃ち返し弾発射！
-
+                
             if self.explosions[i].explosion_type == EXPLOSION_MIDDLE: #中間サイズの爆発パターンの場合は
                 #1フレームごとに通常爆発パターンを追加発生させる
                 new_explosion = Explosion()
                 new_explosion.update(EXPLOSION_NORMAL,PRIORITY_FRONT,self.explosions[i].posx + 4 + self.s_rndint(0,24)-12,self.explosions[i].posy + 4 + self.s_rndint(0,12)-6,0,0,10,RETURN_BULLET_NONE,0,  1,1)
                 self.explosions.append(new_explosion)
-
+                
             if self.explosions[i].explosion_count == 0: #カウントが0の時は....
                 del self.explosions[i] #爆発リストをDELしちゃう（お前・・消えるのか・・・？）
-    
+
     #パーティクルの追加（発生＆育成）
     def update_append_particle(self,particle_type,x,y,dx,dy,life,wait,color):
         if len(self.particle) < 1000: #パーティクルの総数が1000以下なら追加発生させる
@@ -8894,26 +8874,23 @@ class App:
                 new_particle = Particle()
                 new_particle.update(particle_type, x+4,y+4,    self.s_rndint(0,1),    random() * 2 - 0.5 + dx,    random() * 2 - 1 + dy,   self.s_rndint(5,20), 0,  self.s_rndint(1,14))
                 self.particle.append(new_particle)
-            
+                
             elif particle_type == PARTICLE_LINE: #ラインパーティクル（線状の尾を引くようなパーティクルです）
                 for i in range(10):
                     new_particle = Particle()
                     new_particle.update(particle_type, x-2,y+4,    1,    -0.8-random(), random()-0.2,    10,   i, 6)
                     self.particle.append(new_particle)
-
+                    
                     #ボスにダメージを与えたとき
                     #new_particle = Particle()
                     #new_particle.update(particle_type, x-4,y+4,    1,    -0.8-random(), random()-0.2,    30,   i, 8)
                     #self.particle.append(new_particle)
-
-
-
-
+                
             elif particle_type == PARTICLE_MISSILE_DEBRIS: #ミサイルの破片の追加
                 new_particle = Particle()
                 new_particle.update(particle_type, x,y,    0,    0,0,   7,   0,0)
                 self.particle.append(new_particle)
-            
+                
             elif particle_type == PARTICLE_BOSS_DEBRIS1: #ボスの破片1の追加
                 new_particle = Particle()
                 new_particle.update(particle_type, x,y,    0,    dx,dy,   life,   0,0)
@@ -8938,7 +8915,7 @@ class App:
                 new_particle = Particle()
                 new_particle.update(particle_type, x,y,    0,    dx,dy,   life,   0,0)
                 self.particle.append(new_particle)
-    
+
     #パーティクルの更新
     def update_particle(self):
         particlecount = len(self.particle)
@@ -8972,7 +8949,7 @@ class App:
             
             if self.particle[i].life < 10: #パーティクルの体力？生命力が10より小さい場合は
                 self.particle[i].size = 0 #強制的にサイズを0にして、小さくさせる
-
+                
             self.particle[i].life -= 1 #パーティクルの体力（生命力？）を１減少させる
             if self.particle[i].life <= 0: #パーティクルの体力が0以下になったら
                 del self.particle[i] #パーティクルは消えちゃうのです・・・はかない命・・まるで火花・・・
@@ -8981,22 +8958,22 @@ class App:
     def update_background_object(self):
         object_count = len(self.background_object)
         for i in reversed(range(object_count)):#背景オブジェクトのリストの要素数を数えてその数の分だけループ処理する（delしちゃう可能性があるのでreversedするよ）
-
+            
             
             if BG_OBJ_CLOUD1 <= self.background_object[i].background_object_type <= BG_OBJ_CLOUD21: #雲1~21の場合
                 self.background_object[i].posx += self.background_object[i].vx
                 self.background_object[i].posy += self.background_object[i].vy
-
+                
             self.background_object[i].vx = self.background_object[i].vx * self.background_object[i].ax #速度に加速度を掛けあわせて加速もしくは減速させていく
             self.background_object[i].vy = self.background_object[i].vy * self.background_object[i].ay
-
+            
             #オブジェクトのクリッピング処理
             if       -100 <= self.background_object[i].posx <= WINDOW_W + 100\
                 and  -100 <= self.background_object[i].posx <= WINDOW_H + 100:
                 continue
             else:
                 del self.background_object[i] #描画範囲外になったのでインスタンスを破棄する
-    
+
     #雲の追加(背景オブジェクト)
     def update_append_cloud(self):
         if (pyxel.frame_count % self.cloud_append_interval) == 0 and self.display_cloud_flag == 1: #表示インタバールが0になった&表示フラグがonだったのなら
@@ -9008,7 +8985,6 @@ class App:
                 t = self.s_rndint(BG_OBJ_CLOUD1,BG_OBJ_CLOUD21)
             
             y = self.s_rndint(0,120+30)
-            
             new_background_object = Background_object()
             new_background_object.update(t, 160+10,y,  0,    1.009,1,0,0,0,0,0,0,   -3*self.cloud_flow_speed,self.cloud_how_flow,  0,0,   0,0,0,0,0,   0,0,0, 0,0,0,  0,0,0)
             self.background_object.append(new_background_object)
@@ -9017,29 +8993,29 @@ class App:
     def update_timer_flare(self):
         if self.timer_flare_flag == 0: #タイマーフレアのフラグが建っていなかったらそのまま戻る
             return
-
+            
         for i in range(30):
             new_particle = Particle()
             new_particle.update(PARTICLE_LINE, self.my_x+3,self.my_y+3,    1,    -random()-0.5, random()-0.5,    80,   i*6, 6)
             self.particle.append(new_particle)
-    
+
     #大気圏突入時の火花の更新
     def update_atmospheric_entry_spark(self):
         if self.atmospheric_entry_spark_flag == SPARK_OFF: #大気圏突入時の火花のフラグが建っていなかったらそのまま戻る
             return
-        
+            
         for _i in range(10):
             new_particle = Particle()
             # new_particle.update(PARTICLE_DOT, self.my_x+1,self.my_y+5,    1,    -random() * self.side_scroll_speed * 4, (random() - 0.97) * self.vertical_scroll_speed * 8,    30,   _i // 2, 10)
             new_particle.update(PARTICLE_FIRE_SPARK, self.my_x+3,self.my_y+4,    1,    -random() * self.side_scroll_speed, -(random()+0.5)  * self.vertical_scroll_speed * 2,    2.5 * self.side_scroll_speed,   1, 10)
-
+            
             self.particle.append(new_particle)
 
     #ラスタースクロールの更新
     def update_raster_scroll(self):
         if self.raster_scroll_flag == 0: #ラスタスクロール更新＆表示のフラグがたっていなかったらそのまま何もしないで戻る
             return
-
+            
         raster_scroll_count = len(self.raster_scroll)
         for i in range(raster_scroll_count):#ラスタースクロールのリストの要素数を数えてその数の分だけループ処理する
             if self.raster_scroll[i].raster_type == RASTER_NORMAL: #通常のラスタースクロールの場合
@@ -9051,7 +9027,7 @@ class App:
                 
                 if self.raster_scroll[i].posx <= -self.raster_scroll[i].width: #描画ライン幅のドット数ぶん画面外までスクロールアウトしたのなら
                     self.raster_scroll[i].posx = 0 #初期値であるx座標0を代入する
-                
+                    
             elif self.raster_scroll[i].raster_type == RASTER_WAVE: #ウェーブラスタースクロールの場合
                 #x座標をラスタースクロールのspeedと背景の横軸スクロールspeedを掛け合わせた分だけ加減算して更新する
                 self.raster_scroll[i].posx += self.raster_scroll[i].speed *self.side_scroll_speed
@@ -9073,7 +9049,7 @@ class App:
                 or self.game_status == SCENE_BOSS_APPEAR\
                 or self.game_status == SCENE_BOSS_BATTLE\
                 or self.game_status == SCENE_BOSS_EXPLOSION:#ステータスが「PLAY」もしくは「BOSS関連」のときにポーズボタンが押されたときは・・
-
+                
                 self.record_games_status = self.game_status #ステータスを一時記憶しておく
                 self.game_status = SCENE_PAUSE            #ステータスを「PAUSE」にする
             elif self.game_status == SCENE_PAUSE:          #ポーズ状態でポーズボタンが押されたときは・・・
@@ -9109,33 +9085,33 @@ class App:
             if self.cursor_item != 0: #指し示しているアイテムナンバーが一番上の項目の0以外なら上方向にカーソルは移動できるので・・・
                 self.cursor_y -= 8 #y座標を8ドット（1キャラ分）上に
                 self.cursor_item -= 1 #現在指し示しているアイテムナンバーを1減らす
-
+                
         # 下入力されたら  y座標を  +8する(1キャラ分)
         if pyxel.btnp(pyxel.KEY_DOWN) or pyxel.btnp(pyxel.GAMEPAD_1_DOWN) or pyxel.btnp(pyxel.GAMEPAD_2_DOWN):
             if self.cursor_item != self.cursor_max_item: #指し示しているアイテムナンバーが最大項目数でないのなら下方向にカーソルは移動できるので・・
                 self.cursor_y += 8
                 self.cursor_item += 1
-        
+                
         if pyxel.btnp(pyxel.KEY_SPACE) or pyxel.btnp(pyxel.GAMEPAD_1_A) or pyxel.btnp(pyxel.GAMEPAD_2_A) or pyxel.btnp(pyxel.GAMEPAD_1_B) or pyxel.btnp(pyxel.GAMEPAD_2_B):
             self.cursor_decision_item = self.cursor_item #ボタンが押されて決定されたら、いま指示しているアイテムナンバーをcursor_decision_itemに代入！
-    
+
     #リプレイデータの記録
     def update_record_replay_data(self):
         if self.auto_move_mode != 1: #自動移動モードの時はリプレイデータを記録しません
             self.replay_input_data.append(self.pad_data) #リプレイデータリストにパッド入力データを記録追加します
         self.pad_data = 0b0000000000000000             #次のフレーム時の記録のためにデータを初期化してあげます
-    
+
     #リプレイデータ(ステータス関連)をバックアップする(プッシュする感じみたいな？？？)
     def update_backup_replay_data_status(self):
         self.backup_rnd_seed        = self.rnd_seed        #乱数の種をバックアップ
         self.backup_game_difficulty   = self.game_difficulty   #難易度をバックアップ
         self.backup_stage_number     = self.stage_number     #ステージ数をバックアップ
         self.backup_stage_loop       = self.stage_loop       #ループ数をバックアップ
-    
+
     #リプレイデータ(リスト本体)をバックアップする(プッシュする感じみたいな？？？)
     def update_backup_replay_data_list(self):
         self.backup_replay_data      = self.replay_input_data #入力データリストをバックアップ
-    
+
     #リプレイデータをリストアする(ポップする感じみたいな？？？)
     def update_restore_replay_data(self):
         self.replay_input_data = self.backup_replay_data      #入力データリストをリストア
@@ -9147,7 +9123,7 @@ class App:
     #乱数0_9関数(0~9)の更新
     def update_rnd0_9(self):
         self.rnd0_9_num  = pyxel.frame_count %  10 #フレームカウント数を 10で割った余りが変数rnd0_9_numに入ります(0~9の数値が1フレームごとに変化する)
-    
+
     #乱数099関数(0~999)の更新
     def update_rnd0_99(self):
         self.rnd0_99_num = pyxel.frame_count % 100 #フレームカウント数を100で割った余りが変数rnd0_99_numに入ります(0~99の数値が1フレームごとに変化する)
@@ -9177,7 +9153,7 @@ class App:
             pyxel.blt(0,16 + i  * self.title_oscillation_count % 200 - self.title_slash_in_count,    IMG2,  0,192,  i*1.09,32,   0)
         for i in range(160+1000):
             pyxel.blt(0,16 + i % 1000 * self.title_oscillation_count - self.title_oscillation_count, IMG2,  0,192,  i    ,32,   0)
-        
+            
         #デバッグ用に現在のステージ数とループ数とその他いろいろ表示する
         #ステージ数の表示
         pyxel.text(160-3*8+8,1,"ST " + str(self.stage_number), 9)
@@ -9224,7 +9200,7 @@ class App:
                 self.reverse_flag = 8
                 if self.my_x > self.enemy[i].posx:
                     self.reverse_flag =-8
-
+                    
                 #論理式(enemy[i].item != 0)はitem=0の場合falseで0 item=1または2か3の場合はtrueで1となる（つまりアイテムを持っていたらカッコ内は1となる）
                 #アイテム所持していれば1*24で24ドット横、つまり3キャラチップ横の黄色い固定砲台が表示される事となる
                 if self.my_x == self.enemy[i].posx:
@@ -9251,7 +9227,7 @@ class App:
                     right_left_reverse = 8
                 else:
                     right_left_reverse = -8
-                
+                    
                 pyxel.blt(self.enemy[i].posx, self.enemy[i].posy,IMG2,   96 ,32,   right_left_reverse,up_down_reverse,  0)
             elif self.enemy[i].enemy_type == 9:#敵タイプ９の表示   Ｙ軸を合わせた後突っ込んで来る敵機
                 pyxel.blt(self.enemy[i].posx, self.enemy[i].posy, IMG2,     self.anime_enemy009[pyxel.frame_count % 40],48,    SIZE_8,SIZE_8,    0)
@@ -9291,8 +9267,8 @@ class App:
             if    self.boss[i].boss_type == BOSS_FATTY_VALGUARD:#ファッティ・バルガード(前線基地ボス)
                 offset_x = 0 #真っ二つになる描画用のx軸オフセット値(離れた距離)をリセットする
                 if self.boss[i].count2 !=0: #カウントが0だと0で割ってしまってエラーになるのでスキップする
-                   offset_x = 10 - self.boss[i].count2 // 48 #count2が少なくなるごとにoffset_xが増加することに成る
-                                                    #count2の数値は最初は480フレームで最終的に0となり,この計算式からoffset_xは480フレームの間で0から10まで変化することに成る
+                    offset_x = 10 - self.boss[i].count2 // 48   #count2が少なくなるごとにoffset_xが増加することに成る
+                                                                #count2の数値は最初は480フレームで最終的に0となり,この計算式からoffset_xは480フレームの間で0から10まで変化することに成る
                 
                 pyxel.blt(self.boss[i].posx + offset_x, self.boss[i].posy + offset_x // 16,  IMG0,   64,128,8*8,5*8,    15) #ファッティバルガード前部表示
                 pyxel.blt(self.boss[i].posx - offset_x, self.boss[i].posy              ,  IMG0,    0,184,5*8,3*8,    15) #ファッティバルガード後部表示 
@@ -9307,8 +9283,8 @@ class App:
             elif  self.boss[i].boss_type == BOSS_BREEZARDIA:    #ブリザーディア(山岳地帯ボス)
                 offset_x = 0 #真っ二つになる描画用のx軸オフセット値(離れた距離)をリセットする
                 if self.boss[i].count2 !=0: #カウントが0だと0で割ってしまってエラーになるのでスキップする
-                   offset_x = 10 - self.boss[i].count2 // 48 #count2が少なくなるごとにoffset_xが増加することに成る
-                                                    #count2の数値は最初は480フレームで最終的に0となり,この計算式からoffset_xは480フレームの間で0から10まで変化することに成る
+                    offset_x = 10 - self.boss[i].count2 // 48   #count2が少なくなるごとにoffset_xが増加することに成る
+                                                                #count2の数値は最初は480フレームで最終的に0となり,この計算式からoffset_xは480フレームの間で0から10まで変化することに成る
                 
                 pyxel.blt(self.boss[i].posx + offset_x, self.boss[i].posy + offset_x // 16,  IMG0,   40,184,self.boss[i].width,self.boss[i].height,    15) #ブリザーディア前部表示
                 
@@ -9416,7 +9392,7 @@ class App:
     def draw_boss_collision_rectangle(self,i):
         if self.boss_collision_rect_display_flag != 1: #デバッグ時に使う当たり判定矩形表示フラグがonでないのならば
             return                             #何もしないで戻ります
-        
+            
         if self.boss[i].col_main1_w != 0: #本体当たり判定1の表示 当たり判定の横幅が0の場合はスキップして表示しない
             pyxel.rectb(self.boss[i].posx + self.boss[i].col_main1_x,self.boss[i].posy + self.boss[i].col_main1_y,self.boss[i].col_main1_w,self.boss[i].col_main1_h,self.blinking_color[pyxel.frame_count // 8 % 10])
         if self.boss[i].col_main2_w != 0: #本体当たり判定2の表示 当たり判定の横幅が0の場合はスキップして表示しない
@@ -9433,7 +9409,7 @@ class App:
             pyxel.rectb(self.boss[i].posx + self.boss[i].col_main7_x,self.boss[i].posy + self.boss[i].col_main7_y,self.boss[i].col_main7_w,self.boss[i].col_main7_h,self.blinking_color[pyxel.frame_count // 8 % 10])
         if self.boss[i].col_main8_w != 0: #本体当たり判定8の表示 当たり判定の横幅が0の場合はスキップして表示しない
             pyxel.rectb(self.boss[i].posx + self.boss[i].col_main8_x,self.boss[i].posy + self.boss[i].col_main8_y,self.boss[i].col_main8_w,self.boss[i].col_main8_h,self.blinking_color[pyxel.frame_count // 8 % 10])    
-        
+            
         if self.boss[i].parts1_flag == 1:#パーツ1が健在なら表示する
             pyxel.rectb(self.boss[i].posx + self.boss[i].col_parts1_x,self.boss[i].posy + self.boss[i].col_parts1_y,self.boss[i].col_parts1_w,self.boss[i].col_parts1_h,self.red_flash_color[pyxel.frame_count // 8 % 10])
         if self.boss[i].parts2_flag == 1:#パーツ2が健在なら表示する
@@ -9452,8 +9428,8 @@ class App:
             pyxel.rectb(self.boss[i].posx + self.boss[i].col_parts8_x,self.boss[i].posy + self.boss[i].col_parts8_y,self.boss[i].col_parts8_w,self.boss[i].col_parts8_h,self.monochrome_flash_color[pyxel.frame_count // 8 % 15])
         if self.boss[i].parts9_flag == 1:#パーツ9が健在なら表示する
             pyxel.rectb(self.boss[i].posx + self.boss[i].col_parts9_x,self.boss[i].posy + self.boss[i].col_parts9_y,self.boss[i].col_parts9_w,self.boss[i].col_parts9_h,self.yellow_flash_color[pyxel.frame_count // 8 % 10])
-        
-        
+            
+            
         if self.boss[i].col_damage_point1_w != 0: #ボスのダメージポイント(弱点)1の表示 当たり判定の横幅が0の場合はスキップして表示しない
             pyxel.rectb(self.boss[i].posx + self.boss[i].col_damage_point1_x,self.boss[i].posy + self.boss[i].col_damage_point1_y,self.boss[i].col_damage_point1_w,self.boss[i].col_damage_point1_h,self.rainbow_flash_color[pyxel.frame_count // 3 % 15])
         if self.boss[i].col_damage_point2_w != 0: #ボスのダメージポイント(弱点)2の表示 当たり判定の横幅が0の場合はスキップして表示しない
@@ -9520,26 +9496,26 @@ class App:
                 pyxel.pset(self.particle[i].posx,self.particle[i].posy,self.particle[i].color) #正方形1ドット分のパーティクルを描画
                 if self.particle[i].size > 0: #sizeが0より大きかったら横長2ドット分のパーティクルを描画する
                     pyxel.pset(self.particle[i].posx + 1,self.particle[i].posy,self.particle[i].color)
-            
+                    
             elif self.particle[i].particle_type == PARTICLE_LINE or\
                 self.particle[i].particle_type == PARTICLE_FIRE_SPARK: #パーティクルタイプ ラインタイプまたは大気圏突入時の火花タイプ
                 pyxel.pset(self.particle[i].posx,self.particle[i].posy,self.particle[i].color) #正方形1ドット分のパーティクルを描画
-            
+                
             elif self.particle[i].particle_type == PARTICLE_CIRCLE: #パーティクルタイプ 円形パーティクルタイプ
                 pyxel.circ(self.particle[i].posx,self.particle[i].posy,self.particle[i].size,self.particle[i].color) #半径size分の円形パーティクルを描画
-            
+                
             elif self.particle[i].particle_type == PARTICLE_MISSILE_DEBRIS: #パーティクルタイプ ミサイルの破片
                 pyxel.blt(self.particle[i].posx,self.particle[i].posy,IMG2,184 + (7 - self.particle[i].life) * 8,0, 8,8, 0) #ミサイル破片デブリをlifeの値をアニメーションパターンオフセット値としてスプライト表示する
-            
+                
             elif self.particle[i].particle_type == PARTICLE_BOSS_DEBRIS1: #パーティクルタイプ ボスの破片その1
                 pyxel.blt(self.particle[i].posx,self.particle[i].posy,IMG2,160 + (12 - (self.particle[i].life % 12)) * 8,216, 8,8, 0) #ボス破片デブリ1をlifeの値をアニメーションパターンオフセット値としてスプライト表示する
-            
+                
             elif self.particle[i].particle_type == PARTICLE_BOSS_DEBRIS2: #パーティクルタイプ ボスの破片その2
                 pyxel.blt(self.particle[i].posx,self.particle[i].posy,IMG2,160 + (6 - (self.particle[i].life % 6)) * 8,208, 8,8, 0) #ボス破片デブリ2をlifeの値をアニメーションパターンオフセット値としてスプライト表示する
-            
+                
             elif self.particle[i].particle_type == PARTICLE_BOSS_DEBRIS3: #パーティクルタイプ ボスの破片その3
                 pyxel.blt(self.particle[i].posx,self.particle[i].posy,IMG2,160 + (12 - (self.particle[i].life % 12)) * 8,200, 8,8, 0) #ボス破片デブリ3をlifeの値をアニメーションパターンオフセット値としてスプライト表示する
-            
+                
             elif self.particle[i].particle_type == PARTICLE_BOSS_DEBRIS4: #パーティクルタイプ ボスの破片その4
                 pyxel.blt(self.particle[i].posx,self.particle[i].posy,IMG2,192 + (8 - (self.particle[i].life % 8)) * 8,192, 8,8, 0) #ボス破片デブリ4をlifeの値をアニメーションパターンオフセット値としてスプライト表示する
 
@@ -9567,7 +9543,7 @@ class App:
                 pyxel.blt(self.background_object[i].posx,self.background_object[i].posy,    IMG1,    240,248,    16, 8,    1) #雲小9を描画
             elif self.background_object[i].background_object_type == BG_OBJ_CLOUD10: #雲小10
                 pyxel.blt(self.background_object[i].posx,self.background_object[i].posy,    IMG1,    224,224,    16, 8,    1) #雲小10を描画
-            
+                
             elif self.background_object[i].background_object_type == BG_OBJ_CLOUD11: #雲中11
                 pyxel.blt(self.background_object[i].posx,self.background_object[i].posy,    IMG1,    176,232,    16,16,    1) #雲中11を描画(正方形っぽい)
             elif self.background_object[i].background_object_type == BG_OBJ_CLOUD12: #雲中12
@@ -9587,7 +9563,7 @@ class App:
                 pyxel.blt(self.background_object[i].posx    ,self.background_object[i].posy    ,  IMG1, 192,232,    48,16,    1) #雲中18を描画(中サイズで一番大きいかも？) 
                 pyxel.blt(self.background_object[i].posx +5*8,self.background_object[i].posy + 8,  IMG1, 232,240,    8, 8,    1) #雲中18の尻尾を描画
                 pyxel.blt(self.background_object[i].posx +2*8,self.background_object[i].posy +16,  IMG1, 208,248,    16, 8,    1) #雲中18のお腹のあたりを描画
-            
+                
             elif self.background_object[i].background_object_type == BG_OBJ_CLOUD19: #雲大19
                 pyxel.blt(self.background_object[i].posx    ,self.background_object[i].posy   ,  IMG1,   0,216,    46,24,    1) #雲大19を描画
                 pyxel.blt(self.background_object[i].posx +6*8,self.background_object[i].posy +8,  IMG1,  48,224,    8,10,    1) #雲大19の尻尾部分を描画 
@@ -9700,13 +9676,12 @@ class App:
     def draw_my_ship(self):
         if self.invincible_counter > 0: #無敵中のカウントが0より大きい時は無敵状態なので点滅表示する
             if pyxel.frame_count % 4 == 0: #4フレーム置きに自機を表示
-               pyxel.blt(self.my_x   ,self.my_y,IMG2,8 + ((self.my_rolling_flag) * 8),0,SHIP_W,SHIP_H,0) #自機本体の表示
-            
+                pyxel.blt(self.my_x   ,self.my_y,IMG2,8 + ((self.my_rolling_flag) * 8),0,SHIP_W,SHIP_H,0) #自機本体の表示
+                
             self.invincible_counter -= 1 #無敵時間カウントを1減らす
             
         else:
             pyxel.blt(self.my_x   ,self.my_y,IMG2,8 + ((self.my_rolling_flag) * 8),0,SHIP_W,SHIP_H,0) #自機本体の表示
-            
             
         if self.game_status == SCENE_STAGE_CLEAR_MY_SHIP_BOOST:
             pyxel.blt(self.my_x -6*8,self.my_y,IMG2,    208,120 + (pyxel.frame_count // 2  % 2) * 8,    6*8,8,0) #ブーストモードイオンエンジン噴射の描画
@@ -9873,7 +9848,7 @@ class App:
         else:
             pyxel.blt(0,0, IMG2, 80,72, 8,8, 0)
             pyxel.text(8, 1, s, 7)  #違っていたら白色でスコア表示
-
+        
         #自機スピード表示
         if self.my_speed == 1:
             pyxel.blt(126,-1,IMG2, 104,72, 8,8, 0)
