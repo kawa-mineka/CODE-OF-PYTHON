@@ -5462,179 +5462,179 @@ class App:
         for h in reversed(range (shot_hit)):
             enemy_hit = len(self.enemy)
             for e in reversed(range (enemy_hit)):#ウェーブカッターの分も含めてＹ軸方向の幅の大きさも考えた当たり判定にする、Ｘ軸方向の当たり判定は普通に8ドット単位で行う
-               if    self.enemy[e].posx                    <= self.shots[h].posx + 4 <= self.enemy[e].posx + self.enemy[e].width\
-                 and self.enemy[e].posy - self.shots[h].height <= self.shots[h].posy + 4 <= self.enemy[e].posy + self.enemy[e].height:
-
-                  self.enemy[e].enemy_hp -= self.shots[h].shot_power #敵の耐久力をShot_powerの分だけ減らす
-                  if self.enemy[e].enemy_hp <= 0:
-                     self.enemy_destruction(e) #敵破壊処理関数呼び出し！
-                     #パーティクル生成
-                     for _number in range(5):
-                         self.update_append_particle(PARTICLE_DOT,self.enemy[e].posx + 4,self.enemy[e].posy + 4,self.shots[h].vx / 2,self.shots[h].vy / 2, 0,0,0)
-                  
-                     #スコア加算
-                     if self.enemy[e].status == ENEMY_STATUS_NORMAL:   #ステータスが「通常」ならscore_normalをpointとしてスコアを加算する
-                         point = self.enemy[e].score_normal
-                     elif self.enemy[e].status == ENEMY_STATUS_ATTACK: #ステータスが「攻撃中」ならscore_attackをpointとしてスコアを加算する
-                         point = self.enemy[e].score_attack
-                     elif self.enemy[e].status == ENEMY_STATUS_ESCAPE: #ステータスが「撤退中」ならscore_escapeをpointとしてスコアを加算する
-                         point = self.enemy[e].score_escape
-                     elif self.enemy[e].status == ENEMY_STATUS_AWAITING: #ステータスが「待機中」ならscore_awaitingをpointとしてスコアを加算する
-                         point = self.enemy[e].score_awaiting
-                     elif self.enemy[e].status == ENEMY_STATUS_DEFENSE: #ステータスが「防御中」ならscore_defenseをpointとしてスコアを加算する
-                         point = self.enemy[e].score_defense
-                     elif self.enemy[e].status == ENEMY_STATUS_BERSERK: #ステータスが「怒り状態」ならscore_berserkをpointとしてスコアを加算する
-                         point = self.enemy[e].score_berserk
-                     else:                                     #ステータスが以上に当てはまらないときはscore_normalとする
-                         point = self.enemy[e].score_normal
-
-                     self.add_score(point) #スコアを加算する関数の呼び出し
-                     del self.enemy[e] #敵リストから破壊した敵をdel消去破壊するっ！
+                if      self.enemy[e].posx                    <= self.shots[h].posx + 4 <= self.enemy[e].posx + self.enemy[e].width\
+                    and self.enemy[e].posy - self.shots[h].height <= self.shots[h].posy + 4 <= self.enemy[e].posy + self.enemy[e].height:
+                    self.enemy[e].enemy_hp -= self.shots[h].shot_power #敵の耐久力をShot_powerの分だけ減らす
+                    if self.enemy[e].enemy_hp <= 0:
+                        self.enemy_destruction(e) #敵破壊処理関数呼び出し！
+                        #パーティクル生成
+                        for _number in range(5):
+                            self.update_append_particle(PARTICLE_DOT,self.enemy[e].posx + 4,self.enemy[e].posy + 4,self.shots[h].vx / 2,self.shots[h].vy / 2, 0,0,0)
+                        
+                        #スコア加算
+                        if self.enemy[e].status == ENEMY_STATUS_NORMAL:   #ステータスが「通常」ならscore_normalをpointとしてスコアを加算する
+                            point = self.enemy[e].score_normal
+                        elif self.enemy[e].status == ENEMY_STATUS_ATTACK: #ステータスが「攻撃中」ならscore_attackをpointとしてスコアを加算する
+                            point = self.enemy[e].score_attack
+                        elif self.enemy[e].status == ENEMY_STATUS_ESCAPE: #ステータスが「撤退中」ならscore_escapeをpointとしてスコアを加算する
+                            point = self.enemy[e].score_escape
+                        elif self.enemy[e].status == ENEMY_STATUS_AWAITING: #ステータスが「待機中」ならscore_awaitingをpointとしてスコアを加算する
+                            point = self.enemy[e].score_awaiting
+                        elif self.enemy[e].status == ENEMY_STATUS_DEFENSE: #ステータスが「防御中」ならscore_defenseをpointとしてスコアを加算する
+                            point = self.enemy[e].score_defense
+                        elif self.enemy[e].status == ENEMY_STATUS_BERSERK: #ステータスが「怒り状態」ならscore_berserkをpointとしてスコアを加算する
+                            point = self.enemy[e].score_berserk
+                        else:                                     #ステータスが以上に当てはまらないときはscore_normalとする
+                            point = self.enemy[e].score_normal
+                        self.add_score(point) #スコアを加算する関数の呼び出し
+                        del self.enemy[e] #敵リストから破壊した敵をdel消去破壊するっ！
+                        
+                    self.shots[h].shot_hp = 0#自機弾のＨＰをゼロにして自機弾移動時にチェックしリストから消去させるため
+                    pyxel.play(0,2)#変な爆発音を出すのだ～～～☆彡
                 
-                  self.shots[h].shot_hp = 0#自機弾のＨＰをゼロにして自機弾移動時にチェックしリストから消去させるため
-                  pyxel.play(0,2)#変な爆発音を出すのだ～～～☆彡
-            else:
-               continue
-    
+                
+                # else:
+                    # continue
+
     #自機弾とボスとの当たり判定
     def update_collision_my_shot_boss(self):
         shot_hit = len(self.shots)
         for h in reversed(range (shot_hit)):
             boss_hit = len(self.boss)
             for e in reversed(range (boss_hit)):#ウェーブカッターの分も含めてＹ軸方向の幅の大きさも考えた当たり判定にする、Ｘ軸方向の当たり判定は普通に8ドット単位で行う
-               if self.boss[e].invincible != 1: #もしボスが無敵状態で無いのならば
-                   #ボス本体の当たり判定1(弾を消滅させる)との判定
-                   if        self.boss[e].posx                   + self.boss[e].col_main1_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main1_x + self.boss[e].col_main1_w\
-                       and self.boss[e].posy - self.shots[h].height  + self.boss[e].col_main1_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main1_y + self.boss[e].col_main1_h\
-                       and self.boss[e].col_main1_w != 0:
-  
+                if self.boss[e].invincible != 1: #もしボスが無敵状態で無いのならば
+                    #ボス本体の当たり判定1(弾を消滅させる)との判定
+                    if        self.boss[e].posx                   + self.boss[e].col_main1_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main1_x + self.boss[e].col_main1_w\
+                        and self.boss[e].posy - self.shots[h].height  + self.boss[e].col_main1_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main1_y + self.boss[e].col_main1_h\
+                        and self.boss[e].col_main1_w != 0:
+                        
                         self.update_append_particle(PARTICLE_LINE,self.shots[h].posx,self.shots[h].posy,0,0, 0,0,0)#自機弾の位置に消滅エフェクト育成
                         self.shots[h].shot_hp = 0#自機弾のＨＰをゼロにして自機弾移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ボス本体の当たり判定2(弾を消滅させる)との判定
-                   if        self.boss[e].posx                   + self.boss[e].col_main2_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main2_x + self.boss[e].col_main2_w\
-                       and self.boss[e].posy - self.shots[h].height  + self.boss[e].col_main2_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main2_y + self.boss[e].col_main2_h\
-                       and self.boss[e].col_main2_w != 0:
-  
+                    #ボス本体の当たり判定2(弾を消滅させる)との判定
+                    if        self.boss[e].posx                   + self.boss[e].col_main2_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main2_x + self.boss[e].col_main2_w\
+                        and self.boss[e].posy - self.shots[h].height  + self.boss[e].col_main2_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main2_y + self.boss[e].col_main2_h\
+                        and self.boss[e].col_main2_w != 0:
+                        
                         self.update_append_particle(PARTICLE_LINE,self.shots[h].posx,self.shots[h].posy,0,0, 0,0,0)#自機弾の位置に消滅エフェクト育成
                         self.shots[h].shot_hp = 0#自機弾のＨＰをゼロにして自機弾移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ボス本体の当たり判定3(弾を消滅させる)との判定
-                   if        self.boss[e].posx                   + self.boss[e].col_main3_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main3_x + self.boss[e].col_main3_w\
-                       and self.boss[e].posy - self.shots[h].height  + self.boss[e].col_main3_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main3_y + self.boss[e].col_main3_h\
-                       and self.boss[e].col_main3_w != 0:
-  
+                    #ボス本体の当たり判定3(弾を消滅させる)との判定
+                    if        self.boss[e].posx                   + self.boss[e].col_main3_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main3_x + self.boss[e].col_main3_w\
+                        and self.boss[e].posy - self.shots[h].height  + self.boss[e].col_main3_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main3_y + self.boss[e].col_main3_h\
+                        and self.boss[e].col_main3_w != 0:
+                        
                         self.update_append_particle(PARTICLE_LINE,self.shots[h].posx,self.shots[h].posy,0,0, 0,0,0)#自機弾の位置に消滅エフェクト育成
                         self.shots[h].shot_hp = 0#自機弾のＨＰをゼロにして自機弾移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ボス本体の当たり判定4(弾を消滅させる)との判定
-                   if        self.boss[e].posx                   + self.boss[e].col_main4_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main4_x + self.boss[e].col_main4_w\
-                       and self.boss[e].posy - self.shots[h].height  + self.boss[e].col_main4_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main4_y + self.boss[e].col_main4_h\
-                       and self.boss[e].col_main4_w != 0:
-  
+                    #ボス本体の当たり判定4(弾を消滅させる)との判定
+                    if        self.boss[e].posx                   + self.boss[e].col_main4_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main4_x + self.boss[e].col_main4_w\
+                        and self.boss[e].posy - self.shots[h].height  + self.boss[e].col_main4_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main4_y + self.boss[e].col_main4_h\
+                        and self.boss[e].col_main4_w != 0:
+                        
                         self.update_append_particle(PARTICLE_LINE,self.shots[h].posx,self.shots[h].posy,0,0, 0,0,0)#自機弾の位置に消滅エフェクト育成
                         self.shots[h].shot_hp = 0#自機弾のＨＰをゼロにして自機弾移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ボス本体の当たり判定5(弾を消滅させる)との判定
-                   if        self.boss[e].posx                   + self.boss[e].col_main5_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main5_x + self.boss[e].col_main5_w\
-                       and self.boss[e].posy - self.shots[h].height  + self.boss[e].col_main5_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main5_y + self.boss[e].col_main5_h\
-                       and self.boss[e].col_main5_w != 0:
-  
+                    #ボス本体の当たり判定5(弾を消滅させる)との判定
+                    if        self.boss[e].posx                   + self.boss[e].col_main5_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main5_x + self.boss[e].col_main5_w\
+                        and self.boss[e].posy - self.shots[h].height  + self.boss[e].col_main5_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main5_y + self.boss[e].col_main5_h\
+                        and self.boss[e].col_main5_w != 0:
+                        
                         self.update_append_particle(PARTICLE_LINE,self.shots[h].posx,self.shots[h].posy,0,0, 0,0,0)#自機弾の位置に消滅エフェクト育成
                         self.shots[h].shot_hp = 0#自機弾のＨＰをゼロにして自機弾移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ボス本体の当たり判定6(弾を消滅させる)との判定
-                   if        self.boss[e].posx                   + self.boss[e].col_main6_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main6_x + self.boss[e].col_main6_w\
-                       and self.boss[e].posy - self.shots[h].height  + self.boss[e].col_main6_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main6_y + self.boss[e].col_main6_h\
-                       and self.boss[e].col_main6_w != 0:
-  
+                    #ボス本体の当たり判定6(弾を消滅させる)との判定
+                    if        self.boss[e].posx                   + self.boss[e].col_main6_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main6_x + self.boss[e].col_main6_w\
+                        and self.boss[e].posy - self.shots[h].height  + self.boss[e].col_main6_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main6_y + self.boss[e].col_main6_h\
+                        and self.boss[e].col_main6_w != 0:
+                        
                         self.update_append_particle(PARTICLE_LINE,self.shots[h].posx,self.shots[h].posy,0,0, 0,0,0)#自機弾の位置に消滅エフェクト育成
                         self.shots[h].shot_hp = 0#自機弾のＨＰをゼロにして自機弾移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ボス本体の当たり判定7(弾を消滅させる)との判定
-                   if        self.boss[e].posx                   + self.boss[e].col_main7_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main7_x + self.boss[e].col_main7_w\
-                       and self.boss[e].posy - self.shots[h].height  + self.boss[e].col_main7_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main7_y + self.boss[e].col_main7_h\
-                       and self.boss[e].col_main7_w != 0:
-  
+                    #ボス本体の当たり判定7(弾を消滅させる)との判定
+                    if        self.boss[e].posx                   + self.boss[e].col_main7_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main7_x + self.boss[e].col_main7_w\
+                        and self.boss[e].posy - self.shots[h].height  + self.boss[e].col_main7_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main7_y + self.boss[e].col_main7_h\
+                        and self.boss[e].col_main7_w != 0:
+                        
                         self.update_append_particle(PARTICLE_LINE,self.shots[h].posx,self.shots[h].posy,0,0, 0,0,0)#自機弾の位置に消滅エフェクト育成
                         self.shots[h].shot_hp = 0#自機弾のＨＰをゼロにして自機弾移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ボス本体の当たり判定8(弾を消滅させる)との判定
-                   if        self.boss[e].posx                   + self.boss[e].col_main8_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main8_x + self.boss[e].col_main8_w\
-                       and self.boss[e].posy - self.shots[h].height  + self.boss[e].col_main8_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main8_y + self.boss[e].col_main8_h\
-                       and self.boss[e].col_main8_w != 0:
-  
+                    #ボス本体の当たり判定8(弾を消滅させる)との判定
+                    if        self.boss[e].posx                   + self.boss[e].col_main8_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main8_x + self.boss[e].col_main8_w\
+                        and self.boss[e].posy - self.shots[h].height  + self.boss[e].col_main8_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main8_y + self.boss[e].col_main8_h\
+                        and self.boss[e].col_main8_w != 0:
+                        
                         self.update_append_particle(PARTICLE_LINE,self.shots[h].posx,self.shots[h].posy,0,0, 0,0,0)#自機弾の位置に消滅エフェクト育成
                         self.shots[h].shot_hp = 0#自機弾のＨＰをゼロにして自機弾移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   
-                   
-                   #パーツ１との当たり判定
-                   if        self.boss[e].posx + self.boss[e].col_parts1_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_parts1_x + self.boss[e].col_parts1_w\
+                    
+                    
+                    #パーツ１との当たり判定
+                    if        self.boss[e].posx + self.boss[e].col_parts1_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_parts1_x + self.boss[e].col_parts1_w\
                         and self.boss[e].posy + self.boss[e].col_parts1_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_parts1_y + self.boss[e].col_parts1_h\
                         and self.boss[e].parts1_flag == 1:
                         
                         self.boss[e].parts1_hp -= self.shots[h].shot_power #パーツ1の耐久力をShot_powerの分だけ減らす
                         if self.boss[e].parts1_hp <= 0: #パーツ1の耐久力が0以下になったのなら
                             self.boss[e].parts1_flag = 0 #パーツ1の生存フラグを0にして破壊したことにする
-
+                        
                         self.boss[e].display_time_parts1_hp_bar = BOSS_HP_BAR_DISPLAY_TIME #パーツ1耐久力バーを表示するカウントタイマーを初期値の定数に戻す
                         hit_x,hit_y   = self.shots[h].posx,self.shots[h].posy
                         hit_vx,hit_vy = self.shots[h].vx,self.shots[h].vx
                         self.boss_processing_after_hitting(e,hit_x,hit_y,hit_vx,hit_vy) #ボスにショットを当てた後の処理の関数を呼び出す！
                         self.shots[h].shot_hp = 0#自機弾のＨＰをゼロにして自機弾移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する   
-                   #パーツ2との当たり判定
-                   if        self.boss[e].posx + self.boss[e].col_parts2_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_parts2_x + self.boss[e].col_parts2_w\
+                    #パーツ2との当たり判定
+                    if        self.boss[e].posx + self.boss[e].col_parts2_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_parts2_x + self.boss[e].col_parts2_w\
                         and self.boss[e].posy + self.boss[e].col_parts2_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_parts2_y + self.boss[e].col_parts2_h\
                         and self.boss[e].parts2_flag == 1:
                         
                         self.boss[e].parts2_hp -= self.shots[h].shot_power #パーツ2の耐久力をShot_powerの分だけ減らす
                         if self.boss[e].parts2_hp <= 0: #パーツ2の耐久力が0以下になったのなら
                             self.boss[e].parts2_flag = 0 #パーツ2の生存フラグを0にして破壊したことにする
-
+                        
                         self.boss[e].display_time_parts2_hp_bar = BOSS_HP_BAR_DISPLAY_TIME #パーツ2耐久力バーを表示するカウントタイマーを初期値の定数に戻す
                         hit_x,hit_y   = self.shots[h].posx,self.shots[h].posy
                         hit_vx,hit_vy = self.shots[h].vx,self.shots[h].vx
                         self.boss_processing_after_hitting(e,hit_x,hit_y,hit_vx,hit_vy) #ボスにショットを当てた後の処理の関数を呼び出す！
                         self.shots[h].shot_hp = 0#自機弾のＨＰをゼロにして自機弾移動時にチェックしリストから消去させる 
                         continue #これ以下の処理はせず次のループへと移行する                    
-                   #パーツ3との当たり判定
-                   if        self.boss[e].posx + self.boss[e].col_parts3_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_parts3_x + self.boss[e].col_parts3_w\
+                    #パーツ3との当たり判定
+                    if        self.boss[e].posx + self.boss[e].col_parts3_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_parts3_x + self.boss[e].col_parts3_w\
                         and self.boss[e].posy + self.boss[e].col_parts3_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_parts3_y + self.boss[e].col_parts3_h\
                         and self.boss[e].parts3_flag == 1:
                         
                         self.boss[e].parts3_hp -= self.shots[h].shot_power #パーツ3の耐久力をShot_powerの分だけ減らす
                         if self.boss[e].parts3_hp <= 0: #パーツ3の耐久力が0以下になったのなら
                             self.boss[e].parts3_flag = 0 #パーツ3の生存フラグを0にして破壊したことにする
-
+                        
                         self.boss[e].display_time_parts3_hp_bar = BOSS_HP_BAR_DISPLAY_TIME #パーツ3耐久力バーを表示するカウントタイマーを初期値の定数に戻す
                         hit_x,hit_y   = self.shots[h].posx,self.shots[h].posy
                         hit_vx,hit_vy = self.shots[h].vx,self.shots[h].vx
                         self.boss_processing_after_hitting(e,hit_x,hit_y,hit_vx,hit_vy) #ボスにショットを当てた後の処理の関数を呼び出す！
                         self.shots[h].shot_hp = 0#自機弾のＨＰをゼロにして自機弾移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する                  
-                   #パーツ4との当たり判定
-                   if        self.boss[e].posx + self.boss[e].col_parts4_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_parts4_x + self.boss[e].col_parts4_w\
+                    #パーツ4との当たり判定
+                    if        self.boss[e].posx + self.boss[e].col_parts4_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_parts4_x + self.boss[e].col_parts4_w\
                         and self.boss[e].posy + self.boss[e].col_parts4_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_parts4_y + self.boss[e].col_parts4_h\
                         and self.boss[e].parts4_flag == 1:
                         
                         self.boss[e].parts4_hp -= self.shots[h].shot_power #パーツ4の耐久力をShot_powerの分だけ減らす
                         if self.boss[e].parts4_hp <= 0: #パーツ4の耐久力が0以下になったのなら
                             self.boss[e].parts4_flag = 0 #パーツ4の生存フラグを0にして破壊したことにする
-
+                        
                         self.boss[e].display_time_parts4_hp_bar = BOSS_HP_BAR_DISPLAY_TIME #パーツ4耐久力バーを表示するカウントタイマーを初期値の定数に戻す
                         hit_x,hit_y   = self.shots[h].posx,self.shots[h].posy
                         hit_vx,hit_vy = self.shots[h].vx,self.shots[h].vx
                         self.boss_processing_after_hitting(e,hit_x,hit_y,hit_vx,hit_vy) #ボスにショットを当てた後の処理の関数を呼び出す！
                         self.shots[h].shot_hp = 0#自機弾のＨＰをゼロにして自機弾移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する                  
-                  
-                   #ダメージポイント1との判定
-                   if        self.boss[e].posx                  + self.boss[e].col_damage_point1_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_damage_point1_x + self.boss[e].col_damage_point1_w\
-                       and self.boss[e].posy - self.shots[h].height  + self.boss[e].col_damage_point1_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_damage_point1_y + self.boss[e].col_damage_point1_h\
-                       and self.boss[e].col_damage_point1_w != 0:
-  
+                    
+                    #ダメージポイント1との判定
+                    if        self.boss[e].posx                  + self.boss[e].col_damage_point1_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_damage_point1_x + self.boss[e].col_damage_point1_w\
+                        and self.boss[e].posy - self.shots[h].height  + self.boss[e].col_damage_point1_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_damage_point1_y + self.boss[e].col_damage_point1_h\
+                        and self.boss[e].col_damage_point1_w != 0:
+                        
                         self.boss[e].main_hp -= self.shots[h].shot_power #ボスの耐久力をShot_powerの分だけ減らす
                         self.boss[e].display_time_main_hp_bar = BOSS_HP_BAR_DISPLAY_TIME #耐久力バーを表示するカウントタイマーを初期値の定数に戻す
                         hit_x,hit_y   = self.shots[h].posx,self.shots[h].posy
@@ -5642,11 +5642,11 @@ class App:
                         self.boss_processing_after_hitting(e,hit_x,hit_y,hit_vx,hit_vy) #ボスにショットを当てた後の処理の関数を呼び出す！
                         self.shots[h].shot_hp = 0#自機弾のＨＰをゼロにして自機弾移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ダメージポイント2との判定
-                   if        self.boss[e].posx                  + self.boss[e].col_damage_point2_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_damage_point2_x + self.boss[e].col_damage_point2_w\
-                       and self.boss[e].posy - self.shots[h].height + self.boss[e].col_damage_point2_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_damage_point2_y + self.boss[e].col_damage_point2_h\
-                       and self.boss[e].col_damage_point2_w != 0:
-  
+                    #ダメージポイント2との判定
+                    if        self.boss[e].posx                  + self.boss[e].col_damage_point2_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_damage_point2_x + self.boss[e].col_damage_point2_w\
+                        and self.boss[e].posy - self.shots[h].height + self.boss[e].col_damage_point2_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_damage_point2_y + self.boss[e].col_damage_point2_h\
+                        and self.boss[e].col_damage_point2_w != 0:
+                        
                         self.boss[e].main_hp -= self.shots[h].shot_power #ボスの耐久力をShot_powerの分だけ減らす
                         self.boss[e].display_time_main_hp_bar = BOSS_HP_BAR_DISPLAY_TIME #耐久力バーを表示するカウントタイマーを初期値の定数に戻す
                         hit_x,hit_y   = self.shots[h].posx,self.shots[h].posy
@@ -5654,11 +5654,11 @@ class App:
                         self.boss_processing_after_hitting(e,hit_x,hit_y,hit_vx,hit_vy) #ボスにショットを当てた後の処理の関数を呼び出す！
                         self.shots[h].shot_hp = 0#自機弾のＨＰをゼロにして自機弾移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ダメージポイント3との判定
-                   if        self.boss[e].posx                  + self.boss[e].col_damage_point3_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_damage_point3_x + self.boss[e].col_damage_point3_w\
-                       and self.boss[e].posy - self.shots[h].height + self.boss[e].col_damage_point3_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_damage_point3_y + self.boss[e].col_damage_point3_h\
-                       and self.boss[e].col_damage_point3_w != 0:
-  
+                    #ダメージポイント3との判定
+                    if        self.boss[e].posx                  + self.boss[e].col_damage_point3_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_damage_point3_x + self.boss[e].col_damage_point3_w\
+                        and self.boss[e].posy - self.shots[h].height + self.boss[e].col_damage_point3_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_damage_point3_y + self.boss[e].col_damage_point3_h\
+                        and self.boss[e].col_damage_point3_w != 0:
+                        
                         self.boss[e].main_hp -= self.shots[h].shot_power #ボスの耐久力をShot_powerの分だけ減らす
                         self.boss[e].display_time_main_hp_bar = BOSS_HP_BAR_DISPLAY_TIME #耐久力バーを表示するカウントタイマーを初期値の定数に戻す
                         hit_x,hit_y   = self.shots[h].posx,self.shots[h].posy
@@ -5666,11 +5666,11 @@ class App:
                         self.boss_processing_after_hitting(e,hit_x,hit_y,hit_vx,hit_vy) #ボスにショットを当てた後の処理の関数を呼び出す！
                         self.shots[h].shot_hp = 0#自機弾のＨＰをゼロにして自機弾移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ダメージポイント4との判定
-                   if        self.boss[e].posx                  + self.boss[e].col_damage_point4_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_damage_point4_x + self.boss[e].col_damage_point4_w\
-                       and self.boss[e].posy - self.shots[h].height + self.boss[e].col_damage_point4_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_damage_point4_y + self.boss[e].col_damage_point4_h\
-                       and self.boss[e].col_damage_point4_w != 0:
-  
+                    #ダメージポイント4との判定
+                    if        self.boss[e].posx                  + self.boss[e].col_damage_point4_x <= self.shots[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_damage_point4_x + self.boss[e].col_damage_point4_w\
+                        and self.boss[e].posy - self.shots[h].height + self.boss[e].col_damage_point4_y <= self.shots[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_damage_point4_y + self.boss[e].col_damage_point4_h\
+                        and self.boss[e].col_damage_point4_w != 0:
+                        
                         self.boss[e].main_hp -= self.shots[h].shot_power #ボスの耐久力をShot_powerの分だけ減らす
                         self.boss[e].display_time_main_hp_bar = BOSS_HP_BAR_DISPLAY_TIME #耐久力バーを表示するカウントタイマーを初期値の定数に戻す
                         hit_x,hit_y   = self.shots[h].posx,self.shots[h].posy
@@ -5705,23 +5705,25 @@ class App:
         for h in reversed(range (missile_hit)):
             enemy_hit = len(self.enemy)
             for e in reversed(range (enemy_hit)):
-               if     self.enemy[e].posx <= self.missile[h].posx + 4 <= self.enemy[e].posx +   self.enemy[e].width  + self.missile[h].width  / 2\
-                  and self.enemy[e].posy <= self.missile[h].posy + 4 <= self.enemy[e].posy +   self.enemy[e].height + self.missile[h].height / 2:
+                if     self.enemy[e].posx <= self.missile[h].posx + 4 <= self.enemy[e].posx +   self.enemy[e].width  + self.missile[h].width  / 2\
+                    and self.enemy[e].posy <= self.missile[h].posy + 4 <= self.enemy[e].posy +   self.enemy[e].height + self.missile[h].height / 2:
+                    
+                    self.enemy[e].enemy_hp -= self.missile[h].missile_power #敵の耐久力をミサイルパワーの分だけ減らす
+                    if self.enemy[e].enemy_hp <= 0:
+                        self.enemy_destruction(e) #敵破壊処理関数呼び出し！
+                        #パーティクル生成
+                        for _number in range(5):
+                            self.update_append_particle(PARTICLE_DOT,self.enemy[e].posx + 4,self.enemy[e].posy + 4,self.missile[h].vx / 2,self.missile[h].vy / 2,   0,0,0)    
+                        
+                        del self.enemy[e]#敵リストから破壊した敵をＤＥＬ消去破壊！
+                        self.score += 1#スコア加算（あとあといろんなスコアシステム実装する予定だよ）
+                    
+                    self.missile[h].missile_hp = 0#ミサイルのＨＰをゼロにしてミサイル移動時にチェックしリストから消去させるため
+                    pyxel.play(0,2)#ミサイルが敵を破壊した音！
 
-                  self.enemy[e].enemy_hp -= self.missile[h].missile_power #敵の耐久力をミサイルパワーの分だけ減らす
-                  if self.enemy[e].enemy_hp <= 0:
-                     self.enemy_destruction(e) #敵破壊処理関数呼び出し！
-                     #パーティクル生成
-                     for _number in range(5):
-                         self.update_append_particle(PARTICLE_DOT,self.enemy[e].posx + 4,self.enemy[e].posy + 4,self.missile[h].vx / 2,self.missile[h].vy / 2,   0,0,0)    
-                  
-                     del self.enemy[e]#敵リストから破壊した敵をＤＥＬ消去破壊！
-                     self.score += 1#スコア加算（あとあといろんなスコアシステム実装する予定だよ）
-                
-                  self.missile[h].missile_hp = 0#ミサイルのＨＰをゼロにしてミサイル移動時にチェックしリストから消去させるため
-                  pyxel.play(0,2)#ミサイルが敵を破壊した音！
-            else:
-               continue
+
+            # else:
+                # continue
 
     #自機ミサイルとボスとの当たり判定
     def update_collision_missile_boss(self):
@@ -5729,139 +5731,139 @@ class App:
         for h in reversed(range (missile_hit)):
             boss_hit = len(self.boss)
             for e in reversed(range (boss_hit)):
-               if self.boss[e].invincible != 1: #もしボスが無敵状態で無いのならば
-                   #ボス本体の当たり判定1(ミサイルを消滅させる)との判定
-                   if        self.boss[e].posx                   + self.boss[e].col_main1_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main1_x + self.boss[e].col_main1_w\
-                       and self.boss[e].posy - self.missile[h].height  + self.boss[e].col_main1_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main1_y + self.boss[e].col_main1_h\
-                       and self.boss[e].col_main1_w != 0:
-  
+                if self.boss[e].invincible != 1: #もしボスが無敵状態で無いのならば
+                    #ボス本体の当たり判定1(ミサイルを消滅させる)との判定
+                    if        self.boss[e].posx                   + self.boss[e].col_main1_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main1_x + self.boss[e].col_main1_w\
+                        and self.boss[e].posy - self.missile[h].height  + self.boss[e].col_main1_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main1_y + self.boss[e].col_main1_h\
+                        and self.boss[e].col_main1_w != 0:
+                        
                         self.update_append_particle(PARTICLE_LINE,self.missile[h].posx,self.missile[h].posy,0,0, 0,0,0)#ミサイルの位置に消滅エフェクト育成
                         self.missile[h].missile_hp = 0#ミサイルのＨＰをゼロしてミサイル移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ボス本体の当たり判定2(ミサイルを消滅させる)との判定
-                   if        self.boss[e].posx                   + self.boss[e].col_main2_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main2_x + self.boss[e].col_main2_w\
-                       and self.boss[e].posy - self.missile[h].height  + self.boss[e].col_main2_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main2_y + self.boss[e].col_main2_h\
-                       and self.boss[e].col_main2_w != 0:
-  
+                    #ボス本体の当たり判定2(ミサイルを消滅させる)との判定
+                    if        self.boss[e].posx                   + self.boss[e].col_main2_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main2_x + self.boss[e].col_main2_w\
+                        and self.boss[e].posy - self.missile[h].height  + self.boss[e].col_main2_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main2_y + self.boss[e].col_main2_h\
+                        and self.boss[e].col_main2_w != 0:
+                        
                         self.update_append_particle(PARTICLE_LINE,self.missile[h].posx,self.missile[h].posy,0,0, 0,0,0)#ミサイルの位置に消滅エフェクト育成
                         self.missile[h].missile_hp = 0#ミサイルのＨＰをゼロしてミサイル移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ボス本体の当たり判定3(ミサイルを消滅させる)との判定
-                   if        self.boss[e].posx                   + self.boss[e].col_main3_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main3_x + self.boss[e].col_main3_w\
-                       and self.boss[e].posy - self.missile[h].height  + self.boss[e].col_main3_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main3_y + self.boss[e].col_main3_h\
-                       and self.boss[e].col_main3_w != 0:
-  
+                    #ボス本体の当たり判定3(ミサイルを消滅させる)との判定
+                    if        self.boss[e].posx                   + self.boss[e].col_main3_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main3_x + self.boss[e].col_main3_w\
+                        and self.boss[e].posy - self.missile[h].height  + self.boss[e].col_main3_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main3_y + self.boss[e].col_main3_h\
+                        and self.boss[e].col_main3_w != 0:
+                        
                         self.update_append_particle(PARTICLE_LINE,self.missile[h].posx,self.missile[h].posy,0,0, 0,0,0)#ミサイルの位置に消滅エフェクト育成
                         self.missile[h].missile_hp = 0#ミサイルのＨＰをゼロしてミサイル移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ボス本体の当たり判定4(ミサイルを消滅させる)との判定
-                   if        self.boss[e].posx                   + self.boss[e].col_main4_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main4_x + self.boss[e].col_main4_w\
-                       and self.boss[e].posy - self.missile[h].height  + self.boss[e].col_main4_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main4_y + self.boss[e].col_main4_h\
-                       and self.boss[e].col_main4_w != 0:
-  
+                    #ボス本体の当たり判定4(ミサイルを消滅させる)との判定
+                    if        self.boss[e].posx                   + self.boss[e].col_main4_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main4_x + self.boss[e].col_main4_w\
+                        and self.boss[e].posy - self.missile[h].height  + self.boss[e].col_main4_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main4_y + self.boss[e].col_main4_h\
+                        and self.boss[e].col_main4_w != 0:
+                        
                         self.update_append_particle(PARTICLE_LINE,self.missile[h].posx,self.missile[h].posy,0,0, 0,0,0)#ミサイルの位置に消滅エフェクト育成
                         self.missile[h].missile_hp = 0#ミサイルのＨＰをゼロしてミサイル移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ボス本体の当たり判定5(ミサイルを消滅させる)との判定
-                   if        self.boss[e].posx                   + self.boss[e].col_main5_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main5_x + self.boss[e].col_main5_w\
-                       and self.boss[e].posy - self.missile[h].height  + self.boss[e].col_main5_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main5_y + self.boss[e].col_main5_h\
-                       and self.boss[e].col_main5_w != 0:
-  
+                    #ボス本体の当たり判定5(ミサイルを消滅させる)との判定
+                    if        self.boss[e].posx                   + self.boss[e].col_main5_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main5_x + self.boss[e].col_main5_w\
+                        and self.boss[e].posy - self.missile[h].height  + self.boss[e].col_main5_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main5_y + self.boss[e].col_main5_h\
+                        and self.boss[e].col_main5_w != 0:
+                        
                         self.update_append_particle(PARTICLE_LINE,self.missile[h].posx,self.missile[h].posy,0,0, 0,0,0)#ミサイルの位置に消滅エフェクト育成
                         self.missile[h].missile_hp = 0#ミサイルのＨＰをゼロしてミサイル移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ボス本体の当たり判定6(ミサイルを消滅させる)との判定
-                   if        self.boss[e].posx                   + self.boss[e].col_main6_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main6_x + self.boss[e].col_main6_w\
-                       and self.boss[e].posy - self.missile[h].height  + self.boss[e].col_main6_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main6_y + self.boss[e].col_main6_h\
-                       and self.boss[e].col_main6_w != 0:
-  
+                    #ボス本体の当たり判定6(ミサイルを消滅させる)との判定
+                    if        self.boss[e].posx                   + self.boss[e].col_main6_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main6_x + self.boss[e].col_main6_w\
+                        and self.boss[e].posy - self.missile[h].height  + self.boss[e].col_main6_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main6_y + self.boss[e].col_main6_h\
+                        and self.boss[e].col_main6_w != 0:
+                        
                         self.update_append_particle(PARTICLE_LINE,self.missile[h].posx,self.missile[h].posy,0,0, 0,0,0)#ミサイルの位置に消滅エフェクト育成
                         self.missile[h].missile_hp = 0#ミサイルのＨＰをゼロしてミサイル移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ボス本体の当たり判定7(ミサイルを消滅させる)との判定
-                   if        self.boss[e].posx                   + self.boss[e].col_main7_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main7_x + self.boss[e].col_main7_w\
-                       and self.boss[e].posy - self.missile[h].height  + self.boss[e].col_main7_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main7_y + self.boss[e].col_main7_h\
-                       and self.boss[e].col_main7_w != 0:
-  
+                    #ボス本体の当たり判定7(ミサイルを消滅させる)との判定
+                    if        self.boss[e].posx                   + self.boss[e].col_main7_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main7_x + self.boss[e].col_main7_w\
+                        and self.boss[e].posy - self.missile[h].height  + self.boss[e].col_main7_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main7_y + self.boss[e].col_main7_h\
+                        and self.boss[e].col_main7_w != 0:
+                        
                         self.update_append_particle(PARTICLE_LINE,self.missile[h].posx,self.missile[h].posy,0,0, 0,0,0)#ミサイルの位置に消滅エフェクト育成
                         self.missile[h].missile_hp = 0#ミサイルのＨＰをゼロしてミサイル移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ボス本体の当たり判定8(ミサイルを消滅させる)との判定
-                   if        self.boss[e].posx                   + self.boss[e].col_main8_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main8_x + self.boss[e].col_main8_w\
-                       and self.boss[e].posy - self.missile[h].height  + self.boss[e].col_main8_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main8_y + self.boss[e].col_main8_h\
-                       and self.boss[e].col_main8_w != 0:
-  
+                    #ボス本体の当たり判定8(ミサイルを消滅させる)との判定
+                    if        self.boss[e].posx                   + self.boss[e].col_main8_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main8_x + self.boss[e].col_main8_w\
+                        and self.boss[e].posy - self.missile[h].height  + self.boss[e].col_main8_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main8_y + self.boss[e].col_main8_h\
+                        and self.boss[e].col_main8_w != 0:
+                        
                         self.update_append_particle(PARTICLE_LINE,self.missile[h].posx,self.missile[h].posy,0,0, 0,0,0)#ミサイルの位置に消滅エフェクト育成
                         self.missile[h].missile_hp = 0#ミサイルのＨＰをゼロしてミサイル移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   
-                   
-                   #パーツ１との当たり判定
-                   if        self.boss[e].posx + self.boss[e].col_parts1_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_parts1_x + self.boss[e].col_parts1_w\
+                    
+                    
+                    #パーツ１との当たり判定
+                    if        self.boss[e].posx + self.boss[e].col_parts1_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_parts1_x + self.boss[e].col_parts1_w\
                         and self.boss[e].posy + self.boss[e].col_parts1_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_parts1_y + self.boss[e].col_parts1_h\
                         and self.boss[e].parts1_flag == 1:
                         
                         self.boss[e].parts1_hp -= self.missile[h].missile_power #パーツ1の耐久力をmissile_powerの分だけ減らす
                         if self.boss[e].parts1_hp <= 0: #パーツ1の耐久力が0以下になったのなら
                             self.boss[e].parts1_flag = 0 #パーツ1の生存フラグを0にして破壊したことにする
-
+                        
                         self.boss[e].display_time_parts1_hp_bar = BOSS_HP_BAR_DISPLAY_TIME #パーツ1耐久力バーを表示するカウントタイマーを初期値の定数に戻す
                         hit_x,hit_y = self.missile[h].posx,self.missile[h].posy
                         hit_vx,hit_vy = self.missile[h].vx,self.missile[h].vy
                         self.boss_processing_after_hitting(e,hit_x,hit_y,hit_vx,hit_vy) #ボスにミサイルを当てた後の処理の関数を呼び出す！
                         self.missile[h].missile_hp = 0#ミサイルのＨＰをゼロしてミサイル移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する   
-                   #パーツ2との当たり判定
-                   if        self.boss[e].posx + self.boss[e].col_parts2_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_parts2_x + self.boss[e].col_parts2_w\
+                    #パーツ2との当たり判定
+                    if        self.boss[e].posx + self.boss[e].col_parts2_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_parts2_x + self.boss[e].col_parts2_w\
                         and self.boss[e].posy + self.boss[e].col_parts2_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_parts2_y + self.boss[e].col_parts2_h\
                         and self.boss[e].parts2_flag == 1:
                         
                         self.boss[e].parts2_hp -= self.missile[h].missile_power #パーツ2の耐久力をmissile_powerの分だけ減らす
                         if self.boss[e].parts2_hp <= 0: #パーツ2の耐久力が0以下になったのなら
                             self.boss[e].parts2_flag = 0 #パーツ2の生存フラグを0にして破壊したことにする
-
+                        
                         self.boss[e].display_time_parts2_hp_bar = BOSS_HP_BAR_DISPLAY_TIME #パーツ2耐久力バーを表示するカウントタイマーを初期値の定数に戻す
                         hit_x,hit_y = self.missile[h].posx,self.missile[h].posy
                         hit_vx,hit_vy = self.missile[h].vx,self.missile[h].vy
                         self.boss_processing_after_hitting(e,hit_x,hit_y,hit_vx,hit_vy) #ボスにミサイルを当てた後の処理の関数を呼び出す！
                         self.missile[h].missile_hp = 0#ミサイルのＨＰをゼロしてミサイル移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する                    
-                   #パーツ3との当たり判定
-                   if        self.boss[e].posx + self.boss[e].col_parts3_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_parts3_x + self.boss[e].col_parts3_w\
+                    #パーツ3との当たり判定
+                    if        self.boss[e].posx + self.boss[e].col_parts3_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_parts3_x + self.boss[e].col_parts3_w\
                         and self.boss[e].posy + self.boss[e].col_parts3_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_parts3_y + self.boss[e].col_parts3_h\
                         and self.boss[e].parts3_flag == 1:
                         
                         self.boss[e].parts3_hp -= self.missile[h].missile_power #パーツ3の耐久力をmissile_powerの分だけ減らす
                         if self.boss[e].parts3_hp <= 0: #パーツ3の耐久力が0以下になったのなら
                             self.boss[e].parts3_flag = 0 #パーツ3の生存フラグを0にして破壊したことにする
-
+                        
                         self.boss[e].display_time_parts3_hp_bar = BOSS_HP_BAR_DISPLAY_TIME #パーツ3耐久力バーを表示するカウントタイマーを初期値の定数に戻す
                         hit_x,hit_y = self.missile[h].posx,self.missile[h].posy
                         hit_vx,hit_vy = self.missile[h].vx,self.missile[h].vy
                         self.boss_processing_after_hitting(e,hit_x,hit_y,hit_vx,hit_vy) #ボスにミサイルを当てた後の処理の関数を呼び出す！
                         self.missile[h].missile_hp = 0#ミサイルのＨＰをゼロしてミサイル移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する                  
-                   #パーツ4との当たり判定
-                   if        self.boss[e].posx + self.boss[e].col_parts4_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_parts4_x + self.boss[e].col_parts4_w\
+                    #パーツ4との当たり判定
+                    if        self.boss[e].posx + self.boss[e].col_parts4_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_parts4_x + self.boss[e].col_parts4_w\
                         and self.boss[e].posy + self.boss[e].col_parts4_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_parts4_y + self.boss[e].col_parts4_h\
                         and self.boss[e].parts4_flag == 1:
                         
                         self.boss[e].parts4_hp -= self.missile[h].missile_power #パーツ4の耐久力をmissile_powerの分だけ減らす
                         if self.boss[e].parts4_hp <= 0: #パーツ4の耐久力が0以下になったのなら
                             self.boss[e].parts4_flag = 0 #パーツ4の生存フラグを0にして破壊したことにする
-
+                        
                         self.boss[e].display_time_parts4_hp_bar = BOSS_HP_BAR_DISPLAY_TIME #パーツ4耐久力バーを表示するカウントタイマーを初期値の定数に戻す
                         hit_x,hit_y = self.missile[h].posx,self.missile[h].posy
                         hit_vx,hit_vy = self.missile[h].vx,self.missile[h].vy
                         self.boss_processing_after_hitting(e,hit_x,hit_y,hit_vx,hit_vy) #ボスにミサイルを当てた後の処理の関数を呼び出す！
                         self.missile[h].missile_hp = 0#ミサイルのＨＰをゼロしてミサイル移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する                  
-                  
-                   #ダメージポイント1との判定
-                   if        self.boss[e].posx                  + self.boss[e].col_damage_point1_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_damage_point1_x + self.boss[e].col_damage_point1_w\
-                       and self.boss[e].posy - self.missile[h].height  + self.boss[e].col_damage_point1_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_damage_point1_y + self.boss[e].col_damage_point1_h\
-                       and self.boss[e].col_damage_point1_w != 0:
-  
+                    
+                    #ダメージポイント1との判定
+                    if        self.boss[e].posx                  + self.boss[e].col_damage_point1_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_damage_point1_x + self.boss[e].col_damage_point1_w\
+                        and self.boss[e].posy - self.missile[h].height  + self.boss[e].col_damage_point1_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_damage_point1_y + self.boss[e].col_damage_point1_h\
+                        and self.boss[e].col_damage_point1_w != 0:
+                        
                         self.boss[e].main_hp -= self.missile[h].missile_power #ボスの耐久力をmissile_powerの分だけ減らす
                         self.boss[e].display_time_main_hp_bar = BOSS_HP_BAR_DISPLAY_TIME #耐久力バーを表示するカウントタイマーを初期値の定数に戻す
                         hit_x,hit_y = self.missile[h].posx,self.missile[h].posy
@@ -5869,11 +5871,11 @@ class App:
                         self.boss_processing_after_hitting(e,hit_x,hit_y,hit_vx,hit_vy) #ボスにミサイルを当てた後の処理の関数を呼び出す！
                         self.missile[h].missile_hp = 0#ミサイルのＨＰをゼロしてミサイル移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ダメージポイント2との判定
-                   if        self.boss[e].posx                  + self.boss[e].col_damage_point2_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_damage_point2_x + self.boss[e].col_damage_point2_w\
-                       and self.boss[e].posy - self.missile[h].height + self.boss[e].col_damage_point2_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_damage_point2_y + self.boss[e].col_damage_point2_h\
-                       and self.boss[e].col_damage_point2_w != 0:
-  
+                    #ダメージポイント2との判定
+                    if        self.boss[e].posx                  + self.boss[e].col_damage_point2_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_damage_point2_x + self.boss[e].col_damage_point2_w\
+                        and self.boss[e].posy - self.missile[h].height + self.boss[e].col_damage_point2_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_damage_point2_y + self.boss[e].col_damage_point2_h\
+                        and self.boss[e].col_damage_point2_w != 0:
+                        
                         self.boss[e].main_hp -= self.missile[h].missile_power #ボスの耐久力をmissile_powerの分だけ減らす
                         self.boss[e].display_time_main_hp_bar = BOSS_HP_BAR_DISPLAY_TIME #耐久力バーを表示するカウントタイマーを初期値の定数に戻す
                         hit_x,hit_y = self.missile[h].posx,self.missile[h].posy
@@ -5881,11 +5883,11 @@ class App:
                         self.boss_processing_after_hitting(e,hit_x,hit_y,hit_vx,hit_vy) #ボスにミサイルを当てた後の処理の関数を呼び出す！
                         self.missile[h].missile_hp = 0#ミサイルのＨＰをゼロしてミサイル移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ダメージポイント3との判定
-                   if        self.boss[e].posx                  + self.boss[e].col_damage_point3_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_damage_point3_x + self.boss[e].col_damage_point3_w\
-                       and self.boss[e].posy - self.missile[h].height + self.boss[e].col_damage_point3_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_damage_point3_y + self.boss[e].col_damage_point3_h\
-                       and self.boss[e].col_damage_point3_w != 0:
-  
+                    #ダメージポイント3との判定
+                    if        self.boss[e].posx                  + self.boss[e].col_damage_point3_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_damage_point3_x + self.boss[e].col_damage_point3_w\
+                        and self.boss[e].posy - self.missile[h].height + self.boss[e].col_damage_point3_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_damage_point3_y + self.boss[e].col_damage_point3_h\
+                        and self.boss[e].col_damage_point3_w != 0:
+                        
                         self.boss[e].main_hp -= self.missile[h].missile_power #ボスの耐久力をmissile_powerの分だけ減らす
                         self.boss[e].display_time_main_hp_bar = BOSS_HP_BAR_DISPLAY_TIME #耐久力バーを表示するカウントタイマーを初期値の定数に戻す
                         hit_x,hit_y = self.missile[h].posx,self.missile[h].posy
@@ -5893,11 +5895,11 @@ class App:
                         self.boss_processing_after_hitting(e,hit_x,hit_y,hit_vx,hit_vy) #ボスにミサイルを当てた後の処理の関数を呼び出す！
                         self.missile[h].missile_hp = 0#ミサイルのＨＰをゼロしてミサイル移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ダメージポイント4との判定
-                   if        self.boss[e].posx                  + self.boss[e].col_damage_point4_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_damage_point4_x + self.boss[e].col_damage_point4_w\
-                       and self.boss[e].posy - self.missile[h].height + self.boss[e].col_damage_point4_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_damage_point4_y + self.boss[e].col_damage_point4_h\
-                       and self.boss[e].col_damage_point4_w != 0:
-  
+                    #ダメージポイント4との判定
+                    if        self.boss[e].posx                  + self.boss[e].col_damage_point4_x <= self.missile[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_damage_point4_x + self.boss[e].col_damage_point4_w\
+                        and self.boss[e].posy - self.missile[h].height + self.boss[e].col_damage_point4_y <= self.missile[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_damage_point4_y + self.boss[e].col_damage_point4_h\
+                        and self.boss[e].col_damage_point4_w != 0:
+                        
                         self.boss[e].main_hp -= self.missile[h].missile_power #ボスの耐久力をmissile_powerの分だけ減らす
                         self.boss[e].display_time_main_hp_bar = BOSS_HP_BAR_DISPLAY_TIME #耐久力バーを表示するカウントタイマーを初期値の定数に戻す
                         hit_x,hit_y = self.missile[h].posx,self.missile[h].posy
@@ -6275,139 +6277,139 @@ class App:
         for h in reversed(range (claw_shot_hit)):
             boss_hit = len(self.boss)
             for e in reversed(range (boss_hit)):
-               if self.boss[e].invincible != 1: #もしボスが無敵状態で無いのならば
-                   #ボス本体の当たり判定1(クローショットを消滅させる)との判定
-                   if        self.boss[e].posx                   + self.boss[e].col_main1_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main1_x + self.boss[e].col_main1_w\
-                       and self.boss[e].posy - self.claw_shot[h].height  + self.boss[e].col_main1_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main1_y + self.boss[e].col_main1_h\
-                       and self.boss[e].col_main1_w != 0:
-  
+                if self.boss[e].invincible != 1: #もしボスが無敵状態で無いのならば
+                    #ボス本体の当たり判定1(クローショットを消滅させる)との判定
+                    if        self.boss[e].posx                   + self.boss[e].col_main1_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main1_x + self.boss[e].col_main1_w\
+                        and self.boss[e].posy - self.claw_shot[h].height  + self.boss[e].col_main1_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main1_y + self.boss[e].col_main1_h\
+                        and self.boss[e].col_main1_w != 0:
+                        
                         self.update_append_particle(PARTICLE_LINE,self.claw_shot[h].posx,self.claw_shot[h].posy,0,0, 0,0,0)#ミサイルの位置に消滅エフェクト育成
                         self.claw_shot[h].shot_hp = 0#クローショットのＨＰをゼロにして移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ボス本体の当たり判定2(クローショットを消滅させる)との判定
-                   if        self.boss[e].posx                   + self.boss[e].col_main2_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main2_x + self.boss[e].col_main2_w\
-                       and self.boss[e].posy - self.claw_shot[h].height  + self.boss[e].col_main2_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main2_y + self.boss[e].col_main2_h\
-                       and self.boss[e].col_main2_w != 0:
-  
+                    #ボス本体の当たり判定2(クローショットを消滅させる)との判定
+                    if        self.boss[e].posx                   + self.boss[e].col_main2_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main2_x + self.boss[e].col_main2_w\
+                        and self.boss[e].posy - self.claw_shot[h].height  + self.boss[e].col_main2_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main2_y + self.boss[e].col_main2_h\
+                        and self.boss[e].col_main2_w != 0:
+                        
                         self.update_append_particle(PARTICLE_LINE,self.claw_shot[h].posx,self.claw_shot[h].posy,0,0, 0,0,0)#ミサイルの位置に消滅エフェクト育成
                         self.claw_shot[h].shot_hp = 0#クローショットのＨＰをゼロにして移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ボス本体の当たり判定3(クローショットを消滅させる)との判定
-                   if        self.boss[e].posx                   + self.boss[e].col_main3_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main3_x + self.boss[e].col_main3_w\
-                       and self.boss[e].posy - self.claw_shot[h].height  + self.boss[e].col_main3_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main3_y + self.boss[e].col_main3_h\
-                       and self.boss[e].col_main3_w != 0:
-  
+                    #ボス本体の当たり判定3(クローショットを消滅させる)との判定
+                    if        self.boss[e].posx                   + self.boss[e].col_main3_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main3_x + self.boss[e].col_main3_w\
+                        and self.boss[e].posy - self.claw_shot[h].height  + self.boss[e].col_main3_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main3_y + self.boss[e].col_main3_h\
+                        and self.boss[e].col_main3_w != 0:
+                        
                         self.update_append_particle(PARTICLE_LINE,self.claw_shot[h].posx,self.claw_shot[h].posy,0,0, 0,0,0)#ミサイルの位置に消滅エフェクト育成
                         self.claw_shot[h].shot_hp = 0#クローショットのＨＰをゼロにして移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ボス本体の当たり判定4(クローショットを消滅させる)との判定
-                   if        self.boss[e].posx                   + self.boss[e].col_main4_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main4_x + self.boss[e].col_main4_w\
-                       and self.boss[e].posy - self.claw_shot[h].height  + self.boss[e].col_main4_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main4_y + self.boss[e].col_main4_h\
-                       and self.boss[e].col_main4_w != 0:
-  
+                    #ボス本体の当たり判定4(クローショットを消滅させる)との判定
+                    if        self.boss[e].posx                   + self.boss[e].col_main4_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main4_x + self.boss[e].col_main4_w\
+                        and self.boss[e].posy - self.claw_shot[h].height  + self.boss[e].col_main4_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main4_y + self.boss[e].col_main4_h\
+                        and self.boss[e].col_main4_w != 0:
+                        
                         self.update_append_particle(PARTICLE_LINE,self.claw_shot[h].posx,self.claw_shot[h].posy,0,0, 0,0,0)#ミサイルの位置に消滅エフェクト育成
                         self.claw_shot[h].shot_hp = 0#クローショットのＨＰをゼロにして移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ボス本体の当たり判定5(クローショットを消滅させる)との判定
-                   if        self.boss[e].posx                   + self.boss[e].col_main5_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main5_x + self.boss[e].col_main5_w\
-                       and self.boss[e].posy - self.claw_shot[h].height  + self.boss[e].col_main5_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main5_y + self.boss[e].col_main5_h\
-                       and self.boss[e].col_main5_w != 0:
-  
+                    #ボス本体の当たり判定5(クローショットを消滅させる)との判定
+                    if        self.boss[e].posx                   + self.boss[e].col_main5_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main5_x + self.boss[e].col_main5_w\
+                        and self.boss[e].posy - self.claw_shot[h].height  + self.boss[e].col_main5_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main5_y + self.boss[e].col_main5_h\
+                        and self.boss[e].col_main5_w != 0:
+                        
                         self.update_append_particle(PARTICLE_LINE,self.claw_shot[h].posx,self.claw_shot[h].posy,0,0, 0,0,0)#ミサイルの位置に消滅エフェクト育成
                         self.claw_shot[h].shot_hp = 0#クローショットのＨＰをゼロにして移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ボス本体の当たり判定6(クローショットを消滅させる)との判定
-                   if        self.boss[e].posx                   + self.boss[e].col_main6_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main6_x + self.boss[e].col_main6_w\
-                       and self.boss[e].posy - self.claw_shot[h].height  + self.boss[e].col_main6_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main6_y + self.boss[e].col_main6_h\
-                       and self.boss[e].col_main6_w != 0:
-  
+                    #ボス本体の当たり判定6(クローショットを消滅させる)との判定
+                    if        self.boss[e].posx                   + self.boss[e].col_main6_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main6_x + self.boss[e].col_main6_w\
+                        and self.boss[e].posy - self.claw_shot[h].height  + self.boss[e].col_main6_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main6_y + self.boss[e].col_main6_h\
+                        and self.boss[e].col_main6_w != 0:
+                        
                         self.update_append_particle(PARTICLE_LINE,self.claw_shot[h].posx,self.claw_shot[h].posy,0,0, 0,0,0)#ミサイルの位置に消滅エフェクト育成
                         self.claw_shot[h].shot_hp = 0#クローショットのＨＰをゼロにして移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ボス本体の当たり判定7(クローショットを消滅させる)との判定
-                   if        self.boss[e].posx                   + self.boss[e].col_main7_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main7_x + self.boss[e].col_main7_w\
-                       and self.boss[e].posy - self.claw_shot[h].height  + self.boss[e].col_main7_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main7_y + self.boss[e].col_main7_h\
-                       and self.boss[e].col_main7_w != 0:
-  
+                    #ボス本体の当たり判定7(クローショットを消滅させる)との判定
+                    if        self.boss[e].posx                   + self.boss[e].col_main7_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main7_x + self.boss[e].col_main7_w\
+                        and self.boss[e].posy - self.claw_shot[h].height  + self.boss[e].col_main7_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main7_y + self.boss[e].col_main7_h\
+                        and self.boss[e].col_main7_w != 0:
+                        
                         self.update_append_particle(PARTICLE_LINE,self.claw_shot[h].posx,self.claw_shot[h].posy,0,0, 0,0,0)#ミサイルの位置に消滅エフェクト育成
                         self.claw_shot[h].shot_hp = 0#クローショットのＨＰをゼロにして移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ボス本体の当たり判定8(クローショットを消滅させる)との判定
-                   if        self.boss[e].posx                   + self.boss[e].col_main8_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main8_x + self.boss[e].col_main8_w\
-                       and self.boss[e].posy - self.claw_shot[h].height  + self.boss[e].col_main8_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main8_y + self.boss[e].col_main8_h\
-                       and self.boss[e].col_main8_w != 0:
-  
+                    #ボス本体の当たり判定8(クローショットを消滅させる)との判定
+                    if        self.boss[e].posx                   + self.boss[e].col_main8_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_main8_x + self.boss[e].col_main8_w\
+                        and self.boss[e].posy - self.claw_shot[h].height  + self.boss[e].col_main8_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_main8_y + self.boss[e].col_main8_h\
+                        and self.boss[e].col_main8_w != 0:
+                        
                         self.update_append_particle(PARTICLE_LINE,self.claw_shot[h].posx,self.claw_shot[h].posy,0,0, 0,0,0)#ミサイルの位置に消滅エフェクト育成
                         self.claw_shot[h].shot_hp = 0#クローショットのＨＰをゼロにして移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   
-                   
-                   #パーツ１との当たり判定
-                   if        self.boss[e].posx + self.boss[e].col_parts1_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_parts1_x + self.boss[e].col_parts1_w\
+                    
+                    
+                    #パーツ１との当たり判定
+                    if        self.boss[e].posx + self.boss[e].col_parts1_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_parts1_x + self.boss[e].col_parts1_w\
                         and self.boss[e].posy + self.boss[e].col_parts1_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_parts1_y + self.boss[e].col_parts1_h\
                         and self.boss[e].parts1_flag == 1:
                         
                         self.boss[e].parts1_hp -= self.claw_shot[h].shot_power #パーツ1の耐久力をshot_powerの分だけ減らす
                         if self.boss[e].parts1_hp <= 0: #パーツ1の耐久力が0以下になったのなら
                             self.boss[e].parts1_flag = 0 #パーツ1の生存フラグを0にして破壊したことにする
-
+                        
                         self.boss[e].display_time_parts1_hp_bar = BOSS_HP_BAR_DISPLAY_TIME #パーツ1耐久力バーを表示するカウントタイマーを初期値の定数に戻す
                         hit_x,hit_y = self.claw_shot[h].posx,self.claw_shot[h].posy
                         hit_vx,hit_vy = self.claw_shot[h].vx,self.claw_shot[h].vy
                         self.boss_processing_after_hitting(e,hit_x,hit_y,hit_vx,hit_vy) #ボスにクローショットを当てた後の処理の関数を呼び出す！
                         self.claw_shot[h].shot_hp = 0#クローショットのＨＰをゼロにして移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する   
-                   #パーツ2との当たり判定
-                   if        self.boss[e].posx + self.boss[e].col_parts2_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_parts2_x + self.boss[e].col_parts2_w\
+                    #パーツ2との当たり判定
+                    if        self.boss[e].posx + self.boss[e].col_parts2_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_parts2_x + self.boss[e].col_parts2_w\
                         and self.boss[e].posy + self.boss[e].col_parts2_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_parts2_y + self.boss[e].col_parts2_h\
                         and self.boss[e].parts2_flag == 1:
                         
                         self.boss[e].parts2_hp -= self.claw_shot[h].shot_power #パーツ2の耐久力をshot_powerの分だけ減らす
                         if self.boss[e].parts2_hp <= 0: #パーツ2の耐久力が0以下になったのなら
                             self.boss[e].parts2_flag = 0 #パーツ2の生存フラグを0にして破壊したことにする
-
+                        
                         self.boss[e].display_time_parts2_hp_bar = BOSS_HP_BAR_DISPLAY_TIME #パーツ2耐久力バーを表示するカウントタイマーを初期値の定数に戻す
                         hit_x,hit_y = self.claw_shot[h].posx,self.claw_shot[h].posy
                         hit_vx,hit_vy = self.claw_shot[h].vx,self.claw_shot[h].vy
                         self.boss_processing_after_hitting(e,hit_x,hit_y,hit_vx,hit_vy) #ボスにクローショットを当てた後の処理の関数を呼び出す！
                         self.claw_shot[h].shot_hp = 0#クローショットのＨＰをゼロにして移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する                    
-                   #パーツ3との当たり判定
-                   if        self.boss[e].posx + self.boss[e].col_parts3_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_parts3_x + self.boss[e].col_parts3_w\
+                    #パーツ3との当たり判定
+                    if        self.boss[e].posx + self.boss[e].col_parts3_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_parts3_x + self.boss[e].col_parts3_w\
                         and self.boss[e].posy + self.boss[e].col_parts3_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_parts3_y + self.boss[e].col_parts3_h\
                         and self.boss[e].parts3_flag == 1:
                         
                         self.boss[e].parts3_hp -= self.claw_shot[h].shot_power #パーツ3の耐久力をshot_powerの分だけ減らす
                         if self.boss[e].parts3_hp <= 0: #パーツ3の耐久力が0以下になったのなら
                             self.boss[e].parts3_flag = 0 #パーツ3の生存フラグを0にして破壊したことにする
-
+                        
                         self.boss[e].display_time_parts3_hp_bar = BOSS_HP_BAR_DISPLAY_TIME #パーツ3耐久力バーを表示するカウントタイマーを初期値の定数に戻す
                         hit_x,hit_y = self.claw_shot[h].posx,self.claw_shot[h].posy
                         hit_vx,hit_vy = self.claw_shot[h].vx,self.claw_shot[h].vy
                         self.boss_processing_after_hitting(e,hit_x,hit_y,hit_vx,hit_vy) #ボスにクローショットを当てた後の処理の関数を呼び出す！
                         self.claw_shot[h].shot_hp = 0#クローショットのＨＰをゼロにして移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する                  
-                   #パーツ4との当たり判定
-                   if        self.boss[e].posx + self.boss[e].col_parts4_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_parts4_x + self.boss[e].col_parts4_w\
+                    #パーツ4との当たり判定
+                    if        self.boss[e].posx + self.boss[e].col_parts4_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_parts4_x + self.boss[e].col_parts4_w\
                         and self.boss[e].posy + self.boss[e].col_parts4_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_parts4_y + self.boss[e].col_parts4_h\
                         and self.boss[e].parts4_flag == 1:
                         
                         self.boss[e].parts4_hp -= self.claw_shot[h].shot_power #パーツ4の耐久力をshot_powerの分だけ減らす
                         if self.boss[e].parts4_hp <= 0: #パーツ4の耐久力が0以下になったのなら
                             self.boss[e].parts4_flag = 0 #パーツ4の生存フラグを0にして破壊したことにする
-
+                        
                         self.boss[e].display_time_parts4_hp_bar = BOSS_HP_BAR_DISPLAY_TIME #パーツ4耐久力バーを表示するカウントタイマーを初期値の定数に戻す
                         hit_x,hit_y = self.claw_shot[h].posx,self.claw_shot[h].posy
                         hit_vx,hit_vy = self.claw_shot[h].vx,self.claw_shot[h].vy
                         self.boss_processing_after_hitting(e,hit_x,hit_y,hit_vx,hit_vy) #ボスにクローショットを当てた後の処理の関数を呼び出す！
                         self.claw_shot[h].shot_hp = 0#クローショットのＨＰをゼロにして移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する                  
-                  
-                   #ダメージポイント1との判定
-                   if        self.boss[e].posx                  + self.boss[e].col_damage_point1_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_damage_point1_x + self.boss[e].col_damage_point1_w\
-                       and self.boss[e].posy - self.claw_shot[h].height  + self.boss[e].col_damage_point1_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_damage_point1_y + self.boss[e].col_damage_point1_h\
-                       and self.boss[e].col_damage_point1_w != 0:
-  
+                    
+                    #ダメージポイント1との判定
+                    if        self.boss[e].posx                  + self.boss[e].col_damage_point1_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_damage_point1_x + self.boss[e].col_damage_point1_w\
+                        and self.boss[e].posy - self.claw_shot[h].height  + self.boss[e].col_damage_point1_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_damage_point1_y + self.boss[e].col_damage_point1_h\
+                        and self.boss[e].col_damage_point1_w != 0:
+                        
                         self.boss[e].main_hp -= self.claw_shot[h].shot_power #ボスの耐久力をshot_powerの分だけ減らす
                         self.boss[e].display_time_main_hp_bar = BOSS_HP_BAR_DISPLAY_TIME #耐久力バーを表示するカウントタイマーを初期値の定数に戻す
                         hit_x,hit_y = self.claw_shot[h].posx,self.claw_shot[h].posy
@@ -6415,11 +6417,11 @@ class App:
                         self.boss_processing_after_hitting(e,hit_x,hit_y,hit_vx,hit_vy) #ボスにクローショットを当てた後の処理の関数を呼び出す！
                         self.claw_shot[h].shot_hp = 0#クローショットのＨＰをゼロにして移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ダメージポイント2との判定
-                   if        self.boss[e].posx                  + self.boss[e].col_damage_point2_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_damage_point2_x + self.boss[e].col_damage_point2_w\
-                       and self.boss[e].posy - self.claw_shot[h].height + self.boss[e].col_damage_point2_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_damage_point2_y + self.boss[e].col_damage_point2_h\
-                       and self.boss[e].col_damage_point2_w != 0:
-  
+                    #ダメージポイント2との判定
+                    if        self.boss[e].posx                  + self.boss[e].col_damage_point2_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_damage_point2_x + self.boss[e].col_damage_point2_w\
+                        and self.boss[e].posy - self.claw_shot[h].height + self.boss[e].col_damage_point2_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_damage_point2_y + self.boss[e].col_damage_point2_h\
+                        and self.boss[e].col_damage_point2_w != 0:
+                        
                         self.boss[e].main_hp -= self.claw_shot[h].shot_power #ボスの耐久力をshot_powerの分だけ減らす
                         self.boss[e].display_time_main_hp_bar = BOSS_HP_BAR_DISPLAY_TIME #耐久力バーを表示するカウントタイマーを初期値の定数に戻す
                         hit_x,hit_y = self.claw_shot[h].posx,self.claw_shot[h].posy
@@ -6427,11 +6429,11 @@ class App:
                         self.boss_processing_after_hitting(e,hit_x,hit_y,hit_vx,hit_vy) #ボスにクローショットを当てた後の処理の関数を呼び出す！
                         self.claw_shot[h].shot_hp = 0#クローショットのＨＰをゼロにして移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ダメージポイント3との判定
-                   if        self.boss[e].posx                  + self.boss[e].col_damage_point3_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_damage_point3_x + self.boss[e].col_damage_point3_w\
-                       and self.boss[e].posy - self.claw_shot[h].height + self.boss[e].col_damage_point3_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_damage_point3_y + self.boss[e].col_damage_point3_h\
-                       and self.boss[e].col_damage_point3_w != 0:
-  
+                    #ダメージポイント3との判定
+                    if        self.boss[e].posx                  + self.boss[e].col_damage_point3_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_damage_point3_x + self.boss[e].col_damage_point3_w\
+                        and self.boss[e].posy - self.claw_shot[h].height + self.boss[e].col_damage_point3_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_damage_point3_y + self.boss[e].col_damage_point3_h\
+                        and self.boss[e].col_damage_point3_w != 0:
+                        
                         self.boss[e].main_hp -= self.claw_shot[h].shot_power #ボスの耐久力をshot_powerの分だけ減らす
                         self.boss[e].display_time_main_hp_bar = BOSS_HP_BAR_DISPLAY_TIME #耐久力バーを表示するカウントタイマーを初期値の定数に戻す
                         hit_x,hit_y = self.claw_shot[h].posx,self.claw_shot[h].posy
@@ -6439,11 +6441,11 @@ class App:
                         self.boss_processing_after_hitting(e,hit_x,hit_y,hit_vx,hit_vy) #ボスにクローショットを当てた後の処理の関数を呼び出す！
                         self.claw_shot[h].shot_hp = 0#クローショットのＨＰをゼロにして移動時にチェックしリストから消去させる
                         continue #これ以下の処理はせず次のループへと移行する
-                   #ダメージポイント4との判定
-                   if        self.boss[e].posx                  + self.boss[e].col_damage_point4_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_damage_point4_x + self.boss[e].col_damage_point4_w\
-                       and self.boss[e].posy - self.claw_shot[h].height + self.boss[e].col_damage_point4_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_damage_point4_y + self.boss[e].col_damage_point4_h\
-                       and self.boss[e].col_damage_point4_w != 0:
-  
+                    #ダメージポイント4との判定
+                    if        self.boss[e].posx                  + self.boss[e].col_damage_point4_x <= self.claw_shot[h].posx + 4 <= self.boss[e].posx + self.boss[e].col_damage_point4_x + self.boss[e].col_damage_point4_w\
+                        and self.boss[e].posy - self.claw_shot[h].height + self.boss[e].col_damage_point4_y <= self.claw_shot[h].posy + 4 <= self.boss[e].posy + self.boss[e].col_damage_point4_y + self.boss[e].col_damage_point4_h\
+                        and self.boss[e].col_damage_point4_w != 0:
+                        
                         self.boss[e].main_hp -= self.claw_shot[h].shot_power #ボスの耐久力をshot_powerの分だけ減らす
                         self.boss[e].display_time_main_hp_bar = BOSS_HP_BAR_DISPLAY_TIME #耐久力バーを表示するカウントタイマーを初期値の定数に戻す
                         hit_x,hit_y = self.claw_shot[h].posx,self.claw_shot[h].posy
@@ -7764,298 +7766,240 @@ class App:
                 #敵の座標(posx,posy)を増分(vx,vy)を加減算更新して敵を移動させる(座標更新！)
                 self.enemy[i].posx += self.enemy[i].vx
                 self.enemy[i].posy += self.enemy[i].vy
-        
-        
-        
-        
-        
-          elif self.enemy[i].enemy_type ==  9:#敵タイプ9の更新   ロルボード 自機のＹ軸を合わせた後突進してくる敵
-             if self.enemy[i].enemy_flag2 == 0:#自機撃墜フラグ（自機と完全に重なったフラグ）はまだ建ってない？？
-                if self.enemy[i].enemy_flag1 == 0:#自機の位置をサーチしてどちらの方向に進むかのフラグはまだ建ってない？
-                    if self.my_y > self.enemy[i].posy:
-                       self.enemy[i].vy = 0.5
-                    else:
-                       self.enemy[i].vy = -0.5
-                    #自機索敵フラグenemy_flag1をonにする
-                    self.enemy[i].enemy_flag1 = 1
-             
+                
+            elif self.enemy[i].enemy_type ==  9:#敵タイプ9の更新   ロルボード 自機のＹ軸を合わせた後突進してくる敵
+                if self.enemy[i].enemy_flag2 == 0:#自機撃墜フラグ（自機と完全に重なったフラグ）はまだ建ってない？？
+                    if self.enemy[i].enemy_flag1 == 0:#自機の位置をサーチしてどちらの方向に進むかのフラグはまだ建ってない？
+                        if self.my_y > self.enemy[i].posy:
+                            self.enemy[i].vy = 0.5
+                        else:
+                            self.enemy[i].vy = -0.5
+                        #自機索敵フラグenemy_flag1をonにする
+                        self.enemy[i].enemy_flag1 = 1
+                
                 if self.enemy[i].posy == self.my_y:#自機と敵機のY座標は同じになったかな？？？？
                     if self.my_x > self.enemy[i].posx:#自機のｘ座標を見て右方向か左方向か進む方向に増分(vx)を加減算してやる
-                          self.enemy[i].vx = 1
-                          self.enemy[i].vy = 0
+                        self.enemy[i].vx = 1
+                        self.enemy[i].vy = 0
                     else:
-                          self.enemy[i].vx = -1
-                          self.enemy[i].vy = 0
-
-             
+                        self.enemy[i].vx = -1
+                        self.enemy[i].vy = 0
+                
                 if self.my_x == self.enemy[i].posx and self.my_y == self.enemy[i].posy:
                     self.enemy[i].enemy_flag2 = 1#自機と敵機の座標が完全に重なっていたら自機撃墜フラグをＯＮにする
-          
-             if self.enemy[i].posx < 5:#x座標が左端なら弾を射出
+                
+                if self.enemy[i].posx < 5:#x座標が左端なら弾を射出
                             self.ex = self.enemy[i].posx
                             self.ey = self.enemy[i].posy
                             self.enemy_aim_bullet_rank(self.ex,self.ey,0,0,0,0,1)#後退時に自機狙いの弾を射出して去っていく
-             
-             #vx,vyで敵の座標posx,posy更新！移動！！
-             self.enemy[i].posx += self.enemy[i].vx
-             self.enemy[i].posy += self.enemy[i].vy
-          
-          
-          
-          
-          
-          
-          elif self.enemy[i].enemy_type == 10:#敵タイプ10の更新  クランブルアンダー スクランブルハッチ（地面タイプ）
-              
-              #enemy_flag1を状態遷移フラグとして使用します
-              #    0=待機中（射出開始カウンタを減らしていく）
-              #    1～20ハッチ開放アニメーション中
-              #    21  敵機発進待機中（射出間隔用カウンタを減らしていく）カウンタがゼロになったら遷移状態「22敵機発射」にする
-              #    22  敵機発射！（敵総数カウンタを減らしていく）カウンタがゼロになったら遷移状態「23ハッチ閉鎖」にする
-              #    23以上ハッチ閉鎖アニメーション中
-              #    23以上は敵を出し切ったので何もしない
-              #enemy_flag2を敵射出間隔制御用の変数として使用します
-              #enemy_count1を出現してから突進タイプの敵を出すまでの時間のカウンタで使用します（射出開始カウンタ）（最初にどのタイミングで敵を出し始めるか数字を入れておいてね）
-              #enemy_count2を射出する敵の総数です（敵総数カウンタ）                                  （最初に何機だすか数字を入れておいてね）
-              #enemy_count3を敵を射出する間隔用カウンタとして使用します（射出間隔用カウンタ）（定数です変化はしません）
-              if self.enemy[i].enemy_flag1 == 0:#ハッチから敵を出し切ってないかどうかチェック
-                  self.enemy[i].enemy_count1 -= 1#射出開始カウンタを１減らす
-                  if self.enemy[i].enemy_count1 == 0:
-                      self.enemy[i].enemy_flag1 = 1#射出開始カウンタが0になったら遷移状態を「ハッチ開放開始」にする
-              
-              if 1 <= self.enemy[i].enemy_flag1 <= 20:#flag1が1～20の間はハッチ開放アニメーションをするのでflag1を1増やしていく(flag1はアニメーション様にオフセットとして使う)
-                  self.enemy[i].enemy_flag1 += 1
-
-              if self.enemy[i].enemy_flag1 == 21:#敵機発進待機中？
-                   self.enemy[i].enemy_flag2 -= 1#射出間隔カウント(変数)を1減らす
-                   if self.enemy[i].enemy_flag2 <= 0:#射出間隔カウンターがゼロ以下になったら敵機射出
-                       self.enemy[i].enemy_flag1 = 22#遷移状態を「22敵機発射」にする
-              
-              if self.enemy[i].enemy_flag1 == 22:#敵機発射？
-                   if len(self.enemy) < 400:
+                #vx,vyで敵の座標posx,posy更新！移動！！
+                self.enemy[i].posx += self.enemy[i].vx
+                self.enemy[i].posy += self.enemy[i].vy
+                
+            elif self.enemy[i].enemy_type == 10:#敵タイプ10の更新  クランブルアンダー スクランブルハッチ（地面タイプ）
+                #enemy_flag1を状態遷移フラグとして使用します
+                #    0=待機中（射出開始カウンタを減らしていく）
+                #    1～20ハッチ開放アニメーション中
+                #    21  敵機発進待機中（射出間隔用カウンタを減らしていく）カウンタがゼロになったら遷移状態「22敵機発射」にする
+                #    22  敵機発射！（敵総数カウンタを減らしていく）カウンタがゼロになったら遷移状態「23ハッチ閉鎖」にする
+                #    23以上ハッチ閉鎖アニメーション中
+                #    23以上は敵を出し切ったので何もしない
+                #enemy_flag2を敵射出間隔制御用の変数として使用します
+                #enemy_count1を出現してから突進タイプの敵を出すまでの時間のカウンタで使用します（射出開始カウンタ）（最初にどのタイミングで敵を出し始めるか数字を入れておいてね）
+                #enemy_count2を射出する敵の総数です（敵総数カウンタ）                                  （最初に何機だすか数字を入れておいてね）
+                #enemy_count3を敵を射出する間隔用カウンタとして使用します（射出間隔用カウンタ）（定数です変化はしません）
+                if self.enemy[i].enemy_flag1 == 0:#ハッチから敵を出し切ってないかどうかチェック
+                    self.enemy[i].enemy_count1 -= 1#射出開始カウンタを１減らす
+                    if self.enemy[i].enemy_count1 == 0:
+                        self.enemy[i].enemy_flag1 = 1#射出開始カウンタが0になったら遷移状態を「ハッチ開放開始」にする
+                
+                if 1 <= self.enemy[i].enemy_flag1 <= 20:#flag1が1～20の間はハッチ開放アニメーションをするのでflag1を1増やしていく(flag1はアニメーション様にオフセットとして使う)
+                    self.enemy[i].enemy_flag1 += 1
+                
+                if self.enemy[i].enemy_flag1 == 21:#敵機発進待機中？
+                    self.enemy[i].enemy_flag2 -= 1#射出間隔カウント(変数)を1減らす
+                    if self.enemy[i].enemy_flag2 <= 0:#射出間隔カウンターがゼロ以下になったら敵機射出
+                        self.enemy[i].enemy_flag1 = 22#遷移状態を「22敵機発射」にする
+                
+                if self.enemy[i].enemy_flag1 == 22:#敵機発射？
+                    if len(self.enemy) < 400:
                         new_enemy = Enemy()#敵９を1機生み出す
                         new_enemy.update(9,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,    self.enemy[i].posx + 7,self.enemy[i].posy - 2,0,0,      0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,  -self.side_scroll_speed * 0.5,0,     0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,     SIZE_8,SIZE_8,   1.2,0,   0,    HP01,    0,0,   E_SIZE_NORMAL,  0,0,0,      0,0,0,0,       E_NO_POW,ID00 ,0,0,0,    0  ,0,0,0,    0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                         self.enemy.append(new_enemy)#リストにアペンド追加！
-
-                   self.enemy[i].enemy_count2  -= 1#敵射出数を1減らす
-                   if self.enemy[i].enemy_count2 == 0:#射出する敵の数はもうゼロになったかな？
-                       self.enemy[i].enemy_flag1 = 23#敵を全部出し切ったのなら遷移状態を「23ハッチ閉鎖中」にする
-                   else:
-                       self.enemy[i].enemy_flag2 = self.enemy[i].enemy_count3#射出間隔カウンターを設定した初期に戻す
-                       self.enemy[i].enemy_flag1 = 21#遷移状態を「21敵機発進待機中」にする
-
-              if 23 <= self.enemy[i].enemy_flag1 <= 46:#flag1が23以上の間はハッチ閉鎖アニメーションするのでflag1を1増やしていく(flag1はアニメーション様にオフセット値として使う４６まで引っ張る)
-                  self.enemy[i].enemy_flag1 += 1
-                  self.enemy[i].status = ENEMY_STATUS_DEFENSE #敵９を出し切った後は防御モードにする
-              #敵１０を背景スクロールに合わせて左へ移動させる
-              self.enemy[i].posx -= self.side_scroll_speed * 0.5#基本BGスクロールスピードは0.5、それと倍率扱いのside_scroll_speedを掛け合わせてスクロールと同じように移動させてやる（地面スクロールに引っ付いた状態で飛んでいくように見せるため）         
-          
-          
-          
-          
-          
-          
-          
-          
-          elif self.enemy[i].enemy_type == 11:#敵タイプ11の更新  クランブルアッパー スクランブルハッチ（天井タイプ）
-
-              #enemy_flag1を状態遷移フラグとして使用します
-              #    0=待機中（射出開始カウンタを減らしていく）
-              #    1～20ハッチ開放アニメーション中
-              #    21  敵機発進待機中（射出間隔用カウンタを減らしていく）カウンタがゼロになったら遷移状態「22敵機発射」にする
-              #    22  敵機発射！（敵総数カウンタを減らしていく）カウンタがゼロになったら遷移状態「23ハッチ閉鎖」にする
-              #    23以上ハッチ閉鎖アニメーション中
-              #    23以上は敵を出し切ったので何もしない
-              #enemy_flag2を敵射出間隔制御用の変数として使用します
-              #enemy_count1を出現してから突進タイプの敵を出すまでの時間のカウンタで使用します（射出開始カウンタ）（最初にどのタイミングで敵を出し始めるか数字を入れておいてね）
-              #enemy_count2を射出する敵の総数です（敵総数カウンタ）                                  （最初に何機だすか数字を入れておいてね）
-              #enemy_count3を敵を射出する間隔用カウンタとして使用します（射出間隔用カウンタ）（定数です変化はしません）
-              if self.enemy[i].enemy_flag1 == 0:#ハッチから敵を出し切ってないかどうかチェック
-                  self.enemy[i].enemy_count1 -= 1#射出開始カウンタを１減らす
-                  if self.enemy[i].enemy_count1 == 0:
-                      self.enemy[i].enemy_flag1 = 1#射出開始カウンタが0になったら遷移状態を「ハッチ開放開始」にする
-              
-              if 1 <= self.enemy[i].enemy_flag1 <= 20:#flag1が1～20の間はハッチ開放アニメーションをするのでflag1を1増やしていく(flag1はアニメーション様にオフセットとして使う)
-                  self.enemy[i].enemy_flag1 += 1
-
-              if self.enemy[i].enemy_flag1 == 21:#敵機発進待機中？
-                   self.enemy[i].enemy_flag2 -= 1#射出間隔カウント(変数)を1減らす
-                   if self.enemy[i].enemy_flag2 <= 0:#射出間隔カウンターがゼロ以下になったら敵機射出
-                       self.enemy[i].enemy_flag1 = 22#遷移状態を「22敵機発射」にする
-              
-              if self.enemy[i].enemy_flag1 == 22:#敵機発射？
-                   if len(self.enemy) < 400:
+                    
+                    self.enemy[i].enemy_count2  -= 1#敵射出数を1減らす
+                    if self.enemy[i].enemy_count2 == 0:#射出する敵の数はもうゼロになったかな？
+                        self.enemy[i].enemy_flag1 = 23#敵を全部出し切ったのなら遷移状態を「23ハッチ閉鎖中」にする
+                    else:
+                        self.enemy[i].enemy_flag2 = self.enemy[i].enemy_count3#射出間隔カウンターを設定した初期に戻す
+                        self.enemy[i].enemy_flag1 = 21#遷移状態を「21敵機発進待機中」にする
+                
+                if 23 <= self.enemy[i].enemy_flag1 <= 46:#flag1が23以上の間はハッチ閉鎖アニメーションするのでflag1を1増やしていく(flag1はアニメーション様にオフセット値として使う４６まで引っ張る)
+                    self.enemy[i].enemy_flag1 += 1
+                    self.enemy[i].status = ENEMY_STATUS_DEFENSE #敵９を出し切った後は防御モードにする
+                #背景スクロールに合わせて左へ移動させる
+                self.enemy[i].posx -= self.side_scroll_speed * 0.5#基本BGスクロールスピードは0.5、それと倍率扱いのside_scroll_speedを掛け合わせてスクロールと同じように移動させてやる（地面スクロールに引っ付いた状態で飛んでいくように見せるため）         
+                
+            elif self.enemy[i].enemy_type == 11:#敵タイプ11の更新  クランブルアッパー スクランブルハッチ（天井タイプ）
+                #enemy_flag1を状態遷移フラグとして使用します
+                #    0=待機中（射出開始カウンタを減らしていく）
+                #    1～20ハッチ開放アニメーション中
+                #    21  敵機発進待機中（射出間隔用カウンタを減らしていく）カウンタがゼロになったら遷移状態「22敵機発射」にする
+                #    22  敵機発射！（敵総数カウンタを減らしていく）カウンタがゼロになったら遷移状態「23ハッチ閉鎖」にする
+                #    23以上ハッチ閉鎖アニメーション中
+                #    23以上は敵を出し切ったので何もしない
+                #enemy_flag2を敵射出間隔制御用の変数として使用します
+                #enemy_count1を出現してから突進タイプの敵を出すまでの時間のカウンタで使用します（射出開始カウンタ）（最初にどのタイミングで敵を出し始めるか数字を入れておいてね）
+                #enemy_count2を射出する敵の総数です（敵総数カウンタ）                                  （最初に何機だすか数字を入れておいてね）
+                #enemy_count3を敵を射出する間隔用カウンタとして使用します（射出間隔用カウンタ）（定数です変化はしません）
+                if self.enemy[i].enemy_flag1 == 0:#ハッチから敵を出し切ってないかどうかチェック
+                    self.enemy[i].enemy_count1 -= 1#射出開始カウンタを１減らす
+                    if self.enemy[i].enemy_count1 == 0:
+                        self.enemy[i].enemy_flag1 = 1#射出開始カウンタが0になったら遷移状態を「ハッチ開放開始」にする
+                
+                if 1 <= self.enemy[i].enemy_flag1 <= 20:#flag1が1～20の間はハッチ開放アニメーションをするのでflag1を1増やしていく(flag1はアニメーション様にオフセットとして使う)
+                    self.enemy[i].enemy_flag1 += 1
+                
+                if self.enemy[i].enemy_flag1 == 21:#敵機発進待機中？
+                    self.enemy[i].enemy_flag2 -= 1#射出間隔カウント(変数)を1減らす
+                    if self.enemy[i].enemy_flag2 <= 0:#射出間隔カウンターがゼロ以下になったら敵機射出
+                        self.enemy[i].enemy_flag1 = 22#遷移状態を「22敵機発射」にする
+                
+                if self.enemy[i].enemy_flag1 == 22:#敵機発射？
+                    if len(self.enemy) < 400:
                         new_enemy = Enemy()#敵９を1機生み出す
                         new_enemy.update(9,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,    self.enemy[i].posx + 7,self.enemy[i].posy + 10,0,0,       0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,  -self.side_scroll_speed * 0.5,0,     0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,     SIZE_8,SIZE_8,   1.2,0,    0,    HP01,    0,0,   E_SIZE_NORMAL,  0,0,0,     0,0,0,0,        E_NO_POW,ID00 ,0,0,0,    0  ,0,0,0,    0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                         self.enemy.append(new_enemy)#リストにアペンド追加！
-
-                   self.enemy[i].enemy_count2  -= 1#敵射出数を1減らす
-                   if self.enemy[i].enemy_count2 == 0:#射出する敵の数はもうゼロになったかな？
-                       self.enemy[i].enemy_flag1 = 23#敵を全部出し切ったのなら遷移状態を「23ハッチ閉鎖中」にする
-                   else:
-                       self.enemy[i].enemy_flag2 = self.enemy[i].enemy_count3#射出間隔カウンターを設定した初期に戻す
-                       self.enemy[i].enemy_flag1 = 21#遷移状態を「21敵機発進待機中」にする
-
-              if 23 <= self.enemy[i].enemy_flag1 <= 46:#flag1が23以上の間はハッチ閉鎖アニメーションするのでflag1を1増やしていく(flag1はアニメーション様にオフセット値として使う４６まで引っ張る)
-                  self.enemy[i].enemy_flag1 += 1
-                  self.enemy[i].status = ENEMY_STATUS_DEFENSE #敵９を出し切った後は防御モードにする
-              #敵１１を背景スクロールに合わせて左へ移動させる
-              self.enemy[i].posx -= self.side_scroll_speed * 0.5 #基本BGスクロールスピードは0.5、それと倍率扱いのside_scroll_speedを掛け合わせてスクロールと同じように移動させてやる（地面スクロールに引っ付いた状態で飛んでいくように見せるため）
-          
-          
-          
-          
-          elif self.enemy[i].enemy_type == 12:#敵タイプ12の更新  レイブラスター 直進して画面前方のどこかで停止→レーザービーム射出→急いで後退
-             #enemy_flag1を状態遷移フラグとして使用します
-             #  0=前進中
-             #  1=レーザービーム発射スタート
-             #  2～28=レーザービーム発射中(アニメーションパターン用の補正数値として使用します)
-             #  28～56=後退アニメーションしつつ後退中
-             #  57以上  ただの後退
-             #enemy_count1を敵が前進してくる限界のＸ座標として設定してます
-             
-             if self.enemy[i].enemy_flag1 == 0:
-                #遷移状態が「前進中」なら敵１２を前進させる
-                self.enemy[i].vx = self.enemy[i].vx * self.enemy[i].move_speed#VXをmove_speed分掛けて少しづつ小さくしていく（減速させる）
-                self.enemy[i].posx += self.enemy[i].vx#x座標を更新
-                self.enemy[i].vy = self.enemy[i].vy * self.enemy[i].move_speed#VYをmove_speed分掛けて少しづつ小さくしていく（減速させる）
-                self.enemy[i].posy += self.enemy[i].vy#Y座標を更新
-                if self.enemy[i].posx < self.enemy[i].enemy_count1:#敵の座標が前進限界以下なら後退処理を始める
+                    
+                    self.enemy[i].enemy_count2  -= 1#敵射出数を1減らす
+                    if self.enemy[i].enemy_count2 == 0:#射出する敵の数はもうゼロになったかな？
+                        self.enemy[i].enemy_flag1 = 23#敵を全部出し切ったのなら遷移状態を「23ハッチ閉鎖中」にする
+                    else:
+                        self.enemy[i].enemy_flag2 = self.enemy[i].enemy_count3#射出間隔カウンターを設定した初期に戻す
+                        self.enemy[i].enemy_flag1 = 21#遷移状態を「21敵機発進待機中」にする
+                
+                if 23 <= self.enemy[i].enemy_flag1 <= 46:#flag1が23以上の間はハッチ閉鎖アニメーションするのでflag1を1増やしていく(flag1はアニメーション様にオフセット値として使う４６まで引っ張る)
+                    self.enemy[i].enemy_flag1 += 1
+                    self.enemy[i].status = ENEMY_STATUS_DEFENSE #敵９を出し切った後は防御モードにする
+                #背景スクロールに合わせて左へ移動させる
+                self.enemy[i].posx -= self.side_scroll_speed * 0.5 #基本BGスクロールスピードは0.5、それと倍率扱いのside_scroll_speedを掛け合わせてスクロールと同じように移動させてやる（地面スクロールに引っ付いた状態で飛んでいくように見せるため）
+                
+            elif self.enemy[i].enemy_type == 12:#敵タイプ12の更新  レイブラスター 直進して画面前方のどこかで停止→レーザービーム射出→急いで後退
+                #enemy_flag1を状態遷移フラグとして使用します
+                #  0=前進中
+                #  1=レーザービーム発射スタート
+                #  2～28=レーザービーム発射中(アニメーションパターン用の補正数値として使用します)
+                #  28～56=後退アニメーションしつつ後退中
+                #  57以上  ただの後退
+                #enemy_count1を敵が前進してくる限界のＸ座標として設定してます
+                
+                if self.enemy[i].enemy_flag1 == 0:
+                    #遷移状態が「前進中」なら敵１２を前進させる
+                    self.enemy[i].vx = self.enemy[i].vx * self.enemy[i].move_speed#VXをmove_speed分掛けて少しづつ小さくしていく（減速させる）
+                    self.enemy[i].posx += self.enemy[i].vx#x座標を更新
+                    self.enemy[i].vy = self.enemy[i].vy * self.enemy[i].move_speed#VYをmove_speed分掛けて少しづつ小さくしていく（減速させる）
+                    self.enemy[i].posy += self.enemy[i].vy#Y座標を更新
+                    if self.enemy[i].posx < self.enemy[i].enemy_count1:#敵の座標が前進限界以下なら後退処理を始める
                         self.enemy[i].enemy_flag1 = 1#敵のＸ座標が前進限界以下なら 遷移状態を「レーザービーム発射中にする」
-             elif self.enemy[i].enemy_flag1 == 1:
-                 #遷移状態が「レーザービーム発射スタート」ならレーザー発射関数を呼び出し
-                 self.enemy_laser(self.enemy[i].posx,self.enemy[i].posy,30,2 * self.enemy_bullet_speed_mag)#レーザーの長さ30 スピード2*ランクによる倍率
-                 self.enemy[i].enemy_flag1 = 2#遷移状態を「レーザービーム発射中」にする
-
-             elif 2 <= self.enemy[i].enemy_flag1 <= 28:
-                 self.enemy[i].enemy_flag1 += 1#遷移状態が「レーザービーム発射中」ならフラグを1増やしていく（その場にとどまるので座標の更新は無し）
-             
-             elif 28 <= self.enemy[i].enemy_flag1 <= 46:#遷移状態が「後退中」なら高速で右方向に逃げていく
-                 self.enemy[i].enemy_flag1 += 1#アニメーションしたいのでflag1だけは増やしていく
-                 self.enemy[i].posx = self.enemy[i].posx + 1#2ドットの増分で右方向に逃げていく
-             else:
-                 self.enemy[i].posx = self.enemy[i].posx + 2#2ドットの増分で右方向に逃げていく                 
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          elif self.enemy[i].enemy_type == 13:#敵タイプ13の更新  グリーンランサー ゆらゆら浮遊する3way弾を発射する硬い敵(倒すとショットパワーアップアイテム)
-              #敵１３をサインカーブを描きながら移動させる 
-              self.enemy[i].posx -= self.enemy[i].move_speed#X座標をmove_speed分減らして左方向に進む
-              self.enemy[i].enemy_count3 += self.enemy[i].enemy_count2#enemy_count3はタイマー enemy_count_2は速度
-              self.enemy[i].posy += self.enemy[i].enemy_count1 * math.sin(self.enemy[i].enemy_count3)#enemy_count_1は振れ幅
-
-              self.enemy[i].enemy_flag1 += 1 #flag1を利用してカウント90ごとに弾を発射させる
-              if self.enemy[i].enemy_flag1 == 90:
-                  self.enemy_forward_3way_bullet(self.enemy[i].posx,self.enemy[i].posy) #前方3way弾発射
-                  self.enemy[i].enemy_flag1 = 0
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          elif self.enemy[i].enemy_type == 14:#敵タイプ14の更新  テミー ゆっくり直進してくる赤いアイテムキャリアー
-              #vx,vyで敵の座標posx,posy更新！移動！！
-             self.enemy[i].posx += self.enemy[i].vx
-             self.enemy[i].posy += self.enemy[i].vy
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          
-          elif self.enemy[i].enemy_type == 15:#敵タイプ15の更新  ムーロボ 地面を左右に動きながらチョット進んできて弾を撃つ移動砲台
-              #敵１５を背景スクロールに合わせて移動させる（地上キャラなので不自然が無いように・・・）
-              self.enemy[i].posx -= self.side_scroll_speed * 0.5
-              if self.enemy[i].posx < WINDOW_W -80 and (self.s_rndint(0,(self.run_away_bullet_probability) * 50) == 0):
+                elif self.enemy[i].enemy_flag1 == 1:
+                    #遷移状態が「レーザービーム発射スタート」ならレーザー発射関数を呼び出し
+                    self.enemy_laser(self.enemy[i].posx,self.enemy[i].posy,30,2 * self.enemy_bullet_speed_mag)#レーザーの長さ30 スピード2*ランクによる倍率
+                    self.enemy[i].enemy_flag1 = 2#遷移状態を「レーザービーム発射中」にする
+                    
+                elif 2 <= self.enemy[i].enemy_flag1 <= 28:
+                    self.enemy[i].enemy_flag1 += 1#遷移状態が「レーザービーム発射中」ならフラグを1増やしていく（その場にとどまるので座標の更新は無し）
+                    
+                elif 28 <= self.enemy[i].enemy_flag1 <= 46:#遷移状態が「後退中」なら高速で右方向に逃げていく
+                    self.enemy[i].enemy_flag1 += 1#アニメーションしたいのでflag1だけは増やしていく
+                    self.enemy[i].posx = self.enemy[i].posx + 1#2ドットの増分で右方向に逃げていく
+                else:
+                    self.enemy[i].posx = self.enemy[i].posx + 2#2ドットの増分で右方向に逃げていく                 
+                
+            elif self.enemy[i].enemy_type == 13:#敵タイプ13の更新  グリーンランサー ゆらゆら浮遊する3way弾を発射する硬い敵(倒すとショットパワーアップアイテム)
+                #サインカーブを描きながら移動させる 
+                self.enemy[i].posx -= self.enemy[i].move_speed#X座標をmove_speed分減らして左方向に進む
+                self.enemy[i].enemy_count3 += self.enemy[i].enemy_count2#enemy_count3はタイマー enemy_count_2は速度
+                self.enemy[i].posy += self.enemy[i].enemy_count1 * math.sin(self.enemy[i].enemy_count3)#enemy_count_1は振れ幅
+                
+                self.enemy[i].enemy_flag1 += 1 #flag1を利用してカウント90ごとに弾を発射させる
+                if self.enemy[i].enemy_flag1 == 90:
+                    self.enemy_forward_3way_bullet(self.enemy[i].posx,self.enemy[i].posy) #前方3way弾発射
+                    self.enemy[i].enemy_flag1 = 0
+                
+            elif self.enemy[i].enemy_type == 14:#敵タイプ14の更新  テミー ゆっくり直進してくる赤いアイテムキャリアー
+                #vx,vyで敵の座標posx,posy更新！移動！！
+                self.enemy[i].posx += self.enemy[i].vx
+                self.enemy[i].posy += self.enemy[i].vy
+                
+            elif self.enemy[i].enemy_type == 15:#敵タイプ15の更新  ムーロボ 地面を左右に動きながらチョット進んできて弾を撃つ移動砲台
+                #敵１５を背景スクロールに合わせて移動させる（地上キャラなので不自然が無いように・・・）
+                self.enemy[i].posx -= self.side_scroll_speed * 0.5
+                if self.enemy[i].posx < WINDOW_W -80 and (self.s_rndint(0,(self.run_away_bullet_probability) * 50) == 0):
                             self.ex = self.enemy[i].posx
                             self.ey = self.enemy[i].posy
                             self.enemy_aim_bullet(self.ex,self.ey,0,0,0,0,1)#画面端から出現して８０ドット進んだら、自機狙いの弾を射出
-              
-              #directionは -1=左方向に移動 1=右方向に移動
-              #enemy_count1は左に動く原本カウント enemy_flag1はその変数として使用します
-              #enemy_count2は右に動く原本カウント enemy_flag2はその変数として使用します
-              if self.enemy[i].vy == 0: #地面を移動中の場合は(vy=0の時は横方向だけの移動)
-                  if self.enemy[i].direction == -1: #左に移動
-                      self.check_bg_collision(self.enemy[i].posx - 8,self.enemy[i].posy,0,0) #左側が障害物かどうかチェックする
-                      if self.enemy[i].enemy_flag1 <= 0 or self.collision_flag == 1:#左移動のカウンタが0以下、又は左に障害物があったら
-                          self.enemy[i].direction = 1                #方向転換して右移動にする
-                          self.enemy[i].enemy_flag2 = self.enemy[i].enemy_count2 #右移動するカウントを原本からコピーしてやる
-                          self.enemy[i].vx = 0             #方向転換する瞬間なのでx軸の移動ベクトルは0にします
-                      else:
-                          self.enemy[i].enemy_flag1 -= 1 #左移動のカウンタを1減らします
-                          self.enemy[i].vx = -1             #x軸の移動ベクトルは左方向です
-                  elif self.enemy[i].direction == 1: #右に移動
-                      self.check_bg_collision(self.enemy[i].posx + 8,self.enemy[i].posy,0,0) #右側が障害物かどうかチェックする
-                      if self.enemy[i].enemy_flag2 <= 0 or self.collision_flag == 1:#右移動のカウンタが0以下、又は右に障害物があったら
-                          self.enemy[i].direction = -1               #方向転換して左移動にする
-                          self.enemy[i].enemy_flag1 = self.enemy[i].enemy_count1 #左移動するカウントを原本からコピーしてやる
-                          self.enemy[i].vx = 0             #方向転換する瞬間なのでx軸の移動ベクトルは0にします
-                      else:
-                          self.enemy[i].enemy_flag2 -= 1 #右移動のカウンタを1減らします
-                          self.enemy[i].vx = 1             #x軸の移動ベクトルは右方向です
-              
-              self.check_bg_collision(self.enemy[i].posx + 4,self.enemy[i].posy + 8,0,0) #足元が障害物かどうかチェックする
-              if self.collision_flag == 0:#もし足元に障害物が無かった時は
-                  self.enemy[i].vy = 0.5  #y軸の移動ベクトルを1にして下方向(落下方向)にする
-                  self.enemy[i].vx = self.enemy[i].vx * 0.8 #x軸方向の移動ベクトルもだんだんと小さくしていく
-              else:
-                  self.enemy[i].vy = 0  #障害物があった時はy軸のベクトルを0にする
-              
-              self.enemy[i].posx += self.enemy[i].vx * self.enemy[i].move_speed #移動ベクトル分加減算して移動！
-              self.enemy[i].posy += self.enemy[i].vy * self.enemy[i].move_speed
-          
-          
-          
-          
-          
-          elif self.enemy[i].enemy_type == 16:#敵タイプ16の更新  クランパリオン 2機一体で挟みこみ攻撃をしてくる
-              #enemy_flag1は自機とx座標が一致して挟みこむ行動を開始するかのフラグ 0=off 1=on
-              if self.enemy[i].enemy_flag1 == 0 and -3 <= self.enemy[i].posx - self.my_x <= 3: #もしflag1がたっていない&自機と敵のx座標の差が+-3以内だったら
-                  self.enemy[i].enemy_flag1 = 1  #挟みこみ開始フラグをonにする
-                  self.enemy[i].vx = 0 #x軸はもう動かないようx方向の速度ベクトルvxを0にする
-                  self.enemy[i].move_speed = 1.02 #移動スピードを加速気味にする
-                  if self.enemy[i].posy < self.my_y: #自機より敵が上に居たのならば
-                      self.enemy[i].vy = 0.92 #速度ベクトルのy軸を下方向にする
-                  else:
-                      self.enemy[i].vy = -0.92 #そうでないのなら逆に速度ベクトルのy軸を上方向にする
-              self.enemy[i].vx = self.enemy[i].vx * self.enemy[i].move_speed #速度ベクトルをだんだん大きくさせていく（挟み込み時）
-              self.enemy[i].vy = self.enemy[i].vy * self.enemy[i].move_speed
-              self.enemy[i].posx += self.enemy[i].vx #移動ベクトル分加減算して移動！
-              self.enemy[i].posy += self.enemy[i].vy
-          
-          
-          
-          
-          
-          elif self.enemy[i].enemy_type == 17:#敵タイプ17の更新  ロールブリッツ ベジェ曲線で定点まで移動して離脱する敵
-             if self.enemy[i].status == ENEMY_STATUS_MOVE_COORDINATE_INIT: #「移動用座標初期化」ベジェ曲線で移動するための移動元、移動先、制御点をまず初めに取得する
+                
+                #directionは -1=左方向に移動 1=右方向に移動
+                #enemy_count1は左に動く原本カウント enemy_flag1はその変数として使用します
+                #enemy_count2は右に動く原本カウント enemy_flag2はその変数として使用します
+                if self.enemy[i].vy == 0: #地面を移動中の場合は(vy=0の時は横方向だけの移動)
+                    if self.enemy[i].direction == -1: #左に移動
+                        self.check_bg_collision(self.enemy[i].posx - 8,self.enemy[i].posy,0,0) #左側が障害物かどうかチェックする
+                        if self.enemy[i].enemy_flag1 <= 0 or self.collision_flag == 1:#左移動のカウンタが0以下、又は左に障害物があったら
+                            self.enemy[i].direction = 1                #方向転換して右移動にする
+                            self.enemy[i].enemy_flag2 = self.enemy[i].enemy_count2 #右移動するカウントを原本からコピーしてやる
+                            self.enemy[i].vx = 0             #方向転換する瞬間なのでx軸の移動ベクトルは0にします
+                        else:
+                            self.enemy[i].enemy_flag1 -= 1 #左移動のカウンタを1減らします
+                            self.enemy[i].vx = -1             #x軸の移動ベクトルは左方向です
+                    elif self.enemy[i].direction == 1: #右に移動
+                        self.check_bg_collision(self.enemy[i].posx + 8,self.enemy[i].posy,0,0) #右側が障害物かどうかチェックする
+                        if self.enemy[i].enemy_flag2 <= 0 or self.collision_flag == 1:#右移動のカウンタが0以下、又は右に障害物があったら
+                            self.enemy[i].direction = -1               #方向転換して左移動にする
+                            self.enemy[i].enemy_flag1 = self.enemy[i].enemy_count1 #左移動するカウントを原本からコピーしてやる
+                            self.enemy[i].vx = 0             #方向転換する瞬間なのでx軸の移動ベクトルは0にします
+                        else:
+                            self.enemy[i].enemy_flag2 -= 1 #右移動のカウンタを1減らします
+                            self.enemy[i].vx = 1             #x軸の移動ベクトルは右方向です
+                
+                self.check_bg_collision(self.enemy[i].posx + 4,self.enemy[i].posy + 8,0,0) #足元が障害物かどうかチェックする
+                if self.collision_flag == 0:#もし足元に障害物が無かった時は
+                    self.enemy[i].vy = 0.5  #y軸の移動ベクトルを1にして下方向(落下方向)にする
+                    self.enemy[i].vx = self.enemy[i].vx * 0.8 #x軸方向の移動ベクトルもだんだんと小さくしていく
+                else:
+                    self.enemy[i].vy = 0  #障害物があった時はy軸のベクトルを0にする
+                
+                self.enemy[i].posx += self.enemy[i].vx * self.enemy[i].move_speed #移動ベクトル分加減算して移動！
+                self.enemy[i].posy += self.enemy[i].vy * self.enemy[i].move_speed
+                
+            elif self.enemy[i].enemy_type == 16:#敵タイプ16の更新  クランパリオン 2機一体で挟みこみ攻撃をしてくる
+                #enemy_flag1は自機とx座標が一致して挟みこむ行動を開始するかのフラグ 0=off 1=on
+                if self.enemy[i].enemy_flag1 == 0 and -3 <= self.enemy[i].posx - self.my_x <= 3: #もしflag1がたっていない&自機と敵のx座標の差が+-3以内だったら
+                    self.enemy[i].enemy_flag1 = 1  #挟みこみ開始フラグをonにする
+                    self.enemy[i].vx = 0 #x軸はもう動かないようx方向の速度ベクトルvxを0にする
+                    self.enemy[i].move_speed = 1.02 #移動スピードを加速気味にする
+                    if self.enemy[i].posy < self.my_y: #自機より敵が上に居たのならば
+                        self.enemy[i].vy = 0.92 #速度ベクトルのy軸を下方向にする
+                    else:
+                        self.enemy[i].vy = -0.92 #そうでないのなら逆に速度ベクトルのy軸を上方向にする
+                self.enemy[i].vx = self.enemy[i].vx * self.enemy[i].move_speed #速度ベクトルをだんだん大きくさせていく（挟み込み時）
+                self.enemy[i].vy = self.enemy[i].vy * self.enemy[i].move_speed
+                self.enemy[i].posx += self.enemy[i].vx #移動ベクトル分加減算して移動！
+                self.enemy[i].posy += self.enemy[i].vy
+                
+            elif self.enemy[i].enemy_type == 17:#敵タイプ17の更新  ロールブリッツ ベジェ曲線で定点まで移動して離脱する敵
+                if self.enemy[i].status == ENEMY_STATUS_MOVE_COORDINATE_INIT: #「移動用座標初期化」ベジェ曲線で移動するための移動元、移動先、制御点をまず初めに取得する
                     enemy_type = self.enemy[i].enemy_type
                     self.enemy_get_bezier_curve_coordinate(enemy_type,i) #敵をベジェ曲線で移動させるために必要な座標をリストから取得する関数の呼び出し
                     self.enemy[i].status = ENEMY_STATUS_MOVE_BEZIER_CURVE #状態遷移を「ベジェ曲線で移動」に設定
-             
-             elif self.enemy[i].status == ENEMY_STATUS_MOVE_BEZIER_CURVE: #「ベジェ曲線で移動」
-                t =  self.enemy[i].obj_time / self.enemy[i].obj_totaltime
-                if t >= 1: #tの値が1になった時は現在の座標が移動目的座標と同じ座標になった状況となるので・・・(行き過ぎ防止で念のため１以上で判別してます)
-                    self.enemy[i].obj_time = 0    #タイムフレーム番号を0にしてリセットする
-                    self.enemy[i].move_index += 1 #目的座標のリストのインデックスを1進める
+                    
+                elif self.enemy[i].status == ENEMY_STATUS_MOVE_BEZIER_CURVE: #「ベジェ曲線で移動」
+                    t =  self.enemy[i].obj_time / self.enemy[i].obj_totaltime
+                    if t >= 1: #tの値が1になった時は現在の座標が移動目的座標と同じ座標になった状況となるので・・・(行き過ぎ防止で念のため１以上で判別してます)
+                        self.enemy[i].obj_time = 0    #タイムフレーム番号を0にしてリセットする
+                        self.enemy[i].move_index += 1 #目的座標のリストのインデックスを1進める
                     if self.enemy_move_data17[self.enemy[i].move_index][0] == 9999:#x座標がエンドコード9999の場合は
-                       self.enemy[i].move_index = 0 #リストインデックス値を0にしてリセットする
+                        self.enemy[i].move_index = 0 #リストインデックス値を0にしてリセットする
                     enemy_type = self.enemy[i].enemy_type
                     self.enemy_get_bezier_curve_coordinate(enemy_type,i) #敵をベジェ曲線で移動させるために必要な座標をリストから取得する関数の呼び出し
                     t = self.enemy[i].obj_time / self.enemy[i].obj_totaltime #違う座標データ群を読み込んだのでt値を再計算してやる
@@ -8065,73 +8009,69 @@ class App:
                     div_type,div_count,div_num,stop_count = 0,0,0,0
                     accel = 1.01
                     self.enemy_aim_bullet_rank(ex,ey,div_type,div_count,div_num,stop_count,accel)
-
-                #ベジェ曲線で移動させる方法の説明はボスキャラの所と同じなのでそれを参考にしてくださいな
-                p1x = (1-t) * self.enemy[i].ax + t * self.enemy[i].qx
-                p1y = (1-t) * self.enemy[i].ay + t * self.enemy[i].dy
-                p2x = (1-t) * self.enemy[i].qx + t * self.enemy[i].dx
-                p2y = (1-t) * self.enemy[i].qy + t * self.enemy[i].dy   
-                px = (1-t) * p1x + t * p2x
-                py = (1-t) * p1y + t * p2y
-                self.enemy[i].posx = px + self.enemy[i].offset_x #(px,py)にオフセット値を加減算したものを(posx,posy)にします（こうするとあらかじめ決められたルートからずれた位置も通らせることができるのです）
-                self.enemy[i].posy = py + self.enemy[i].offset_y
-
-                self.enemy[i].move_speed = self.enemy[i].move_speed * self.enemy[i].acceleration #スピードの値に加速度を掛け合わせ加速させたり減速させたりします
-
-                if self.enemy[i].move_speed < 0.2: #スピードは0.2以下にならないように補正してやります・・(まったく動かなくなる状況にさせないため）
-                    self.enemy[i].move_speed = 0.2
-                self.enemy[i].obj_time += self.enemy[i].move_speed * self.enemy[i].move_speed_offset #タイムフレーム番号を(スピード*スピードオフセット)分加算していく
-        
-        
-        
-        
-        
-          elif self.enemy[i].enemy_type == 18:#敵タイプ18の更新  ボルダー 硬めの弾バラマキ重爆撃機 大きいサイズ
-              #敵18をサインカーブを描きながら移動させる 
-              self.enemy[i].posx += self.enemy[i].move_speed  #X座標をmove_speed分加減算する
-              self.enemy[i].timer += self.enemy[i].speed     #タイマーをスピード分増やしていく
-              self.enemy[i].posy += self.enemy[i].intensity * math.sin(self.enemy[i].timer)#振れ幅と時間を使ってサインカーブのy軸の値を求める
-
-              self.enemy[i].enemy_flag1 += 1 #flag1(弾発射間隔カウント)を利用してカウント190ごとに弾を発射させる
-              if self.enemy[i].enemy_flag1 == 190:
-                  if self.to_my_ship_distance(self.enemy[i].posx,self.enemy[i].posy) < 100: #自機との距離が100より小さかったら
-                      self.enemy[i].status = ENEMY_STATUS_BERSERK #ステータス「怒り」にする
-                      #自機狙い4way発射*3連
-                      for num in range(3):
-                          theta = 30
-                          n = 4
-                          division_type = 0
-                          division_count = 0
-                          division_num = 0
-                          stop_count = 5 * num
-                          if self.my_x < self.enemy[i].posx + 4*8: #自機とのx座標の位置を見て前と後ろのどちらの銃口から発射するのか判定する
-                              self.enemy_aim_bullet_nway(self.enemy[i].posx     ,self.enemy[i].posy + 8 ,theta,n,division_type,division_count,division_num,stop_count) #後ろから発射  
-                          else:
-                              self.enemy_aim_bullet_nway(self.enemy[i].posx + 4*8,self.enemy[i].posy + 10,theta,n,division_type,division_count,division_num,stop_count) #前から発射
-
-                      self.enemy[i].enemy_flag1 = 20   #カウンター値を多めにしてリセット
-                  else:#そうでなかったら
-                      self.enemy[i].status = ENEMY_STATUS_NORMAL #ステータスを「通常」にする
-                      self.enemy_forward_3way_bullet(self.enemy[i].posx,self.enemy[i].posy) #前方3way弾発射
-                      self.enemy[i].enemy_flag1 = 0 #カウンターリセット
-            
-              self.enemy[i].intensity = self.enemy[i].intensity * 0.9997#振れ幅を徐々に小さくしていく
-
-              if self.enemy[i].posx < 0 and self.enemy[i].enemy_flag2 == 0: #座標がマイナス＆flag2(反転離脱フラグ)が立っていないのなら
-                  self.enemy[i].enemy_flag2 = 1 #flag2(反転離脱フラグ)を立てる
-                  self.enemy[i].move_speed = self.enemy[i].move_speed * -1 #移動方向を反転させる
-
-                  #反転開始時は分裂弾を発射
-                  new_enemy_shot = Enemy_shot()
-                  division_type        = ENEMY_SHOT_DIVISION_3WAY   #自機狙いの3way
-                  division_count       = 80 #分裂するまでのカウント数
-                  division_count_origin = 80 #分裂するまでのカウント数(元数値)
-                  division_num        = 0    #分裂する回数
-                  new_enemy_shot.update(ENEMY_SHOT_NORMAL,ID00, self.enemy[i].posx + 4*8,self.enemy[i].posy + 10,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8, 0,0, 1,0,     0.95,     1,1,    1,0, 0,1,0,        0,   0,0,PRIORITY_FRONT,   0,0,0,0,0,0, division_type,division_count,  0, division_count_origin,division_num, 0, 0,0, 0,0,   0,0)
-                  self.enemy_shot.append(new_enemy_shot)            
-              
-              if self.enemy[i].enemy_flag2 == 1: #反転離脱中の時は
-                  self.enemy[i].move_speed += 0.002 #加速して離脱していく
+                    
+                    #ベジェ曲線で移動させる方法の説明はボスキャラの所と同じなのでそれを参考にしてくださいな
+                    p1x = (1-t) * self.enemy[i].ax + t * self.enemy[i].qx
+                    p1y = (1-t) * self.enemy[i].ay + t * self.enemy[i].dy
+                    p2x = (1-t) * self.enemy[i].qx + t * self.enemy[i].dx
+                    p2y = (1-t) * self.enemy[i].qy + t * self.enemy[i].dy   
+                    px = (1-t) * p1x + t * p2x
+                    py = (1-t) * p1y + t * p2y
+                    self.enemy[i].posx = px + self.enemy[i].offset_x #(px,py)にオフセット値を加減算したものを(posx,posy)にします（こうするとあらかじめ決められたルートからずれた位置も通らせることができるのです）
+                    self.enemy[i].posy = py + self.enemy[i].offset_y
+                    
+                    self.enemy[i].move_speed = self.enemy[i].move_speed * self.enemy[i].acceleration #スピードの値に加速度を掛け合わせ加速させたり減速させたりします
+                    
+                    if self.enemy[i].move_speed < 0.2: #スピードは0.2以下にならないように補正してやります・・(まったく動かなくなる状況にさせないため）
+                        self.enemy[i].move_speed = 0.2
+                    self.enemy[i].obj_time += self.enemy[i].move_speed * self.enemy[i].move_speed_offset #タイムフレーム番号を(スピード*スピードオフセット)分加算していく
+                
+            elif self.enemy[i].enemy_type == 18:#敵タイプ18の更新  ボルダー 硬めの弾バラマキ重爆撃機 大きいサイズ
+                #敵18をサインカーブを描きながら移動させる 
+                self.enemy[i].posx += self.enemy[i].move_speed  #X座標をmove_speed分加減算する
+                self.enemy[i].timer += self.enemy[i].speed     #タイマーをスピード分増やしていく
+                self.enemy[i].posy += self.enemy[i].intensity * math.sin(self.enemy[i].timer)#振れ幅と時間を使ってサインカーブのy軸の値を求める
+                
+                self.enemy[i].enemy_flag1 += 1 #flag1(弾発射間隔カウント)を利用してカウント190ごとに弾を発射させる
+                if self.enemy[i].enemy_flag1 == 190:
+                    if self.to_my_ship_distance(self.enemy[i].posx,self.enemy[i].posy) < 100: #自機との距離が100より小さかったら
+                        self.enemy[i].status = ENEMY_STATUS_BERSERK #ステータス「怒り」にする
+                        #自機狙い4way発射*3連
+                        for num in range(3):
+                            theta = 30
+                            n = 4
+                            division_type = 0
+                            division_count = 0
+                            division_num = 0
+                            stop_count = 5 * num
+                            if self.my_x < self.enemy[i].posx + 4*8: #自機とのx座標の位置を見て前と後ろのどちらの銃口から発射するのか判定する
+                                self.enemy_aim_bullet_nway(self.enemy[i].posx     ,self.enemy[i].posy + 8 ,theta,n,division_type,division_count,division_num,stop_count) #後ろから発射  
+                            else:
+                                self.enemy_aim_bullet_nway(self.enemy[i].posx + 4*8,self.enemy[i].posy + 10,theta,n,division_type,division_count,division_num,stop_count) #前から発射
+                        
+                        self.enemy[i].enemy_flag1 = 20   #カウンター値を多めにしてリセット
+                    else:#そうでなかったら
+                        self.enemy[i].status = ENEMY_STATUS_NORMAL #ステータスを「通常」にする
+                        self.enemy_forward_3way_bullet(self.enemy[i].posx,self.enemy[i].posy) #前方3way弾発射
+                        self.enemy[i].enemy_flag1 = 0 #カウンターリセット
+                
+                self.enemy[i].intensity = self.enemy[i].intensity * 0.9997#振れ幅を徐々に小さくしていく
+                
+                if self.enemy[i].posx < 0 and self.enemy[i].enemy_flag2 == 0: #座標がマイナス＆flag2(反転離脱フラグ)が立っていないのなら
+                    self.enemy[i].enemy_flag2 = 1 #flag2(反転離脱フラグ)を立てる
+                    self.enemy[i].move_speed = self.enemy[i].move_speed * -1 #移動方向を反転させる
+                    
+                    #反転開始時は分裂弾を発射
+                    new_enemy_shot = Enemy_shot()
+                    division_type        = ENEMY_SHOT_DIVISION_3WAY   #自機狙いの3way
+                    division_count       = 80 #分裂するまでのカウント数
+                    division_count_origin = 80 #分裂するまでのカウント数(元数値)
+                    division_num        = 0    #分裂する回数
+                    new_enemy_shot.update(ENEMY_SHOT_NORMAL,ID00, self.enemy[i].posx + 4*8,self.enemy[i].posy + 10,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8, 0,0, 1,0,     0.95,     1,1,    1,0, 0,1,0,        0,   0,0,PRIORITY_FRONT,   0,0,0,0,0,0, division_type,division_count,  0, division_count_origin,division_num, 0, 0,0, 0,0,   0,0)
+                    self.enemy_shot.append(new_enemy_shot)            
+                
+                if self.enemy[i].enemy_flag2 == 1: #反転離脱中の時は
+                    self.enemy[i].move_speed += 0.002 #加速して離脱していく
 
     #画面外に出た敵を消去する
     def update_clip_enemy(self):
