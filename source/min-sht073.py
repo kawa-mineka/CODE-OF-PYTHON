@@ -7,7 +7,7 @@
 #                                    # 
 #        OS windows10(64bit)         #
 #          Editer vs-code            #
-#          Game Engine Pyxel         #
+#         Game Engine Pyxel          #
 #                                    #
 #         Development machine        #
 #           CPU corei5-6500          #
@@ -4006,11 +4006,11 @@ class App:
         self.display_title_time -= 1        #タイトルを表示する時間カウンターを1減らす
         if self.display_title_time <= 0:     #カウンターが0以下になったら・・・
             self.display_title_time = 0     #強制的に0の状態にする
-
+        
         self.title_oscillation_count -= 1    #タイトルグラフイックの振れ幅カウンターを1減らす
         if self.title_oscillation_count < 0:  #カウンターが0以下になったら・・・
             self.title_oscillation_count = 0 #強制的に0の状態にする
-
+        
         self.title_slash_in_count -= 1       #タイトルグラフイックが下から切り込んで競りあがってくる時に使うカウンターを1減らす
         if self.title_slash_in_count < 0:    #カウンターが0以下になったら・・・
             self.title_slash_in_count = 0    #強制的に0の状態にする
@@ -4021,7 +4021,7 @@ class App:
             pygame.mixer.music.set_volume(0.7)      #音量設定(0~1の範囲内)
             pygame.mixer.music.load('assets/music/BGM200-171031-konotenitsukame-loop.wav') #タイトルBGMループ部分のwavファイルを読み込み
             pygame.mixer.music.play(-1)            #タイトルBGMをループ再生
-        
+            
         #全てのカウンター類が0になったらゲームメニューウィンドウを育成する
         if self.title_oscillation_count == 0 and self.title_slash_in_count == 0 and self.display_title_time == 0:
             new_window = Window()
@@ -4060,8 +4060,7 @@ class App:
                 self.cursor_pre_item = self.cursor_item                #
                 self.cursor_pre_decision_item = self.cursor_decision_item #
                 self.cursor_pre_max_item = self.cursor_max_item         # 
-
-
+                
                 new_window = Window()
                 new_window.update(0,0,1,WINDOW_OPEN,\
                 "",DISP_CENTER,\
@@ -4088,8 +4087,7 @@ class App:
                 self.cursor_pre_item = self.cursor_item                #
                 self.cursor_pre_decision_item = self.cursor_decision_item #
                 self.cursor_pre_max_item = self.cursor_max_item         # 
-
-
+                
                 new_window = Window()
                 new_window.update(0,0,0,WINDOW_OPEN,\
                 "",DISP_CENTER,\
@@ -4116,8 +4114,7 @@ class App:
                 self.cursor_pre_item = self.cursor_item                #
                 self.cursor_pre_decision_item = self.cursor_decision_item #
                 self.cursor_pre_max_item = self.cursor_max_item         # 
-
-
+                
                 new_window = Window()
                 new_window.update(0,0,0,WINDOW_OPEN,\
                 "ON",DISP_CENTER,\
@@ -4144,8 +4141,7 @@ class App:
                 self.cursor_pre_item = self.cursor_item                #
                 self.cursor_pre_decision_item = self.cursor_decision_item #
                 self.cursor_pre_max_item = self.cursor_max_item         # 
-
-
+                
                 new_window = Window()
                 new_window.update(0,0,0,WINDOW_OPEN,\
                 "ON",DISP_CENTER,\
@@ -4172,8 +4168,7 @@ class App:
                 self.cursor_pre_item = self.cursor_item                #
                 self.cursor_pre_decision_item = self.cursor_decision_item #
                 self.cursor_pre_max_item = self.cursor_max_item         # 
-
-
+                
                 new_window = Window()
                 new_window.update(0,0,1,WINDOW_OPEN,\
                 "VERY EASY",DISP_LEFT_ALIGN,\
@@ -4202,7 +4197,7 @@ class App:
                     self.auto_move_mode = 4               #移動モードを「リプレイによる自動移動再生」にする
                     self.update_restore_replay_data()       #リプレイデータをリストア(復元)する関数を呼び出す                
                     self.game_status = SCENE_GAME_START_INIT #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
-                
+                     
         elif self.cursor_menu_layer == 1: #メニューが1階層目の選択分岐
             if self.cursor_pre_decision_item == 1 and self.cursor_decision_item == 0:
                 #「SELECT STAGE」→「1」
@@ -4240,7 +4235,7 @@ class App:
                 self.cursor_max_item = self.cursor_pre_max_item         #
                 self.cursor_decision_item = -1
                 self.cursor_pre_decision_item = -1
-            
+                
             elif self.cursor_pre_decision_item == 2 and self.cursor_decision_item == 0:
                 #「SELECT LOOP NUMBER」→「1」
                 self.stage_loop = 1  #ループ数に1週目を代入
@@ -4277,7 +4272,7 @@ class App:
                 self.cursor_max_item = self.cursor_pre_max_item         #
                 self.cursor_decision_item = -1
                 self.cursor_pre_decision_item = -1
-
+                
             elif self.cursor_pre_decision_item == 3 and self.cursor_decision_item == 0:
                 #「BOSS MODE」→「ON」
                 self.boss_test_mode = 1  #ボステストモードをon
@@ -4326,7 +4321,7 @@ class App:
                 self.cursor_max_item = self.cursor_pre_max_item         #
                 self.cursor_decision_item = -1
                 self.cursor_pre_decision_item = -1
-            
+                
             elif self.cursor_pre_decision_item == 5 and self.cursor_decision_item == 0:
                 #「DIFFICULTY」→「VERY_EASY」
                 self.game_difficulty = GAME_VERY_EASY
@@ -4399,7 +4394,7 @@ class App:
                 self.cursor_max_item = self.cursor_pre_max_item         #
                 self.cursor_decision_item = -1
                 self.cursor_pre_decision_item = -1
-    
+
     #!ゲームスタート時の初期化#########################################
     def update_game_start_init(self):
         self.score = 0              #スコア
@@ -4434,17 +4429,17 @@ class App:
         self.star_scroll_speed = 1         #背景の流れる星のスクロールスピード 1=通常スピード 0.5なら半分のスピードとなります
         #self.pow_item_bounce_num = 6       #パワーアップアイテムが画面の左端で跳ね返って戻ってくる回数
                                             #初期値は6でアップグレードすると増えていくです
-
+        
         self.playtime_frame_counter    = 0 #プレイ時間(フレームのカウンター) 60フレームで＝1秒        
         self.one_game_playtime_seconds = 0 #1プレイでのゲームプレイ時間(秒単位)
         
         self.game_play_count = 0        #ゲーム開始から経過したフレームカウント数(1フレームは60分の1秒)1面～今プレイしている面までのトータルフレームカウント数です
         self.rnd09_num = 0            #乱数0~9ルーレットの初期化
-
+        
         if self.auto_move_mode != 4: #リプレイデータでの再生時は乱数の種の更新は行いません
             self.rnd_seed = pyxel.frame_count % 256 #線形合同法を使った乱数関数で使用する乱数種を現在のフレーム数とします(0~255の範囲)
             self.master_rnd_seed = self.rnd_seed    #リプレイデータ記録用として元となる乱数種を保存しておきます
-
+        
         self.claw_type = 0              # クローのタイプ 
                                     # 0=ローリングクロー 1=トレースクロー 2=フィックスクロー 3=リバースクロー
         self.claw_number = 0           # クローの装備数 0=装備無し 1=1機 2=2機 3=3機 4=4機
@@ -4457,7 +4452,7 @@ class App:
         self.claw_shot_speed = 2        #クローショットのスピード（初期値は移動量２ドット）
         
         self.ls_shield_hp = 0          #L'sシールドの耐久力 0=シールド装備していない 1以上はシールド耐久値を示す
-    
+        
         self.claw = []                #クローのリスト クローのリストはステージスタート時に初期化してしまうと次のステージに進んだときクローが消滅してしまうのでgame_start_initで初期化します
         
         #難易度に応じた数値をリストから取得する
@@ -4469,7 +4464,7 @@ class App:
                                                         #将来的には選択した機体で色々な機体のリストがコピーされるはず
         self.missile_table_list = self.j_python_missile_table_list #とりあえずミサイルテーブルリストは初期機体のj_pythonのものをコピーして使用します
                                                         #将来的には選択した機体で色々な機体のリストがコピーされるはず・・・ほんとかなぁ？
-    
+        
         #ゲームスタート時のいろいろなボーナスの処理
         self.shot_exp  += self.start_bonus_shot
         self.missile_exp += self.start_bonus_missile
@@ -4498,7 +4493,7 @@ class App:
         self.my_y = 50    #自機のy座標の初期値
         self.my_vx = 1    #自機のx方向の移動量
         self.my_vy = 0    #自機のy方向の移動量
-
+        
         self.pad_data = 0b0000000000000000  #パッド入力用ビットパターンデータを初期化します
                                     #各ビットの詳細
                                     # 上から 0,0,0,0, RS,LS,START,SELECT,   BY,BX,BB,BA, R,L,D,U
@@ -4514,18 +4509,18 @@ class App:
         self.bg_transparent_color = 0    #BGタイルマップを敷き詰めるときに指定する透明色です          ゲーム中のイベントで変化することもあるのでステージスタート時でも初期化する
         
         self.my_boost_injection_count = 0 #ステージクリア後のブースト噴射用のカウンター
-
+        
         self.timer_flare_flag = 0           #タイマーフレア（触れると物質の時間経過が遅くなるフレア）を放出するかどうかのフラグ
         
-    #    self.auto_move_mode = 0                      #自動移動モードのフラグ
+        #    self.auto_move_mode = 0                      #自動移動モードのフラグ
                                             #    0 = パッドやキーボード入力によって移動 
                                                 #1 = イベントによる自動移動モードとなり設定された位置まで自動で移動して行きます
                                                 #2 = パッドやキーボード入力によって移動し、さらにリプレイデータも記録します
                                                 #4 = リプレイデータを読み出しそのデータで自動移動しリプレイデータを再現します
-
+        
         self.auto_move_mode_x,self.auto_move_mode_y = 0,0 #自動移動モードがonの時はこの座標に向かって毎フレームごと自動で移動して行きます
         self.auto_move_mode_complete = 0               #自動移動モードで目標座標まで移動したらこのフラグを立てます
-
+        
         self.add_appear_flag = 0     #敵を追加発生させる時に立てるフラグです
         
         self.record_games_status = 0  #ポーズを掛けたときに直前のゲームステータスを記録しておく変数
@@ -4534,19 +4529,19 @@ class App:
                                         #(スクロールスピードが小数になったときはこのカウントも少数になるので注意！)
         self.vertical_scroll_count = 0  #ステージ開始から縦スクロールした背景のドット数カウンタ 主に縦スクロールするステージで使用します
                                         #(スクロールスピードが小数になったときはこのカウントも小数になるので注意！)
-
+        
         self.stage_count = 0          #ステージ開始から経過したフレームカウント数(1フレームは60分の1秒)常に整数だよ
         
         self.side_scroll_speed            =1  #横スクロールするスピードの現在値が入ります 1フレームで1ドットスクロール(実数ですのん)
         self.side_scroll_speed_set_value    =1  #横スクロールスピードの設定値(変化量の分だけ1フレームごと増加減させ、この設定値までもって行く)
         self.side_scroll_speed_variation    =0  #横スクロールスピードを変化させる時の差分(変化量)
-
+        
         self.vertical_scroll_speed         =0  #縦スクロールするスピードの現在値が入ります 1フレームで1ドットスクロール(実数ですのん)
         self.vertical_scroll_speed_set_value =0  #縦スクロールスピードの設定値(変化量の分だけ1フレームごと増加減させ、この設定値までもって行く)
         self.vertical_scroll_speed_variation =0  #縦スクロールスピードを変化させる時の差分(変化量)
         
         self.display_cloud_flag    = 0    #背景の流れる雲を表示するかどうかのフラグ(0=表示しない 1=表示する)
-
+        
         self.cloud_append_interval  = 6    #雲を追加させる間隔
         self.cloud_quantity        = 0    #雲の量
         self.cloud_how_flow        = 0    #雲の流れ方
@@ -4556,7 +4551,7 @@ class App:
         self.warning_dialog_display_time  = 0 #WARINIGダイアログの表示時間(フレーム単位)
         self.warning_dialog_logo_time    = 0 #WARNINGグラフイックロゴの表示に掛ける時間(フレーム単位)
         self.warning_dialog_text_time    = 0 #WARNINGテキスト表示に掛ける時間(フレーム単位)
-
+        
         self.stage_clear_dialog_flag        = 0 #STAGE CLEARダイアログを表示するかどうかのフラグ
         self.stage_clear_dialog_display_time  = 0 #STAGE CLEARダイアログの表示時間(フレーム単位)
         self.stage_clear_dialog_logo_time1    = 0 #STAGE CLEARグラフイックロゴの表示に掛ける時間その１(フレーム単位)
@@ -4580,19 +4575,19 @@ class App:
         self.fast_forward_destruction_num = 0       #早回しの条件を満たすのに必要な「破壊するべき編隊の総数」が入ります
         self.fast_forward_destruction_count = 0     #破壊するべき編隊の総数」が1以上ならば編隊を破壊すると次の編隊の出現カウントがこの数値だけ少なくなり出現が早まります
         self.add_appear_flag = 0                 #早回しの条件をすべて満たしたときに建つフラグです、このフラグが立った時、イベントリストに「EVENT_ADD_APPEAR_ENEMY」があったらそこで敵編隊を追加発生させます
-
+        
         self.my_rolling_flag = 0 #0=通常の向き  1=下方向に移動中のキャラチップ使用  2=上方向に移動中のキャラチップ使用
         self.my_moved_flag = 0   #自機が移動したかどうかのフラグ（トレースクローの時、自機のＸＹ座標を履歴リストに記録するのか？しないのか？で使う）
                             #0=自機は止まっているので座標履歴リストに記録はしない 
                             #1=自機は移動したので座標履歴リストに記録する
         
         self.invincible_counter = 0 #無敵時間(単位はフレーム)のカウンタ 0の時以外は無敵状態です
-
+        
         self.enemy_bound_collision_flag = 0 #ホッパー君が地面に接触してバウンドしたかどうかのフラグ(デバッグ用に使います)
         self.mountain_x = 0              #8wayフリースクロール＋ラスタースクロール時の背景に表示される山のBGX座標用の変数です（デバッグ様に使用します）
         self.cp = 0                    #外積計算用の変数(何故か判らないけど関数内で宣言せずに使うとintじゃなくてtupleになってしまうので・・・何故？)
         self.point_inside_triangle_flag = 0 #三角形の中に点が存在するかを判別する関数用のフラグを初期化
-
+        
         #リスト群の初期化#############################################################################
         #新しいクラスを作った時はここで必ず初期化するコードを記述する事！！！！！！
         #リストは初期化しないと使えないっポイ！？ぞ・・・っと・・・・・・
@@ -4653,18 +4648,18 @@ class App:
         #   DISP_OFF or DISP_ON            表示オフ/表示オン
         #EVENT_ENTRY_SPARK_ON_OFF  大気圏突入の火花表示のon/off
         #   SPARK_OFF or SPARK_ON           火花表示on/off
-    
+        
         #ボステストモード専用のボスだけを出現させるイベントリスト
         self.event_list_boss_test_mode = [
             [   50,EVENT_WARNING,500,120,240],
             [  100,EVENT_BOSS],
             [99999999],]
-        
+            
         self.event_list_no_enemy_mode = [
             [200000,EVENT_WARNING,500,120,240],
             [200200,EVENT_BOSS],
             [99999999],]
-        
+            
         self.event_list_stage_mountain_region_l1= [
             [ 100,EVENT_BG_SCREEN_ON_OFF,BG_BACK,DISP_OFF],
             [ 110,EVENT_ENTRY_SPARK_ON_OFF,SPARK_OFF],
@@ -4686,22 +4681,22 @@ class App:
             [ 892,EVENT_ENEMY,SAISEE_RO,169, 50   ],
             [ 893,EVENT_ENEMY,SAISEE_RO,168, 50+10],
             [ 900,EVENT_SCROLL,SCROLL_NUM_SET,    8,0.5,        0.5,0.01],
-
+            
             [ 910,EVENT_BG_SCREEN_ON_OFF,BG_BACK,DISP_ON],
-
+            
             [ 951,EVENT_ENEMY,SAISEE_RO,170, 50-20],
             [ 952,EVENT_ENEMY,SAISEE_RO,169, 50   ],
             [ 953,EVENT_ENEMY,SAISEE_RO,168, 50+20],
             
             [1000,EVENT_CLOUD,CLOUD_NUM_SET,6,1,-0.25,1],
             [1010,EVENT_CLOUD,CLOUD_START],
-
+            
             [1051,EVENT_ENEMY,SAISEE_RO,170, 50-30],
             [1052,EVENT_ENEMY,SAISEE_RO,169, 50-20],
             [1053,EVENT_ENEMY,SAISEE_RO,168, 50   ],
             [1054,EVENT_ENEMY,SAISEE_RO,167, 50+20],
             [1055,EVENT_ENEMY,SAISEE_RO,166, 50+30],
-
+            
             [1100,EVENT_ENEMY,SAISEE_RO,170, 30   ],
             [1110,EVENT_ENEMY,SAISEE_RO,170, 30   ],
             [1120,EVENT_ENEMY,SAISEE_RO,170, 30   ],
@@ -4711,7 +4706,7 @@ class App:
             [1160,EVENT_ENEMY,SAISEE_RO,170, 30   ],
             [1170,EVENT_ENEMY,SAISEE_RO,170, 30   ],
             [1180,EVENT_ENEMY,SAISEE_RO,170, 30   ],
-
+            
             [1300,EVENT_ENEMY,SAISEE_RO,170, 70   ],
             [1310,EVENT_ENEMY,SAISEE_RO,170, 70   ],
             [1320,EVENT_ENEMY,SAISEE_RO,170, 70   ],
@@ -4721,7 +4716,7 @@ class App:
             [1360,EVENT_ENEMY,SAISEE_RO,170, 70   ],
             [1370,EVENT_ENEMY,SAISEE_RO,170, 70   ],
             [1380,EVENT_ENEMY,SAISEE_RO,170, 70   ],
-
+            
             [1451,EVENT_ENEMY,SAISEE_RO,170, 10   ],
             [1452,EVENT_ENEMY,SAISEE_RO,169, 20   ],
             [1453,EVENT_ENEMY,SAISEE_RO,168, 30   ],
@@ -4735,7 +4730,7 @@ class App:
             [1500,EVENT_DISPLAY_STAR,           DISP_OFF],
             [1510,EVENT_CHANGE_BG_CLS_COLOR,        12],
             [1560,EVENT_CHANGE_BG_TRANSPARENT_COLOR,  12],
-
+            
             [1561,EVENT_ENEMY,SAISEE_RO,170, 10   ],
             [1562,EVENT_ENEMY,SAISEE_RO,169, 20   ],
             [1563,EVENT_ENEMY,SAISEE_RO,168, 30   ],
@@ -4745,62 +4740,62 @@ class App:
             [1567,EVENT_ENEMY,SAISEE_RO,164, 70   ],
             [1568,EVENT_ENEMY,SAISEE_RO,163, 80   ],
             [1569,EVENT_ENEMY,SAISEE_RO,162, 90   ],
-
+            
             [1600,EVENT_CLOUD,CLOUD_NUM_SET,6,2,-0.4,1],
             
             [1610,EVENT_ENEMY,VOLDAR,168, 0],
-
+            
             
             [1710,EVENT_ENEMY,RAY_BLASTER,168, 40-20],
             [1720,EVENT_ENEMY,RAY_BLASTER,168, 40   ],
             [1730,EVENT_ENEMY,RAY_BLASTER,168, 40+20],
-
+            
             [1810,EVENT_ENEMY,RAY_BLASTER,168, 60-20],
             [1850,EVENT_ENEMY,RAY_BLASTER,168, 60   ],
             [1890,EVENT_ENEMY,RAY_BLASTER,168, 60+20],
             
             
-
+            
             [2300,EVENT_SCROLL,SCROLL_SPEED_CHANGE,0.5,-0.01],
             
             [2310,EVENT_RASTER_SCROLL,RASTER_SCROLL_OFF,1],
-
+            
             [2340,EVENT_ENEMY,TWIN_ARROW,160,  20],
             [2341,EVENT_ENEMY,TWIN_ARROW,160,  60],
             [2342,EVENT_ENEMY,TWIN_ARROW,160, 100],
-
+            
             [2600,EVENT_ENEMY,TWIN_ARROW,160, 60   ],
             [2601,EVENT_ENEMY,TWIN_ARROW,160, 60+10],
             [2602,EVENT_ENEMY,TWIN_ARROW,160, 60-10],
             [2603,EVENT_ENEMY,TWIN_ARROW,160, 60+20],
             [2604,EVENT_ENEMY,TWIN_ARROW,160, 60-20],
-
+            
             [2740,EVENT_ENEMY,TWIN_ARROW,120,  -8],
             [2741,EVENT_ENEMY,TWIN_ARROW,160, 60],
             [2742,EVENT_ENEMY,TWIN_ARROW,120,  130],
-
+            
             [2840,EVENT_ENEMY,TWIN_ARROW,120,  -8],
             [2841,EVENT_ENEMY,TWIN_ARROW,80,  -8],
             [2842,EVENT_ENEMY,TWIN_ARROW,160, 60],
             [2843,EVENT_ENEMY,TWIN_ARROW,80,  130],
             [2844,EVENT_ENEMY,TWIN_ARROW,120,  130],
-
+            
             [3000,EVENT_SCROLL,SCROLL_SPEED_CHANGE_VERTICAL,0,-0.004],
             [3100,EVENT_CLOUD,CLOUD_STOP],
             [3110,EVENT_ENTRY_SPARK_ON_OFF,SPARK_OFF],
-
+            
             [3200,EVENT_WARNING,500,120,240],
-
+            
             
             [3320,EVENT_SCROLL,SCROLL_SPEED_CHANGE,3.0,0.0001],
             [3340,EVENT_BOSS],
             
             [3420,EVENT_SCROLL,SCROLL_SPEED_CHANGE,4.0,0.001],
-
-
+            
+            
             
             [99999999],]
-        
+            
         self.event_list_stage_mountain_region_l2= [
             
             [ 300,EVENT_SCROLL,SCROLL_NUM_SET,    2,0.5,        0.5,0.01],
@@ -4814,20 +4809,20 @@ class App:
             [ 900,EVENT_SCROLL,SCROLL_NUM_SET,    8,0.5,        0.5,0.01],
             
             [1000,EVENT_CLOUD,CLOUD_NUM_SET,6,1,-0.25,1],
-
+            
             [1010,EVENT_CLOUD,CLOUD_START],
             
             [1500,EVENT_DISPLAY_STAR,           0],
             [1510,EVENT_CHANGE_BG_CLS_COLOR,        12],
             [1560,EVENT_CHANGE_BG_TRANSPARENT_COLOR,  12],
             
-
+            
             [1600,EVENT_CLOUD,CLOUD_NUM_SET,6,2,-0.4,1],
             
             [2300,EVENT_SCROLL,SCROLL_SPEED_CHANGE,0.5,-0.01],
             
             [2310,EVENT_RASTER_SCROLL,RASTER_SCROLL_OFF,1],
-
+            
             [3000,EVENT_SCROLL,SCROLL_SPEED_CHANGE_VERTICAL,0,-0.004],
             [3100,EVENT_CLOUD,CLOUD_STOP],
             [3200,EVENT_SCROLL,SCROLL_SPEED_CHANGE,3.0,0.0001],
@@ -4839,11 +4834,11 @@ class App:
             [9000,EVENT_SCROLL,SCROLL_SPEED_CHANGE_VERTICAL,-0.05,-0.01],
             [11000,EVENT_SCROLL,SCROLL_SPEED_CHANGE_VERTICAL,0.05,0.01],
             [14000,EVENT_SCROLL,SCROLL_SPEED_CHANGE_VERTICAL,-0.05,-0.01],
-
-
+            
+            
             
             [99999999],]
-        
+            
         self.event_list_stage_mountain_region_dummy= [
             [99999999],]
             
@@ -4854,26 +4849,26 @@ class App:
             [ 500,EVENT_ENEMY,CIR_COIN    ,160, 90   ,6],
             [ 700,EVENT_ENEMY,CIR_COIN    ,160, 20   ,6],
             [ 900,EVENT_ENEMY,CIR_COIN    ,160, 80   ,6],
-
+            
             [950,EVENT_ADD_APPEAR_ENEMY,CIR_COIN,160, 60,10],
             
             [1050,EVENT_ENEMY,SAISEE_RO,160, 60-24],
             [1051,EVENT_ENEMY,SAISEE_RO,160, 60   ],
             [1052,EVENT_ENEMY,SAISEE_RO,160, 60+24],
-
+            
             [1080,EVENT_ENEMY,SAISEE_RO,160, 40-24],
             [1081,EVENT_ENEMY,SAISEE_RO,160, 40,  ],
             [1082,EVENT_ENEMY,SAISEE_RO,160, 40+24],
             
             [1095,EVENT_ENEMY,GREEN_LANCER,180,10],
-
+            
             [1100,EVENT_ENEMY,CIR_COIN,    160,20    ,7],
             [1300,EVENT_ENEMY,CIR_COIN,    160,80    ,7],
-
+            
             [1400,EVENT_ENEMY,TWIN_ARROW,160, 40],
             [1401,EVENT_ENEMY,TWIN_ARROW,160, 60],
             [1402,EVENT_ENEMY,TWIN_ARROW,160, 80],
-
+            
             [1500,EVENT_ENEMY,TWIN_ARROW,160,  20],
             [1501,EVENT_ENEMY,TWIN_ARROW,160,  60],
             [1502,EVENT_ENEMY,TWIN_ARROW,160, 100],
@@ -4883,65 +4878,65 @@ class App:
             [1602,EVENT_ENEMY,TWIN_ARROW,160, 60-10],
             [1603,EVENT_ENEMY,TWIN_ARROW,160, 60+20],
             [1604,EVENT_ENEMY,TWIN_ARROW,160, 60-20],
-
+            
             [3000,EVENT_SCROLL,SCROLL_SPEED_CHANGE,-4,-0.001],
             [4800,EVENT_SCROLL,SCROLL_STOP],
             [5010,EVENT_SCROLL,SCROLL_SPEED_CHANGE,1, 0.002],
             [6000,EVENT_SCROLL,SCROLL_SPEED_CHANGE,5, 0.002],
-
+            
             [7000,EVENT_WARNING,500,120,240],
             [7300,EVENT_BOSS],
             [99999999],]
-
+            
         self.event_list_stage_advance_base_l2= [
             [  10,EVENT_FAST_FORWARD_NUM,4,30],
             [ 200,EVENT_ENEMY,CIR_COIN    ,160, 10   ,6],
             [ 500,EVENT_ENEMY,CIR_COIN    ,160, 90   ,6],
             [ 700,EVENT_ENEMY,CIR_COIN    ,160, 20   ,6],
             [ 900,EVENT_ENEMY,CIR_COIN    ,160, 80   ,6],
-
+            
             [950,EVENT_ADD_APPEAR_ENEMY,CIR_COIN,160, 60,10],
             
             [1050,EVENT_ENEMY,SAISEE_RO,160, 60-24],
             [1051,EVENT_ENEMY,SAISEE_RO,160, 60   ],
             [1052,EVENT_ENEMY,SAISEE_RO,160, 60+24],
-
+            
             [1080,EVENT_ENEMY,SAISEE_RO,160, 40-24],
             [1081,EVENT_ENEMY,SAISEE_RO,160, 40,  ],
             [1082,EVENT_ENEMY,SAISEE_RO,160, 40+24],
             
             [1095,EVENT_ENEMY,GREEN_LANCER,180,10],
-
+            
             [6000,EVENT_WARNING,500,120,240],
             [6300,EVENT_BOSS],
             [99999999],]
-        
+            
         self.event_list_stage_advance_base_l3= [    
             [  10,EVENT_FAST_FORWARD_NUM,4,30],
             [ 200,EVENT_ENEMY,CIR_COIN    ,160, 10   ,6],
             [ 500,EVENT_ENEMY,CIR_COIN    ,160, 90   ,6],
             [ 700,EVENT_ENEMY,CIR_COIN    ,160, 20   ,6],
             [ 900,EVENT_ENEMY,CIR_COIN    ,160, 80   ,6],
-
+            
             [950,EVENT_ADD_APPEAR_ENEMY,CIR_COIN,160, 60,10],
             
             [1050,EVENT_ENEMY,SAISEE_RO,160, 60-24],
             [1051,EVENT_ENEMY,SAISEE_RO,160, 60   ],
             [1052,EVENT_ENEMY,SAISEE_RO,160, 60+24],
-
+            
             [1080,EVENT_ENEMY,SAISEE_RO,160, 40-24],
             [1081,EVENT_ENEMY,SAISEE_RO,160, 40,  ],
             [1082,EVENT_ENEMY,SAISEE_RO,160, 40+24],
             
             [1095,EVENT_ENEMY,GREEN_LANCER,180,10],
-
+            
             [1100,EVENT_ENEMY,CIR_COIN,    160,20    ,7],
             [1300,EVENT_ENEMY,CIR_COIN,    160,80    ,7],
-
+            
             [1400,EVENT_ENEMY,TWIN_ARROW,160, 40],
             [1401,EVENT_ENEMY,TWIN_ARROW,160, 60],
             [1402,EVENT_ENEMY,TWIN_ARROW,160, 80],
-
+            
             [1500,EVENT_ENEMY,TWIN_ARROW,160,  20],
             [1501,EVENT_ENEMY,TWIN_ARROW,160,  60],
             [1502,EVENT_ENEMY,TWIN_ARROW,160, 100],
@@ -4955,7 +4950,7 @@ class App:
             [6000,EVENT_WARNING,500,120,240],
             [6300,EVENT_BOSS],
             [99999999],] 
-        
+            
         #ゲーム全体のイベントリスト(ステージ、ループ数も考慮されてます)
         #フォーマット(このリストの書き方）は
         # game_event_list[
@@ -4969,14 +4964,14 @@ class App:
         #みたいな感じで書きます
         
         self.game_event_list = [
-                           [self.event_list_stage_mountain_region_l1,
+                            [self.event_list_stage_mountain_region_l1,
                             self.event_list_stage_mountain_region_l1,
                             self.event_list_stage_mountain_region_l1],
-                           
-                           [self.event_list_stage_advance_base_l1   ,
-                            self.event_list_stage_advance_base_l2   ,
+                            
+                            [self.event_list_stage_advance_base_l1,
+                            self.event_list_stage_advance_base_l2,
                             self.event_list_stage_advance_base_l3]
-                           ]
+                            ]
         
         #self.game_event_list = [self.event_list_no_enemy_mode,  self.event_list_no_enemy_mode,  self.event_list_no_enemy_mode]
         
@@ -4987,25 +4982,25 @@ class App:
         #                           アニメスピード(1なら1フレーム毎 2だと2フレーム毎って感じ),
         #                           アニメ枚数(横一列に並べてください)]
         self.bg_animation_list_mountain_region = [
-                           [192,192,6,8],                          
-                           [144, 64,6,8],
-                           ]
-    
+                            [192,192,6,8],                          
+                            [144, 64,6,8],
+                            ]
+        
         if self.boss_test_mode == 1:
             self.event_list = self.event_list_boss_test_mode #ボステストモードが1の時はボスだけが出現するイベントリストを登録します
         else:
             self.event_list = self.game_event_list[self.stage_number - 1][self.stage_loop - 1] 
-                                                              #self.event_list_stage_advance_base_l1        
-                                                              #とりあえずイベントリストはadvance_baseステージのものをコピーして使用します
-                                                              #将来的にはステージやループ回数を反映する・・・はず
-
+                                                                #self.event_list_stage_advance_base_l1        
+                                                                #とりあえずイベントリストはadvance_baseステージのものをコピーして使用します
+                                                                #将来的にはステージやループ回数を反映する・・・はず
+        
         self.bg_animation_list = self.bg_animation_list_mountain_region    #とりあえずBGアニメーションパターンリストはmountain_regionのものをコピーして使用します
-
+        
         #自機のXY座標をトレースクローのXY座標としてコピーし、初期化を行う(とりあえず60要素埋め尽くす)(60要素=60フレーム分=1秒過去分まで記録される)
         for _i in range(TRACE_CLAW_BUFFER_SIZE):
-           new_traceclaw = Trace_coordinates()
-           new_traceclaw.update(self.my_x,self.my_y)
-           self.claw_coordinates.append(new_traceclaw)
+            new_traceclaw = Trace_coordinates()
+            new_traceclaw.update(self.my_x,self.my_y)
+            self.claw_coordinates.append(new_traceclaw)
         
         self.create_raster_scroll_data() #ラスタースクロール用のデータの初期化＆育成
 
@@ -5019,39 +5014,39 @@ class App:
             self.my_vx += 0.025 #速度0.01で加速していく
             self.my_boost_injection_count += 1 #ステージクリア後のブースト噴射用のカウンターを1増やしていく
             self.my_moved_flag = 1          #トレースクローも動かしたいので自機移動フラグOnにする
-
+            
         elif self.auto_move_mode == 0: #手動移動モードの処理
             self.my_vx,self.my_vy = 0,0 #自機の自機の移動量(vx,vy)を0に初期化する
-
+            
             # 左入力されたら  ｘ座標を  my_speedの数値だけ減らす
             if pyxel.btn(pyxel.KEY_LEFT) or pyxel.btn(pyxel.GAMEPAD_1_LEFT) or pyxel.btn(pyxel.GAMEPAD_2_LEFT):
                 self.my_moved_flag = 1#自機移動フラグOn
                 self.my_vx = -1
                 self.pad_data += PAD_LEFT
-
+                
             # 右入力されたら  ｘ座標を  my_speedの数値だけ増やす
             if pyxel.btn(pyxel.KEY_RIGHT) or pyxel.btn(pyxel.GAMEPAD_1_RIGHT) or pyxel.btn(pyxel.GAMEPAD_2_RIGHT):
                 self.my_moved_flag = 1#自機移動フラグOn
                 self.my_vx = 1
                 self.pad_data += PAD_RIGHT
-
+                
             # 上入力されたら  y座標を  my_speedの数値だけ減らす
             if pyxel.btn(pyxel.KEY_UP) or pyxel.btn(pyxel.GAMEPAD_1_UP) or pyxel.btn(pyxel.GAMEPAD_2_UP):
                 self.my_rolling_flag = 2
                 self.my_moved_flag = 1#自機移動フラグOn
                 self.my_vy = -1
                 self.pad_data += PAD_UP
-
+            
             # 下入力されたら  y座標を  my_speedの数値だけ増やす
             if pyxel.btn(pyxel.KEY_DOWN) or pyxel.btn(pyxel.GAMEPAD_1_DOWN) or pyxel.btn(pyxel.GAMEPAD_2_DOWN):
                 self.my_rolling_flag = 1
                 self.my_moved_flag = 1#自機移動フラグOn
                 self.my_vy = 1
                 self.pad_data += PAD_DOWN
-        
+                
             self.my_x += self.my_vx * self.my_speed #自機の移動量(vx,vy)と自機の速度(speed)を使って自機の座標を更新する（移動！）
             self.my_y += self.my_vy * self.my_speed
-        
+            
         elif self.auto_move_mode == 4: #リプレイモードの処理
             self.my_vx,self.my_vy = 0,0 #自機の自機の移動量(vx,vy)を0に初期化する
             #リプレイデータを調べて左入力だったのなら  x座標を  my_speedの数値だけ減らす
@@ -5074,10 +5069,10 @@ class App:
                 self.my_vy = 1
             self.my_x += self.my_vx * self.my_speed #自機の移動量(vx,vy)と自機の速度(speed)を使って自機の座標を更新する（移動！）
             self.my_y += self.my_vy * self.my_speed
-        
+            
         elif self.auto_move_mode == 1 and self.auto_move_mode_complete == 0: #自動移動モード＆まだ移動完了フラグが建っていなかったら・・・
             self.my_vx,self.my_vy = 0,0 #自機の自機の移動量(vx,vy)を0に初期化する
-
+            
             #左に自動移動
             if self.my_x > self.auto_move_mode_x:
                 self.my_moved_flag = 1#自機移動フラグOn
@@ -5099,7 +5094,7 @@ class App:
             
             self.my_x += self.my_vx #自機の移動量(vx,vy)を使って自機の座標を更新する（移動！）
             self.my_y += self.my_vy
-
+            
             if -1 <= self.my_x - self.auto_move_mode_x <= 1 and -1 <= self.my_y - self.auto_move_mode_y <= 1: #自機座標(x,y)と移動目的先の座標の差が誤差+-1以内ならば
                 self.auto_move_mode_complete = 1   #自動移動完了フラグをonにする
                 if self.game_status == SCENE_PLAY: #ゲームステータスが「PLAY」の時だけ
@@ -5117,13 +5112,13 @@ class App:
             new_traceclaw = Trace_coordinates()#new_traceclawにTrace_coordinatesクラスの型を登録
             new_traceclaw.update(self.my_x,self.my_y)#クラス登録された（クラス設計された？）new_traceclawに自機のＸＹ座標データを入れてインスタンスを作成する
             self.claw_coordinates.append(new_traceclaw)#1フレームごとに自機のXY座標の入ったインスタンスをclaw_coordinatesリストに追加していく(append)
-
+            
             del self.claw_coordinates[0]#一番古いXY座標データをdelする(一番古いXY座標のインデックス値は0)
-
+            
             #自機が移動したフラグがonならリバースクロー用のショット方向ベクトルも書き込む
             self.reverse_claw_svx = -(self.my_vx)#リバースクロー用のショット方向ベクトルは自機移動ベクトルを反転したものとなります
             self.reverse_claw_svy = -(self.my_vy)
-    
+
     #キーボードの1が推されたらショット経験値を増やしていく                              KEY 1
     def update_powerup_shot(self):
         if pyxel.btnp(pyxel.KEY_1):
@@ -5131,7 +5126,7 @@ class App:
             self.level_up_my_shot() #自機ショットの経験値を調べ可能な場合レベルアップをさせる関数を呼び出す
             if self.shot_level > 10:
                 self.shot_level = 0
-    
+
     #キーボードの2が推されたらミサイル経験値を増やしていく                              KEY 2
     def update_powerup_missile(self):
         if pyxel.btnp(pyxel.KEY_2):
@@ -5150,8 +5145,7 @@ class App:
                 self.my_speed = 1.75
             else:
                 self.my_speed = 1
-    
-    
+
     #スペースキーかゲームパッドAが押されたかどうか？もしくはリプレイモードでショット発射したのか調べる
     def update_check_fire_shot(self):
         if self.auto_move_mode == 0: #手動移動モードの場合は
@@ -5161,7 +5155,7 @@ class App:
         elif self.auto_move_mode == 4: #リプレイモードの場合は
             if self.backup_replay_data[self.replay_farame] & 0b0000000000010000 == 0b0000000000010000: #リプレイデータを調べてPAD Aが押された記録だったのなら...
                 self.update_fire_shot() #ショット発射関数呼び出し！
-    
+
     #ショットを発射する!!!!!
     def update_fire_shot(self):
             if self.shot_level == SHOT_LV7_WAVE_CUTTER_LV1:#ウェーブカッターLv1発射
@@ -5173,7 +5167,7 @@ class App:
                         new_shot.update(self.shot_level,self.my_x + 5,self.my_y -4,      3,0,  8,16,  0,   2,1)
                         
                         self.shots.append(new_shot)
-
+                        
             if self.shot_level == SHOT_LV8_WAVE_CUTTER_LV2:#ウェーブカッターLv2発射
                 if len(self.shots) < self.shot_rapid_of_fire:
                     if (pyxel.frame_count % 8) == 0:
@@ -5181,7 +5175,7 @@ class App:
                         new_shot = Shot()
                         new_shot.update(self.shot_level,self.my_x + 5,self.my_y -8,      3,0,  8,24,  0,   2,1)
                         self.shots.append(new_shot)
-            
+                        
             if self.shot_level == SHOT_LV9_WAVE_CUTTER_LV3:#ウェーブカッターLv3発射
                 if len(self.shots) < self.shot_rapid_of_fire:
                     if (pyxel.frame_count % 8) == 0:
@@ -5189,7 +5183,7 @@ class App:
                         new_shot = Shot()
                         new_shot.update(self.shot_level,self.my_x + 5,self.my_y -12,      3,0,  8,32,  0,   2,1)
                         self.shots.append(new_shot)
-            
+                        
             if self.shot_level == SHOT_LV10_WAVE_CUTTER_LV4:#ウェーブカッターLv4発射
                 if len(self.shots) < self.shot_rapid_of_fire:
                     if (pyxel.frame_count % 6) == 0:
@@ -5197,7 +5191,7 @@ class App:
                         new_shot = Shot()
                         new_shot.update(self.shot_level,self.my_x + 5,self.my_y -12,      4,0,  8,32,  0,   2,1)
                         self.shots.append(new_shot)
-
+                        
             if self.shot_level == SHOT_LV4_LASER:#レーザー発射
                 if len(self.shots) < 20:
                     if (pyxel.frame_count % 2) == 0:
@@ -5205,7 +5199,7 @@ class App:
                         new_shot = Shot()
                         new_shot.update(self.shot_level,self.my_x + 5,self.my_y,         3,1,  8,8,  0,   0.3,1)
                         self.shots.append(new_shot)
-
+                        
             if self.shot_level == SHOT_LV5_TWIN_LASER:#ツインレーザー発射
                 if len(self.shots) < 40:
                     if (pyxel.frame_count % 2) == 0:
@@ -5213,11 +5207,11 @@ class App:
                         new_shot = Shot()
                         new_shot.update(self.shot_level,self.my_x + 5,self.my_y - 3,     3,1,  8,8,  -3,  0.3,1)
                         self.shots.append(new_shot)
-
+                        
                         new_shot = Shot()
                         new_shot.update(self.shot_level,self.my_x + 5,self.my_y + 3,     3,1,  8,8,    3, 0.3,1)
                         self.shots.append(new_shot)
-
+                        
             if self.shot_level == SHOT_LV6_3WAY_LASER:#３ＷＡＹレーザー発射
                 if len(self.shots) < 80:
                     if (pyxel.frame_count % 2) == 0:
@@ -5225,37 +5219,36 @@ class App:
                         new_shot = Shot()
                         new_shot.update(self.shot_level,self.my_x + 1,self.my_y  -1,    1,-1.08,   8,8,   -1,  0.2,1)
                         self.shots.append(new_shot)
-
+                        
                         new_shot = Shot()
                         new_shot.update(self.shot_level,self.my_x + 6,self.my_y,       3,1,      8,8,    0,  0.3,1)
                         self.shots.append(new_shot)
-
+                        
                         pyxel.play(2,4)
                         new_shot = Shot()
                         new_shot.update(self.shot_level,self.my_x + 6,self.my_y + 1,    2, 1.07,   8,8,    1,  0.2,1)
                         self.shots.append(new_shot)
-            
-            
-            
+                        
+                        
             self.count_missile_type(5,5,5,5) #ミサイルタイプ5(ペネトレートロケット）がいくつ存在するのか調べる
             if self.type_check_quantity == 0 and self.select_sub_weapon_id == PENETRATE_ROCKET:#もしペネトレートロケットが全く存在しないのなら発射する！！！
                 new_missile = Missile()
                 new_missile.update(5,self.my_x + 4,self.my_y,   -0.8,-0.7,   6,    1   ,0,0,   0,1,   8,8, 0,0,  0,0) #ペネトレートロケット
                 self.missile.append(new_missile)#ペネトレートロケット育成
-
+                
                 new_missile = Missile()
                 new_missile.update(5,self.my_x + 4,self.my_y,   -0.8,-0.7,   6,    1   ,0,0,   0,-1,  8,8, 0,0,  0,0) #ペネトレートロケット
                 self.missile.append(new_missile)#ペネトレートロケット育成
-
+                
                 new_missile = Missile()
                 new_missile.update(5,self.my_x + 4,self.my_y,   -1,-0.8,   6,    1   ,0,0,   0,1,    8,8, 0,0,  0,0) #ペネトレートロケット
                 self.missile.append(new_missile)#ペネトレートロケット育成
-
+                
                 new_missile = Missile()
                 new_missile.update(5,self.my_x + 4,self.my_y,   -1,-0.8,   6,    1   ,0,0,   0,-1,    8,8, 0,0,  0,0) #ペネトレートロケット
                 self.missile.append(new_missile)#ペネトレートロケット育成
-
-
+                
+                
             self.count_missile_type(4,4,4,4) #ミサイルタイプ4(テイルショット）がいくつ存在するのか調べる    
             if self.type_check_quantity < self.sub_weapon_tail_shot_level_data_list[self.sub_weapon_list[TAIL_SHOT]-1][1] and self.select_sub_weapon_id == TAIL_SHOT and (pyxel.frame_count % 6) == 0:#もしテイルショットが全く存在しないのなら発射する！！！
                 level = self.sub_weapon_list[TAIL_SHOT] #現在のテイルショットのレベルを取得する
@@ -5271,7 +5264,7 @@ class App:
                         new_missile = Missile()
                         new_missile.update(4,self.my_x - 4,self.my_y - 2,   -2*speed,-0.5,   power,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
                         self.missile.append(new_missile)#斜め後ろ(上)のテイルショット育成
-
+                        
                         new_missile = Missile()
                         new_missile.update(4,self.my_x - 4,self.my_y + 2,   -2*speed, 0.5,   power,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
                         self.missile.append(new_missile)#斜め後ろ(下)のテイルショット育成
@@ -5279,21 +5272,21 @@ class App:
                     new_missile = Missile()
                     new_missile.update(4,self.my_x - 4,self.my_y - 2,   -2*speed,0,   power,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
                     self.missile.append(new_missile)#ツインテイルショット(上)育成
-
+                    
                     new_missile = Missile()
                     new_missile.update(4,self.my_x - 4,self.my_y + 2,   -2*speed,0,   power,1,   0,0,   0,0,   8,8,  0,0,  0,0) #テイルショット
                     self.missile.append(new_missile)#ツインテイルショット(下)育成
-
+                    
             self.count_missile_type(6,6,6,6) #ミサイルタイプ6(サーチレーザー）がいくつ存在するのか調べる
             if self.type_check_quantity <= 1 and self.select_sub_weapon_id == SEARCH_LASER and pyxel.frame_count % 32 == 0: #サーチレーザーが全く存在しないのなら発射する！！！
                 new_missile = Missile()
                 new_missile.update(6,self.my_x + 14,self.my_y,   2,0,   1,1,   0,1,   0,0,   16,8,  0,0,  0,0) #サーチレーザー(flag2=1なのでちょっとｘ軸前方向に対して索敵する)
                 self.missile.append(new_missile)#サーチレーザー育成
-
+                
                 new_missile = Missile()
                 new_missile.update(6,self.my_x    ,self.my_y,   2,0,   1,1,   0,0,   0,0,   16,8,  0,0,  0,0) #サーチレーザー
                 self.missile.append(new_missile)#サーチレーザー育成
-
+                
             self.count_missile_type(7,7,7,7) #ミサイルタイプ7(ホーミングミサイル）がいくつ存在するのか調べる
             if self.type_check_quantity <= self.sub_weapon_homing_missile_level_data_list[self.sub_weapon_list[HOMING_MISSILE]-1][1] - 4 and self.select_sub_weapon_id == HOMING_MISSILE and pyxel.frame_count % 8 == 0: #ホーミングミサイルの個数が1以下なら発射する！！！
                 level = self.sub_weapon_list[HOMING_MISSILE] #現在のホーミングミサイルのレベルを取得する
@@ -5303,20 +5296,20 @@ class App:
                 new_missile = Missile()
                 new_missile.update(7,self.my_x - 4,self.my_y,   -2*speed,1*speed,   power,1,   0,0,   0,0,   8,8,     200,60,   2,1)
                 self.missile.append(new_missile)#ホーミングミサイル育成
-
+                
                 new_missile = Missile()
                 new_missile.update(7,self.my_x - 4,self.my_y,   -2*speed,-1*speed,   power,1,   0,0,   0,0,   8,8,     200,60,   2,1)
                 self.missile.append(new_missile)#ホーミングミサイル育成
-
-
+                
+                
                 new_missile = Missile()
                 new_missile.update(7,self.my_x + 4,self.my_y + 2,   0*speed,2*speed,   power,1,   0,0,   0,0,   8,8,     200,60,   2,1)
                 self.missile.append(new_missile)#ホーミングミサイル育成
-
+                
                 new_missile = Missile()
                 new_missile.update(7,self.my_x + 4,self.my_y - 2,   0*speed,-2*speed,   power,1,   0,0,   0,0,   8,8,     200,60,   2,1)
                 self.missile.append(new_missile)#ホーミングミサイル育成
-
+                
             if len(self.shots) < (self.shot_rapid_of_fire + (self.shot_level) * 2):#バルカンショットの発射
                 if (pyxel.frame_count % 6) == 0:    
                     if self.shot_level == SHOT_LV0_VULCAN_SHOT:#初期ショット バルカンショット1連装
@@ -5329,7 +5322,7 @@ class App:
                         new_shot = Shot()
                         new_shot.update(self.shot_level,self.my_x + 6,self.my_y - 2,4,0,  8,8,    0,  1,1)
                         self.shots.append(new_shot)
-
+                        
                         new_shot = Shot()
                         new_shot.update(self.shot_level,self.my_x + 6,self.my_y + 2,4,0,  8,8,     0,  1,1)
                         self.shots.append(new_shot)
@@ -5338,11 +5331,11 @@ class App:
                         new_shot = Shot()
                         new_shot.update(self.shot_level,self.my_x + 6,self.my_y - 2  ,5,-0.3,  8,8,    0,  1,1)
                         self.shots.append(new_shot)
-
+                        
                         new_shot = Shot()
                         new_shot.update(self.shot_level,self.my_x + 6,self.my_y     ,5,0,    8,8,    0,  1,1)
                         self.shots.append(new_shot)
-
+                        
                         new_shot = Shot()
                         new_shot.update(self.shot_level,self.my_x + 6,self.my_y + 2  ,5,0.3,   8,8,    0,  1,1)
                         self.shots.append(new_shot)
@@ -5351,19 +5344,19 @@ class App:
                         new_shot = Shot()
                         new_shot.update(self.shot_level,self.my_x + 6,self.my_y - 2,    5,-1,    8,8,    0,  1,1)
                         self.shots.append(new_shot)
-
+                        
                         new_shot = Shot()
                         new_shot.update(self.shot_level,self.my_x + 6,self.my_y - 1,    5,-0.3,   8,8,    0,  1,1)
                         self.shots.append(new_shot)
-
+                        
                         new_shot = Shot()
                         new_shot.update(self.shot_level,self.my_x + 6,self.my_y,       5,0,     8,8,    0,  1,1)
                         self.shots.append(new_shot)
-
+                        
                         new_shot = Shot()
                         new_shot.update(self.shot_level,self.my_x + 6,self.my_y + 1,    5,0.3,    8,8,    0,  1,1)
                         self.shots.append(new_shot)
-
+                        
                         new_shot = Shot()
                         new_shot.update(self.shot_level,self.my_x + 6,self.my_y + 2,    5,1,     8,8,    0,  1,1)
                         self.shots.append(new_shot)
@@ -5385,41 +5378,41 @@ class App:
                 if self.type_check_quantity < (self.missile_level + 1) * self.missile_rapid_of_fire:  #初期段階では２発以上は出せないようにする
                     if self.missile_level == MISSILE_LV0_NORMAL_MISSILE:
                         pyxel.play(2,1)
-
+                        
                         new_missile = Missile()
                         new_missile.update(0,self.my_x + 4,self.my_y,   0.7,0.7,   3,    1   ,0,0,    1,1,  8,8  ,0,0,   0,0) #前方右下に落ちていくミサイル
                         self.missile.append(new_missile)#ミサイル育成
-
+                        
                     elif self.missile_level == MISSILE_LV1_TWIN_MISSILE:
                         pyxel.play(2,1)
-                    
+                        
                         new_missile = Missile()
                         new_missile.update(0,self.my_x + 2,self.my_y +2,   0.7,0.7,   3,    1   ,0,0,    1,1,  8,8,  0,0,   0,0) #前方右下に落ちていくミサイル
                         self.missile.append(new_missile)#ミサイル育成
-
+                        
                         new_missile = Missile()
                         new_missile.update(1,self.my_x + 2,self.my_y -2,   0.7,0.7,   3,    1   ,0,0    ,1,-1,  8,8,  0,0,  0,0) #前方右上に飛んでいくミサイル
                         self.missile.append(new_missile)#ミサイル育成
-
+                        
                     elif self.missile_level == MISSILE_LV2_MULTI_MISSILE:
                         pyxel.play(2,1)
-                    
+                        
                         new_missile = Missile()
                         new_missile.update(0,self.my_x +2,self.my_y +2,   0.7,0.7,    3,    1   ,0,0,    1,1,   8,8,  0,0,  0,0) #前方右下に落ちていくミサイル
                         self.missile.append(new_missile)#ミサイル育成
-
+                        
                         new_missile = Missile()
                         new_missile.update(1,self.my_x +2,self.my_y -2,   0.7,0.7,    3,    1   ,0,0    ,1,-1,   8,8,  0,0,  0,0) #前方右上に飛んでいくミサイル
                         self.missile.append(new_missile)#ミサイル育成
-
+                        
                         new_missile = Missile()
                         new_missile.update(2,self.my_x -2,self.my_y +2,   -0.7,0.7,   3,    1   ,0,0,    -1,1,    8,8,  0,0,   0,0) #後方左下に落ちていくミサイル
                         self.missile.append(new_missile)#ミサイル育成
-
+                        
                         new_missile = Missile()
                         new_missile.update(3,self.my_x -2,self.my_y -2,   -0.7,0.7,   3,    1   ,0,0    ,-1,-1,   8,8,  0,0,   0,0) #後方左上に飛んでいくミサイル
                         self.missile.append(new_missile)#ミサイル育成
-    
+
     #自機をはみ出さないようにする
     def update_clip_my_ship(self):
         if    self.game_status == SCENE_STAGE_CLEAR_MY_SHIP_BOOST\
@@ -5434,13 +5427,12 @@ class App:
                 self.my_x = 0
             if self.my_x >= WINDOW_W - MOVE_LIMIT:
                 self.my_x = WINDOW_W - MOVE_LIMIT - 1
-    
-        
+            
         if self.my_y < 0:
             self.my_y = 0
         if self.my_y >= WINDOW_H - SHIP_H:
             self.my_y = WINDOW_H - SHIP_H - 1
-    
+
     #################################自機弾関連の処理関数###############################################
     #自機弾の更新
     def update_my_shot(self):
@@ -5450,21 +5442,21 @@ class App:
                 if 0 <= self.shots[i].shot_type <= 3:#ショットタイプがバルカンショットの場合
                     self.shots[i].posx += self.shots[i].vx * self.shot_speed_magnification #弾のX座標をVX*speed_magnification(倍率)分加減算して更新
                     self.shots[i].posy += self.shots[i].vy                           #弾のY座標をVY分加減算して更新
-
+                    
                 elif 4 <= self.shots[i].shot_type <= 6:#ショットタイプがレーザーの場合
                     self.shots[i].posx += self.shots[i].vx#弾のX座標をVX分加減算して更新
                     self.shots[i].offset_y = self.shots[i].offset_y * self.shots[i].vy#Ｙ軸オフセット値 vyの倍率ごと乗算して行って上下にずらしていく
                     self.shots[i].posy = self.my_y + self.shots[i].offset_y#自機のｙ座標+Ｙ軸オフセット値をレーザーのＹ座標としてコピーする（ワインダー処理）
                     self.shots[i].shot_hp = 1#レーザーなのでHPは減らず強制的にＨＰ＝１にする（ゾンビ化～みたいな）
-                
-
+                    
+                    
                 elif 7 <= self.shots[i].shot_type <= 10:#ショットタイプがウェーブカッターの場合
                     self.shots[i].posx += self.shots[i].vx * self.shot_speed_magnification #弾のX座標をVX*speed_magnification(倍率)分加減算して更新
                     self.shots[i].posy += self.shots[i].vy                           #弾のY座標をVY分加減算して更新
                     self.shots[i].shot_hp = 1#ウェーブカッターはHPは減らず強制的にＨＰ＝１にする（ゾンビ化～みたいな）
-                
-
-
+                    
+                    
+                    
                 if self.shots[i].shot_hp == 0:
                     del self.shots[i]#自機弾のHPがゼロだったらインスタンスを破棄する（弾消滅） 
 
@@ -6039,38 +6031,37 @@ class App:
                     
                      vx1 = ((self.missile[i].tx - self.missile[i].posx) / (self.d * self.missile[i].speed))
                      vy1 = ((self.missile[i].ty - self.missile[i].posy) / (self.d * self.missile[i].speed))
-                     #右回り旋回角度上限の速度ベクトル(vx2,vy2)を求める
-                     #math.piはπ（円周率3.141592......)
-                     #ううううぅ・・・難しい・・・・数学赤点の私には難しい・・・・
-                     self.rad = 3.14 / 180 * self.missile[i].theta #rad = 角度degree（theta）をラジアンradianに変換
-                     
-                     self.missile[i].theta += 0.2 #旋回できる角度を増やしていく
-                     if self.missile[i].theta > 360:
+                    #右回り旋回角度上限の速度ベクトル(vx2,vy2)を求める
+                    #math.piはπ（円周率3.141592......)
+                    #ううううぅ・・・難しい・・・・数学赤点の私には難しい・・・・
+                    self.rad = 3.14 / 180 * self.missile[i].theta #rad = 角度degree（theta）をラジアンradianに変換
+                    
+                    self.missile[i].theta += 0.2 #旋回できる角度を増やしていく
+                    if self.missile[i].theta > 360:
                         self.missile[i].theta = 360 #旋回可能角度は360度を超えないようにする
-             
-                     vx2 = math.cos(self.rad) * vx0 - math.sin(self.rad) * vy0
-                     vy2 = math.sin(self.rad) * vx0 + math.cos(self.rad) * vy0
 
-                  #ターゲット方向に曲がるのか？ それとも旋回角度上限一杯（面舵一杯！とか取り舵一杯！とかそういう表現）で曲がるのか判別する
-                  if vx0 * vx1 + vy0 * vy1 >= vx0 * vx2 + vy0 * vy2:
-                     #ターゲット方向が旋回可能範囲内の場合の処理
-                     #ターゲット方向に曲がるようにする
-                     self.missile[i].vx = vx1
-                     self.missile[i].vy = vy1
-                  else:
-                     #ターゲットが旋回可能範囲を超えている場合（ハンドルをいっぱいまで切ってもターゲットに追いつけないよ～）ハンドル一杯まで切る！
-                     #左回り（取り舵方向）の旋回角度上限の速度ベクトルvx3,vy3を求める
-                     vx3 =  math.cos(self.rad) * vx0 + math.sin(self.rad) * vy0
-                     vy3 = -math.sin(self.rad) * vx0 + math.cos(self.rad) * vy0
+                    vx2 = math.cos(self.rad) * vx0 - math.sin(self.rad) * vy0
+                    vy2 = math.sin(self.rad) * vx0 + math.cos(self.rad) * vy0
 
-                     #ホーミングミサイルからターゲットへの相対ベクトル(px,py)を求める
-                     px = self.missile[i].tx - self.missile[i].posx
-                     py = self.missile[i].ty - self.missile[i].posy
+                    #ターゲット方向に曲がるのか？ それとも旋回角度上限一杯（面舵一杯！とか取り舵一杯！とかそういう表現）で曲がるのか判別する
+                    if vx0 * vx1 + vy0 * vy1 >= vx0 * vx2 + vy0 * vy2:
+                        #ターゲット方向が旋回可能範囲内の場合の処理
+                        #ターゲット方向に曲がるようにする
+                        self.missile[i].vx = vx1
+                        self.missile[i].vy = vy1
+                    else:
+                        #ターゲットが旋回可能範囲を超えている場合（ハンドルをいっぱいまで切ってもターゲットに追いつけないよ～）ハンドル一杯まで切る！
+                        #左回り（取り舵方向）の旋回角度上限の速度ベクトルvx3,vy3を求める
+                        vx3 =  math.cos(self.rad) * vx0 + math.sin(self.rad) * vy0
+                        vy3 = -math.sin(self.rad) * vx0 + math.cos(self.rad) * vy0
 
-                     #右回りか左回りを決める
-                     #右回りの速度ベクトルの内積(p,v2)と左回りの速度ベクトルの内積(p,v3)の比較で右回りか左回りか判断する
-                     #旋回角度が小さいほうが内積が大きくなるのでそちらの方に曲がるようにする
-                     #
+                        #ホーミングミサイルからターゲットへの相対ベクトル(px,py)を求める
+                        px = self.missile[i].tx - self.missile[i].posx
+                        py = self.missile[i].ty - self.missile[i].posy
+
+                        #右回りか左回りを決める
+                        #右回りの速度ベクトルの内積(p,v2)と左回りの速度ベクトルの内積(p,v3)の比較で右回りか左回りか判断する
+                        #旋回角度が小さいほうが内積が大きくなるのでそちらの方に曲がるようにする
                         if px * vx2 + py * vy2 >= px * vx3 + py * vy3:
                             #右回り（面舵方向）の場合
                             self.missile[i].vx = vx2
@@ -6104,58 +6095,55 @@ class App:
             #クローの回転処理
             claw_count = len(self.claw)#クローの数を数える
             for i in range(claw_count):
-               if self.claw[i].status == 0:#ステータスが(0)の場合は回転開始の初期位置まで動いていく（自機の真上）
-                 #self.claw[i].offset_x += self.claw[i].roll_vx
-                 #self.claw[i].offset_y += self.claw[i].roll_vy#現在のオフセット座標値をroll_vx,roll_vyの分だけ加減算させていく
-                 #
-                 #self.claw[i].posx = self.my_x + self.claw[i].offset_x
-                 #self.claw[i].posy = self.my_y + self.claw[i].offset_y#クローのX,Y座標をオフセット分だけ加減算させていって回転開始位置まで移動させてやる
-                 #if  self.claw[i].offset_x == self.claw[i].offset_roll_x and self.claw[i].offset_y == self.claw[i].offset_roll_y:
-                 #      self.claw[i].status = 1#回転開始初期位置のオフセット値まで行ったのならステータスを回転開始(1)にする
-                  if self.claw[i].offset_x < self.claw[i].offset_roll_x:#offset_xとyをoffset_fix_xとyに+1ドット単位で増減させて同じ値に近づけていく
+                if self.claw[i].status == 0:#ステータスが(0)の場合は回転開始の初期位置まで動いていく（自機の真上）
+                    #self.claw[i].offset_x += self.claw[i].roll_vx
+                    #self.claw[i].offset_y += self.claw[i].roll_vy#現在のオフセット座標値をroll_vx,roll_vyの分だけ加減算させていく
+                    #
+                    #self.claw[i].posx = self.my_x + self.claw[i].offset_x
+                    #self.claw[i].posy = self.my_y + self.claw[i].offset_y#クローのX,Y座標をオフセット分だけ加減算させていって回転開始位置まで移動させてやる
+                    #if  self.claw[i].offset_x == self.claw[i].offset_roll_x and self.claw[i].offset_y == self.claw[i].offset_roll_y:
+                    #      self.claw[i].status = 1#回転開始初期位置のオフセット値まで行ったのならステータスを回転開始(1)にする
+                    if self.claw[i].offset_x < self.claw[i].offset_roll_x:#offset_xとyをoffset_fix_xとyに+1ドット単位で増減させて同じ値に近づけていく
                         self.claw[i].offset_x += 1
-                  elif self.claw[i].offset_x > self.claw[i].offset_roll_x:
+                    elif self.claw[i].offset_x > self.claw[i].offset_roll_x:
                         self.claw[i].offset_x -= 1
                     
-                  if self.claw[i].offset_y < self.claw[i].offset_roll_y:
+                    if self.claw[i].offset_y < self.claw[i].offset_roll_y:
                         self.claw[i].offset_y += 1
-                  elif self.claw[i].offset_y > self.claw[i].offset_roll_y:
+                    elif self.claw[i].offset_y > self.claw[i].offset_roll_y:
                         self.claw[i].offset_y -= 1
 
-                  self.claw[i].posx = self.my_x + self.claw[i].offset_x
-                  self.claw[i].posy = self.my_y + self.claw[i].offset_y#クローのX,Y座標をオフセット分だけ加減算させていって回転開始位置まで移動させてやる
-                    
-                  if  int(self.claw[i].offset_x) == int(self.claw[i].offset_roll_x) and int(self.claw[i].offset_y) == int(self.claw[i].offset_roll_y):
+                    self.claw[i].posx = self.my_x + self.claw[i].offset_x
+                    self.claw[i].posy = self.my_y + self.claw[i].offset_y#クローのX,Y座標をオフセット分だけ加減算させていって回転開始位置まで移動させてやる
+                    if  int(self.claw[i].offset_x) == int(self.claw[i].offset_roll_x) and int(self.claw[i].offset_y) == int(self.claw[i].offset_roll_y):
                         self.claw[i].status = 1#ローリングクロー回転開始初期位置のオフセット値まで行ったのならステータスを回転開始！！(1)にする 比較するときはint()を使って切り捨てた整数値で比較する
-                              
-               
-               
-               elif  self.claw[i].status == 1:#ステータスが(1)の場合は回転開始！
-                  if self.claw[i].angle_difference == self.claw_difference:
-                       self.claw[i].degree -= self.claw[i].speed#クローの個数に応じた回転間隔
-                  elif self.claw[i].angle_difference > self.claw_difference:
-                       self.claw[i].degree -= self.claw[i].speed - 1
-                  else:
-                       self.claw[i].degree -= self.claw[i].speed + 1
 
+                elif  self.claw[i].status == 1:#ステータスが(1)の場合は回転開始！
+                    if self.claw[i].angle_difference == self.claw_difference:
+                        self.claw[i].degree -= self.claw[i].speed#クローの個数に応じた回転間隔
+                    elif self.claw[i].angle_difference > self.claw_difference:
+                        self.claw[i].degree -= self.claw[i].speed - 1
+                    else:
+                        self.claw[i].degree -= self.claw[i].speed + 1
 
-                  self.claw[i].degree = self.claw[i].degree % 360#角度は３６０で割った余りとする(0~359)
-                  #極座標(r,θ)から直交座標(x,y)への変換は
-                  #     x = r cos θ
-                  #     y = r sin θ
-                  self.claw[i].offset_x = self.claw[i].radius *   math.cos(math.radians(self.claw[i].degree))
-                  self.claw[i].offset_y = self.claw[i].radius *  -math.sin(math.radians(self.claw[i].degree))
+                    self.claw[i].degree = self.claw[i].degree % 360#角度は３６０で割った余りとする(0~359)
+                    #極座標(r,θ)から直交座標(x,y)への変換は
+                    #     x = r cos θ
+                    #     y = r sin θ
+                    self.claw[i].offset_x = self.claw[i].radius *   math.cos(math.radians(self.claw[i].degree))
+                    self.claw[i].offset_y = self.claw[i].radius *  -math.sin(math.radians(self.claw[i].degree))
 
-                  
-                  #クローの座標を自機の座標を中心としオフセット値を足した物とする
-                  #線形補間値0.2で線形補間してやる（ピッタリ自機に付いてくる）
-                  self.claw[i].posx = self.claw[i].posx + 0.2 * ((self.my_x + self.claw[i].offset_x) - self.claw[i].posx)
-                  self.claw[i].posy = self.claw[i].posy + 0.2 * ((self.my_y + self.claw[i].offset_y) - self.claw[i].posy)
+                    #クローの座標を自機の座標を中心としオフセット値を足した物とする
+                    #線形補間値0.2で線形補間してやる（ピッタリ自機に付いてくる）
+                    self.claw[i].posx = self.claw[i].posx + 0.2 * ((self.my_x + self.claw[i].offset_x) - self.claw[i].posx)
+                    self.claw[i].posy = self.claw[i].posy + 0.2 * ((self.my_y + self.claw[i].offset_y) - self.claw[i].posy)
+
         elif self.claw_type == 1:#トレースクローの時のみ実行
             for i in range(self.claw_number):#iの値は0からクローの数まで増えてイクです  ハイ！
-               self.claw[i].status = 1#トレースクローは出現と同時に移動開始のステータスにする
-               self.claw[i].posx = self.claw_coordinates[self.trace_claw_index + (TRACE_CLAW_BUFFER_SIZE - self.trace_claw_distance) - self.trace_claw_distance * i].posx#クローの座標をオフセット値のＸＹ座標とする
-               self.claw[i].posy = self.claw_coordinates[self.trace_claw_index + (TRACE_CLAW_BUFFER_SIZE - self.trace_claw_distance) - self.trace_claw_distance * i].posy
+                self.claw[i].status = 1#トレースクローは出現と同時に移動開始のステータスにする
+                self.claw[i].posx = self.claw_coordinates[self.trace_claw_index + (TRACE_CLAW_BUFFER_SIZE - self.trace_claw_distance) - self.trace_claw_distance * i].posx#クローの座標をオフセット値のＸＹ座標とする
+                self.claw[i].posy = self.claw_coordinates[self.trace_claw_index + (TRACE_CLAW_BUFFER_SIZE - self.trace_claw_distance) - self.trace_claw_distance * i].posy
+
         elif self.claw_type == 2:#フィックスクローの時のみ実行
             claw_count = len(self.claw)#クローの数を数える
             for i in range(claw_count):
@@ -6187,6 +6175,7 @@ class App:
                         #クローナンバー2と3（外側のクロー）は線形補間値0.1で線形補間してやる（ちょっと遅れて自機に引っ付いてくる）
                         self.claw[i].posx = self.claw[i].posx + 0.1 * (self.my_x + self.claw[i].offset_x - self.claw[i].posx)
                         self.claw[i].posy = self.claw[i].posy + 0.1 * (self.my_y + (self.claw[i].offset_y * self.fix_claw_magnification) - self.claw[i].posy)
+
         elif self.claw_type == 3:#リバースクローの時のみ実行
             claw_count = len(self.claw)#クローの数を数える
             for i in range(claw_count):
@@ -6237,17 +6226,17 @@ class App:
     def update_fire_claw_shot(self):
             if (pyxel.frame_count % 16) == 0: #16フレーム毎だったら クローショットを育成する
                if len(self.claw_shot) < CLAW_RAPID_FIRE_NUMBER * (self.claw_number):#クローショットの要素数がクローの数x２以下なら弾を発射する
-                  #ここからクローが弾を発射する実処理
-                  claw_count = len(self.claw)#クローの数を数える
-                  for i in range(claw_count):
-                     if self.claw[i].status != 0:#ステータスが0の時は初期回転位置や初期固定位置に移動中なので弾は発射しない
-                        new_claw_shot = Shot()
-                        if self.claw_type == 3:#クロータイプがリバースクローの時はクローショットの方向をreverse_claw_svx,reverse_claw_svyにして8方向弾にする
-                            new_claw_shot.update(0,self.claw[i].posx,self.claw[i].posy,    self.reverse_claw_svx,self.reverse_claw_svy,   8,8,   0,  1,1)
-                            self.claw_shot.append(new_claw_shot)
-                        else:#リバースクロー以外のクローは全て前方に弾を撃つ
-                            new_claw_shot.update(0,self.claw[i].posx,self.claw[i].posy,    3,0,   8,8,   0,  1,1)
-                            self.claw_shot.append(new_claw_shot)
+                    #ここからクローが弾を発射する実処理
+                    claw_count = len(self.claw)#クローの数を数える
+                    for i in range(claw_count):
+                        if self.claw[i].status != 0:#ステータスが0の時は初期回転位置や初期固定位置に移動中なので弾は発射しない
+                            new_claw_shot = Shot()
+                            if self.claw_type == 3:#クロータイプがリバースクローの時はクローショットの方向をreverse_claw_svx,reverse_claw_svyにして8方向弾にする
+                                new_claw_shot.update(0,self.claw[i].posx,self.claw[i].posy,    self.reverse_claw_svx,self.reverse_claw_svy,   8,8,   0,  1,1)
+                                self.claw_shot.append(new_claw_shot)
+                            else:#リバースクロー以外のクローは全て前方に弾を撃つ
+                                new_claw_shot.update(0,self.claw[i].posx,self.claw[i].posy,    3,0,   8,8,   0,  1,1)
+                                self.claw_shot.append(new_claw_shot)
 
     #クローショットの更新
     def update_claw_shot(self):
@@ -6264,7 +6253,7 @@ class App:
                         del self.claw_shot[i]#クローショットが画面外まで飛んで行ってはみ出ていたのならインスタンス破棄（クローショット消滅）
                 else:
                     del self.claw_shot[i]#クローショットのHPがゼロだったらインスタンスを破棄する（クローショット消滅）
-    
+
     #クローショットと敵の当たり判定
     def update_collision_claw_shot_enemy(self):
         claw_shot_hit = len(self.claw_shot)#クローの弾の数を数える
@@ -6288,7 +6277,7 @@ class App:
                     pyxel.play(0,2)#ミサイルが敵を破壊した音！
                 else:
                     continue
-    
+
     #クローショットとボスとの当たり判定
     def update_collision_claw_shot_boss(self):
         claw_shot_hit = len(self.claw_shot)#クローの弾の数を数える
@@ -6478,7 +6467,7 @@ class App:
         for i in reversed(range(claw_shot_count)):
             self.check_bg_collision(self.claw_shot[i].posx,(self.claw_shot[i].posy) + 4,0,0)
             if self.collision_flag == 1:#背景と衝突したのならクローショットを消滅させる
-               del self.claw_shot[i]        
+                del self.claw_shot[i]        
 
     #################################敵弾関連の処理関数##################################################
     #敵の弾の更新&自機と敵弾の衝突判定
@@ -6502,18 +6491,18 @@ class App:
                 #誘導弾orホーミングレーザーを自機に追尾させる
                 vx0 = self.enemy_shot[i].vx
                 vy0 = self.enemy_shot[i].vy #誘導弾の速度ベクトル(vx,vy)を(vx0,vy0)に退避しておきます
-
+                
                 #自機までの距離を求めdに距離として代入します
                 d = math.sqrt((self.my_x - self.enemy_shot[i].posx) * (self.my_x - self.enemy_shot[i].posx) + (self.my_y - self.enemy_shot[i].posy) * (self.my_y - self.enemy_shot[i].posy))
-             
+                
                 #誘導弾orホーミングレーザーの速度 vx,vyを求める
                 #速さはenemy_shot_speedで一定になるようにしています
                 #目標までの距離dが0の時は速度ベクトルを左方向にします
                 #turn_theta(Θシータ)は旋回できる角度の上限です
-
+                
                 #enemy_shot_count1をホーミング性能が落ちていくカウンタの変数として使用します(1フレームごとに加算されていきます)
                 #enemy_shot_count2に入っている数値とenemy_shot_count1が同じ数値になった時に旋回できる角度の上限を1減らします
-
+                
                 #自機方向の速度ベクトル(vx1,vy1)を求める
                 if d == 0:#自機までの距離は0だった？（重なっていた？）
                     vx1= 0
@@ -6526,10 +6515,10 @@ class App:
                 #右回り旋回角度上限の速度ベクトル(vx2,vy2)を求める
                 #math.piはπ（円周率3.141592......)
                 self.rad = 3.14 / 180 * self.enemy_shot[i].turn_theta #rad = 角度degree（theta）をラジアンradianに変換
-             
+                
                 vx2 = math.cos(self.rad) * vx0 - math.sin(self.rad) * vy0
                 vy2 = math.sin(self.rad) * vx0 + math.cos(self.rad) * vy0
-
+                
                 #自機方向に曲がるのか？ それとも旋回角度上限一杯（面舵一杯！とか取り舵一杯！とかそういう表現）で曲がるのか判別する
                 if vx0 * vx1 + vy0 * vy1 >= vx0 * vx2 + vy0 * vy2:
                     #自機方向が旋回可能範囲内の場合の処理
@@ -6541,11 +6530,11 @@ class App:
                     #左回り（取り舵方向）の旋回角度上限の速度ベクトルvx3,vy3を求める
                     vx3 =  math.cos(self.rad) * vx0 + math.sin(self.rad) * vy0
                     vy3 = -math.sin(self.rad) * vx0 + math.cos(self.rad) * vy0
-
+                    
                     #誘導弾orホーミングレーザーから自機への相対ベクトル(px,py)を求める
                     px = self.my_x - self.enemy_shot[i].posx
                     py = self.my_y - self.enemy_shot[i].posy
-
+                    
                     #右回りか左回りを決める
                     #右回りの速度ベクトルの内積(p,v2)と左回りの速度ベクトルの内積(p,v3)の比較で右回りか左回りか判断する
                     #旋回角度が小さいほうが内積が大きくなるのでそちらの方に曲がるようにする
@@ -6558,7 +6547,7 @@ class App:
                         #左回り（取り舵方向）の場合
                         self.enemy_shot[i].vx = vx3
                         self.enemy_shot[i].vy = vy3
-                
+                        
                 #誘導弾orホーミングレーザーの座標(posx,posy)に速度ベクトル(vx,vy)を加減算して移動させる(座標を更新！)
                 self.enemy_shot[i].posx += self.enemy_shot[i].vx
                 self.enemy_shot[i].posy += self.enemy_shot[i].vy
@@ -6569,7 +6558,7 @@ class App:
                     if self.enemy_shot[i].turn_theta < 0:
                         self.enemy_shot[i].turn_theta = 0 #turn_thetaはマイナスにならないようにする
                     self.enemy_shot[i].count1 = 0 #誘導性能を落として行くカウンタ数を初期化
-                
+                        
                 if self.enemy_shot[i].enemy_shot_type == ENEMY_SHOT_HOMING_LASER: #ホーミングレーザーの場合は
                     #ホーミングレーザーの尻尾部分を育成する
                     if (pyxel.frame_count % 3) == 0:
@@ -6592,7 +6581,7 @@ class App:
                             self.enemy_shot[i].vy = 1 #自機がサーチレーザーより下方向にあるのでvy=1にして下方向に曲がらせる
                         else:
                             self.enemy_shot[i].vy = -1 #自機がサーチレーザーより上方向にあるのでvy=-1にして上方向に曲がらせる
-                    
+                            
                 self.enemy_shot[i].posx += self.enemy_shot[i].vx#敵の弾のx座標をvx分加減算して更新
                 self.enemy_shot[i].posy += self.enemy_shot[i].vy#敵の弾のy座標をvy分加減算して更新
                 #サーチレーザーの尻尾部分を育成する
@@ -6610,7 +6599,7 @@ class App:
             elif self.enemy_shot[i].enemy_shot_type == ENEMY_SHOT_CIRCLE_BULLET:
                 self.enemy_shot[i].rotation_omega += self.enemy_shot[i].rotation_omega_incremental #rotation_omega_incrementalの分だけ角度を増加させていく(回転していく)
                 self.enemy_shot[i].rotation_omega = self.enemy_shot[i].rotation_omega % 360 #角度は３６０で割った余りとする(0~359)
-
+                
                 self.enemy_shot[i].cx += self.enemy_shot[i].vx #回転の中心を速度ベクトルvx,vyを加算して位置を更新する
                 self.enemy_shot[i].cy += self.enemy_shot[i].vy
                 
@@ -6641,7 +6630,7 @@ class App:
                     if self.enemy_shot[i].width >= self.enemy_shot[i].width_max: #widthはwidth_maxを超えないようにします
                         self.enemy_shot[i].width = self.enemy_shot[i].width_max #幅は最大値とする
                         self.enemy_shot[i].vx = 0                         #最大幅まで広くなったのでもう横方向の移動は無し
-
+                        
                 else:
                     self.enemy_shot[i].stop_count -= 1#ストップカウントがまだ残っていたら１減らし、座標の更新は行わずそのままの位置で留まる
             #ベクトルレーザーの場合
@@ -6655,7 +6644,7 @@ class App:
                     if self.enemy_shot[i].height >= self.enemy_shot[i].height_max: #heightはheight_maxを超えないようにします
                         self.enemy_shot[i].height = self.enemy_shot[i].height_max #幅は最大値とする
                         self.enemy_shot[i].vy = 0                         #最大幅まで広くなったのでもう縦方向の移動は無し
-
+                        
                 else:
                     self.enemy_shot[i].stop_count -= 1#ストップカウントがまだ残っていたら１減らし、座標の更新は行わずそのままの位置で留まる
             #その他の敵弾の場合
@@ -6746,7 +6735,7 @@ class App:
                     self.ls_shield_hp -= 1#シールドエナジーを1減らす
                     del self.enemy_shot[i]
                     continue
-            
+                    
             #敵の弾が自機に当たっているか判別###########################################################
             if self.invincible_counter > 0: #無敵時間が残っていた場合は・・・
                 continue                #衝突判定はせずループだけ続ける(continue)・・・無敵っていいよね・・・うん、うん.....
@@ -6761,7 +6750,7 @@ class App:
                 if      0 <= (self.my_x+4) - (self.enemy_shot[i].posx+4) <= self.enemy_shot[i].width\
                     and 0 <= (self.my_y+4) - (self.enemy_shot[i].posy+4) <= self.enemy_shot[i].height:
                     self.update_my_ship_damage(1) #自機が敵弾の長方形の当たり判定の中に居たのなら衝突したと判定し自機のシールド値を１減らす
-    
+
     #敵の弾のはみだしチェック（はみ出していたら消去する）
     def update_clip_enemy_shot(self):
         enemy_shot_count = len(self.enemy_shot)#敵の弾数を数える
@@ -6777,19 +6766,19 @@ class App:
                     continue
                 else:
                     del self.enemy_shot[i]            
-    
+
     #敵の弾と背景障害物の当たり判定
     def update_collision_enemy_shot_bg(self):
         enemy_shot_count = len(self.enemy_shot)#敵の弾数を数える
         for i in reversed(range(enemy_shot_count)):
-            if    self.enemy_shot[i].enemy_shot_type == ENEMY_SHOT_WAVE\
-               or self.enemy_shot[i].enemy_shot_type == ENEMY_SHOT_VECTOR_LASER:    #ウェーブ、ベクトルレーザーは当たり判定無し
+            if     self.enemy_shot[i].enemy_shot_type == ENEMY_SHOT_WAVE\
+                or self.enemy_shot[i].enemy_shot_type == ENEMY_SHOT_VECTOR_LASER:    #ウェーブ、ベクトルレーザーは当たり判定無し
                 continue #当たり判定はしないで次のループ回へ突入！
             elif self.enemy_shot[i].enemy_shot_type == ENEMY_SHOT_LASER: #レーザービームの場合は障害物にギリギリまで当たり食い込みたいのでx座標を右に1ブロック分(8ドット)だけ補正を入れてやる
                 self.check_bg_collision(self.enemy_shot[i].posx + 6 + 8,self.enemy_shot[i].posy + 4,0,0)
             else:
                 self.check_bg_collision(self.enemy_shot[i].posx + 6   ,self.enemy_shot[i].posy + 4,0,0)
-            
+                
             if self.collision_flag == 1: #衝突フラグが立っていたらを敵弾を消滅させる
                 del self.enemy_shot[i]        
 
@@ -6824,14 +6813,14 @@ class App:
                 self.debug_menu_status = 3
             else:
                 self.debug_menu_status = 0
-    
+
     #デバッグモードによるキーボードやパッドでの敵や敵弾の強制追加発生
     def update_debug_mode_enemy_append(self):
         #敵タイプ1サーコインの発生  直進して斜め後退→勢いよく後退していく10機編隊      KEY 4 +++++++
         if (pyxel.frame_count % 8) == 0:
             if pyxel.btn(pyxel.KEY_4) or pyxel.btn(pyxel.GAMEPAD_1_LEFT_SHOULDER) or pyxel.btn(pyxel.GAMEPAD_2_LEFT_SHOULDER):
                 if len(self.enemy) < 400:
-
+                    
                     self.posy = self.s_rndint(0,WINDOW_H - 8)
                     for number in range(10):
                         new_enemy = Enemy()
@@ -6844,7 +6833,6 @@ class App:
         if (pyxel.frame_count % 8) == 0:
             if pyxel.btn(pyxel.KEY_5):
                 if len(self.enemy) < 400:
-
                     self.posy = self.s_rndint(0,WINDOW_H)
                     for number in range(3):
                         new_enemy = Enemy()
@@ -6907,7 +6895,7 @@ class App:
                     new_enemy = Enemy()
                     new_enemy.update(ROLL_BLITZ,ID00,ENEMY_STATUS_MOVE_COORDINATE_INIT,ENEMY_ATTCK_ANY,    0,0,0,0,     0,0,0,0,0,0,0,0,         0,0,0,0,0,0,0,0,0,0,  0,0,      0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   0,1,   0,    HP01,  0,0,    E_SIZE_NORMAL,   0,0,0,    0,0,0,0,      E_NO_POW,   ID00    ,0,0,0,    0  ,0,0,0,    0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                     self.enemy.append(new_enemy)
-
+                    
                     new_enemy = Enemy()
                     new_enemy.update(ROLL_BLITZ,ID00,ENEMY_STATUS_MOVE_COORDINATE_INIT,ENEMY_ATTCK_ANY,    0,0,0,8,     0,0,0,0,0,0,0,0,        0,0,0,0,0,0,0,0,0,0,  0,0,      0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,   0,1.05,   0,    HP01,  0,0,    E_SIZE_NORMAL,   0,0,0,    0,0,0,0,    E_NO_POW,   ID00    ,0,0,0,    0  ,0,0,0,    0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                     self.enemy.append(new_enemy)
@@ -6922,7 +6910,7 @@ class App:
                     new_enemy = Enemy()
                     new_enemy.update(VOLDAR,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   170,10,0,0,       0,0,0,0,0,0,0,0,        0,0,0,0,0,0,0,0,0,0,  0,0,      0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_40,SIZE_24,   -0.07,1,   0,    HP30,  0,0,    E_SIZE_HI_MIDDLE53,   0,0,0,    0,0,0,0,    E_NO_POW,   ID00    ,1,0.007,0.6,    0  ,0,0,0,    0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                     self.enemy.append(new_enemy)
-                
+                    
         #敵弾1(前方加速弾&落下弾&サインコサイン弾&グリーンカッター)の発生           KEY A ----------------
         if(pyxel.frame_count % 3) == 0:
             if pyxel.btn(pyxel.KEY_A):
@@ -6935,7 +6923,7 @@ class App:
                     new_enemy_shot = Enemy_shot()
                     new_enemy_shot.update(ENEMY_SHOT_DROP_BULLET,ID00,140,60,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8, 0,0, -0.3,-1.1,     0.02,     1,1,    1,0, 0,1,0,        0,   0,0,PRIORITY_FRONT,   0,0,0,0,0,0, 0,0, 0, 0,0, 0, 0,0, 0,0,   0,0)
                     self.enemy_shot.append(new_enemy_shot)
-
+                    
                     #サイン弾
                     new_enemy_shot = Enemy_shot()
                     new_enemy_shot.update(ENEMY_SHOT_SIN,ID00,140,60,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8,    0,0, -1,0,       1,    1,1,    1,0,  0.06,0.06,0.6,            0,   0,0,PRIORITY_FRONT,   0,0, 0,0,0,0, 0,0, 0, 0,0, 0, 0,0, 0,0,   0,0)
@@ -6944,7 +6932,7 @@ class App:
                     new_enemy_shot = Enemy_shot()
                     new_enemy_shot.update(ENEMY_SHOT_COS,ID00,140,60,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8,    0,0,  -1,0,      1,    1,1,    1,0,  0.06,0.06,0.6,            0,   0,0,PRIORITY_FRONT,   0,0, 0,0,0,0, 0,0, 0, 0,0, 0, 0,0, 0,0,   0,0)
                     self.enemy_shot.append(new_enemy_shot)
-
+                    
                     #グリーンカッター
                     new_enemy_shot = Enemy_shot()
                     new_enemy_shot.update(ENEMY_SHOT_GREEN_CUTTER,ID00,140,60,ESHOT_COL_BOX,ESHOT_SIZE8,ESHOT_SIZE12,    0,0,  -0.3,0,      1.01,    1,1,    0,0,  0,0,0,            0,   0,0,PRIORITY_FRONT,   0,0, 0,0,0,0, 0,0, 0, 0,0, 0, 0,0, 0,0,   0,0)
@@ -7001,7 +6989,7 @@ class App:
                     new_enemy_shot = Enemy_shot()
                     new_enemy_shot.update(ENEMY_SHOT_CIRCLE_BULLET,ID00, cx+radius,cy,ESHOT_COL_MIN88,ESHOT_SIZE8,ESHOT_SIZE8, cx,cy,  -0.05,0,   1,    1,1,   0,0, 0,    1,0,0,  0,0,PRIORITY_FRONT, 0,0,  0,rotation_omega_incremental,radius,radius_max, 0,0, radius_incremental, 0,0, 0, 0,0, 0,0,   0,0)
                     self.enemy_shot.append(new_enemy_shot)
-
+                    
                     cx = 100
                     cy = 60
                     radius = 1
@@ -7049,7 +7037,7 @@ class App:
                     height_max          = 3
                     new_enemy_shot.update(ENEMY_SHOT_UP_LASER,ID00, ex,ey,ESHOT_COL_BOX,ESHOT_SIZE8,ESHOT_SIZE3, 0,0, vx,vy,     1,     1,1,    1,0, 0,1,0,        0,   0,0,PRIORITY_FRONT,   0,0,0,0,0,0, division_type,division_count,  0, division_count_origin,division_num, 0, expansion,0,width_max,height_max,   0,0)
                     self.enemy_shot.append(new_enemy_shot)
-
+                    
                     new_enemy_shot = Enemy_shot()
                     ex,ey = 80,60
                     vx,vy =    -0.1,0.3
@@ -7078,7 +7066,7 @@ class App:
                     height_max          = 90
                     new_enemy_shot.update(ENEMY_SHOT_VECTOR_LASER,ID00, ex,ey,ESHOT_COL_BOX,ESHOT_SIZE3,ESHOT_SIZE3, 0,0, vx,vy,     0.996,     1,1,    1,0, 0,1,0,        0,   0,0,PRIORITY_TOP,   0,0,0,0,0,0, division_type,division_count,  0, division_count_origin,division_num, 0, expansion,0,width_max,height_max,   0,0)
                     self.enemy_shot.append(new_enemy_shot)
-
+                    
         #メッセージウィンドウを発生させる                        KEY Q
         if(pyxel.frame_count % 16) == 0:
             if pyxel.btn(pyxel.KEY_Q):
@@ -7095,9 +7083,9 @@ class App:
                             "HAIRI",DISP_CENTER,0,10,\
                             "MASU",DISP_CENTER,0,15,\
                             "!",DISP_CENTER,10,8,\
-
+                            
                             43,68   -32,   0,0,  8*8,3*8  +40,   2,1, 1,1,   0,0,    0,0)
-                
+                            
                 #new_window.update(0,1,  24,24,  0,0, 64,64, 0,0,0)
                 self.window.append(new_window)        
         #パーティクルを発生させる                              KEY P
@@ -7120,7 +7108,7 @@ class App:
                 new_background_object = Background_object()
                 new_background_object.update(t, 160+10,y,  0,    1.009,1,0,0,0,0,0,0,   -3,-0.25,  0,0,   0,0,0,0,0,   0,0,0, 0,0,0,  0,0,0)
                 self.background_object.append(new_background_object)
-        
+                
         #パワーアップアイテム類を発生させる                       KEY U I O
         if(pyxel.frame_count % 8) == 0:
             if pyxel.btn(pyxel.KEY_U): #ショットアイテム
@@ -7138,18 +7126,18 @@ class App:
                 new_obtain_item = Obtain_item()
                 new_obtain_item.update(ITEM_SHIELD_POWER_UP,WINDOW_W-20,y, 0.5,0,   SIZE_8,SIZE_8,   1,   0.9,  0.3,   0,0,  0.05,0,0,0,0,   0,0,1,  0,0,0, self.pow_item_bounce_num,0)
                 self.obtain_item.append(new_obtain_item) 
-        
+                
         #自機クローを追加する                                KEY V
         if pyxel.btnp(pyxel.KEY_V):
             self.update_append_claw()
-        
+            
         #キーボード入力によるイベントアペンドリスト書き込み  サーコイン10機編隊   KEY 0
         if (pyxel.frame_count % 8) == 0:
             if pyxel.btn(pyxel.KEY_0):
                 new_event_append_request = Event_append_request()
                 new_event_append_request.update(self.stage_count + 10,EVENT_ENEMY,CIR_COIN,WINDOW_W + 8,self.s_rndint(0,WINDOW_H - 8),10)
                 self.event_append_request.append(new_event_append_request)#現在のstage_countから10カウント過ぎた時点でサーコインが発生するようイベントアペンドリストに追加する
-                    
+
     #クローの追加
     def update_append_claw(self):
         if   len(self.claw) == 0:#1機目のクローの発生
@@ -7161,7 +7149,7 @@ class App:
             new_claw.update(0,   self.claw_type,0,    posx,posy,  0,-1,   -1,-1,  -1,0,      0,0,  0,-12,  -2,-12,    -2,-12,   -12,-1,  0,0,    90,0,2,12,    self.claw_difference,0,   0,1,   0)
             self.claw.append(new_claw)
             return
-
+            
         if len(self.claw) == 1:#2機目のクローの発生
             posx = self.my_x
             posy = self.my_y
@@ -7171,7 +7159,7 @@ class App:
             new_claw.update(1,   self.claw_type,0,    posx,posy,  0,-1,   -1,1,  0,-1,       0,0, 0,-12,    -2,12,  -2,12,   -3,-9, 0,0,       90,0,2,12,    self.claw_difference,0,   0,1,   0)
             self.claw.append(new_claw)
             return
-
+            
         if len(self.claw) == 2:#3機目のクローの発生
             posx = self.my_x
             posy = self.my_y
@@ -7181,7 +7169,7 @@ class App:
             new_claw.update(2,   self.claw_type,0,    posx,posy,  0,-1,   -1,-1,  0,1,       0,0,  0,-12,    -6,-24, -6,-24,  -3,8,   0,0,      90,0,2,12,    self.claw_difference,0,   0,1,    0)
             self.claw.append(new_claw)
             return
-
+            
         if len(self.claw) == 3:#4機目のクローの発生
             posx = self.my_x
             posy = self.my_y
@@ -7191,7 +7179,7 @@ class App:
             new_claw.update(3,   self.claw_type,0,    posx,posy,  0,-1,    -1,1,   -1,0,       0,0, 0,-12,    -6,24,  -6,24,  -12,-1,     0,0,       90,0,2,12,   self.claw_difference,0,    0,1,      0)
             self.claw.append(new_claw)
             return
-    
+
     #クローの消滅                                            KEY W
     def update_delete_claw(self):
         if pyxel.btnp(pyxel.KEY_W):   #wキーが押されたら自機クローを消滅させる
@@ -7201,7 +7189,7 @@ class App:
                     del self.claw[i] #クローのインスタンスを破棄する(クロー消滅)
             
             self.claw_number = 0     #クローの数を0機にする
-    
+
     #フイックスクローの間隔を変化させる                            KEY N
     def update_change_fix_claw_interval(self):
         if (pyxel.frame_count % 8) == 0:
@@ -7221,7 +7209,7 @@ class App:
                 claw_count = len(self.claw)
                 for i in reversed(range(claw_count)):
                     self.claw[i].status = 0#全てのクローのステータスを0=回転開始や固定開始の初期位置まで動いていくにする
-    
+
     #####################################敵関連の処理関数######################################
     #イベントリストによる敵の発生システム
     def update_enemy_append_event_system(self):
@@ -7268,10 +7256,10 @@ class App:
                             new_enemy = Enemy()
                             new_enemy.update(CIR_COIN,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W - 1 + (number * 12),self.event_list[self.event_index][4],0,0,      0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,  -1,1,    0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8, 1,0,   0, HP01 * self.enemy_hp_mag,  0,0, E_SIZE_NORMAL,   30,0,0,    0,0,0,0,    E_SHOT_POW,self.current_formation_id ,0,0,0,    0  ,0,0,0,    0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
                             self.enemy.append(new_enemy) 
-                        
+                            
                         #編隊なので編隊のIDナンバーと編隊の総数、現在の編隊生存数をenemy_formationリストに登録します
                         self.record_enemy_formation(self.event_list[self.event_index][5]) 
-                
+                        
                 self.fast_forward_destruction_num = 0       #
                 self.fast_forward_destruction_count = 0     #
                 self.add_appear_flag = 0                 #早回し関連のパラメーター数値、フラグは全てリセットします
@@ -7340,15 +7328,15 @@ class App:
                 self.warning_dialog_display_time = self.event_list[self.event_index][2] #警告表示時間を代入(単位は1フレーム)
                 self.warning_dialog_logo_time    = self.event_list[self.event_index][3] #グラフイックロゴ表示にかける時間を代入(単位は1フレーム)
                 self.warning_dialog_text_time    = self.event_list[self.event_index][4] #テキスト表示にかける時間を代入(単位は1フレーム)
-
+                
                 #pyxel.playm(0)#警告音発生！緊急地震速報Ver・・・・怖い・・・
                 pyxel.playm(2)#警告音発生！
             elif self.event_list[self.event_index][1] == EVENT_BOSS:            #イベントの内容が「BOSS」の場合
                 self.game_status = SCENE_BOSS_APPEAR                       #ゲームのステータスを「BOSS_APPEAR」ボス出現！にします
                 self.born_boss()                                       #各面のボスを生み出す関数を呼び出します
-
+                
             self.event_index += 1 #イベントインデックス値を1増やして次のイベントの実行に移ります
-    
+
     #マップスクロールによる敵の発生
     def update_enemy_append_map_scroll(self):
         if self.no_enemy_mode == 1: #敵が出ないモードがonだったら・・・
@@ -7357,117 +7345,115 @@ class App:
         #今表示したマップに（「敵出現」情報）のキャラチップが含まれていたら敵を発生させる
         for i in range(WINDOW_H // 8):
             self.get_bg_chip(WINDOW_W,i*8,0)#画面右端のマップチップのＢＧナンバーをゲットする(iの値・・・8で割ってまた8を掛けるのはスマートじゃないかも・・・)
-                if   self.bg_chip == (64 /8) * 32 +(48 / 8):#マップチップx48y64(A)だったら   敵3地上固定砲台を出現させる
-                    item_number = 0 #アイテムナンバー初期化
-                    self.get_bg_chip(WINDOW_W+8,i*8,0)#画面右端のマップチップの更に一つ右のあるＢＧナンバーをゲットしパワーアップアイテム情報が書き込まれてるか調べる
-                    if self.bg_chip == (224 /8) *32 + 0: #マップチップx0y224だったらショットアイテム情報を付加せよの命令のマップチップなので
-                        item_number = E_SHOT_POW    #ショットアイテム
-                        self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
-                    elif self.bg_chip == (224 /8) *32 + (64 /8): #マップチップx64y224だったらミサイルアイテム情報を付加せよの命令のマップチップなので
-                        item_number = E_MISSILE_POW #ミサイルアイテム
-                        self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
-                    elif self.bg_chip == (224 /8) *32 + (128 /8): #マップチップx128y224だったらシールドアイテム情報を付加せよの命令のマップチップなので
-                        item_number = E_SHIELD_POW  #シールドアイテム
-                        self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
-                    self.get_bg_chip(WINDOW_W,i*8,0)#bgxの値が変化したので再度bgチップナンバーを取得する関数を呼び出す
-                    new_enemy = Enemy()
-                    new_enemy.update(3,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,     0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,   0,0,      0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,  1,0,    0, HP01 * self.enemy_hp_mag,   0,0,E_SIZE_NORMAL,0,0,0,     0,0,0,0,     item_number,ID00 ,0,0,0,    0  ,0,0,0,    0,GROUND_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
-                    self.enemy.append(new_enemy)
-                    self.delete_map_chip(self.bgx,i)#敵を出現させたら（「敵出現」情報）のキャラチップは不要なのでそこに（0=何もない空白）を書き込む                    
-
-                elif self.bg_chip == (64 /8) * 32 +(56 / 8):#マップチップx56y64(B)だったら   敵4天井固定砲台を出現させる
-                    item_number = 0 #アイテムナンバー初期化
-                    self.get_bg_chip(WINDOW_W+8,i*8,0)#画面右端のマップチップの更に一つ右のあるＢＧナンバーをゲットしパワーアップアイテム情報が書き込まれてるか調べる
-                    if self.bg_chip == (224 /8) *32 + 0: #マップチップx0y224だったらショットアイテム情報を付加せよの命令のマップチップなので
-                        item_number = E_SHOT_POW    #ショットアイテム
-                        self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
-                    elif self.bg_chip == (224 /8) *32 + (64 /8): #マップチップx64y224だったらミサイルアイテム情報を付加せよの命令のマップチップなので
-                        item_number = E_MISSILE_POW #ミサイルアイテム
-                        self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
-                    elif self.bg_chip == (224 /8) *32 + (128 /8): #マップチップx128y224だったらシールドアイテム情報を付加せよの命令のマップチップなので
-                        item_number = E_SHIELD_POW  #シールドアイテム
-                        self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
-
-                    self.get_bg_chip(WINDOW_W,i*8,0)#bgxの値が変化したので再度bgチップナンバーを取得する関数を呼び出す
-                    new_enemy = Enemy()
-                    new_enemy.update(4,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,     0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,0,   0,0,     0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,  1,0,  0,  HP01 * self.enemy_hp_mag,    0,0,E_SIZE_NORMAL,0,0,0,    0,0,0,0,    item_number,ID00 ,0,0,0,    0  ,0,0,0,    0,GROUND_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
-                    self.enemy.append(new_enemy)
-                    self.delete_map_chip(self.bgx,i)#敵を出現させたら(「敵出現」情報)のキャラチップは不要なのでそこに（0=何もない空白）を書き込む
-
-                elif self.bg_chip == (64 /8) * 32 +(64 / 8):#マップチップx64y64(C)だったら   敵5を出現させる（ホッパー君mk2）
-                    new_enemy = Enemy()
-                    new_enemy.update(5,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,     0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,    0.4,0,     0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,     SIZE_8,SIZE_8,    0.2*self.enemy_speed_mag,0,  -1,    HP01 * self.enemy_hp_mag,   0,0,   E_SIZE_NORMAL,(i * 8),-20,1,     0,0,0,0,     E_NO_POW,ID00 ,0,0,0,    0  ,0,0,0,    0,MOVING_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
-                    self.enemy.append(new_enemy)
-                    self.delete_map_chip(self.bgx,i)#敵を出現させたら（「敵出現」情報）のキャラチップは不要なのでそこに（0=何もない空白）を書き込む
-
-                elif self.bg_chip == (64 /8) * 32 +(72 / 8):#マップチップx72y64(D)だったら   敵2を出現させる(サインカーブを描く敵)
-                    new_enemy = Enemy()
-                    new_enemy.update(SAISEE_RO,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,      0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,   0,0,     0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,     SIZE_8,SIZE_8,    1*self.enemy_speed_mag,0,   0,   HP01 * self.enemy_hp_mag,    0,0,   E_SIZE_NORMAL,   0.5,0.05,0,    0,0,0,0,     E_NO_POW,ID00 ,0,0,0,    0  ,0,0,0,    0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
-                    self.enemy.append(new_enemy)
-                    self.delete_map_chip(self.bgx,i)#敵を出現させたら（「敵出現」情報）のキャラチップは不要なのでそこに（0=何もない空白）を書き込む
-
-                elif self.bg_chip == (64 /8) * 32 +(80 / 8):#マップチップx80y64(E)だったら   敵10を出現させる(地上スクランブルハッチ)
-                    new_enemy = Enemy()
-                    new_enemy.update(10,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,      0,0,0,0,0,0,0,0,      0,0,0,0,0,0,0,0,0,0,    0,0,     0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_24,SIZE_16,   0.5,0,   0,    HP10 * self.enemy_hp_mag,   0,0,   E_SIZE_MIDDLE32,  (self.s_rndint(0,130) + 10),  6, 20,     0,0,0,0,     E_NO_POW,ID00 ,0,0,0,    0  ,0,0,0,    0,GROUND_OBJ,  PT01,PT01,PT01,  PT01,PT10,PT01)
-                    self.enemy.append(new_enemy)
-                    self.delete_map_chip(self.bgx,i)#敵を出現させたら（「敵出現」情報）のキャラチップは不要なのでそこに（0=何もない空白）を書き込む
-
-                elif self.bg_chip == (64 /8) * 32 +(88 / 8):#マップチップx88y64(F)だったら   敵11を出現させる(天井スクランブルハッチ)
-                    new_enemy = Enemy()
-                    new_enemy.update(11,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,     0,0,0,0,0,0,0,0,      0,0,0,0,0,0,0,0,0,0,    0,0,    0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,     SIZE_24,SIZE_16,   0.5,0,   0,    HP10 * self.enemy_hp_mag,   0,0,   E_SIZE_MIDDLE32_Y_REV,  (self.s_rndint(0,130) + 10),  6, 20,     0,0,0,0,     E_NO_POW,ID00 ,0,0,0,    0  ,0,0,0,    0,GROUND_OBJ,  PT01,PT01,PT01,  PT01,PT10,PT01)
-                    self.enemy.append(new_enemy)
-                    self.delete_map_chip(self.bgx,i)#敵を出現させたら（「敵出現」情報）のキャラチップは不要なのでそこに（0=何もない空白）を書き込む
-
-                elif self.bg_chip == (64 /8) * 32 +(96 / 8):#マップチップx96y64(G)だったら   敵14赤いアイテムキャリアーを出現させる
-                    item_number = 0 #アイテムナンバー初期化
-                    self.get_bg_chip(WINDOW_W+8,i*8,0)#画面右端のマップチップの更に一つ右のあるＢＧナンバーをゲットしパワーアップアイテム情報が書き込まれてるか調べる
-                    if self.bg_chip == (232 /8) *32 + 0: #マップチップx0y232だったらクローアイテム情報を付加せよの命令のマップチップなので
-                        item_number = E_CLAW_POW    #クローアイテム
-                        self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
-
-                    elif self.bg_chip == (232 /8) *32 + (64 /8): #マップチップx64y232だったらテイルショットアイテム情報を付加せよの命令のマップチップなので
-                        item_number = E_TAIL_SHOT_POW  #テイルショットアイテム
-                        self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
-                        
-                    elif self.bg_chip == (232 /8) *32 + (72 /8): #マップチップx72y232だったらペネトレートロケットアイテム情報を付加せよの命令のマップチップなので
-                        item_number = E_PENETRATE_ROCKET_POW  #ペネトレートロケットアイテム
-                        self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
-                        
-                    elif self.bg_chip == (232 /8) *32 + (80 /8): #マップチップx80y232だったらサーチレーザーアイテム情報を付加せよの命令のマップチップなので
-                        item_number = E_SEARCH_LASER_POW #サーチレーザーアイテムアイテム
-                        self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
-                        
-                    elif self.bg_chip == (232 /8) *32 + (88 /8): #マップチップx88y232だったらホーミングミサイルアイテム情報を付加せよの命令のマップチップなので
-                        item_number = E_HOMING_MISSILE_POW  #ホーミングミサイルアイテム
-                        self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
-                        
-                    elif self.bg_chip == (232 /8) *32 + (96 /8): #マップチップx96y232だったらショックバンパーアイテム情報を付加せよの命令のマップチップなので
-                        item_number = E_SHOCK_BUMPER_POW #ショックバンパーアイテム
-                        self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
-                        
-                    elif self.bg_chip == (232 /8) *32 + (104 /8): #マップチップx104y232だったらトライアイングルアイテム情報を付加せよの命令のマップチップなので
-                        item_number = E_TRIANGLE_POW #トライアングルアイテム
-                        self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
-
-
-                    self.get_bg_chip(WINDOW_W,i*8,0)#bgxの値が変化したので再度bgチップナンバーを取得する関数を呼び出す
-                    new_enemy = Enemy()
-                    new_enemy.update(14,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,     0,0,0,0,0,0,0,0,       0,0,0,0,0,0,0,0,0,0,    -0.44,0,     0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_24,SIZE_8,   0,0,   0,    HP10,   0,0,   E_SIZE_NORMAL,  0,0,0,   0,0,0,0,     item_number,ID00 ,0,0,0,    0  ,0,0,0,    0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
-                    self.enemy.append(new_enemy)
-
-                    self.delete_map_chip(self.bgx,i)#敵を出現させたら（「敵出現」情報）のキャラチップは不要なのでそこに（0=何もない空白）を書き込む 
-
-                elif self.bg_chip == (64 /8) * 32 +(104/ 8):#マップチップx104y64(H)だったら  敵12を出現させる(直進して画面前方のどこかで停止→レーザービーム射出→急いで後退)
-                    new_enemy = Enemy()
-                    new_enemy.update(RAY_BLASTER,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W + 8,i * 8,0,0,      0,0,0,0,0,0,0,0,       0,0,0,0,0,0,0,0,0,0,    -2,(self.s_rndint(0,1)-0.5),     0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,     SIZE_8,SIZE_8,   0.98,0,    0,    HP01 * self.enemy_hp_mag,  0,0,    E_SIZE_NORMAL,   80 + self.s_rndint(0,40),0,0,     0,0,0,0,     E_NO_POW,ID00 ,0,0,0,    0  ,0,0,0,    0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
-                    self.enemy.append(new_enemy)
-                    self.delete_map_chip(self.bgx,i)#敵を出現させたら（「敵出現」情報）のキャラチップは不要なのでそこに（0=何もない空白）を書き込む
-
-                elif self.bg_chip == (64 /8) * 32 +(112/ 8):#マップチップx112y64(I)だったら  敵15を出現させる(地面を左右に動きながらチョット進んできて弾を撃つ移動砲台,何故か宇宙なのに重力の影響を受けて下に落ちたりもします)
-                    new_enemy = Enemy()
-                    new_enemy.update(15,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,       0,0,0,0,0,0,0,0,       0,0,0,0,0,0,0,0,0,0,    0,0,     0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,     SIZE_8,SIZE_8,   0.8*self.enemy_speed_mag,0,    -1,    HP01 * self.enemy_hp_mag,  70,80,    E_SIZE_NORMAL,   70,80,0,     0,0,0,0,       E_NO_POW,ID00 ,0,0,0,    0  ,0,0,0,    0,MOVING_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
-                    self.enemy.append(new_enemy)
-                    self.delete_map_chip(self.bgx,i)#敵を出現させたら（「敵出現」情報）のキャラチップは不要なのでそこに（0=何もない空白）を書き込む
+            if self.bg_chip == (64 /8) * 32 +(48 / 8):#マップチップx48y64(A)だったら   敵3地上固定砲台を出現させる
+                item_number = 0 #アイテムナンバー初期化
+                self.get_bg_chip(WINDOW_W+8,i*8,0)#画面右端のマップチップの更に一つ右のあるＢＧナンバーをゲットしパワーアップアイテム情報が書き込まれてるか調べる
+                if self.bg_chip == (224 /8) *32 + 0: #マップチップx0y224だったらショットアイテム情報を付加せよの命令のマップチップなので
+                    item_number = E_SHOT_POW    #ショットアイテム
+                    self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
+                elif self.bg_chip == (224 /8) *32 + (64 /8): #マップチップx64y224だったらミサイルアイテム情報を付加せよの命令のマップチップなので
+                    item_number = E_MISSILE_POW #ミサイルアイテム
+                    self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
+                elif self.bg_chip == (224 /8) *32 + (128 /8): #マップチップx128y224だったらシールドアイテム情報を付加せよの命令のマップチップなので
+                    item_number = E_SHIELD_POW  #シールドアイテム
+                    self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
+                self.get_bg_chip(WINDOW_W,i*8,0)#bgxの値が変化したので再度bgチップナンバーを取得する関数を呼び出す
+                new_enemy = Enemy()
+                new_enemy.update(3,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,     0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,   0,0,      0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,  1,0,    0, HP01 * self.enemy_hp_mag,   0,0,E_SIZE_NORMAL,0,0,0,     0,0,0,0,     item_number,ID00 ,0,0,0,    0  ,0,0,0,    0,GROUND_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
+                self.enemy.append(new_enemy)
+                self.delete_map_chip(self.bgx,i)#敵を出現させたら（「敵出現」情報）のキャラチップは不要なのでそこに（0=何もない空白）を書き込む                    
+                
+            elif self.bg_chip == (64 /8) * 32 +(56 / 8):#マップチップx56y64(B)だったら   敵4天井固定砲台を出現させる
+                item_number = 0 #アイテムナンバー初期化
+                self.get_bg_chip(WINDOW_W+8,i*8,0)#画面右端のマップチップの更に一つ右のあるＢＧナンバーをゲットしパワーアップアイテム情報が書き込まれてるか調べる
+                if self.bg_chip == (224 /8) *32 + 0: #マップチップx0y224だったらショットアイテム情報を付加せよの命令のマップチップなので
+                    item_number = E_SHOT_POW    #ショットアイテム
+                    self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
+                elif self.bg_chip == (224 /8) *32 + (64 /8): #マップチップx64y224だったらミサイルアイテム情報を付加せよの命令のマップチップなので
+                    item_number = E_MISSILE_POW #ミサイルアイテム
+                    self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
+                elif self.bg_chip == (224 /8) *32 + (128 /8): #マップチップx128y224だったらシールドアイテム情報を付加せよの命令のマップチップなので
+                    item_number = E_SHIELD_POW  #シールドアイテム
+                    self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
+                    
+                self.get_bg_chip(WINDOW_W,i*8,0)#bgxの値が変化したので再度bgチップナンバーを取得する関数を呼び出す
+                new_enemy = Enemy()
+                new_enemy.update(4,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,     0,0,0,0,0,0,0,0,    0,0,0,0,0,0,0,0,0,0,   0,0,     0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_8,SIZE_8,  1,0,  0,  HP01 * self.enemy_hp_mag,    0,0,E_SIZE_NORMAL,0,0,0,    0,0,0,0,    item_number,ID00 ,0,0,0,    0  ,0,0,0,    0,GROUND_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
+                self.enemy.append(new_enemy)
+                self.delete_map_chip(self.bgx,i)#敵を出現させたら(「敵出現」情報)のキャラチップは不要なのでそこに（0=何もない空白）を書き込む
+                
+            elif self.bg_chip == (64 /8) * 32 +(64 / 8):#マップチップx64y64(C)だったら   敵5を出現させる（ホッパー君mk2）
+                new_enemy = Enemy()
+                new_enemy.update(5,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,     0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,    0.4,0,     0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,     SIZE_8,SIZE_8,    0.2*self.enemy_speed_mag,0,  -1,    HP01 * self.enemy_hp_mag,   0,0,   E_SIZE_NORMAL,(i * 8),-20,1,     0,0,0,0,     E_NO_POW,ID00 ,0,0,0,    0  ,0,0,0,    0,MOVING_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
+                self.enemy.append(new_enemy)
+                self.delete_map_chip(self.bgx,i)#敵を出現させたら（「敵出現」情報）のキャラチップは不要なのでそこに（0=何もない空白）を書き込む
+                
+            elif self.bg_chip == (64 /8) * 32 +(72 / 8):#マップチップx72y64(D)だったら   敵2を出現させる(サインカーブを描く敵)
+                new_enemy = Enemy()
+                new_enemy.update(SAISEE_RO,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,      0,0,0,0,0,0,0,0,     0,0,0,0,0,0,0,0,0,0,   0,0,     0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,     SIZE_8,SIZE_8,    1*self.enemy_speed_mag,0,   0,   HP01 * self.enemy_hp_mag,    0,0,   E_SIZE_NORMAL,   0.5,0.05,0,    0,0,0,0,     E_NO_POW,ID00 ,0,0,0,    0  ,0,0,0,    0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
+                self.enemy.append(new_enemy)
+                self.delete_map_chip(self.bgx,i)#敵を出現させたら（「敵出現」情報）のキャラチップは不要なのでそこに（0=何もない空白）を書き込む
+                
+            elif self.bg_chip == (64 /8) * 32 +(80 / 8):#マップチップx80y64(E)だったら   敵10を出現させる(地上スクランブルハッチ)
+                new_enemy = Enemy()
+                new_enemy.update(10,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,      0,0,0,0,0,0,0,0,      0,0,0,0,0,0,0,0,0,0,    0,0,     0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_24,SIZE_16,   0.5,0,   0,    HP10 * self.enemy_hp_mag,   0,0,   E_SIZE_MIDDLE32,  (self.s_rndint(0,130) + 10),  6, 20,     0,0,0,0,     E_NO_POW,ID00 ,0,0,0,    0  ,0,0,0,    0,GROUND_OBJ,  PT01,PT01,PT01,  PT01,PT10,PT01)
+                self.enemy.append(new_enemy)
+                self.delete_map_chip(self.bgx,i)#敵を出現させたら（「敵出現」情報）のキャラチップは不要なのでそこに（0=何もない空白）を書き込む
+                
+            elif self.bg_chip == (64 /8) * 32 +(88 / 8):#マップチップx88y64(F)だったら   敵11を出現させる(天井スクランブルハッチ)
+                new_enemy = Enemy()
+                new_enemy.update(11,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,     0,0,0,0,0,0,0,0,      0,0,0,0,0,0,0,0,0,0,    0,0,    0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,     SIZE_24,SIZE_16,   0.5,0,   0,    HP10 * self.enemy_hp_mag,   0,0,   E_SIZE_MIDDLE32_Y_REV,  (self.s_rndint(0,130) + 10),  6, 20,     0,0,0,0,     E_NO_POW,ID00 ,0,0,0,    0  ,0,0,0,    0,GROUND_OBJ,  PT01,PT01,PT01,  PT01,PT10,PT01)
+                self.enemy.append(new_enemy)
+                self.delete_map_chip(self.bgx,i)#敵を出現させたら（「敵出現」情報）のキャラチップは不要なのでそこに（0=何もない空白）を書き込む
+                
+            elif self.bg_chip == (64 /8) * 32 +(96 / 8):#マップチップx96y64(G)だったら   敵14赤いアイテムキャリアーを出現させる
+                item_number = 0 #アイテムナンバー初期化
+                self.get_bg_chip(WINDOW_W+8,i*8,0)#画面右端のマップチップの更に一つ右のあるＢＧナンバーをゲットしパワーアップアイテム情報が書き込まれてるか調べる
+                if self.bg_chip == (232 /8) *32 + 0: #マップチップx0y232だったらクローアイテム情報を付加せよの命令のマップチップなので
+                    item_number = E_CLAW_POW    #クローアイテム
+                    self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
+                    
+                elif self.bg_chip == (232 /8) *32 + (64 /8): #マップチップx64y232だったらテイルショットアイテム情報を付加せよの命令のマップチップなので
+                    item_number = E_TAIL_SHOT_POW  #テイルショットアイテム
+                    self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
+                    
+                elif self.bg_chip == (232 /8) *32 + (72 /8): #マップチップx72y232だったらペネトレートロケットアイテム情報を付加せよの命令のマップチップなので
+                    item_number = E_PENETRATE_ROCKET_POW  #ペネトレートロケットアイテム
+                    self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
+                    
+                elif self.bg_chip == (232 /8) *32 + (80 /8): #マップチップx80y232だったらサーチレーザーアイテム情報を付加せよの命令のマップチップなので
+                    item_number = E_SEARCH_LASER_POW #サーチレーザーアイテムアイテム
+                    self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
+                    
+                elif self.bg_chip == (232 /8) *32 + (88 /8): #マップチップx88y232だったらホーミングミサイルアイテム情報を付加せよの命令のマップチップなので
+                    item_number = E_HOMING_MISSILE_POW  #ホーミングミサイルアイテム
+                    self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
+                    
+                elif self.bg_chip == (232 /8) *32 + (96 /8): #マップチップx96y232だったらショックバンパーアイテム情報を付加せよの命令のマップチップなので
+                    item_number = E_SHOCK_BUMPER_POW #ショックバンパーアイテム
+                    self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
+                    
+                elif self.bg_chip == (232 /8) *32 + (104 /8): #マップチップx104y232だったらトライアイングルアイテム情報を付加せよの命令のマップチップなので
+                    item_number = E_TRIANGLE_POW #トライアングルアイテム
+                    self.delete_map_chip(self.bgx,i)#命令マップチップを消去する（0=何もない空白）を書き込む
+                    
+                self.get_bg_chip(WINDOW_W,i*8,0)#bgxの値が変化したので再度bgチップナンバーを取得する関数を呼び出す
+                new_enemy = Enemy()
+                new_enemy.update(14,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,     0,0,0,0,0,0,0,0,       0,0,0,0,0,0,0,0,0,0,    -0.44,0,     0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,    SIZE_24,SIZE_8,   0,0,   0,    HP10,   0,0,   E_SIZE_NORMAL,  0,0,0,   0,0,0,0,     item_number,ID00 ,0,0,0,    0  ,0,0,0,    0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
+                self.enemy.append(new_enemy)
+                self.delete_map_chip(self.bgx,i)#敵を出現させたら（「敵出現」情報）のキャラチップは不要なのでそこに（0=何もない空白）を書き込む 
+                
+            elif self.bg_chip == (64 /8) * 32 +(104/ 8):#マップチップx104y64(H)だったら  敵12を出現させる(直進して画面前方のどこかで停止→レーザービーム射出→急いで後退)
+                new_enemy = Enemy()
+                new_enemy.update(RAY_BLASTER,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W + 8,i * 8,0,0,      0,0,0,0,0,0,0,0,       0,0,0,0,0,0,0,0,0,0,    -2,(self.s_rndint(0,1)-0.5),     0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,     SIZE_8,SIZE_8,   0.98,0,    0,    HP01 * self.enemy_hp_mag,  0,0,    E_SIZE_NORMAL,   80 + self.s_rndint(0,40),0,0,     0,0,0,0,     E_NO_POW,ID00 ,0,0,0,    0  ,0,0,0,    0,AERIAL_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
+                self.enemy.append(new_enemy)
+                self.delete_map_chip(self.bgx,i)#敵を出現させたら（「敵出現」情報）のキャラチップは不要なのでそこに（0=何もない空白）を書き込む
+                
+            elif self.bg_chip == (64 /8) * 32 +(112/ 8):#マップチップx112y64(I)だったら  敵15を出現させる(地面を左右に動きながらチョット進んできて弾を撃つ移動砲台,何故か宇宙なのに重力の影響を受けて下に落ちたりもします)
+                new_enemy = Enemy()
+                new_enemy.update(15,ID00,ENEMY_STATUS_NORMAL,ENEMY_ATTCK_ANY,   WINDOW_W,i * 8,0,0,       0,0,0,0,0,0,0,0,       0,0,0,0,0,0,0,0,0,0,    0,0,     0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0, 0,0,0,0,0,0,0,     SIZE_8,SIZE_8,   0.8*self.enemy_speed_mag,0,    -1,    HP01 * self.enemy_hp_mag,  70,80,    E_SIZE_NORMAL,   70,80,0,     0,0,0,0,       E_NO_POW,ID00 ,0,0,0,    0  ,0,0,0,    0,MOVING_OBJ,  PT01,PT01,PT01,  PT01,PT01,PT01)
+                self.enemy.append(new_enemy)
+                self.delete_map_chip(self.bgx,i)#敵を出現させたら（「敵出現」情報）のキャラチップは不要なのでそこに（0=何もない空白）を書き込む
     
     #BGマップチップデータ書き換えによる背景アニメーション
     def update_bg_rewrite_animation(self):
@@ -9054,31 +9040,31 @@ class App:
         if self.raster_scroll_flag == 0: #ラスタスクロール更新＆表示のフラグがたっていなかったらそのまま何もしないで戻る
             return
 
-         raster_scroll_count = len(self.raster_scroll)
-         for i in range(raster_scroll_count):#ラスタースクロールのリストの要素数を数えてその数の分だけループ処理する
-             if self.raster_scroll[i].raster_type == RASTER_NORMAL: #通常のラスタースクロールの場合
-                 #x座標をラスタースクロールのspeedと背景の横軸スクロールspeedを掛け合わせた分だけ加減算して更新
-                 self.raster_scroll[i].posx += self.raster_scroll[i].speed * self.side_scroll_speed
-                 #y座標は現在の垂直スクロールカウント+y軸オフセット値+上から何番目のラインかを示す数値を直接指定代入する
-                 self.raster_scroll[i].posy = (184 - self.vertical_scroll_count // 16) + self.raster_scroll[i].scroll_line_no + self.raster_scroll[i].offset_y
-                 #  self.raster_scroll[i].posy = self.raster_scroll[i].offset_y + self.raster_scroll[i].scroll_line_no
-             
-                 if self.raster_scroll[i].posx <= -self.raster_scroll[i].width: #描画ライン幅のドット数ぶん画面外までスクロールアウトしたのなら
-                     self.raster_scroll[i].posx = 0 #初期値であるx座標0を代入する
-             
-             elif self.raster_scroll[i].raster_type == RASTER_WAVE: #ウェーブラスタースクロールの場合
-                 #x座標をラスタースクロールのspeedと背景の横軸スクロールspeedを掛け合わせた分だけ加減算して更新する
-                 self.raster_scroll[i].posx += self.raster_scroll[i].speed *self.side_scroll_speed
-                 
-                 #y座標は現在の垂直スクロールカウント+y軸オフセット値+上から何番目のラインかを示す数値を直接指定代入する
-                 self.raster_scroll[i].posy = (184 - self.vertical_scroll_count // 16) + self.raster_scroll[i].scroll_line_no + self.raster_scroll[i].offset_y
-                 
-                 #ウェーブラスターで波打ってずれる分のoffset_xを計算してやる
-                 self.raster_scroll[i].wave_timer += self.raster_scroll[i].wave_speed #timer += speed
-                 self.raster_scroll[i].offset_x = self.raster_scroll[i].wave_intensity * math.sin(self.raster_scroll[i].wave_timer) # offset_x = intensity * sin(timer)
-                 
-                 if self.raster_scroll[i].posx <= -self.raster_scroll[i].width: #描画ライン幅のドット数ぶん画面外までスクロールアウトしたのなら
-                     self.raster_scroll[i].posx = 0 #初期値であるx座標0を代入する
+        raster_scroll_count = len(self.raster_scroll)
+        for i in range(raster_scroll_count):#ラスタースクロールのリストの要素数を数えてその数の分だけループ処理する
+            if self.raster_scroll[i].raster_type == RASTER_NORMAL: #通常のラスタースクロールの場合
+                #x座標をラスタースクロールのspeedと背景の横軸スクロールspeedを掛け合わせた分だけ加減算して更新
+                self.raster_scroll[i].posx += self.raster_scroll[i].speed * self.side_scroll_speed
+                #y座標は現在の垂直スクロールカウント+y軸オフセット値+上から何番目のラインかを示す数値を直接指定代入する
+                self.raster_scroll[i].posy = (184 - self.vertical_scroll_count // 16) + self.raster_scroll[i].scroll_line_no + self.raster_scroll[i].offset_y
+                #  self.raster_scroll[i].posy = self.raster_scroll[i].offset_y + self.raster_scroll[i].scroll_line_no
+                
+                if self.raster_scroll[i].posx <= -self.raster_scroll[i].width: #描画ライン幅のドット数ぶん画面外までスクロールアウトしたのなら
+                    self.raster_scroll[i].posx = 0 #初期値であるx座標0を代入する
+                
+            elif self.raster_scroll[i].raster_type == RASTER_WAVE: #ウェーブラスタースクロールの場合
+                #x座標をラスタースクロールのspeedと背景の横軸スクロールspeedを掛け合わせた分だけ加減算して更新する
+                self.raster_scroll[i].posx += self.raster_scroll[i].speed *self.side_scroll_speed
+                
+                #y座標は現在の垂直スクロールカウント+y軸オフセット値+上から何番目のラインかを示す数値を直接指定代入する
+                self.raster_scroll[i].posy = (184 - self.vertical_scroll_count // 16) + self.raster_scroll[i].scroll_line_no + self.raster_scroll[i].offset_y
+                
+                #ウェーブラスターで波打ってずれる分のoffset_xを計算してやる
+                self.raster_scroll[i].wave_timer += self.raster_scroll[i].wave_speed #timer += speed
+                self.raster_scroll[i].offset_x = self.raster_scroll[i].wave_intensity * math.sin(self.raster_scroll[i].wave_timer) # offset_x = intensity * sin(timer)
+                
+                if self.raster_scroll[i].posx <= -self.raster_scroll[i].width: #描画ライン幅のドット数ぶん画面外までスクロールアウトしたのなら
+                    self.raster_scroll[i].posx = 0 #初期値であるx座標0を代入する
 
     #ポーズメニュー                                            KEY TAB    GAMEPAD START
     def update_game_pause(self):
@@ -9103,7 +9089,7 @@ class App:
             self.playtime_frame_counter = 0      #フレームカウンターをリセットして
             self.one_game_playtime_seconds   += 1 #1プレイタイムを1秒増加させる
             self.total_game_playtime_seconds += 1 #総ゲームプレイ時間も1秒増加させる
-            
+
     #1プレイタイムを見てランクを上昇させる
     def update_rank_up_look_at_playtime(self):
         if (pyxel.frame_count % self.rank_up_frame) == 0:
@@ -9127,8 +9113,8 @@ class App:
         # 下入力されたら  y座標を  +8する(1キャラ分)
         if pyxel.btnp(pyxel.KEY_DOWN) or pyxel.btnp(pyxel.GAMEPAD_1_DOWN) or pyxel.btnp(pyxel.GAMEPAD_2_DOWN):
             if self.cursor_item != self.cursor_max_item: #指し示しているアイテムナンバーが最大項目数でないのなら下方向にカーソルは移動できるので・・
-            self.cursor_y += 8
-            self.cursor_item += 1
+                self.cursor_y += 8
+                self.cursor_item += 1
         
         if pyxel.btnp(pyxel.KEY_SPACE) or pyxel.btnp(pyxel.GAMEPAD_1_A) or pyxel.btnp(pyxel.GAMEPAD_2_A) or pyxel.btnp(pyxel.GAMEPAD_1_B) or pyxel.btnp(pyxel.GAMEPAD_2_B):
             self.cursor_decision_item = self.cursor_item #ボタンが押されて決定されたら、いま指示しているアイテムナンバーをcursor_decision_itemに代入！
@@ -9184,7 +9170,7 @@ class App:
             text_mes = self.text_screen[i][0]
             text_col = self.text_screen[i][1]
             pyxel.text(0,i*6 - self.text_console_scroll_counter * 6 ,str(text_mes),text_col) #y軸をスクロールした行数分だけマイナス方向に補正し画面外(上方向)から前部のテキストを表示するときちんと表示されます
-        
+
     #タイトルの表示#######################################
     def draw_title(self):
         for i in range(160):
@@ -9203,14 +9189,14 @@ class App:
         pyxel.text(160-19*3+8,8,"HITBOX " + str(self.boss_collision_rect_display_flag),10)
         #難易度の表示
         pyxel.text(0,1,"DIFFICULTY " + str(self.game_difficulty),10)
-    
+
     #背景の星の表示
     def draw_star(self):
         stars_count = len(self.stars)
         for i in range(stars_count):
             pyxel.pset(self.stars[i].posx, self.stars[i].posy,self.stars[i].posx  // 4 % 15) 
             #pyxel.pset(self.stars[i].posx, self.stars[i].posy,self.s_rndint(0,7)) 
-    
+
     #敵の表示
     def draw_enemy(self):
         enemy_count = len(self.enemy)
@@ -9223,7 +9209,7 @@ class App:
                 self.reverse_flag = 8
                 if self.my_x > self.enemy[i].posx:
                     self.reverse_flag =-8
-                
+                    
                 #論理式(enemy[i].item != 0)はitem=0の場合falseで0 item=1または2か3の場合はtrueで1となる（つまりアイテムを持っていたらカッコ内は1となる）
                 #アイテム所持していれば1*24で24ドット横、つまり3キャラチップ横の黄色い固定砲台が表示される事となる
                 if self.my_x == self.enemy[i].posx:
@@ -9265,8 +9251,6 @@ class App:
                     right_left_reverse = 8
                 else:
                     right_left_reverse = -8
-
-                
                 
                 pyxel.blt(self.enemy[i].posx, self.enemy[i].posy,IMG2,   96 ,32,   right_left_reverse,up_down_reverse,  0)
             elif self.enemy[i].enemy_type == 9:#敵タイプ９の表示   Ｙ軸を合わせた後突っ込んで来る敵機
@@ -9299,7 +9283,7 @@ class App:
                 pyxel.blt(self.enemy[i].posx    , self.enemy[i].posy,IMG2,      0, 32,    SIZE_8 ,SIZE_8, 0)
             elif self.enemy[i].enemy_type == 18:#敵タイプ18の表示  チョット大き目で硬いばらまき弾の敵 ボルダー
                 pyxel.blt(self.enemy[i].posx    , self.enemy[i].posy,IMG2,      80,48,    SIZE_40 ,SIZE_24, 15)    
-    
+
     #ボスの表示
     def draw_boss(self):
         boss_count = len(self.boss)
@@ -9309,23 +9293,23 @@ class App:
                 if self.boss[i].count2 !=0: #カウントが0だと0で割ってしまってエラーになるのでスキップする
                    offset_x = 10 - self.boss[i].count2 // 48 #count2が少なくなるごとにoffset_xが増加することに成る
                                                     #count2の数値は最初は480フレームで最終的に0となり,この計算式からoffset_xは480フレームの間で0から10まで変化することに成る
-
+                
                 pyxel.blt(self.boss[i].posx + offset_x, self.boss[i].posy + offset_x // 16,  IMG0,   64,128,8*8,5*8,    15) #ファッティバルガード前部表示
                 pyxel.blt(self.boss[i].posx - offset_x, self.boss[i].posy              ,  IMG0,    0,184,5*8,3*8,    15) #ファッティバルガード後部表示 
-            
+                
                 if self.boss[i].parts1_flag == 1: #パーツフラグ1(5way砲台)が生存していたのなら描画する
                     pyxel.blt(self.boss[i].posx - offset_x, self.boss[i].posy + 16,       IMG0,    0,176,    2*8,8,    15)
                 if self.boss[i].parts2_flag == 1: #パーツフラグ2(尾翼レーザーユニット)が生存していたのなら描画する
                     pyxel.blt(self.boss[i].posx - offset_x, self.boss[i].posy,           IMG0,   16,176,    3*8,8,    15)
                 if self.boss[i].parts3_flag == 1: #パーツフラグ3(赤色爆雷ユニット)が生存していたのなら描画する
                     pyxel.blt(self.boss[i].posx - offset_x + 8, self.boss[i].posy + 24,    IMG0,   40,176,    2*8,8,    15)
-            
+                
             elif  self.boss[i].boss_type == BOSS_BREEZARDIA:    #ブリザーディア(山岳地帯ボス)
                 offset_x = 0 #真っ二つになる描画用のx軸オフセット値(離れた距離)をリセットする
                 if self.boss[i].count2 !=0: #カウントが0だと0で割ってしまってエラーになるのでスキップする
                    offset_x = 10 - self.boss[i].count2 // 48 #count2が少なくなるごとにoffset_xが増加することに成る
                                                     #count2の数値は最初は480フレームで最終的に0となり,この計算式からoffset_xは480フレームの間で0から10まで変化することに成る
-
+                
                 pyxel.blt(self.boss[i].posx + offset_x, self.boss[i].posy + offset_x // 16,  IMG0,   40,184,self.boss[i].width,self.boss[i].height,    15) #ブリザーディア前部表示
                 
                 if self.boss[i].parts1_flag == 1: #パーツフラグ1(右下赤砲台)が生存していたのなら描画する
@@ -9339,10 +9323,10 @@ class App:
                     pyxel.blt(self.boss[i].posx - offset_x      , self.boss[i].posy     ,       IMG0,     0,232,    4*8,3*8,    15)
                     #グリーンカッター手前にある後部ユニット部
                     pyxel.blt(self.boss[i].posx - offset_x +  1*8, self.boss[i].posy + 1*8,       IMG0,    32,240,    2*8,2*8,    15)
-
+                    
             #デバッグ用の当たり判定矩形の表示
             self.draw_boss_collision_rectangle(i)    #ボス本体の当たり判定矩形を表示する関数の呼び出し
-                
+
     #ボスの耐久力の表示 (同じコードをコピペしまくりなのでいつかキチンとループ処理して短くしたい・・・)
     def draw_boss_hp(self):
         boss_count = len(self.boss)
@@ -9371,7 +9355,7 @@ class App:
                 x,y = self.boss[i].posx + self.boss[i].parts2_hp_bar_offset_x,self.boss[i].posy + self.boss[i].parts2_hp_bar_offset_y
                 self.display_boss_hp_short_bar(x,y,hp)
                 self.boss[i].display_time_parts2_hp_bar -= 1 #タイムカウントを１減らす
-
+                
             if self.boss[i].display_time_parts3_hp_bar >= 0: #パーツ3(ファッティバルガードの場合赤色爆雷ユニット)の耐久力を表示するタイムカウントが残っていたのなら
                 hp = self.boss[i].parts3_hp / 32
                 if hp > 8:
@@ -9379,7 +9363,7 @@ class App:
                 x,y = self.boss[i].posx + self.boss[i].parts3_hp_bar_offset_x,self.boss[i].posy + self.boss[i].parts3_hp_bar_offset_y
                 self.display_boss_hp_short2_bar(x,y,hp)
                 self.boss[i].display_time_parts3_hp_bar -= 1 #タイムカウントを１減らす         
-            
+                
             if self.boss[i].display_time_parts4_hp_bar >= 0: #パーツ4の耐久力を表示するタイムカウントが残っていたのなら
                 hp = self.boss[i].parts4_hp / 32
                 if hp > 8:
@@ -9387,7 +9371,7 @@ class App:
                 x,y = self.boss[i].posx + self.boss[i].parts4_hp_bar_offset_x,self.boss[i].posy + self.boss[i].parts4_hp_bar_offset_y
                 self.display_boss_hp_short2_bar(x,y,hp)
                 self.boss[i].display_time_parts4_hp_bar -= 1 #タイムカウントを１減らす
-            
+                
             if self.boss[i].display_time_parts5_hp_bar >= 0: #パーツ5の耐久力を表示するタイムカウントが残っていたのなら
                 hp = self.boss[i].parts5_hp / 32
                 if hp > 8:
@@ -9395,7 +9379,7 @@ class App:
                 x,y = self.boss[i].posx + self.boss[i].parts5_hp_bar_offset_x,self.boss[i].posy + self.boss[i].parts5_hp_bar_offset_y
                 self.display_boss_hp_short2_bar(x,y,hp)
                 self.boss[i].display_time_parts5_hp_bar -= 1 #タイムカウントを１減らす
-            
+                
             if self.boss[i].display_time_parts6_hp_bar >= 0: #パーツ6の耐久力を表示するタイムカウントが残っていたのなら
                 hp = self.boss[i].parts6_hp / 32
                 if hp > 8:
@@ -9403,7 +9387,7 @@ class App:
                 x,y = self.boss[i].posx + self.boss[i].parts6_hp_bar_offset_x,self.boss[i].posy + self.boss[i].parts6_hp_bar_offset_y
                 self.display_boss_hp_short2_bar(x,y,hp)
                 self.boss[i].display_time_parts6_hp_bar -= 1 #タイムカウントを１減らす
-            
+                
             if self.boss[i].display_time_parts7_hp_bar >= 0: #パーツ7の耐久力を表示するタイムカウントが残っていたのなら
                 hp = self.boss[i].parts7_hp / 32
                 if hp > 8:
@@ -9411,7 +9395,7 @@ class App:
                 x,y = self.boss[i].posx + self.boss[i].parts7_hp_bar_offset_x,self.boss[i].posy + self.boss[i].parts7_hp_bar_offset_y
                 self.display_boss_hp_short2_bar(x,y,hp)
                 self.boss[i].display_time_parts7_hp_bar -= 1 #タイムカウントを１減らす
-            
+                
             if self.boss[i].display_time_parts8_hp_bar >= 0: #パーツ8の耐久力を表示するタイムカウントが残っていたのなら
                 hp = self.boss[i].parts8_hp / 32
                 if hp > 8:
@@ -9419,7 +9403,7 @@ class App:
                 x,y = self.boss[i].posx + self.boss[i].parts8_hp_bar_offset_x,self.boss[i].posy + self.boss[i].parts8_hp_bar_offset_y
                 self.display_boss_hp_short2_bar(x,y,hp)
                 self.boss[i].display_time_parts8_hp_bar -= 1 #タイムカウントを１減らす
-            
+                
             if self.boss[i].display_time_parts9_hp_bar >= 0: #パーツ9の耐久力を表示するタイムカウントが残っていたのなら
                 hp = self.boss[i].parts9_hp / 32
                 if hp > 8:
@@ -9468,8 +9452,8 @@ class App:
             pyxel.rectb(self.boss[i].posx + self.boss[i].col_parts8_x,self.boss[i].posy + self.boss[i].col_parts8_y,self.boss[i].col_parts8_w,self.boss[i].col_parts8_h,self.monochrome_flash_color[pyxel.frame_count // 8 % 15])
         if self.boss[i].parts9_flag == 1:#パーツ9が健在なら表示する
             pyxel.rectb(self.boss[i].posx + self.boss[i].col_parts9_x,self.boss[i].posy + self.boss[i].col_parts9_y,self.boss[i].col_parts9_w,self.boss[i].col_parts9_h,self.yellow_flash_color[pyxel.frame_count // 8 % 10])
-
-
+        
+        
         if self.boss[i].col_damage_point1_w != 0: #ボスのダメージポイント(弱点)1の表示 当たり判定の横幅が0の場合はスキップして表示しない
             pyxel.rectb(self.boss[i].posx + self.boss[i].col_damage_point1_x,self.boss[i].posy + self.boss[i].col_damage_point1_y,self.boss[i].col_damage_point1_w,self.boss[i].col_damage_point1_h,self.rainbow_flash_color[pyxel.frame_count // 3 % 15])
         if self.boss[i].col_damage_point2_w != 0: #ボスのダメージポイント(弱点)2の表示 当たり判定の横幅が0の場合はスキップして表示しない
@@ -9515,7 +9499,7 @@ class App:
                     pyxel.blt(self.enemy_shot[i].posx, self.enemy_shot[i].posy, IMG2,   64,56,    SIZE_16, SIZE_16,    15)
                 else:                                                       #通常弾の表示
                     pyxel.blt(self.enemy_shot[i].posx, self.enemy_shot[i].posy, IMG2,   32 + (self.enemy_shot[i].posx // 8) % 4 * 8,0,    8, 8,    13)#敵通常弾の表示 posxを使用してアニメーションパターンのオフセット値を計算する                
-    
+
     #爆発パターンの表示
     def draw_explosion(self,disp_priority):
         explosioncount = len(self.explosions)
@@ -9549,7 +9533,7 @@ class App:
             
             elif self.particle[i].particle_type == PARTICLE_BOSS_DEBRIS1: #パーティクルタイプ ボスの破片その1
                 pyxel.blt(self.particle[i].posx,self.particle[i].posy,IMG2,160 + (12 - (self.particle[i].life % 12)) * 8,216, 8,8, 0) #ボス破片デブリ1をlifeの値をアニメーションパターンオフセット値としてスプライト表示する
-    
+            
             elif self.particle[i].particle_type == PARTICLE_BOSS_DEBRIS2: #パーティクルタイプ ボスの破片その2
                 pyxel.blt(self.particle[i].posx,self.particle[i].posy,IMG2,160 + (6 - (self.particle[i].life % 6)) * 8,208, 8,8, 0) #ボス破片デブリ2をlifeの値をアニメーションパターンオフセット値としてスプライト表示する
             
@@ -9558,6 +9542,7 @@ class App:
             
             elif self.particle[i].particle_type == PARTICLE_BOSS_DEBRIS4: #パーティクルタイプ ボスの破片その4
                 pyxel.blt(self.particle[i].posx,self.particle[i].posy,IMG2,192 + (8 - (self.particle[i].life % 8)) * 8,192, 8,8, 0) #ボス破片デブリ4をlifeの値をアニメーションパターンオフセット値としてスプライト表示する
+
     #背景オブジェクトの表示
     def draw_background_object(self):
         object_count = len(self.background_object)
@@ -9582,7 +9567,7 @@ class App:
                 pyxel.blt(self.background_object[i].posx,self.background_object[i].posy,    IMG1,    240,248,    16, 8,    1) #雲小9を描画
             elif self.background_object[i].background_object_type == BG_OBJ_CLOUD10: #雲小10
                 pyxel.blt(self.background_object[i].posx,self.background_object[i].posy,    IMG1,    224,224,    16, 8,    1) #雲小10を描画
-
+            
             elif self.background_object[i].background_object_type == BG_OBJ_CLOUD11: #雲中11
                 pyxel.blt(self.background_object[i].posx,self.background_object[i].posy,    IMG1,    176,232,    16,16,    1) #雲中11を描画(正方形っぽい)
             elif self.background_object[i].background_object_type == BG_OBJ_CLOUD12: #雲中12
@@ -9618,12 +9603,12 @@ class App:
                 pyxel.blt(self.background_object[i].posx +9*8,self.background_object[i].posy +2*8,  IMG1, 160,232,    16,24,    1) #雲大21の右先端描画
                 pyxel.blt(self.background_object[i].posx +3*8,self.background_object[i].posy +3*8,  IMG1, 112,240,    64,16,    1) #雲大21の下部右描画
                 pyxel.blt(self.background_object[i].posx    ,self.background_object[i].posy +2*8,  IMG1,  96,232,    24,16,    1) #雲大21の左のしっぽ描画
-    
+
     #ラスタースクロールの表示
     def draw_raster_scroll(self,disp_priority):
         if self.raster_scroll_flag == 0: #ラスタスクロール更新＆表示のフラグがたっていなかったらそのまま何もしないで戻る
             return
-
+            
         raster_scroll_count = len(self.raster_scroll)
         for i in range(raster_scroll_count):#ラスタースクロールのリストの要素数を数えてその数の分だけループ処理する
             if self.raster_scroll[i].display == 1 and self.raster_scroll[i].priority == disp_priority: #dispiay == 1(on) & priority == 引数のdisp_priorityの時だけ描画する
@@ -9632,14 +9617,14 @@ class App:
                 self.raster_scroll[i].posu,self.raster_scroll[i].posv,
                 self.raster_scroll[i].width,self.raster_scroll[i].height,
                 self.raster_scroll[i].transparent_color)
-            
+                
                 #右横に更に同じラインを描画する
                 pyxel.blt(self.raster_scroll[i].posx + self.raster_scroll[i].offset_x + self.raster_scroll[i].width,self.raster_scroll[i].posy,
                 self.raster_scroll[i].img_bank,
                 self.raster_scroll[i].posu,self.raster_scroll[i].posv,
                 self.raster_scroll[i].width,self.raster_scroll[i].height,
                 self.raster_scroll[i].transparent_color)
-            
+                
                 #更にその右横に同じラインを描画
                 pyxel.blt(self.raster_scroll[i].posx + self.raster_scroll[i].offset_x + self.raster_scroll[i].width * 2,self.raster_scroll[i].posy,
                 self.raster_scroll[i].img_bank,
@@ -9704,13 +9689,13 @@ class App:
         for i in range(claw_count):
             pyxel.blt(self.claw[i].posx, self.claw[i].posy,     IMG2,    184 + (((self.stage_count // 2.5 ) % 9) * 8),96,      8,8,    0)
             #pyxel.blt(self.claw[i].posx, self.claw[i].posy,     IMG2,    144 + (((self.stage_count // 2.5 ) % 14) * 8),8,      8,8,    0)
-        
+
     #クローショットの表示
     def draw_claw_shot(self):
         claw_shot_count = len(self.claw_shot)
         for i in range(claw_shot_count):
             pyxel.blt(self.claw_shot[i].posx, self.claw_shot[i].posy, IMG2,   240,0,    8,8,  1)
-    
+
     #自機表示
     def draw_my_ship(self):
         if self.invincible_counter > 0: #無敵中のカウントが0より大きい時は無敵状態なので点滅表示する
@@ -9718,16 +9703,16 @@ class App:
                pyxel.blt(self.my_x   ,self.my_y,IMG2,8 + ((self.my_rolling_flag) * 8),0,SHIP_W,SHIP_H,0) #自機本体の表示
             
             self.invincible_counter -= 1 #無敵時間カウントを1減らす
-
+            
         else:
             pyxel.blt(self.my_x   ,self.my_y,IMG2,8 + ((self.my_rolling_flag) * 8),0,SHIP_W,SHIP_H,0) #自機本体の表示
-        
-        
+            
+            
         if self.game_status == SCENE_STAGE_CLEAR_MY_SHIP_BOOST:
             pyxel.blt(self.my_x -6*8,self.my_y,IMG2,    208,120 + (pyxel.frame_count // 2  % 2) * 8,    6*8,8,0) #ブーストモードイオンエンジン噴射の描画
         else:
             pyxel.blt(self.my_x   -8,self.my_y,IMG2,    176 + (pyxel.frame_count // 2  % 3) * 8,104,     8,8,0) #イオンエンジン噴射の描画
-    
+
     #パワーアップアイテム類の表示
     def draw_obtain_item(self):
         obtain_item_count = len(self.obtain_item)
@@ -9738,13 +9723,13 @@ class App:
                 pyxel.blt(self.obtain_item[i].posx,self.obtain_item[i].posy,IMG2, pyxel.frame_count // 8  % 8 * 8 + 64 ,224,    8,8,0)
             elif  self.obtain_item[i].item_type == ITEM_SHIELD_POWER_UP:    #シールドパワーアップカプセル（青）の表示
                 pyxel.blt(self.obtain_item[i].posx,self.obtain_item[i].posy,IMG2, pyxel.frame_count // 8  % 8 * 8 + 128,224,    8,8,0)
-            
+                
             elif  self.obtain_item[i].item_type == ITEM_CLAW_POWER_UP:     #クローパワーアップカプセル （黄）の表示
                 pyxel.blt(self.obtain_item[i].posx,self.obtain_item[i].posy,IMG2, pyxel.frame_count // 8  % 8 * 8     ,232,    8,8,0)
-            
+                
             elif  self.obtain_item[i].item_type == ITEM_TRIANGLE_POWER_UP:  #トライアングルアイテム(正三角形)ショット、ミサイル、シールドの表示
                 self.draw_obtain_item_triangle_item(i)
-
+                
             elif  self.obtain_item[i].item_type == ITEM_TAIL_SHOT_POWER_UP:      #テイルショットカプセルの表示
                 pyxel.blt(self.obtain_item[i].posx,self.obtain_item[i].posy,IMG2,    64,232,    8,8,13)
                 self.draw_obtain_item_rotation_box(i)
@@ -9781,7 +9766,7 @@ class App:
         y3 =   3 + self.expansion_shrink_number[self.stage_count // 3 % 37]
         x4 =   3 + self.expansion_shrink_number[self.stage_count // 3 % 37]
         y4 =   0
-
+        
         #現在の角度に従って点座標を回転させます
         rotx1 = x1 * math.cos(math.radians(self.obtain_item[i].degree)) - y1 * math.sin(math.radians(self.obtain_item[i].degree))
         roty1 = x1 * math.sin(math.radians(self.obtain_item[i].degree)) + y1 * math.cos(math.radians(self.obtain_item[i].degree))
@@ -9797,7 +9782,7 @@ class App:
         pyxel.line(self.obtain_item[i].posx +3 + rotx2,self.obtain_item[i].posy + 3 + roty2,self.obtain_item[i].posx + 3 + rotx3,self.obtain_item[i].posy + 3 + roty3, self.blinking_color[pyxel.frame_count // 8 % 10])
         pyxel.line(self.obtain_item[i].posx +3 + rotx3,self.obtain_item[i].posy + 3 + roty3,self.obtain_item[i].posx + 3 + rotx4,self.obtain_item[i].posy + 3 + roty4, self.blinking_color[pyxel.frame_count // 8 % 10])
         pyxel.line(self.obtain_item[i].posx +3 + rotx4,self.obtain_item[i].posy + 3 + roty4,self.obtain_item[i].posx + 3 + rotx1,self.obtain_item[i].posy + 3 + roty1, self.blinking_color[pyxel.frame_count // 8 % 10])
-        
+
     #トライアングルアイテム（ショット、ミサイル、シールド）の表示
     def draw_obtain_item_triangle_item(self,i): #iはobtain_itemクラスのインデックス値となります
         self.obtain_item[i].degree -= self.obtain_item[i].speed #SPEED分,右回転する
@@ -9816,22 +9801,22 @@ class App:
         if self.obtain_item[i].status == 0: #状態遷移が「画面スクロールに合わせて左に流れる状態」の時は三角形は膨張収縮する
             ax = (self.obtain_item[i].radius + self.expansion_shrink_number[self.stage_count // 3 % 37]) *   math.cos(math.radians(self.obtain_item[i].degree))
             ay = (self.obtain_item[i].radius + self.expansion_shrink_number[self.stage_count // 3 % 37]) *  -math.sin(math.radians(self.obtain_item[i].degree))
-
+            
             bx = (self.obtain_item[i].radius + self.expansion_shrink_number[self.stage_count // 3 % 37]) *   math.cos(math.radians(self.obtain_item[i].degree + 120))
             by = (self.obtain_item[i].radius + self.expansion_shrink_number[self.stage_count // 3 % 37]) *  -math.sin(math.radians(self.obtain_item[i].degree + 120))
-
+            
             cx = (self.obtain_item[i].radius + self.expansion_shrink_number[self.stage_count // 3 % 37]) *   math.cos(math.radians(self.obtain_item[i].degree + 240))
             cy = (self.obtain_item[i].radius + self.expansion_shrink_number[self.stage_count // 3 % 37]) *  -math.sin(math.radians(self.obtain_item[i].degree + 240))
         elif 1 <= self.obtain_item[i].status <= 2: #状態遷移が「アイテム取得時の高速回転状態」から「取得アニメーション描画中」までの時は三角形はそのままで描画する
             ax = self.obtain_item[i].radius *  math.cos(math.radians(self.obtain_item[i].degree))
             ay = self.obtain_item[i].radius * -math.sin(math.radians(self.obtain_item[i].degree))
-
+            
             bx = self.obtain_item[i].radius *  math.cos(math.radians(self.obtain_item[i].degree + 120))
             by = self.obtain_item[i].radius * -math.sin(math.radians(self.obtain_item[i].degree + 120))
-
+            
             cx = self.obtain_item[i].radius *  math.cos(math.radians(self.obtain_item[i].degree + 240))
             cy = self.obtain_item[i].radius * -math.sin(math.radians(self.obtain_item[i].degree + 240))
-
+            
         #self.point_in_triangle(self.my_x,self.my_y,ax,ay,bx,by,cx,cy) 外積を使った三角形の内外判定は上手くいかなかったのでボツに。。。。
         if self.obtain_item[i].status == 0 or self.obtain_item[i].status == 1:#「画面スクロールに合わせて左に流れる状態」「アイテム取得時の高速回転状態」の時
             d = abs(math.sqrt((self.obtain_item[i].posx - self.my_x) * (self.obtain_item[i].posx - self.my_x) + (self.obtain_item[i].posy - self.my_y) * (self.obtain_item[i].posy - self.my_y)))#dに自機からアイテムまでの距離が入る
@@ -9847,7 +9832,7 @@ class App:
                 pyxel.blt(self.obtain_item[i].posx + cx -4,self.obtain_item[i].posy + cy -4,IMG2,128,224,    8,8,0)
             else:#範囲内なので塗りつぶし三角描画
                 pyxel.tri(self.obtain_item[i].posx + ax,self.obtain_item[i].posy + ay,self.obtain_item[i].posx + bx,self.obtain_item[i].posy + by,self.obtain_item[i].posx + cx,self.obtain_item[i].posy + cy,self.blinking_color[pyxel.frame_count // 8 % 10])
-
+                
                 #ショット赤玉表示 範囲内なので玉の回転アニメーションを行う
                 pyxel.blt(self.obtain_item[i].posx + ax -4,self.obtain_item[i].posy + ay -4,IMG2, pyxel.frame_count % 8 * 8     ,224,    8,8,0)
                 #ミサイル緑玉表示
@@ -9861,7 +9846,7 @@ class App:
             pyxel.blt(self.obtain_item[i].posx + bx -4,self.obtain_item[i].posy + by -4,IMG2, 184 + self.obtain_item[i].animation_number * 8,232,    8,8,0)
             #シールド青消滅アニメーション
             pyxel.blt(self.obtain_item[i].posx + cx -4,self.obtain_item[i].posy + cy -4,IMG2, 184 + self.obtain_item[i].animation_number * 8,232,    8,8,0)
-    
+
     #l'sシールド表示
     def draw_ls_shield(self):
         if self.ls_shield_hp > 0:
@@ -9872,12 +9857,12 @@ class App:
         for i in range(5):
             #論理式(sub_weapon_list[i]が0)の場合括弧の中の値がtrue=1となるので y座標は16+1*8=24となる
             pyxel.blt(60 + i * 10,0,  IMG2, 216 + i * 8,16 + (self.sub_weapon_list[i] == 0) * 8,   8,8, 13)
-    
+
     #サブウェポンセレクトガイドボックスの表示（今選択しているサブウェポンを示す四角い矩形輪郭線）
     def draw_sub_weapon_select_guidebox(self):
         if self.select_sub_weapon_id != -1:#サブウェポンを全く所持していない状態（id=-1）以外ならガイドボックスを点滅表示させる
             pyxel.rectb(60 -1 + self.select_sub_weapon_id * 10,-1, 10,8, self.blinking_color[pyxel.frame_count // 8 % 10])
-    
+
     #スコア表示やスピード、自機耐久力などのステータスの表示（画面上部の物）
     def draw_status(self):
         s = "{:>7}".format(self.score)
@@ -9901,12 +9886,12 @@ class App:
         pyxel.blt(137,0,IMG2, 72,72, 8,8, 0)
         pyxel.text(148,1,str(self.my_shield), 1)
         pyxel.text(147,1,str(self.my_shield), 7)
-            
+
     #デバッグ用ステータスの表示
     def draw_debug_status(self):
         if self.debug_menu_status == 0: #デバッグメニュー表示ステータスが0なら表示せずリターンする
             return
-        
+            
         #星の数の表示
         pyxel.blt(143,WINDOW_H - 8, IMG2, 64,72, 8,8, 0)
         pyxel.text(153,WINDOW_H - 6,str(len(self.stars)),1)
@@ -9925,18 +9910,18 @@ class App:
         pyxel.blt(40,WINDOW_H -8,IMG2, 96,72, 8,8, 0)
         pyxel.text(50,WINDOW_H -6,str(((self.scroll_count // 8) -256) // 2),1)
         pyxel.text(49,WINDOW_H -6,str(((self.scroll_count // 8) -256) // 2),7)
-
+        
         #ステージカウントの表示(生データ)
         pyxel.text(37,1,str(self.stage_count),1)
         pyxel.text(36,1,str(self.stage_count),11)
-
+        
         #ショット経験値表示
         pyxel.text(148,7,str(self.shot_exp), 1)
         pyxel.text(147,7,str(self.shot_exp), 8)
         #ミサイル経験値表示
         pyxel.text(148,13,str(self.missile_exp), 1)
         pyxel.text(147,13,str(self.missile_exp), 3)    
-
+        
         #自機が存在するＭＡＰ位置のＸ、Ｙ座標の表示
         #MAPの外に存在するときは強制的にＸ座標を0にしちゃう
         self.bgy = ((self.my_y + 4 ) // 8)
@@ -9945,15 +9930,15 @@ class App:
             self.bgx = 0
         if self.bgx > 255:
             self.bgx = 0
-
+        
         self.bg_chip = pyxel.tilemap(0).get(self.bgx,self.bgy)
         pyxel.text(70,WINDOW_H - 6,str(self.bgx),7)
         pyxel.text(85,WINDOW_H - 6,str(self.bgy),7)
-
+        
         #自機に重なっているキャラチップが収納されたタイルのＸ，Ｙ座標の表示
         pyxel.text(95,WINDOW_H - 6,str(self.bg_chip // 4),6)
         pyxel.text(110,WINDOW_H - 6,str((self.bg_chip % 16) * 8),6)
-
+        
         #自機に重なっているキャラチップを表示
         pyxel.blt(120,WINDOW_H - 8,IMG2, (self.bg_chip % 16) * 8,(self.bg_chip // 4), 8,8)
         
@@ -9964,7 +9949,7 @@ class App:
         #前方高速トマホークミサイルの総数
         self.count_missile_type(5,5,5,5)
         pyxel.text(WINDOW_W - 15,WINDOW_H - 14,str(self.type_check_quantity),3)
-
+        
         #ゲームステータス（ゲームの状態）の表示
         pyxel.text(0,8,str(self.game_status),6)
         
@@ -9972,7 +9957,7 @@ class App:
         pyxel.text(10,8,str(self.event_index),10)
         #イベントデータリストの表示
         pyxel.text(20,7,str(self.event_list[self.event_index]),9)
-
+        
         #編隊ＩＤと総数の表示
         pyxel.text(1,14,str(self.current_formation_id),9) #現時点での編隊ID
         #編隊群リストの長さの表示
@@ -10008,7 +9993,7 @@ class App:
         pyxel.text(160-8*3+4,19,"ADD " + str(self.add_appear_flag), 10)
         #早回し条件が成立するまでの必要殲滅編隊数の表示
         pyxel.text(160-8*3+4,25,"NUM " + str(self.fast_forward_destruction_num), 9)
-
+        
         #1プレイ時間の表示(秒まで表示します)
         pyxel.text(160-8*3,31,"   :", 10)
         minutes = "{:>3}".format(self.one_game_playtime_seconds // 60)
@@ -10030,7 +10015,7 @@ class App:
         testplay_minutes =  "{:>02}".format((self.total_development_testtime_min + playing_min)  % 60)
         pyxel.text(160-8*4,79,testplay_hours  , 14)
         pyxel.text(160-8  ,79,testplay_minutes, 14)
-
+        
         # システムデータ数値読み取りテスト
         # pyxel.text(60,107,"TEST " + str(self.test_read_num), 9)
         
@@ -10038,7 +10023,7 @@ class App:
         pyxel.text(160-8*3+8,43,"ST " + str(self.stage_number), 9)
         #周回数の表示
         pyxel.text(160-8*3+8,49,"LP " + str(self.stage_loop), 7)
-
+        
         #ワールドマップBGのxy座標の表示
         world_x = "{:>3}".format(int(self.scroll_count        // 8 % 256))
         pyxel.text(160-16,55,"X",8)
@@ -10046,19 +10031,19 @@ class App:
         world_y = "{:>3}".format(int(self.vertical_scroll_count // 8 % 256))
         pyxel.text(160-16,61,"Y",8)
         pyxel.text(160-12,61,world_y,7)
-
+        
         #背景山のx座標
         mou_x = "{:>3}".format(int(self.mountain_x))
         pyxel.text(160-20,67,"MX",8)
         pyxel.text(160-12,67,mou_x,10)
-
+        
         #ランクの表示
         pyxel.text(160-16,73,"RA" + str(self.rank), 7)
         
         #リプレイデータのサイズ表示
         num = "{:>8}".format(int(len(self.replay_input_data)))
         pyxel.text(40,120-26,num,8)
-
+        
         if self.debug_menu_status == 2: #デバッグメニュー表示ステータスが2の時だけ表示する
             #コントロールパッド操作データの表示
             replay_count = len(self.replay_input_data)
@@ -10066,13 +10051,13 @@ class App:
             input_pad_data = input_pad_data.lstrip("0b")            #文字列の頭からバイナリー文字の"ob"を取り除きます lstripで先頭から取り除くって判りにくい・・・lstripのlってなんやねん・・・
             input_pad_data = "{:0>12}".format(input_pad_data)        #文字列を整形します 0ゼロ埋め >右寄せ 12桁        
             pyxel.text(0,120-26,input_pad_data, 10)
-
+            
             #コントロールパッド操作データ履歴の表示
             input_pad_data = bin(self.replay_input_data[replay_count-2])
             input_pad_data = input_pad_data.lstrip("0b")
             input_pad_data = "{:0>12}".format(input_pad_data)
             pyxel.text(0,120-33  ,input_pad_data, 7)
-
+            
             if replay_count >= 3:
                 input_pad_data = bin(self.replay_input_data[replay_count-3])
                 input_pad_data = input_pad_data.lstrip("0b")
@@ -10088,7 +10073,7 @@ class App:
                 input_pad_data = input_pad_data.lstrip("0b")
                 input_pad_data = "{:0>12}".format(input_pad_data)
                 pyxel.text(0,120-33-21,input_pad_data, 7)
-
+                
         if self.debug_menu_status == 3: #デバッグメニュー表示ステータスが3の時だけ表示する
             #漢字表示テスト
             self.kanji_text(0,36,"文字列を分割できる関数",7)
@@ -10096,14 +10081,14 @@ class App:
             self.kanji_text(0,63,"文字列を分割できる関数",9)
             self.kanji_text(0,76,"文字列を大文字・小文字に変換できる",3)
             self.kanji_text(0,88,"保存したキャンバス",13)
-
+            
         #漢字フォントデータの表示テスト
         # for y in range(120):
             # for x in range(160):
                 # col = self.kanji_fonts[y+pyxel.frame_count % 900][x+pyxel.frame_count % 300]
                 # if col == 7:
                     # pyxel.pset(x,y,col)
-
+        
         #1番目のクローの座標の表示
         if self.claw_number >= 1:
             pyxel.text(0,WINDOW_H - 13,str(self.claw[0].posx),6)
@@ -10112,19 +10097,19 @@ class App:
         if self.claw_number >= 2:
             pyxel.text(72,WINDOW_H - 13,str(self.claw[1].posx),5)
             pyxel.text(72,WINDOW_H - 20,str(self.claw[1].posy),5)
-
+        
         #乱数0_9ルーレットの表示
         pyxel.text(80,120-26,str(self.rnd0_9_num),9)
         #乱数0_99ルーレットの表示
         pyxel.text(90,120-26,str(self.rnd0_99_num),10)
-
+        
         #線形合同法で最初に使用した元となる乱数種の表示
         pyxel.text(140,120-35,"SD" + str(self.master_rnd_seed),11)
         #線形合同法乱数の表示
         self.s_rnd()#線形合同法による乱数関数の呼び出し
         rd_num = "{:>6}".format(str(self.rnd_seed))
         pyxel.text(136,120-29,rd_num,3)
-
+        
         pyxel.text(0,120-39,str(self.s_rndint(10,600)),8)
 
     #BGチップデータ書き換えアニメーション実装のために作ったダミーテスト関数 画面左から2列目の縦1列を取得し、そのＢＧデータを画面左端1列目に表示する
@@ -10134,23 +10119,23 @@ class App:
                 self.get_bg_chip_free_scroll(8,h * 8,0)#画面左端＋１のマップチップのBGの数値を取得する
                 bg_num = "{:>3}".format(self.bg_chip)
                 pyxel.text(16,h * 8,bg_num,7)
-
+                
                 pyxel.text(30,h * 8,str(self.bgx), 8)
                 pyxel.text(46,h * 8,str(self.bgy), 8)
-
+                
                 pyxel.text(60,h * 8,str((self.bg_chip  % 32) * 8), 9)
                 pyxel.text(75,h * 8,str((self.bg_chip // 32) * 8), 9)
-
+                
                 pyxel.blt(0,h * 8, 1,    (self.bg_chip  % 32) * 8,(self.bg_chip // 32) * 8, 8,8, 0)#画面左端＋１にBGマップチップを描画する
 
     #WARNING警告ダイアログの表示(ボス出現)
     def draw_warning_dialog(self):
         if self.warning_dialog_display_time <= 0: #WARNING表示時間が0以下だったらリターンする
             return
-        
+            
         for i in range(8*8):
             pyxel.blt(48+i,48+(self.warning_dialog_logo_time // 2) + i // 64 + self.warning_dialog_logo_time * i,    IMG2,     64+i,120,                     1,8 -(self.warning_dialog_logo_time // 2) - i // 68,   0)
-        
+            
         warning_mes1 = "Unidentified flying object approaching"
         warning_mes2 = "Destroy if necessary!"
         lenstr1 = len(warning_mes1)
@@ -10158,20 +10143,20 @@ class App:
         
         pyxel.text(4 +  self.warning_dialog_text_time // 1,59,    warning_mes1[0:lenstr1 - int(self.warning_dialog_text_time //2.5)],7)
         pyxel.text(40 + self.warning_dialog_text_time // 1,66,    warning_mes2[0:lenstr2 - int(self.warning_dialog_text_time //2.5)],7)
-
+        
         self.warning_dialog_display_time -= 1   #WARNING表示時間を1減らす      
         
         if self.warning_dialog_logo_time > 0:   #ロゴ表示に掛ける時間が0より大きいのなら
             self.warning_dialog_logo_time -= 1 #WARNINGグラフイックロゴ表示に掛ける時間を1減らす
-        
+            
         if self.warning_dialog_text_time > 0:   #テキスト表示に掛ける時間が0より大きいのなら
             self.warning_dialog_text_time -= 1 #WARNINGテキスト表示に掛ける時間を1減らす
-        
+
     #STAGE CLEARダイアログの表示(ステージクリア！)
     def draw_stage_clear_dialog(self):
         if self.stage_clear_dialog_display_time <= 0: #STAGE CLEAR表示時間が0以下だったらリターンする
             return
-        
+            
         #画像「STAGE」の表示
         for i in range(8):
             pyxel.blt(40    + self.stage_clear_dialog_logo_time1 / 16 * i,48 + i,     IMG2,    128,    120 +i,   8,1,   0)
@@ -10186,7 +10171,7 @@ class App:
         
         if self.stage_clear_dialog_logo_time1 > 0:   #ロゴ表示時間その1が0より大きいのなら
             self.stage_clear_dialog_logo_time1 -= 1 #1減らす
-
+            
         #画像「CLEAR」の表示
         if self.stage_clear_dialog_logo_time1 <= 0:   #ロゴ表示時間その1の数値が0以下の場合は画像「STAGE」は表示し終わったので「CLEAR」を表示開始する
             for i in range(8):
@@ -10199,7 +10184,7 @@ class App:
                 pyxel.blt(40 +64 + self.stage_clear_dialog_logo_time2 / 2  * i,48 + i,     IMG2,    128 +64,120 +i,   8,1,   0)
             for i in range(8):
                 pyxel.blt(40 +72 + self.stage_clear_dialog_logo_time2     * i,48 + i,     IMG2,    128 +72,120 +i,   8,1,   0)
-            
+                
             if self.stage_clear_dialog_logo_time2 > 0:   #ロゴ表示時間その2が0より大きいのなら
                 self.stage_clear_dialog_logo_time2 -= 1 #1減らす
         #任務完了！速やかに次のステージへ移動せよ
@@ -10213,14 +10198,14 @@ class App:
         if self.stage_clear_dialog_logo_time2 == 0:   #ロゴ表示時間その2が0なら「STAGE CLEAR」の表示は終わったのでメッセージの表示を始める
             pyxel.text(46,59,    stage_clear_mes1[0:- int(self.stage_clear_dialog_text_time / self.stage_clear_dialog_text_time_master * lenstr1) - 1],7)
             pyxel.text(20,66,    stage_clear_mes2[0:- int(self.stage_clear_dialog_text_time / self.stage_clear_dialog_text_time_master * lenstr2) - 1],7)
-
+            
             self.stage_clear_dialog_display_time -= 1    #STAGE CLEAR表示時間を1減らす
             if self.stage_clear_dialog_display_time == 0: #STAGE CLEAR表示時間が0になったら
                 self.game_status = SCENE_STAGE_CLEAR_FADE_OUT #ゲームステータスを「ステージクリア後のフェードアウト」にする
-        
+                
             if self.stage_clear_dialog_text_time > 0:   #テキスト表示に掛ける時間が0より大きいのなら
                 self.stage_clear_dialog_text_time -= 1 #STAGE CLEARテキスト表示に掛ける時間を1減らす
-    
+
     #一時停止・ポーズメッセージの表示
     def draw_pause_message(self):
         pyxel.text(80-8, 52, "PAUSE", 7)
@@ -10233,134 +10218,133 @@ class App:
         pyxel.text(0, 70, "  seems to take a long time to work on",7)
         pyxel.text(0, 78, "    a much more distant object.", 7)
         #時空干渉システムはやはりはるか遠くの天体に作用するのに時間が掛るようだ
-    
+
     #ウィンドウの表示
     def draw_window(self):
         window_count = len(self.window)
         for i in range(window_count):
-           #ウィンドウ下地描画###############################################################
-           for h in range(self.window[i].height // 8 + 1):
-              for w in range((self.window[i].width // 8 + 1)) :
-                 pyxel.blt(self.window[i].posx + w * 8,self.window[i].posy + h * 8,            
-                          IMG2,
-                          96 + self.window[i].window_type * 32,88,
-                          8,8, 13)
-
-           #ウィンドウ横パーツ描画#############################################################
-           for w in range(self.window[i].width // 8 + 1):
-              #上部の横パーツ描画
-              pyxel.blt(self.window[i].posx + w * 8,self.window[i].posy,                         
-                      IMG2,
-                      96 + self.window[i].window_type * 32,80,
-                      8,8, 13)
-              #下部の横パーツ描画
-              pyxel.blt(self.window[i].posx + w * 8,self.window[i].posy + self.window[i].height,
-                      IMG2,
-                      96 + self.window[i].window_type * 32,96,
-                      8,8, 13)
-           #ウィンドウ縦パーツ描画####################################################
-           for h in range(self.window[i].height // 8 + 1):
-              #左の縦パーツ描画
-              pyxel.blt(self.window[i].posx                      ,self.window[i].posy + h * 8,
-                      IMG2,
-                     80 + self.window[i].window_type * 32,88,
-                      8,8, 13)
-              #右の縦パーツ描画
-              pyxel.blt(self.window[i].posx + self.window[i].width,self.window[i].posy + h * 8,
-                      IMG2,
-                      104 + self.window[i].window_type * 32,88,
-                      8,8, 13)
-           
-           #################ウィンドウ四隅の角の描画#####################################
-           #左上のウィンドウパーツの描画
-           pyxel.blt(self.window[i].posx                      ,self.window[i].posy                        ,
-                   IMG2,
-                   80  + self.window[i].window_type * 32,80,
-                   8,8,  13)
-           #右上のウィンドウパーツの描画
-           pyxel.blt(self.window[i].posx + self.window[i].width,self.window[i].posy                        ,
-                   IMG2,
-                   104 + self.window[i].window_type * 32,80,
-                   8,8,  13)
-           #左下のウィンドウパーツの描画
-           pyxel.blt(self.window[i].posx                      ,self.window[i].posy + self.window[i].height ,
-                   IMG2,
-                   80  + self.window[i].window_type * 32,96,
-                   8,8,  13)
-           #左下のウィンドウパーツの描画
-           pyxel.blt(self.window[i].posx + self.window[i].width ,self.window[i].posy + self.window[i].height  ,
-                   IMG2,
-                   104 + self.window[i].window_type * 32,96,
-                   8,8,  13)
-           
-           #タイトルバーの表示######################################
-           pyxel.text(self.window[i].posx + 6 + self.window[i].width // 2 - len(self.window[i].window_title) * 2,self.window[i].posy + 5,str(self.window[i].window_title),0)
-           pyxel.text(self.window[i].posx + 6 + self.window[i].width // 2 - len(self.window[i].window_title) * 2,self.window[i].posy + 6,str(self.window[i].window_title),0)
-           
-           
-           pyxel.text(self.window[i].posx + 5 + self.window[i].width // 2 - len(self.window[i].window_title) * 2,self.window[i].posy + 5,str(self.window[i].window_title),7)
-
-           if self.window[i].window_status == WINDOW_OPEN: #ステータスがウィンドウ開き中ならば
-               if self.window[i].width < self.window[i].open_width:#widthをopen_widthの数値になるまで増加させていく
-                   self.window[i].width += int(self.window[i].vx * self.window[i].open_speed)
-               
-               if self.window[i].height < self.window[i].open_height:#heightをopen_heightの数値になるまで増加させていく
-                   self.window[i].height += int(self.window[i].vy * self.window[i].open_speed)
-               
-               #ウィンドウが開ききったのか判断する
-               if   -2 <= self.window[i].open_width  - self.window[i].width  <= 2 and\
-                   -2 <= self.window[i].open_height - self.window[i].height <= 2:#もしwidthとheightの値がopenした時の数値と+-2以内になったのなら
-                   self.window[i].window_status = WINDOW_WRITE_MESSAGE#ウィンドウは完全に開ききったとみなしてステータスをWINDOW_WRITE_MESSAGEにしてメッセージを表示開始する
-
-                   self.window[i].width  = self.window[i].open_width #小数点以下の座標の誤差を修正するために強制的にopen時の座標数値を現在座標数値に代入してやる
-                   self.window[i].height = self.window[i].open_height
+            #ウィンドウ下地描画###############################################################
+            for h in range(self.window[i].height // 8 + 1):
+                for w in range((self.window[i].width // 8 + 1)) :
+                    pyxel.blt(self.window[i].posx + w * 8,self.window[i].posy + h * 8,            
+                            IMG2,
+                            96 + self.window[i].window_type * 32,88,
+                            8,8, 13)
+                            
+            #ウィンドウ横パーツ描画#############################################################
+            for w in range(self.window[i].width // 8 + 1):
+                #上部の横パーツ描画
+                pyxel.blt(self.window[i].posx + w * 8,self.window[i].posy,                         
+                    IMG2,
+                    96 + self.window[i].window_type * 32,80,
+                    8,8, 13)
+                #下部の横パーツ描画
+                pyxel.blt(self.window[i].posx + w * 8,self.window[i].posy + self.window[i].height,
+                    IMG2,
+                    96 + self.window[i].window_type * 32,96,
+                    8,8, 13)
+            #ウィンドウ縦パーツ描画####################################################
+            for h in range(self.window[i].height // 8 + 1):
+                #左の縦パーツ描画
+                pyxel.blt(self.window[i].posx                      ,self.window[i].posy + h * 8,
+                    IMG2,
+                    80 + self.window[i].window_type * 32,88,
+                    8,8, 13)
+                #右の縦パーツ描画
+                pyxel.blt(self.window[i].posx + self.window[i].width,self.window[i].posy + h * 8,
+                    IMG2,
+                    104 + self.window[i].window_type * 32,88,
+                    8,8, 13)
+                    
+            #################ウィンドウ四隅の角の描画#####################################
+            #左上のウィンドウパーツの描画
+            pyxel.blt(self.window[i].posx                      ,self.window[i].posy                        ,
+                IMG2,
+                80  + self.window[i].window_type * 32,80,
+                8,8,  13)
+            #右上のウィンドウパーツの描画
+            pyxel.blt(self.window[i].posx + self.window[i].width,self.window[i].posy                        ,
+                IMG2,
+                104 + self.window[i].window_type * 32,80,
+                8,8,  13)
+            #左下のウィンドウパーツの描画
+            pyxel.blt(self.window[i].posx                      ,self.window[i].posy + self.window[i].height ,
+                IMG2,
+                80  + self.window[i].window_type * 32,96,
+                8,8,  13)
+            #左下のウィンドウパーツの描画
+            pyxel.blt(self.window[i].posx + self.window[i].width ,self.window[i].posy + self.window[i].height  ,
+                IMG2,
+                104 + self.window[i].window_type * 32,96,
+                8,8,  13)
             
-           if     self.window[i].window_status == WINDOW_WRITE_MESSAGE \
-               or self.window[i].window_status == WINDOW_OPEN_COMPLETED: #ステータスがテキストメッセージの表示中もしくはオープン完了ならば
-               if self.window[i].mes1 != "":#メッセージ1行目の描画 ループで処理したいけどどうやったら良いのかわからぬ・・・クラスの横方向（？）に補正値を入れるのどうやったらいいのん？？？
-                   pyxel.text(self.window[i].posx + self.window[i].mes1_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes1) * 2,self.window[i].posy + 5 +8 ,str(self.window[i].mes1),0)
-                   pyxel.text(self.window[i].posx + self.window[i].mes1_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes1) * 2,self.window[i].posy + 6 +8 ,str(self.window[i].mes1),0)
-           
-                   pyxel.text(self.window[i].posx + self.window[i].mes1_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes1) * 2,self.window[i].posy + 5 +8 ,str(self.window[i].mes1),self.window[i].mes1_color)
-               
-               if self.window[i].mes2 != "":#メッセージ2行目の描画
-                   pyxel.text(self.window[i].posx + self.window[i].mes2_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes2) * 2,self.window[i].posy + 5 +16,str(self.window[i].mes2),0)
-                   pyxel.text(self.window[i].posx + self.window[i].mes2_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes2) * 2,self.window[i].posy + 6 +16,str(self.window[i].mes2),0)
-           
-                   pyxel.text(self.window[i].posx + self.window[i].mes2_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes2) * 2,self.window[i].posy + 5 +16,str(self.window[i].mes2),self.window[i].mes2_color)
-               
-               if self.window[i].mes3 != "":#メッセージ3行目の描画
-                   pyxel.text(self.window[i].posx + self.window[i].mes3_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes3) * 2,self.window[i].posy + 5 +24,str(self.window[i].mes3),0)
-                   pyxel.text(self.window[i].posx + self.window[i].mes3_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes3) * 2,self.window[i].posy + 6 +24,str(self.window[i].mes3),0)
-           
-                   pyxel.text(self.window[i].posx + self.window[i].mes3_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes3) * 2,self.window[i].posy + 5 +24,str(self.window[i].mes3),self.window[i].mes3_color)
-               
-               if self.window[i].mes4 != "":#メッセージ4行目の描画
-                   pyxel.text(self.window[i].posx + self.window[i].mes4_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes4) * 2,self.window[i].posy + 5 +32,str(self.window[i].mes4),0)
-                   pyxel.text(self.window[i].posx + self.window[i].mes4_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes4) * 2,self.window[i].posy + 6 +32,str(self.window[i].mes4),0)
-           
-                   pyxel.text(self.window[i].posx + self.window[i].mes4_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes4) * 2,self.window[i].posy + 5 +32,str(self.window[i].mes4),self.window[i].mes4_color)
-               
-               if self.window[i].mes5 != "":#メッセージ5行目の描画
-                   pyxel.text(self.window[i].posx + self.window[i].mes5_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes5) * 2,self.window[i].posy + 5 +40,str(self.window[i].mes5),0)
-                   pyxel.text(self.window[i].posx + self.window[i].mes5_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes5) * 2,self.window[i].posy + 6 +40,str(self.window[i].mes5),0)
-           
-                   pyxel.text(self.window[i].posx + self.window[i].mes5_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes5) * 2,self.window[i].posy + 5 +40,str(self.window[i].mes5),self.window[i].mes5_color)
-               
-               if self.window[i].mes6 != "":#メッセージ6行目の描画
-                   pyxel.text(self.window[i].posx + self.window[i].mes6_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes6) * 2,self.window[i].posy + 5 +48,str(self.window[i].mes6),0)
-                   pyxel.text(self.window[i].posx + self.window[i].mes6_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes6) * 2,self.window[i].posy + 6 +48,str(self.window[i].mes6),0)
-           
-                   pyxel.text(self.window[i].posx + self.window[i].mes6_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes6) * 2,self.window[i].posy + 5 +48,str(self.window[i].mes6),self.window[i].mes6_color)
-               
-               if self.window[i].mes7 != "":#メッセージ7行目の描画
-                   pyxel.text(self.window[i].posx + self.window[i].mes7_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes7) * 2,self.window[i].posy + 5 +56,str(self.window[i].mes7),0)
-                   pyxel.text(self.window[i].posx + self.window[i].mes7_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes7) * 2,self.window[i].posy + 6 +56,str(self.window[i].mes7),0)
-           
-                   pyxel.text(self.window[i].posx + self.window[i].mes7_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes7) * 2,self.window[i].posy + 5 +56,str(self.window[i].mes7),self.window[i].mes7_color)
-               
-               
-               self.window[i].window_status == WINDOW_OPEN_COMPLETED #ウィンドウオープン完了！
+            #タイトルバーの表示######################################
+            pyxel.text(self.window[i].posx + 6 + self.window[i].width // 2 - len(self.window[i].window_title) * 2,self.window[i].posy + 5,str(self.window[i].window_title),0)
+            pyxel.text(self.window[i].posx + 6 + self.window[i].width // 2 - len(self.window[i].window_title) * 2,self.window[i].posy + 6,str(self.window[i].window_title),0)
+            
+            
+            pyxel.text(self.window[i].posx + 5 + self.window[i].width // 2 - len(self.window[i].window_title) * 2,self.window[i].posy + 5,str(self.window[i].window_title),7)
+            
+            if self.window[i].window_status == WINDOW_OPEN: #ステータスがウィンドウ開き中ならば
+                if self.window[i].width < self.window[i].open_width:#widthをopen_widthの数値になるまで増加させていく
+                    self.window[i].width += int(self.window[i].vx * self.window[i].open_speed)
+                    
+                if self.window[i].height < self.window[i].open_height:#heightをopen_heightの数値になるまで増加させていく
+                    self.window[i].height += int(self.window[i].vy * self.window[i].open_speed)
+                    
+                #ウィンドウが開ききったのか判断する
+                if  -2 <= self.window[i].open_width  - self.window[i].width  <= 2 and\
+                    -2 <= self.window[i].open_height - self.window[i].height <= 2:#もしwidthとheightの値がopenした時の数値と+-2以内になったのなら
+                    self.window[i].window_status = WINDOW_WRITE_MESSAGE#ウィンドウは完全に開ききったとみなしてステータスをWINDOW_WRITE_MESSAGEにしてメッセージを表示開始する
+                    
+                    self.window[i].width  = self.window[i].open_width #小数点以下の座標の誤差を修正するために強制的にopen時の座標数値を現在座標数値に代入してやる
+                    self.window[i].height = self.window[i].open_height
+                    
+            if     self.window[i].window_status == WINDOW_WRITE_MESSAGE \
+                or self.window[i].window_status == WINDOW_OPEN_COMPLETED: #ステータスがテキストメッセージの表示中もしくはオープン完了ならば
+                if self.window[i].mes1 != "":#メッセージ1行目の描画 ループで処理したいけどどうやったら良いのかわからぬ・・・クラスの横方向（？）に補正値を入れるのどうやったらいいのん？？？
+                    pyxel.text(self.window[i].posx + self.window[i].mes1_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes1) * 2,self.window[i].posy + 5 +8 ,str(self.window[i].mes1),0)
+                    pyxel.text(self.window[i].posx + self.window[i].mes1_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes1) * 2,self.window[i].posy + 6 +8 ,str(self.window[i].mes1),0)
+                    
+                    pyxel.text(self.window[i].posx + self.window[i].mes1_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes1) * 2,self.window[i].posy + 5 +8 ,str(self.window[i].mes1),self.window[i].mes1_color)
+                    
+                if self.window[i].mes2 != "":#メッセージ2行目の描画
+                    pyxel.text(self.window[i].posx + self.window[i].mes2_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes2) * 2,self.window[i].posy + 5 +16,str(self.window[i].mes2),0)
+                    pyxel.text(self.window[i].posx + self.window[i].mes2_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes2) * 2,self.window[i].posy + 6 +16,str(self.window[i].mes2),0)
+                    
+                    pyxel.text(self.window[i].posx + self.window[i].mes2_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes2) * 2,self.window[i].posy + 5 +16,str(self.window[i].mes2),self.window[i].mes2_color)
+                    
+                if self.window[i].mes3 != "":#メッセージ3行目の描画
+                    pyxel.text(self.window[i].posx + self.window[i].mes3_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes3) * 2,self.window[i].posy + 5 +24,str(self.window[i].mes3),0)
+                    pyxel.text(self.window[i].posx + self.window[i].mes3_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes3) * 2,self.window[i].posy + 6 +24,str(self.window[i].mes3),0)
+                    
+                    pyxel.text(self.window[i].posx + self.window[i].mes3_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes3) * 2,self.window[i].posy + 5 +24,str(self.window[i].mes3),self.window[i].mes3_color)
+                    
+                if self.window[i].mes4 != "":#メッセージ4行目の描画
+                    pyxel.text(self.window[i].posx + self.window[i].mes4_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes4) * 2,self.window[i].posy + 5 +32,str(self.window[i].mes4),0)
+                    pyxel.text(self.window[i].posx + self.window[i].mes4_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes4) * 2,self.window[i].posy + 6 +32,str(self.window[i].mes4),0)
+                    
+                    pyxel.text(self.window[i].posx + self.window[i].mes4_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes4) * 2,self.window[i].posy + 5 +32,str(self.window[i].mes4),self.window[i].mes4_color)
+                    
+                if self.window[i].mes5 != "":#メッセージ5行目の描画
+                    pyxel.text(self.window[i].posx + self.window[i].mes5_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes5) * 2,self.window[i].posy + 5 +40,str(self.window[i].mes5),0)
+                    pyxel.text(self.window[i].posx + self.window[i].mes5_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes5) * 2,self.window[i].posy + 6 +40,str(self.window[i].mes5),0)
+                    
+                    pyxel.text(self.window[i].posx + self.window[i].mes5_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes5) * 2,self.window[i].posy + 5 +40,str(self.window[i].mes5),self.window[i].mes5_color)
+                    
+                if self.window[i].mes6 != "":#メッセージ6行目の描画
+                    pyxel.text(self.window[i].posx + self.window[i].mes6_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes6) * 2,self.window[i].posy + 5 +48,str(self.window[i].mes6),0)
+                    pyxel.text(self.window[i].posx + self.window[i].mes6_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes6) * 2,self.window[i].posy + 6 +48,str(self.window[i].mes6),0)
+                    
+                    pyxel.text(self.window[i].posx + self.window[i].mes6_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes6) * 2,self.window[i].posy + 5 +48,str(self.window[i].mes6),self.window[i].mes6_color)
+                    
+                if self.window[i].mes7 != "":#メッセージ7行目の描画
+                    pyxel.text(self.window[i].posx + self.window[i].mes7_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes7) * 2,self.window[i].posy + 5 +56,str(self.window[i].mes7),0)
+                    pyxel.text(self.window[i].posx + self.window[i].mes7_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes7) * 2,self.window[i].posy + 6 +56,str(self.window[i].mes7),0)
+                    
+                    pyxel.text(self.window[i].posx + self.window[i].mes7_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes7) * 2,self.window[i].posy + 5 +56,str(self.window[i].mes7),self.window[i].mes7_color)
+                    
+                self.window[i].window_status == WINDOW_OPEN_COMPLETED #ウィンドウオープン完了！
 
     #セレクトカーソルの表示
     def draw_select_cursor(self):
@@ -10370,53 +10354,42 @@ class App:
     #ゲームオーバーダイアログを表示する
     def draw_gameover_dialog(self):
         pyxel.blt(47, 48, IMG2, 0,72, 64,8, 0)
-    
+
     #フェードイン＆フェードアウト用のエフェクトスクリーン用描画関数
     def draw_fade_in_out_screen(self,fade_in_out_flag,chip_type):
         for lx in range(self.fade_in_out_counter):
             for ly in range(15): #y軸は15キャラ分なので15回繰り返す
                 pyxel.blt(self.fade_in_out_counter // 8 * 8  - lx*8 -8,ly*8,   IMG2,   self.fade_in_out_counter // 8 * 4,248,   8,8,   13)
-
+                
         if self.fade_in_out_counter >= 160 * 3 + 24:
                 self.fade_complete_flag = 1 #右端まで描画したら完了フラグを立てる
         else:
             self.fade_in_out_counter += 3 #開始Ｘ軸（キャラ単位）を1増やして隣の列に移る
-
         return()
 
     #シャドウイン用のエフェクトスクリーン用描画関数
     def draw_shadow_in_screen(self,shadow_width,col):
         for lx in range(self.shadow_in_out_counter):
-            pyxel.rect(0,        0,           lx,WINDOW_H,    col)#左側の長方形描画
+            pyxel.rect(0,          0,           lx,WINDOW_H,    col)#左側の長方形描画
             pyxel.rect(WINDOW_W-lx,0,           lx,WINDOW_H,    col)#右側の長方形描画
-            
-            
-
-
         if self.shadow_in_out_counter == (WINDOW_W - shadow_width) // 2:
                 self.shadow_in_out_complete_flag = 1 #右端まで描画したら完了フラグを立てる
         else:
             if (pyxel.frame_count % 2) == 0:
                 self.shadow_in_out_counter += 1 #カウンタを1増やす
-
         return()
 
     #シャドウアウト用のエフェクトスクリーン用描画関数
     def draw_shadow_out_screen(self,shadow_width,col):
-        pyxel.rect(            - self.shadow_in_out_counter,0,           WINDOW_W // 2,WINDOW_H,    col)#左側の長方形描画
+        pyxel.rect(              - self.shadow_in_out_counter,0,           WINDOW_W // 2,WINDOW_H,    col)#左側の長方形描画
         pyxel.rect(WINDOW_W // 2 + self.shadow_in_out_counter,0,           WINDOW_W // 2,WINDOW_H,    col)#右側の長方形描画
-            
-            
-
-
         if self.shadow_in_out_counter == shadow_width:
                 self.shadow_in_out_complete_flag = 1 #右端まで描画したら完了フラグを立てる
         else:
             if (pyxel.frame_count % 2) == 0:
                 self.shadow_in_out_counter += 1 #カウンタを1増やす
-
         return()
-    
+
     #######################################################################
     #######################################################################
     #######################################################################
@@ -10448,7 +10421,6 @@ class App:
             self.update_append_star()             #背景の星の追加＆発生育成関数呼び出し
             self.update_star()                   #背景の星の更新（移動）関数呼び出し
             self.update_select_cursor()            #セレクトカーソルでメニューを選択する関数を呼び出す
-
         ################################ ゲームスタート時の初期化 #################################################################
         if self.game_status == SCENE_GAME_START_INIT: #ゲームステータスが「GAME_START_INIT」の場合（ゲームスタート時の状態遷移）は以下を実行する
             self.update_game_start_init()           #ゲーム開始前の初期化    スコアやシールド値、ショットレベルやミサイルレベルなどの初期化
@@ -10496,18 +10468,15 @@ class App:
             self.update_collision_claw_shot_enemy()  #クローの弾と敵との当たり判定関数を呼び出す
             self.update_collision_claw_shot_boss()   #クローの弾とボスとの当たり判定関数を呼び出す
             self.update_collision_claw_shot_bg()    #クローの弾と背景との当たり判定関数を呼び出す
-
             #敵の弾関連の処理 ###################################################################################
             ####################################################################################################
             self.update_enemy_shot()              #敵の弾の更新（移動処理とか）＆自機と敵弾と自機との当たり判定の関数の呼び出し
             self.update_clip_enemy_shot()          #敵の弾が画面からはみ出したら消去する関数の呼び出し
             self.update_collision_enemy_shot_bg()    #敵の弾と背景との当たり判定を行う関数の呼び出し
-        
             #クロー関連の処理###########################################################################################################
             self.update_delete_claw()             #クローの消滅関数の呼び出し
             self.update_change_fix_claw_interval()   #フイックスクローの間隔を変化させる関数を呼び出す
             self.update_change_claw_style()        #クロースタイルを変更する関数を呼び出す    
-
             #敵関連の処理###############################################################################################################
             self.update_enemy_append_event_system()  #イベントリストシステムによる敵の発生関数を呼び出す
             self.update_enemy_append_map_scroll()    #マップスクロールによる敵の発生関数を呼び出す
@@ -10527,7 +10496,6 @@ class App:
             if self.boss_test_mode == 0:               #ボス戦テストモードオフの時だけ
                 self.scroll_count += self.side_scroll_speed   #スクロールカウント数をスクロールスピード分(通常は1)増加させていく
                 self.vertical_scroll_count += self.vertical_scroll_speed   #縦スクロールカウント数を縦スクロールスピード分(大抵のステージは縦スクロールしないので0)増加させていく
-
             #横スクロールのスピード調整##################################################################################################
             if self.side_scroll_speed != self.side_scroll_speed_set_value: #現在の横スクロールスピードと設定値が違っていたのならば
                 self.side_scroll_speed += self.side_scroll_speed_variation #スピード変化量を加算減算してやって設定値まで近づけていきます
@@ -10549,8 +10517,6 @@ class App:
             #乱数ルーレットの更新########################################################################################################
             self.update_rnd0_9()                    #乱数ルーレット( 0~9)の更新
             self.update_rnd0_99()                   #乱数ルーレット(0~99)の更新
-
-
         if    self.game_status == SCENE_PLAY\
             or self.game_status == SCENE_BOSS_APPEAR\
             or self.game_status == SCENE_BOSS_BATTLE\
@@ -10566,7 +10532,6 @@ class App:
             self.update_check_fire_shot()         #ショットを発射したかどうかを調べる関数を呼び出す
             self.update_check_fire_missile()       #ミサイルを発射したかどうかを調べる関数を呼び出す
             self.update_check_fire_claw_shot()     #クローが弾を発射したかどうかを調べる関数を呼び出す
-
             self.update_change_sub_weapon()        #サブウェポンの切り替え関数を呼び出す
             #デバッグモードによる敵や敵弾の追加発生（ボタンを押したら敵が出てくる！？）###################################################
             # self.update_debug_mode_enemy_append()  #デバッグモードによる敵＆敵弾追加発生
@@ -10578,8 +10543,6 @@ class App:
             self.update_timer_flare()            #タイマーフレア放出の更新処理関数を呼び出す
             #大気圏突入時の火花の発生#############################################
             self.update_atmospheric_entry_spark()   #大気圏突入時の火花を発せさせる関数の呼び出し
-
-
         if self.game_status == SCENE_BOSS_EXPLOSION:         #「BOSS_EXPLOSION」の時は
             self.uddate_present_repair_item()              #リペアアイテムを出現させる関数の呼び出し
         if self.game_status == SCENE_EXPLOSION:             #「EXPLOSION」の時は
@@ -10587,23 +10550,22 @@ class App:
             if self.my_ship_explosion_timer >= SHIP_EXPLOSION_TIMER_LIMIT:#リミット値まで行ったのなら
                 self.game_status = SCENE_GAME_OVER         #「GAME_OVER」にする
                 pygame.mixer.music.fadeout(6000)            #BGMフェードアウト開始
-        
         #######ゲームオーバー後の処理###############
         if self.game_status == SCENE_GAME_OVER:             #「GAME_OVER」の時は
             self.game_over_timer += 1                    # game_overタイマーを加算していき
             if self.game_over_timer >= GAME_OVER_TIMER_LIMIT: #リミット値まで行ったのなら
                 self.game_status = SCENE_GAME_OVER_FADE_OUT  #「ゲームオーバーフェードアウト開始」にする
-        
+                
         if self.game_status == SCENE_GAME_OVER_FADE_OUT:      #「GAME_OVER_FADE_OUT」の時は
             if self.fade_complete_flag == 1:                #フェードアウト完了のフラグが建ったのなら
                 self.game_status = SCENE_GAME_OVER_SHADOW_IN   #「GAME_OVER_SHADOW_IN」状態にする
                 self.bg_cls_color = 0                     #クリアスクリーン時の塗りつぶし色を初期値の0(黒)に戻す（イベントとかで変化する場合があるため） 
                 self.star_scroll_flag = 1                  #背景星のスクロール表示をonにする（イベントとかで変化する場合があるため） 
-
+                
         if self.game_status == SCENE_GAME_OVER_SHADOW_IN:     #「GAME_OVER_SHADOW_IN」の時は
             if self.shadow_in_out_complete_flag == 1:        #シャドウイン完了のフラグが建ったのなら
                 self.game_status = SCENE_GAME_OVER_STOP       #「GAME_OVER_STOP」状態にする
-        
+                
         if self.game_status == SCENE_GAME_OVER_STOP:         #「GAME_OVER_STOP」の時は
             new_window = Window()
             new_window.update(0,0,2,WINDOW_OPEN,\
@@ -10615,7 +10577,7 @@ class App:
                 "",DISP_CENTER,0,7,\
                 "",DISP_CENTER,0,7,\
                 "",DISP_CENTER,0,7,\
-
+                
                 43,68,   0,0,  8*8,3*8,   2,1, 1,1,   0,0,    0,0)
             self.window.append(new_window)                      #「TITLE RETURN」選択メニューを育成する
             self.cursor_show = True                            #選択カーソル表示をonにする
@@ -10632,13 +10594,13 @@ class App:
                 self.game_playing_flag = 0                 #ゲームプレイ中のフラグを降ろす
                 self.save_system_data()                    #システムデータをセーブする関数の呼び出し
                 self.update_backup_replay_data_list()        #リプレイデータ(リスト本体)をバックアップします
-
+                
             if self.cursor_decision_item == 0:              #メニューでアイテムナンバー0の「YES」が押されたら
                 self.game_status = SCENE_TITLE_INIT          #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
                 self.game_playing_flag = 0                 #ゲームプレイ中のフラグを降ろす
                 self.save_system_data()                    #システムデータをセーブする関数の呼び出し
                 self.update_backup_replay_data_list()        #リプレイデータ(リスト本体)をバックアップします
-
+                
         #########ステージクリア後の処理#################
         if self.game_status == SCENE_STAGE_CLEAR_FADE_OUT:    #「SCENE_STAGE_CLEAR_FADE_OUT」の時は
             if self.fade_complete_flag == 1:                #フェードアウト完了のフラグが建ったのなら
@@ -10650,7 +10612,7 @@ class App:
                         self.stage_loop = 1 #1周目に戻ります
                     
                 self.game_status = SCENE_STAGE_START_INIT    #ゲームステータスを「STAGE_START_INIT」にして次のステージへ・・・・
-        
+                
         if self.game_playing_flag == 1: #ゲームプレイ中のフラグが立っていたのなら以下の処理を行う
             self.update_debug_status()      #デバッグステータス表示＆非表示の切り替え
             #映像オブジェクト関連の処理################################################################################################
@@ -10664,7 +10626,7 @@ class App:
             self.update_game_pause()        #ボタンが押されたらポーズをかける関数を呼び出し
             #メニューカーソル関連の処理###############################################################################################
             self.update_select_cursor()     #メニューカーソルの更新（移動とか）関数を呼び出し
-        
+
     ###########################################################
     ###########################################################
     ###########################################################
@@ -10681,10 +10643,10 @@ class App:
             self.draw_title()        #タイトルロゴの表示関数の呼び出し
             self.draw_window()       #メニューウィンドウの表示関数の呼び出し
             self.draw_select_cursor() #セレクトカーソルの表示関数の呼び出し
-    
+            
         if self.game_playing_flag == 1 and self.star_scroll_flag == 1:#ゲームプレイ中フラグon,星スクロールフラグonの時は背景の星を表示する
             self.draw_star()        #背景の星を表示する関数の呼び出し 
-        
+            
         if     self.game_status == SCENE_PLAY\
             or self.game_status == SCENE_BOSS_APPEAR\
             or self.game_status == SCENE_BOSS_BATTLE\
@@ -10702,7 +10664,7 @@ class App:
             if   self.stage_number == STAGE_MOUNTAIN_REGION:
                 #雲ウェーブラスタースクロールの表示
                 self.draw_raster_scroll(0)  #ラスタースクロール描画関数呼び出し 山より奥で描画します
-
+                
                 #奥の雲スクロールの表示
                 if self.disp_flag_bg_back == DISP_ON:
                     pyxel.bltm(-int(self.scroll_count  // 10 % (256*8 - 160)),-(self.vertical_scroll_count // 28) + 97,  1,    0,235,    256,7,    1)
@@ -10717,41 +10679,41 @@ class App:
                 
                 #湖面のラスタースクロールの表示、成層圏と大気圏の境目のラスタースクロールの表示
                 self.draw_raster_scroll(1)  #ラスタースクロール描画関数呼び出し 山より手前で描画しますっ！
-            
+                
             elif self.stage_number == STAGE_ADVANCE_BASE:
                 pyxel.bltm(-(self.scroll_count // 8) + 250,0,0,0,240,256,120,self.bg_transparent_color)
-            
+                
             ####################背景表示
             ###################pyxel.bltm(-(pyxel.frame_count // 8),0,0,((pyxel.frame_count / 2) - 160) ,0,160,120,0)最初はこれで上手くいかなかった・・・・なぜ？
             ###################奥の背景表示
             ###################pyxel.bltm(-(pyxel.frame_count // 4) + 400,0,0,0,16,256,120,0)
-
+                
             if self.stage_number == STAGE_ADVANCE_BASE:
                 pyxel.bltm(-(self.scroll_count // 4) + 400,0,0,0,224,256,120,self.bg_transparent_color)
             
             elif self.stage_number == STAGE_MOUNTAIN_REGION:
                     if self.disp_flag_bg_front == DISP_ON:
                         pyxel.bltm(-int(self.scroll_count % (256*8 - 160)),     -self.vertical_scroll_count,  1,    0,0,    256,256,    self.bg_transparent_color)
-            
+                        
             self.draw_background_object()    #背景オブジェクトの描画関数の呼び出し
             
             self.draw_enemy_shot(PRIORITY_BOSS_BACK)   #敵の弾を表示する関数を呼び出す(ボスキャラの真後ろ)---------------------------
             self.draw_boss()        #ボスを表示する関数を呼び出す
             self.draw_boss_hp()      #ボスの耐久力を表示する関数を呼び出す
             self.draw_enemy_shot(PRIORITY_BOSS_FRONT)   #敵の弾を表示する関数を呼び出す(ボスキャラのすぐ手前)-------------------------
-
+            
             self.draw_obtain_item()   #パワーアップアイテム類の表示
-
+            
             self.draw_enemy()        #敵を表示する関数を呼び出す
             self.draw_enemy_shot(PRIORITY_FRONT)      #敵の弾を表示する関数を呼び出す (前面)---------------------------------------
             self.draw_enemy_shot(PRIORITY_MORE_FRONT)  #敵の弾を表示する関数を呼び出す (敵弾の中でもさらに前面)-----------------------
             PRIORITY_MORE_FRONT
             self.draw_particle()     #パーティクルを表示する関数の呼び出し
-
+            
             self.draw_my_shot()      #自機弾の表示
             self.draw_missile()      #ミサイルの表示
             self.draw_claw_shot()    #クローショットの表示
-
+            
             #手前の背景表示
             #結局なんでこれでキチンとスクロール表示されたのか謎・・・結局はじめは-1024ドットのx座標位置からスクロール開始していくことに・・
             #pyxel.bltm(-(pyxel.frame_count // 2) + 1024,0,0,0,0,256,120,0)
@@ -10777,11 +10739,11 @@ class App:
             self.draw_my_ship()      #自機表示
             self.draw_claw()        #クローの表示
             self.draw_ls_shield()    #Ｌ'sシールドシステムの表示
-        
+            
         if self.game_playing_flag == 1:#「ゲームプレイ中」の時は爆発パターン表示
             self.draw_explosion(PRIORITY_FRONT)     #爆発パターン(前面)の表示
             self.draw_explosion(PRIORITY_MORE_FRONT) #爆発パターン(さらに前面)の表示
-
+            
         #フェードアウトスクリーンの表示###############################################
         if    self.game_status == SCENE_GAME_OVER_FADE_OUT\
             or self.game_status == SCENE_STAGE_CLEAR_FADE_OUT:
@@ -10794,25 +10756,25 @@ class App:
             or self.game_status == SCENE_RETURN_TITLE:
             
             self.draw_shadow_out_screen(40,0)  #中央付近80ドット分だけ残してシャドウアウトする
-        
+            
         if self.game_playing_flag == 1:#「ゲームプレイ中」の時は以下の処理も行う
             self.draw_sub_weapon_select_guidebox()  #選択中のサブウェポンのカーソルガイドボックスの表示
             self.draw_sub_weapon_select_gauge()    #サブウェポン一覧表示
-
+            
             self.draw_status()                 #スコアやスピード、自機耐久力などの表示関数の呼び出し （通常ステータス表示）
             self.draw_debug_status()            #デバッグ用ステータスの表示関数の呼び出し          （デバック用ステータス表示）
             self.draw_window()                 #メッセージウィンドウの表示
             self.draw_select_cursor()            #セレクトカーソルの表示
-
+            
             self.draw_warning_dialog()           #WARNINGダイアログの表示
             self.draw_stage_clear_dialog()        #STAGE CLEARダイアログの表示
-
+            
             # self.draw_dummy_put_bg_xy()          #BG Get&Put dummy test
-
+            
         #一時停止・ポーズメッセージの表示#########################################
         if self.game_status == SCENE_PAUSE:
             self.draw_pause_message() #一時停止・ポーズメッセージの表示
-        
+            
         #ゲームオーバー画像の表示##################################################
         if     self.game_status == SCENE_GAME_OVER\
             or self.game_status == SCENE_GAME_OVER_FADE_OUT\
