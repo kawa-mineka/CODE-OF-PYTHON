@@ -109,110 +109,110 @@ SUB_WEAPON_LEVEL_MAXIMUM = 10 #自機サブウェポンのレベルの最大値
                     #これより大きい数値にしちゃうとindex out of range erroerになっちゃうからね
 
 #!ゲームステータス関連の定数定義 game_statusに代入されます#######################################################################
-SCENE_IPL            =  0    #IPL(Initial Program Load)
+SCENE_IPL               =  0    #IPL(Initial Program Load)
 SCENE_SPLASH_LOGO       =  1    #起動処理中（スプラッシュロゴ表示）
 
-SCENE_TITLE_INIT       = 10    #タイトル表示に必要な初期化をする
-SCENE_TITLE          = 11    #タイトル表示中
-SCENE_TITLE_MENU_SELECT   = 12    #タイトルメニュー選択中
-SCENE_CREDIT          = 13    #クレジットタイトル表示中
+SCENE_TITLE_INIT        = 10    #タイトル表示に必要な初期化をする
+SCENE_TITLE             = 11    #タイトル表示中
+SCENE_TITLE_MENU_SELECT = 12    #タイトルメニュー選択中
+SCENE_CREDIT            = 13    #クレジットタイトル表示中
 
-SCENE_CONFIG          = 20    #設定メニュー表示中
+SCENE_CONFIG            = 20    #設定メニュー表示中
 
 SCENE_DEBUG_CONGIG      = 30    #デバッグモード設定メニュー表示中
 
-SCENE_TITLE_DEMO       = 40    #タイトルデモ表示中（ストーリーとかのビジュアルシーン）
+SCENE_TITLE_DEMO        = 40    #タイトルデモ表示中（ストーリーとかのビジュアルシーン）
 SCENE_ADVERTISE_DEMO    = 41    #アドバタイズデモ（コンピュータによるゲームの宣伝の為のリプレイ再生）
 SCENE_MIDDLE_DEMO       = 42    #中間デモ中
 
-SCENE_GAME_START_INIT    = 50    #ゲーム開始前の初期化    スコアやシールド値、ショットレベルやミサイルレベルなどの初期化
-SCENE_STAGE_START_INIT    = 51    #ステージ開始前の初期化   自機の座標や各リストの初期化、カウンター類の初期化
-SCENE_START          = 52    #ゲーム開始(スタートダイアログを出したり、自機の出現アニメーションとか)
-SCENE_PLAY           = 53    #ゲームプレイ中
+SCENE_GAME_START_INIT   = 50    #ゲーム開始前の初期化    スコアやシールド値、ショットレベルやミサイルレベルなどの初期化
+SCENE_STAGE_START_INIT  = 51    #ステージ開始前の初期化   自機の座標や各リストの初期化、カウンター類の初期化
+SCENE_START             = 52    #ゲーム開始(スタートダイアログを出したり、自機の出現アニメーションとか)
+SCENE_PLAY              = 53    #ゲームプレイ中
 SCENE_BOSS_APPEAR       = 54    #ボスキャラ現れる！
 SCENE_BOSS_BATTLE       = 55    #ボスキャラと戦闘中
 SCENE_BOSS_EXPLOSION    = 56    #ボスキャラ爆発中！
-SCENE_PAUSE          = 57    #一時中断中
-SCENE_EXPLOSION        = 58    #被弾して爆発中（ゲーム自体はまだ進行している）
+SCENE_PAUSE             = 57    #一時中断中
+SCENE_EXPLOSION         = 58    #被弾して爆発中（ゲーム自体はまだ進行している）
 SCENE_RESTORATION       = 59    #復活中(自機は点滅状態で無敵状態だよ)
 
-SCENE_GAME_OVER        = 60 #ゲームオーバーメッセージ表示中（ゲームはまだ進行している）
+SCENE_GAME_OVER           = 60 #ゲームオーバーメッセージ表示中（ゲームはまだ進行している）
 SCENE_GAME_OVER_FADE_OUT  = 61 #ゲームオーバーメッセージ表示中（ゲーム自体は停止、画面をフェードアウトさせていく）
 SCENE_GAME_OVER_SHADOW_IN = 62 #ゲームオーバーメッセージ表示中（ゲーム自体は停止、画面をシャドウインさせていく）
-SCENE_GAME_OVER_STOP    = 63 #ゲームオーバーメッセージ表示中（ゲーム自体は停止している）
-SCENE_RETURN_TITLE      = 64 #ゲームオーバーになりタイトルに戻るかどうかカーソルを出して選択待ち
+SCENE_GAME_OVER_STOP      = 63 #ゲームオーバーメッセージ表示中（ゲーム自体は停止している）
+SCENE_RETURN_TITLE        = 64 #ゲームオーバーになりタイトルに戻るかどうかカーソルを出して選択待ち
 
-SCENE_STAGE_CLEAR          = 70 #ステージクリア
+SCENE_STAGE_CLEAR               = 70 #ステージクリア
 SCENE_STAGE_CLEAR_MOVE_MY_SHIP  = 71 #ステージクリア後、自機がステージクリア画像左上まで自動に動いていくシーン
 SCENE_STAGE_CLEAR_MY_SHIP_BOOST = 72 #ステージクリア後、自機がブーストして右へ過ぎ去っていくシーン
-SCENE_STAGE_CLEAR_FADE_OUT    = 73 #ステージクリア後のフェードアウト
+SCENE_STAGE_CLEAR_FADE_OUT      = 73 #ステージクリア後のフェードアウト
 
 SCENE_CONTINUE    = 80   #コンティニューメッセージ表示中
 
-SCENE_ENDING    = 90   #エンディング表示中
+SCENE_ENDING      = 90   #エンディング表示中
 
 SCENE_STAFF_ROLL  = 99   #スタッフロール表示中
 
 #自機のIDナンバー定義
-J_PYTHON =       0    #Justice Python
-PYTHON_FORCE =    1    #Python4.0(4th.force)
-E_PERL =        2    #Elegant Perl(practical extraction and report language)
-C_FORTRAN =       3    #Classical FORTRAN 1954
-AI_LOVE_LISP =    4    #AI love LISP 1958
-ECLIPSING_ALGOL =   5    #Eclipsing Binary ALGOL 1958
-AUNT_COBOL =      6    #Aunt COBOL more better 1959
-BEGINNING_ADA =    7    #Beginning programmer Ada 1815-1983
-FIRST_BASIC =     8    #First Beginners All purpose Symbolic Instruction Code 1964
-CUTTER_SHARP_2000 = 9    #Cutter # 2000
-LEGEND_ASM      = 10   #Legend Assembler
-LAST_RUST       = 11   #Last Rust
-GAMBA_RUBY      = 12   #GAMBA Ruby New Generation IDOL
-SHIFT_SWIFT     = 13   #SHIFT timer SWIFT space
-MAGI_FORCE      = 14   #MAGI FORCE power is dream
-LOOK_AT_LOGO    = 15   #LOOK AT THE TURTLE LOGO! 1967
+J_PYTHON          =  0   #Justice Python
+PYTHON_FORCE      =  1   #Python4.0(4th.force)
+E_PERL            =  2   #Elegant Perl(practical extraction and report language)
+C_FORTRAN         =  3   #Classical FORTRAN 1954
+AI_LOVE_LISP      =  4   #AI love LISP 1958
+ECLIPSING_ALGOL   =  5   #Eclipsing Binary ALGOL 1958
+AUNT_COBOL        =  6   #Aunt COBOL more better 1959
+BEGINNING_ADA     =  7   #Beginning programmer Ada 1815-1983
+FIRST_BASIC       =  8   #First Beginners All purpose Symbolic Instruction Code 1964
+CUTTER_SHARP_2000 =  9   #Cutter # 2000
+LEGEND_ASM        = 10   #Legend Assembler
+LAST_RUST         = 11   #Last Rust
+GAMBA_RUBY        = 12   #GAMBA Ruby New Generation IDOL
+SHIFT_SWIFT       = 13   #SHIFT timer SWIFT space
+MAGI_FORCE        = 14   #MAGI FORCE power is dream
+LOOK_AT_LOGO      = 15   #LOOK AT THE TURTLE LOGO! 1967
 
 #自機、機体分類
-SHIP_FIRST_STEP    = 0 #初期機体
-SHIP_STANDARD      = 1 #標準機体
-SHIP_ANCENT       = 2 #古代機体
-SHIP_EXTRA        = 3 #特殊機体
+SHIP_FIRST_STEP      = 0 #初期機体
+SHIP_STANDARD        = 1 #標準機体
+SHIP_ANCENT          = 2 #古代機体
+SHIP_EXTRA           = 3 #特殊機体
 SHIP_NEXT_GENERATION = 4 #次世代機体
 
 
 #キーアイテムの定数定義
-KEY_ITEM_PUNCHED_CARD          =  0 #パンチカード
-KEY_ITEM_MAGNETIC_CORE_MEMORY     =  1 #磁気コアメモリ
-KEY_ITEM_MAGNETIC_BUBBLE_MEMORY    =  2 #磁気バブルメモリ
+KEY_ITEM_PUNCHED_CARD               =  0 #パンチカード
+KEY_ITEM_MAGNETIC_CORE_MEMORY       =  1 #磁気コアメモリ
+KEY_ITEM_MAGNETIC_BUBBLE_MEMORY     =  2 #磁気バブルメモリ
 KEY_ITEM_CASSETLE_TAPE_IEC_TYPE_I   =  3 #ノーマルテープ
 KEY_ITEM_CASSETLE_TAPE_IEC_TYPE_II  =  4 #ハイポジションテープ
 KEY_ITEM_CASSETLE_TAPE_IEC_TYPE_III =  5 #フェリクロームカセットテープ
 KEY_ITEM_CASSETLE_TAPE_IEC_TYPE_IV  =  6 #メタルカセットテープ
-KEY_ITEM_QUICK_DISC            =  7 #クイックディスク
-KEY_ITEM_JAZ                =  8 #JAZ
-KEY_ITEM_DAT                =  9 #DAT デジタルオーディオテープ
-KEY_ITEM_3INCH_FLOPPY_DISK       = 10 #3インチフロッピーディスク
-KEY_ITEM_PD                = 11 #PD Phase-change Dual or Phase-change Disc
-KEY_ITEM_MD                = 12 #Micro Drive
-KEY_ITEM_KANJI_ROM_CARTRIDGE      = 13 #漢字ROMカートリッジ HBI-K21
+KEY_ITEM_QUICK_DISC                 =  7 #クイックディスク
+KEY_ITEM_JAZ                        =  8 #JAZ
+KEY_ITEM_DAT                        =  9 #DAT デジタルオーディオテープ
+KEY_ITEM_3INCH_FLOPPY_DISK          = 10 #3インチフロッピーディスク
+KEY_ITEM_PD                         = 11 #PD Phase-change Dual or Phase-change Disc
+KEY_ITEM_MD                         = 12 #Micro Drive
+KEY_ITEM_KANJI_ROM_CARTRIDGE        = 13 #漢字ROMカートリッジ HBI-K21
 
 #称号
-NOVICE         = 0 #ノービス 入門者
-ASPIRANT        = 1 #アスパイラント 志を持つ者
-BATTLER        = 2 #バトラー 兵士
-FIGHTER        = 3 #ファイター 闘士
-ADEPT          = 4 #アデプト 熟練者
-CHEVALIER       = 5 #シェバリアー 騎士
-VETERAN        = 6 #ベテラン 軍人
-WARRIOR        = 7 #ウォーリア 勇士
-SWORDMAN        = 8 #ソードマン 剣士
+NOVICE        = 0 #ノービス 入門者
+ASPIRANT      = 1 #アスパイラント 志を持つ者
+BATTLER       = 2 #バトラー 兵士
+FIGHTER       = 3 #ファイター 闘士
+ADEPT         = 4 #アデプト 熟練者
+CHEVALIER     = 5 #シェバリアー 騎士
+VETERAN       = 6 #ベテラン 軍人
+WARRIOR       = 7 #ウォーリア 勇士
+SWORDMAN      = 8 #ソードマン 剣士
 HERO          = 9 #ヒーロー 英雄
-SWASHBUCKLER     =10 #スワッシュバックラー 暴れ者
-CHAMPION        =12 #チャンピオン 勝者
-MYRMIDON        =11 #マーミダン 忠臣
-SUPERHERO       =13 #スーパーヒーロー 勇者
-PALADIN        =14 #パラディン 親衛隊騎士
+SWASHBUCKLER  =10 #スワッシュバックラー 暴れ者
+CHAMPION      =12 #チャンピオン 勝者
+MYRMIDON      =11 #マーミダン 忠臣
+SUPERHERO     =13 #スーパーヒーロー 勇者
+PALADIN       =14 #パラディン 親衛隊騎士
 LOAD          =15 #ロード 君主
-MASTER_LOAD      =16 #マスターロード 大君主
+MASTER_LOAD   =16 #マスターロード 大君主
 
 #勲章(メダル)自機のオプションスロットにはめ込むことが出来るメダル 色々な効果を付加することが出来る
 MEDAL_BEFOREHAND_1SHOT_ITEM     = 0 #ゲームスタート時点で事前にショットアイテムを1個入手した状態から始まる 1個目のショットアイテムは得点アイテムに変化する　それ以降は通常となる
@@ -220,16 +220,16 @@ MEDAL_BEFOREHAND_2SHOT_ITEM     = 1 #ゲームスタート時点で事前にシ�
 MEDAL_BEFOREHAND_3SHOT_ITEM     = 2 #ゲームスタート時点で事前にショットアイテムを3個入手した状態から始まる 1~3個目までのショットアイテムは得点アイテムに変化する　それ以降は通常となる
 MEDAL_BEFOREHAND_4SHOT_ITEM     = 3 #ゲームスタート時点で事前にショットアイテムを4個入手した状態から始まる 1~4個目までのショットアイテムは得点アイテムに変化する　それ以降は通常となる
 MEDAL_EQUIPMENT_LS_SHIELD       = 4 #L'sシールドが装備される
-MEDAL_PLUS_MEDALLION          = 5 #はめ込むことで2つのオプションスロットが作られる(実質スロットが1増える)
+MEDAL_PLUS_MEDALLION            = 5 #はめ込むことで2つのオプションスロットが作られる(実質スロットが1増える)
 
 #ショットレベル(というか種類？)の定数定義
-SHOT_LV0_VULCAN_SHOT    =  0 #バルカンショット1連装
+SHOT_LV0_VULCAN_SHOT      =  0 #バルカンショット1連装
 SHOT_LV1_TWIN_VULCAN_SHOT =  1 #ツインバルカンショット2連装
 SHOT_LV2_3WAY_VULCAN_SHOT =  2 #3WAYバルカンショット
 SHOT_LV3_5WAY_VULCAN_SHOT =  3 #5WAYバルカンショット
-SHOT_LV4_LASER        =  4 #レーザー
-SHOT_LV5_TWIN_LASER     =  5 #ツインレーザー
-SHOT_LV6_3WAY_LASER     =  6 #3WAYレーザー
+SHOT_LV4_LASER            =  4 #レーザー
+SHOT_LV5_TWIN_LASER       =  5 #ツインレーザー
+SHOT_LV6_3WAY_LASER       =  6 #3WAYレーザー
 SHOT_LV7_WAVE_CUTTER_LV1  =  7 #ウェーブカッターLv1
 SHOT_LV8_WAVE_CUTTER_LV2  =  8 #ウェーブカッターLv2
 SHOT_LV9_WAVE_CUTTER_LV3  =  9 #ウェーブカッターLv3
@@ -241,57 +241,57 @@ MISSILE_LV1_TWIN_MISSILE   = 1 #ツインミサイル(右下と右上方向)
 MISSILE_LV2_MULTI_MISSILE  = 2 #マルチミサイル(右下右上左下左上4方向)
 
 #サブウェポン関連のIDナンバー定数定義
-TAIL_SHOT      = 0 #テイルショットＩＤナンバー
+TAIL_SHOT        = 0 #テイルショットＩＤナンバー
 PENETRATE_ROCKET = 1 #ペネトレートロケットＩＤナンバー
-SEARCH_LASER    = 2 #サーチレーザーＩＤナンバー
+SEARCH_LASER     = 2 #サーチレーザーＩＤナンバー
 HOMING_MISSILE   = 3 #ホーミングミサイルＩＤナンバー
-SHOCK_BUMPER    = 4 #ショックバンパーＩＤナンバー
+SHOCK_BUMPER     = 4 #ショックバンパーＩＤナンバー
 
 #難易度リストを参照するときに使用するインデックスナンバー定数定義
-LIST_DIFFICULTY             = 0 #難易度(難しさ)
-LIST_START_BONUS_SHOT         = 1 #ゲーム開始時のショットボーナス
-LIST_START_BONUS_MISSILE       = 2 #ゲーム開始時のミサイルボーナス
-LIST_START_BONUS_SHIELD        = 3 #ゲーム開始時のシールドボーナス
-LIST_START_CLAW             = 4 #ゲーム開始時のクローの数
-LIST_REPAIR_SHIELD           = 5 #ステージクリア後に回復するシールド値
-LIST_RETURN_BULLET           = 6 #撃ち返し弾の有無と有の時の種類
-LIST_SCORE_MAGNIFICATION       = 7 #スコア倍率
-LIST_RANK_UP_FRAME           = 8 #ランク上昇フレーム数
-LIST_START_RANK             = 9 #ゲームスタート時のランク数
+LIST_DIFFICULTY                   = 0 #難易度(難しさ)
+LIST_START_BONUS_SHOT             = 1 #ゲーム開始時のショットボーナス
+LIST_START_BONUS_MISSILE          = 2 #ゲーム開始時のミサイルボーナス
+LIST_START_BONUS_SHIELD           = 3 #ゲーム開始時のシールドボーナス
+LIST_START_CLAW                   = 4 #ゲーム開始時のクローの数
+LIST_REPAIR_SHIELD                = 5 #ステージクリア後に回復するシールド値
+LIST_RETURN_BULLET                = 6 #撃ち返し弾の有無と有の時の種類
+LIST_SCORE_MAGNIFICATION          = 7 #スコア倍率
+LIST_RANK_UP_FRAME                = 8 #ランク上昇フレーム数
+LIST_START_RANK                   = 9 #ゲームスタート時のランク数
 LIST_DAMAGE_AFTER_INVINCIBLE_TIME =10 #被弾後の無敵時間
-LIST_GET_ITEM_INVINCIBLE_TIME    =11 #アイテム取得後の無敵時間
-LIST_ITEM_ERACE_BULLET        =12 #パワーアップアイテムが敵弾を消去するかどうか？のフラグ
-LIST_RANK_LIMIT             =13 #ランク数の上限値
-LIST_RETURN_BULLET_START_LOOP    =14 #撃ち返しを始めてくるループ数
+LIST_GET_ITEM_INVINCIBLE_TIME     =11 #アイテム取得後の無敵時間
+LIST_ITEM_ERACE_BULLET            =12 #パワーアップアイテムが敵弾を消去するかどうか？のフラグ
+LIST_RANK_LIMIT                   =13 #ランク数の上限値
+LIST_RETURN_BULLET_START_LOOP     =14 #撃ち返しを始めてくるループ数
 LIST_RETURN_BULLET_START_STAGE    =15 #撃ち返しを始めてくるステージ数
-LIST_RANK_DOWN_NEED_DAMAGE      =16 #1ランクダウンに必要なダメージ数
-LIST_LOOP_POWER_CONTROL        =17 #次のループに移る時のパワーアップ調整関連の動作の仕方とか
-LIST_ITEM_RANGE_OF_ATTRACTION    =18 #アイテムを引き寄せる範囲
-LIST_ITEM_BOUNCE_NUM          =19 #アイテムの跳ね返り回数(左端に当たったら何回まで跳ね返るかの数値)
+LIST_RANK_DOWN_NEED_DAMAGE        =16 #1ランクダウンに必要なダメージ数
+LIST_LOOP_POWER_CONTROL           =17 #次のループに移る時のパワーアップ調整関連の動作の仕方とか
+LIST_ITEM_RANGE_OF_ATTRACTION     =18 #アイテムを引き寄せる範囲
+LIST_ITEM_BOUNCE_NUM              =19 #アイテムの跳ね返り回数(左端に当たったら何回まで跳ね返るかの数値)
 
 #難易度名の定数定義
 GAME_VERY_EASY = 0
-GAME_EASY    = 1
+GAME_EASY      = 1
 GAME_NORMAL    = 2
-GAME_HARD    = 3
+GAME_HARD      = 3
 GAME_VERY_HARD = 4
 GAME_INSAME    = 5 #狂ってる・・・・・
 
 #ランクリストを参照するときに使用するインデックスナンバー定数定義
-LIST_RANK                  = 0  #ランク数
-LIST_RANK_E_SPEED_MAG          = 1  #敵スピード倍率
-LIST_RANK_BULLET_SPEED_MAG       = 2  #敵狙い撃ち弾スピード倍率
+LIST_RANK                           = 0  #ランク数
+LIST_RANK_E_SPEED_MAG               = 1  #敵スピード倍率
+LIST_RANK_BULLET_SPEED_MAG          = 2  #敵狙い撃ち弾スピード倍率
 LIST_RANK_RETURN_BULLET_PROBABILITY = 3  #敵撃ち返し弾発射確率
-LIST_RANK_E_HP_MAG            = 4  #敵耐久力倍率
-LIST_RANK_E_BULLET_APPEND        = 5  #弾追加数
-LIST_RANK_E_BULLET_INTERVAL       = 6  #弾発射間隔減少パーセント
-LIST_RANK_NWAY_LEVEL           = 7  #nWAY弾のレベル(レベルが上がると扇状の幅が広がる)
+LIST_RANK_E_HP_MAG                  = 4  #敵耐久力倍率
+LIST_RANK_E_BULLET_APPEND           = 5  #弾追加数
+LIST_RANK_E_BULLET_INTERVAL         = 6  #弾発射間隔減少パーセント
+LIST_RANK_NWAY_LEVEL                = 7  #nWAY弾のレベル(レベルが上がると扇状の幅が広がる)
 
 #ゲーム開始時に追加されるクロー数の定数定義
 NO_CLAW      = 0
 ONE_CLAW     = 1
 TWO_CLAW     = 2
-THREE_CLAW    = 3
+THREE_CLAW   = 3
 
 #ステージクリア時に回復するシールド値
 REPAIR_SHIELD0 = 0
@@ -306,29 +306,29 @@ LOOP_TWO_LEVEL_DOWN            = 2    #メインウェポンが2レベルダウ�
 LOOP_THREE_LEVEL_DOWN          = 3    #メインウェポンが3レベルダウンします
 LOOP_FOUR_LEVEL_DOWN           = 4    #メインウェポンが4レベルダウンします
 LOOP_FIVE_LEVEL_DOWN           = 5    #メインウェポンが5レベルダウンします
-LOOP_MAIN_WEAPON_TYPE_RESET       = 10   #メインウェポンのタイプのみ初期化されます 例 5WAYバルカンショット→初期バルカンショット  3WAYレーザー→通常のレーザー ウェーブカッターLV4→ウェーブカッターLV1
+LOOP_MAIN_WEAPON_TYPE_RESET    = 10   #メインウェポンのタイプのみ初期化されます 例 5WAYバルカンショット→初期バルカンショット  3WAYレーザー→通常のレーザー ウェーブカッターLV4→ウェーブカッターLV1
 LOOP_MAIN_WEAPON_MISSILE_TYPE_RESET = 90   #メインウェポンとミサイルのタイプが初期化されます 例 5WAYバルカンショット→初期バルカンショット ツインミサイル4段階目→ツインミサイル1段階目
-LOOP_ALL_RESET               = 100  #メインウェポンもミサイルもゲーム開始時と同じ初期状態に戻ります
+LOOP_ALL_RESET                 = 100  #メインウェポンもミサイルもゲーム開始時と同じ初期状態に戻ります
 
 #!ステージの名称関連の定数定義################################################################
-STAGE_MOUNTAIN_REGION       = 1 #ステージ1 山岳地帯         Mountain Region
-STAGE_ADVANCE_BASE        = 2 #ステージ2 前線基地         Advance Base
-STAGE_VOLCANIC_BELT        = 3 #ステージ3 火山地帯         Volcanic Belt
-STAGE_NIGHT_SKYSCRAPER      = 4 #ステージ4 夜間超高層ビル地帯    Night Skyscraper
+STAGE_MOUNTAIN_REGION         = 1 #ステージ1 山岳地帯         Mountain Region
+STAGE_ADVANCE_BASE            = 2 #ステージ2 前線基地         Advance Base
+STAGE_VOLCANIC_BELT           = 3 #ステージ3 火山地帯         Volcanic Belt
+STAGE_NIGHT_SKYSCRAPER        = 4 #ステージ4 夜間超高層ビル地帯    Night Skyscraper
 STAGE_AMPHIBIOUS_ASSAULT_SHIP = 5 #ステージ5 強襲揚陸艦襲撃     Amphibious Assault Ship
-STAGE_DEEP_SEA_TRENCH       = 6 #ステージ6 深海海溝         Deep Sea Trench
+STAGE_DEEP_SEA_TRENCH         = 6 #ステージ6 深海海溝         Deep Sea Trench
 STAGE_INTERMEDIATE_FORTRESS   = 7 #ステージ7 中間要塞         Intermediate Fortress
-STAGE_ESCAPE_FORTRESS       = 8 #ステージ8 要塞脱出         Escape Fortress
-SATGE_BOSS_RUSH          = 9 #ステージ9 連続強敵襲来       Boss Rush
+STAGE_ESCAPE_FORTRESS         = 8 #ステージ8 要塞脱出         Escape Fortress
+SATGE_BOSS_RUSH               = 9 #ステージ9 連続強敵襲来       Boss Rush
 
 #クロー関連の定数定義（主にトレースクロー）
-TRACE_CLAW_COUNT = 4      #トレースクローの数
-TRACE_CLAW_INTERVAL = 60    #トレースクローの間隔
+TRACE_CLAW_COUNT       = 4  #トレースクローの数
+TRACE_CLAW_INTERVAL    = 60 #トレースクローの間隔
 TRACE_CLAW_BUFFER_SIZE = 60 #トレースクローのバッファーサイズ   1フレームは60分の1秒 60フレームで1秒分となります
 CLAW_RAPID_FIRE_NUMBER = 2  #クローの最大連射数
 
 SHIP_EXPLOSION_TIMER_LIMIT = 180 #自機が爆発した後、まだどれだけゲームが進行し続けるかのタイマー限界数
-GAME_OVER_TIMER_LIMIT = 180    #ゲームオーバーダイアログを表示した後まだどれだけゲームが進行し続けるのかのタイマー限界数
+GAME_OVER_TIMER_LIMIT      = 180 #ゲームオーバーダイアログを表示した後まだどれだけゲームが進行し続けるのかのタイマー限界数
 
 FADE_IN = 0               #フェードインアウト用エフェクトスクリーン用の定数定義 0=in 1=out
 FADE_OUT = 1
@@ -338,27 +338,36 @@ IMG0 = 0 #イメージバンク0
 IMG1 = 1 #イメージバンク1
 IMG2 = 2 #イメージバンク2
 
+#移動モードに入る定数定義 self.move_modeに入ります
+MOVE_MANUAL = 0   #手動移動モード   パッドやキーボード入力によって移動
+MOVE_AUTO   = 1   #自動移動モード   イベントによる自動移動モードとなり設定された位置まで自動で移動して行きます
+
+#リプレイ機能のステータスです self.replay_statusに入ります
+REPLAY_STOP   = 0 #何も作動してない状態です リプレイデータ記録無し,再生無し
+REPLAY_RECORD = 1 #リプレイデータを記録中です
+REPLAY_PLAY   = 2 #リプレイデータを再生中です
+
 #パッド入力でのリプレイデータ記録に使用する定数定義
-PAD_UP    =    1 #0b 0000 0000 0000 0001
+PAD_UP      =    1 #0b 0000 0000 0000 0001
 PAD_DOWN    =    2 #0b 0000 0000 0000 0010
 PAD_LEFT    =    4 #0b 0000 0000 0000 0100
 PAD_RIGHT   =    8 #0b 0000 0000 0000 1000
-PAD_A     =   16 #0b 0000 0000 0001 0000
-PAD_B     =   32 #0b 0000 0000 0010 0000
-PAD_X     =   64 #0b 0000 0000 0100 0000
-PAD_Y     =  128 #0b 0000 0000 1000 0000
+PAD_A       =   16 #0b 0000 0000 0001 0000
+PAD_B       =   32 #0b 0000 0000 0010 0000
+PAD_X       =   64 #0b 0000 0000 0100 0000
+PAD_Y       =  128 #0b 0000 0000 1000 0000
 PAD_SELECT  =  256 #0b 0000 0001 0000 0000
 PAD_START   =  512 #0b 0000 0010 0000 0000
 PAD_LEFT_S  = 1024 #0b 0000 0100 0000 0000
 PAD_RIGHT_S = 2048 #0b 0000 1000 0000 0000
 
 #パーティクルの種類
-PARTICLE_DOT = 0            #パーティクルタイプ 1~2ドット描画タイプ(破壊後のエフェクト)
-PARTICLE_CIRCLE = 1          #パーティクルタイプ 円形パーティクル   (破壊後のエフェクト)
-PARTICLE_LINE = 2           #パーティクルタイプ ラインパーティクル (跳ね返りエフェクト)
+PARTICLE_DOT    = 0           #パーティクルタイプ 1~2ドット描画タイプ(破壊後のエフェクト)
+PARTICLE_CIRCLE = 1           #パーティクルタイプ 円形パーティクル   (破壊後のエフェクト)
+PARTICLE_LINE   = 2           #パーティクルタイプ ラインパーティクル (跳ね返りエフェクト)
 PARTICLE_FIRE_SPARK = 3       #パーティクルタイプ 大気圏突入時の火花 (火花が飛び散るエフェクト)
 
-PARTICLE_SHOT_DEBRIS = 4       #パーティクルタイプ 自機ショットの破片(デブリ)(障害物に当たったエフェクト)
+PARTICLE_SHOT_DEBRIS  = 4       #パーティクルタイプ 自機ショットの破片(デブリ)(障害物に当たったエフェクト)
 PARTICLE_MISSILE_DEBRIS  = 5    #パーティクルタイプ 自機ミサイルの破片(デブリ)(障害物に当たったエフェクト)
 
 PARTICLE_BOSS_DEBRIS1  = 6     #パーティクルタイプ ボスの破片1(破壊後のエフェクト)かなり大きい金属プレート
@@ -373,11 +382,11 @@ BG_OBJ_CLOUD1,BG_OBJ_CLOUD2,BG_OBJ_CLOUD3,BG_OBJ_CLOUD4,BG_OBJ_CLOUD5      = 0,1
 BG_OBJ_CLOUD6,BG_OBJ_CLOUD7,BG_OBJ_CLOUD8,BG_OBJ_CLOUD9,BG_OBJ_CLOUD10     = 5,6,7,8,9     #雲小6~10
 
 BG_OBJ_CLOUD11,BG_OBJ_CLOUD12,BG_OBJ_CLOUD13,BG_OBJ_CLOUD14,BG_OBJ_CLOUD15   = 10,11,12,13,14  #雲中11~15
-BG_OBJ_CLOUD16,BG_OBJ_CLOUD17,BG_OBJ_CLOUD18                      = 15,16,17      #雲中16~18
+BG_OBJ_CLOUD16,BG_OBJ_CLOUD17,BG_OBJ_CLOUD18                                 = 15,16,17        #雲中16~18
 
-BG_OBJ_CLOUD19,BG_OBJ_CLOUD20,BG_OBJ_CLOUD21                      = 18,19,20      #雲大19~21
+BG_OBJ_CLOUD19,BG_OBJ_CLOUD20,BG_OBJ_CLOUD21                                 = 18,19,20        #雲大19~21
 
-BG_OBJ_CLOUD22                                         = 21          #雲特大22
+BG_OBJ_CLOUD22                                                               = 21              #雲特大22
 
 #爆発パターンの種類
 EXPLOSION_NORMAL =   0  #標準サイズ(8x8サイズ)の敵を倒したときの爆発パターン
@@ -385,74 +394,74 @@ EXPLOSION_MIDDLE =   1  #スクランブルハッチや重爆撃機系の敵を�
 EXPLOSION_MY_SHIP = 10  #自機の爆発パターン
 
 #メッセージウィンドウ関連の定数定義 window_statusに代入されます
-WINDOW_OPEN = 0            #テキストウィンドウ開き進行中
+WINDOW_OPEN = 0                #テキストウィンドウ開き進行中
 WINDOW_WRITE_TITLE_BAR = 4     #テキストウィンドウのタイトルバー表示中
 WINDOW_WRITE_MESSAGE = 5       #テキストメッセージの表示中
 WINDOW_SELECT_YES_NO = 8       #「はい」「いいえ」の2択表示中
 WINDOW_OPEN_COMPLETED = 9      #テキストウィンドウ開き完了！
-WINDOW_CLOSE = 10           #テキストウィンドウ閉め進行中
+WINDOW_CLOSE = 10              #テキストウィンドウ閉め進行中
 WINDOW_CLOSE_COMPLETED = 11    #テキストウィンドウ閉め完了！ 
 
 #メッセージの表示の仕方
 DISP_OFF = 0               #0=表示しない
 DISP_ON = 1                #1=表示する 
-DISP_CENTER = 2             #2=中央表示
-DISP_LEFT_ALIGN = 3          #3=左揃え
-DISP_RIGHT_ALIGN = 4          #4=右揃え
+DISP_CENTER = 2            #2=中央表示
+DISP_LEFT_ALIGN = 3        #3=左揃え
+DISP_RIGHT_ALIGN = 4       #4=右揃え
 
 #火花エフェクトの表示の仕方(大気圏突入シーンなどのエフェクトで使用)
 SPARK_OFF = 0              #火花表示なし
 SPARK_ON  = 1              #火花表示あり
 
 #パワーアップアイテム類のtype定数の定義 obtain_itemクラスのitem_typeに代入されます
-ITEM_SHOT_POWER_UP    = 1      #ショットアイテム
+ITEM_SHOT_POWER_UP     = 1      #ショットアイテム
 ITEM_MISSILE_POWER_UP  = 2      #ミサイルアイテム
 ITEM_SHIELD_POWER_UP   = 3      #シールドアイテム
 
-ITEM_CLAW_POWER_UP    = 4      #クローアイテム
+ITEM_CLAW_POWER_UP     = 4      #クローアイテム
 ITEM_TRIANGLE_POWER_UP = 5      #トライアングルアイテム（ショット、ミサイル、シールド）
 
-ITEM_TAIL_SHOT_POWER_UP      = 10    #テイルショットアイテム
+ITEM_TAIL_SHOT_POWER_UP        = 10    #テイルショットアイテム
 ITEM_PENETRATE_ROCKET_POWER_UP = 11    #ペネトレートロケットアイテム
-ITEM_SEARCH_LASER_POWER_UP    = 12    #サーチレーザーアイテム
+ITEM_SEARCH_LASER_POWER_UP     = 12    #サーチレーザーアイテム
 ITEM_HOMING_MISSILE_POWER_UP   = 13    #ホーミングミサイルアイテム
-ITEM_SHOCK_BUMPER_POWER_UP    = 14    #ショックバンパーアイテム 
+ITEM_SHOCK_BUMPER_POWER_UP     = 14    #ショックバンパーアイテム 
 
 #!ステージのイベントリストで使う定数の定義
-EVENT_ENEMY          = 0  #敵出現
+EVENT_ENEMY              = 0  #敵出現
 EVENT_ADD_APPEAR_ENEMY   = 1  #敵出現（早回しによる敵の追加出現）
 EVENT_FAST_FORWARD_NUM   = 2  #早回しに関する編隊群のパラメーターを設定するイベント
 
-EVENT_SCROLL               = 60 #スクロール制御
-EVENT_DISPLAY_STAR           = 61 #星のスクロールのon/off
-EVENT_CHANGE_BG_CLS_COLOR       = 62 #背景でまず最初に塗りつぶす色を指定する(初期状態は黒で塗り潰してます) CLSカラーの指定
+EVENT_SCROLL                      = 60 #スクロール制御
+EVENT_DISPLAY_STAR                = 61 #星のスクロールのon/off
+EVENT_CHANGE_BG_CLS_COLOR         = 62 #背景でまず最初に塗りつぶす色を指定する(初期状態は黒で塗り潰してます) CLSカラーの指定
 EVENT_CHANGE_BG_TRANSPARENT_COLOR = 63 #背景マップを敷き詰める時の透明色を指定する(初期状態は黒)        TRANSPARENTカラーの指定
-EVENT_CLOUD                = 64 #背景雲の表示設定
-EVENT_RASTER_SCROLL          = 65 #ラスタースクロールの制御
-EVENT_BG_SCREEN_ON_OFF        = 66 #各BGスクリーンの表示のオンオフ
-EVENT_ENTRY_SPARK_ON_OFF       = 67 #大気圏突入の火花エフェクト表示のオンオフ
+EVENT_CLOUD                       = 64 #背景雲の表示設定
+EVENT_RASTER_SCROLL               = 65 #ラスタースクロールの制御
+EVENT_BG_SCREEN_ON_OFF            = 66 #各BGスクリーンの表示のオンオフ
+EVENT_ENTRY_SPARK_ON_OFF          = 67 #大気圏突入の火花エフェクト表示のオンオフ
 
 EVENT_DISPLAY_CAUTION    = 70 #CAUTION.注意表示
 EVENT_COMMANDER_MESSSAGE = 71 #司令からの通信メッセージ
 
-EVENT_MIDDLE_BOSS      = 80 #中ボス出現
-EVENT_WARNING        = 90 #WARNING.警告表示
+EVENT_MIDDLE_BOSS   = 80 #中ボス出現
+EVENT_WARNING       = 90 #WARNING.警告表示
 EVENT_BOSS          = 100#ボスキャラ出現
 
 #イベントリスト・スクロール制御関連の定数定義
-SCROLL_NUM_SET          = 0  #スクロール関連のパラメーター設定
-SCROLL_START            = 1  #スクロール開始
-SCROLL_STOP            = 2  #スクロールストップ
-SCROLL_SPEED_CHANGE       = 3  #スクロールスピードチェンジ
+SCROLL_NUM_SET               = 0  #スクロール関連のパラメーター設定
+SCROLL_START                 = 1  #スクロール開始
+SCROLL_STOP                  = 2  #スクロールストップ
+SCROLL_SPEED_CHANGE          = 3  #スクロールスピードチェンジ
 SCROLL_SPEED_CHANGE_VERTICAL = 4  #縦スクロールスピードチェンジ
 
 SCROLL_SPEED            = 5  #スクロールスピード直接指定
 SCROLL_REVERSE          = 6  #逆スクロール開始
-SCROLL_UP             = 7  #上方向にスクロール開始
-SCROLL_DOWN            = 8  #下方向にスクロール開始
+SCROLL_UP               = 7  #上方向にスクロール開始
+SCROLL_DOWN             = 8  #下方向にスクロール開始
 
 #イベントリスト・雲のスクロール制御関連の定数定義
-CLOUD_NUM_SET           = 0  #雲のパラメータ設定
+CLOUD_NUM_SET          = 0  #雲のパラメータ設定
 CLOUD_START            = 1  #雲を流すのを開始する
 CLOUD_STOP             = 2  #雲を流すのを停止する
 
@@ -462,7 +471,7 @@ BG_MIDDLE = 1 #BGスクリーン真ん中
 BG_FRONT  = 2 #BGスクリーン手前
 
 #背景スクロールの種類
-SCROLL_TYPE_TRIPLE_SCROLL_AND_STAR    = 0 #横3重スクロール+星スクロール
+SCROLL_TYPE_TRIPLE_SCROLL_AND_STAR     = 0 #横3重スクロール+星スクロール
 SCROLL_TYPE_8FREEWAY_SCROLL_AND_RASTER = 1 #8方向自由スクロール+ラスタースクロール
 
 #背景の星のスクロールの有無
@@ -471,37 +480,37 @@ STAR_SCROLL_OFF     = 0 #        なし
 
 #背景ラスタスクロールの有無
 RASTER_SCROLL_ON    = 1 #ラスタースクロールあり
-RASTER_SCROLL_OFF    = 0 #           なし
+RASTER_SCROLL_OFF   = 0 #           なし
 
 #背景ラスタスクロールの種類
-RASTER_NORMAL       = 0 #奥と手前のラインごとのスクロールスピードの差で奥行き感を出すタイプ (流れるスピードはスクロールスピードに依存します)
+RASTER_NORMAL      = 0 #奥と手前のラインごとのスクロールスピードの差で奥行き感を出すタイプ (流れるスピードはスクロールスピードに依存します)
 RASTER_WAVE        = 1 #x軸にたいして波打つラスタースクロールタイプ(x座標オフセット値を加減算して波打つ感じを表現します)
 
 #!敵キャラの名前(タイプナンバー)定数定義####################################
-CIR_COIN        =  1  #無人編隊戦闘機 サーコイン（サークルコイン）
-SAISEE_RO       =  2  #回転戦闘機サイシーロ(サインカーブを描く敵)
-HOUDA_UNDER      =  3  #固定砲台ホウダ 下
-HOUDA_UPPER      =  4  #固定砲台ホウダ 上
-HOPPER_CHAN2     =  5  #はねるホッパーチャンmk2
-MIST_M54        =  6  #謎の回転飛翔体M54
-TWIN_ARROW_SIN    =  7  #真！(SIN)ツインアロー
-TWIN_ARROW       =  8  #自機を追尾してくるツインアロー
-ROLBOARD        =  9  #ロルボードＹ軸を合わせた後突っ込んで来る怖い
+CIR_COIN           =  1  #無人編隊戦闘機 サーコイン（サークルコイン）
+SAISEE_RO          =  2  #回転戦闘機サイシーロ(サインカーブを描く敵)
+HOUDA_UNDER        =  3  #固定砲台ホウダ 下
+HOUDA_UPPER        =  4  #固定砲台ホウダ 上
+HOPPER_CHAN2       =  5  #はねるホッパーチャンmk2
+MIST_M54           =  6  #謎の回転飛翔体M54
+TWIN_ARROW_SIN     =  7  #真！(SIN)ツインアロー
+TWIN_ARROW         =  8  #自機を追尾してくるツインアロー
+ROLBOARD           =  9  #ロルボードＹ軸を合わせた後突っ込んで来る怖い
 KURANBURU_UNDER    = 10  #クランブルアンダー(スクランブルハッチ)
 KURANBURU_UPPER    = 11  #クランブルアッパー(スクランブルハッチ)
-RAY_BLASTER      = 12  #レイブラスター 直進して画面前方のどこかで停止→レーザービーム射出→急いで後退するレーザー系
-GREEN_LANCER     = 13  #3way弾を出してくるグリーンランサー・翠の硬い奴(ミサイルパワーアップアイテムを持っている！)
-TEMI          = 14  #テミー(アイテムキャリアー)
-MUU_ROBO        = 15  #ムーロボ 地面を左右に動きながらチョット進んできて弾を撃つ移動砲台
-CLAMPARION       = 16  #2機一体で挟みこみ攻撃をしてくるクランパリオン
-ROLL_BLITZ       = 17  #ロールブリッツ 画面内のあらかじめ決められた場所へスプライン曲線で移動,そこについたら狙い撃ち弾を出して画面外へ高速離脱
-VOLDAR         = 18  #ボルダー 硬めの弾バラマキ重爆撃機
+RAY_BLASTER        = 12  #レイブラスター 直進して画面前方のどこかで停止→レーザービーム射出→急いで後退するレーザー系
+GREEN_LANCER       = 13  #3way弾を出してくるグリーンランサー・翠の硬い奴(ミサイルパワーアップアイテムを持っている！)
+TEMI               = 14  #テミー(アイテムキャリアー)
+MUU_ROBO           = 15  #ムーロボ 地面を左右に動きながらチョット進んできて弾を撃つ移動砲台
+CLAMPARION         = 16  #2機一体で挟みこみ攻撃をしてくるクランパリオン
+ROLL_BLITZ         = 17  #ロールブリッツ 画面内のあらかじめ決められた場所へスプライン曲線で移動,そこについたら狙い撃ち弾を出して画面外へ高速離脱
+VOLDAR             = 18  #ボルダー 硬めの弾バラマキ重爆撃機
 ROLL_BLITZ_POINTER = 19  #ロールブリッツポインター(最大5定点を滑らかに通過していくロールブリッツ)
 
 #敵キャラの大きさの定数定義(この定数を見て敵を破壊した後に育成する爆発パターンの種類を決定しています)
-E_SIZE_NORMAL       = 4  #敵サイズノーマル（8ドット）四方の当たり判定
-E_SIZE_MIDDLE22     = 6  #敵サイズ2x2チップタイプ  中型16ドットx16ドットの当たり判定
-E_SIZE_MIDDLE32     = 8  #敵サイズ3x2チップタイプ  中型24ドットx16ドットの当たり判定
+E_SIZE_NORMAL         = 4  #敵サイズノーマル（8ドット）四方の当たり判定
+E_SIZE_MIDDLE22       = 6  #敵サイズ2x2チップタイプ  中型16ドットx16ドットの当たり判定
+E_SIZE_MIDDLE32       = 8  #敵サイズ3x2チップタイプ  中型24ドットx16ドットの当たり判定
 E_SIZE_MIDDLE32_Y_REV = 9  #敵サイズ3x2チップタイプ  中型24ドットx16ドットの当たり判定(上下反転版)(天井に固定されてるハッチとかです)
 E_SIZE_HI_MIDDLE53    =10  #敵サイズ5x3チップタイプ  準中型40ドットx24ドットの当たり判定（重爆撃機とか)
 #敵キャラのIDナンバー定数定義
@@ -514,15 +523,15 @@ ENEMY_STATUS_AWAITING  = 3 #待機 破壊時はscore_awaitingを加算
 ENEMY_STATUS_DEFENSE   = 4 #防御 破壊時はscore_defenseを加算
 ENEMY_STATUS_BERSERK   = 5 #怒り 破壊時はscore_berserkを加算
 
-ENEMY_STATUS_MOVE_COORDINATE_INIT    = 10 #移動用座標初期化
+ENEMY_STATUS_MOVE_COORDINATE_INIT  = 10 #移動用座標初期化
 ENEMY_STATUS_MOVE_BEZIER_CURVE     = 11 #ベジェ曲線で移動
 
 #敵の攻撃方法(enemyクラスのattack_methodに入る)の定数定義
-ENEMY_ATTCK_ANY            = 0    #任意攻撃(移動ルートで攻撃方法が変わるのではなく体力や自機の位置などによって攻撃方法が変化します)
-ENEMY_ATTACK_NO_FIRE        = 1    #なにも攻撃しないよ
-ENEMY_ATTACK_AIM_BULLET       = 2    #狙い撃ち弾
-ENEMY_ATTACK_FRONT_5WAY       = 3    #前方に5way弾を撃ってきます
-ENEMY_ATTACK_FRONT_GREEN_LASER  = 4    #前方に細いグリーンレーザーを撃ってきます
+ENEMY_ATTCK_ANY                = 0    #任意攻撃(移動ルートで攻撃方法が変わるのではなく体力や自機の位置などによって攻撃方法が変化します)
+ENEMY_ATTACK_NO_FIRE           = 1    #なにも攻撃しないよ
+ENEMY_ATTACK_AIM_BULLET        = 2    #狙い撃ち弾
+ENEMY_ATTACK_FRONT_5WAY        = 3    #前方に5way弾を撃ってきます
+ENEMY_ATTACK_FRONT_GREEN_LASER = 4    #前方に細いグリーンレーザーを撃ってきます
 #ヒットポイント(耐久力)の定数定義
 HP00,HP01,HP02,HP03,HP04,HP05,HP06,HP07,HP08,HP09 =  0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 HP10,HP11,HP12,HP13,HP14,HP15,HP16,HP17,HP18,HP19 = 10,11,12,13,14,15,16,17,18,19
@@ -562,42 +571,43 @@ SIZE_36,SIZE_37,SIZE_38,SIZE_39,SIZE_40 = 36,37,38,39,40
 
 SIZE_41,SIZE_42,SIZE_43,SIZE_44,SIZE_45 = 41,42,43,44,45
 SIZE_46,SIZE_47,SIZE_48,SIZE_49,SIZE_50 = 46,47,48,49,50
+
 #空中物か地上物かの判定用定数定義 enemyクラスのfloating_flagに入ります
 AERIAL_OBJ = 0 #空中物(飛行物体)
 GROUND_OBJ = 1 #地上物
 MOVING_OBJ = 2 #地上を移動する物体(装甲車とか)
 
 #!敵弾のタイプ定数定義
-ENEMY_SHOT_NORMAL        =  0 #通常弾
-ENEMY_SHOT_SIN          =  1 #サインカーブ弾
-ENEMY_SHOT_COS          =  2 #コサインカーブ弾
-ENEMY_SHOT_LASER         =  3 #レーザービーム
-ENEMY_SHOT_GREEN_LASER     =  4 #ボスのグリーンレーザー
-ENEMY_SHOT_RED_LASER       =  5 #ボスのレッドレーザー
-ENEMY_SHOT_YELLOW_LASER    =  6 #ボスのイエローレーザー
-ENEMY_SHOT_BLUE_LASER      =  7 #ボスのブルーレーザー
-ENEMY_SHOT_RAINBOW_LASER    =  8 #ボスのレインボーレーザー
-ENEMY_SHOT_HOMING_LASER    =  9 #ホーミングレーザー(レイフォースみたいなの)
+ENEMY_SHOT_NORMAL            =  0 #通常弾
+ENEMY_SHOT_SIN               =  1 #サインカーブ弾
+ENEMY_SHOT_COS               =  2 #コサインカーブ弾
+ENEMY_SHOT_LASER             =  3 #レーザービーム
+ENEMY_SHOT_GREEN_LASER       =  4 #ボスのグリーンレーザー
+ENEMY_SHOT_RED_LASER         =  5 #ボスのレッドレーザー
+ENEMY_SHOT_YELLOW_LASER      =  6 #ボスのイエローレーザー
+ENEMY_SHOT_BLUE_LASER        =  7 #ボスのブルーレーザー
+ENEMY_SHOT_RAINBOW_LASER     =  8 #ボスのレインボーレーザー
+ENEMY_SHOT_HOMING_LASER      =  9 #ホーミングレーザー(レイフォースみたいなの)
 ENEMY_SHOT_HOMING_LASER_TAIL = 10 #ホーミングレーザーの尻尾
-ENEMY_SHOT_LOCKON_LASER    = 11 #ロックオンレーザー(レイフォースみたいなの)
+ENEMY_SHOT_LOCKON_LASER      = 11 #ロックオンレーザー(レイフォースみたいなの)
 ENEMY_SHOT_LOCKON_LASER_TAIL = 12 #ロックオンレーザーの尻尾
-ENEMY_SHOT_SEARCH_LASER    = 13 #サーチレーザー(イメージファイトみたいなの)
+ENEMY_SHOT_SEARCH_LASER      = 13 #サーチレーザー(イメージファイトみたいなの)
 ENEMY_SHOT_SEARCH_LASER_TAIL = 14 #サーチレーザーの尻尾
-ENEMY_SHOT_WAVE          = 15 #ウェーブカッター(ダライアスみたいなの)
-ENEMY_SHOT_RIPPLW_LASER    = 16 #リップルレーザー(グラディウスⅡみたいなの)
-ENEMY_SHOT_WAINDER_LASER    = 17 #ワインダーレーザー(グラディウスみたいなの)
-ENEMY_SHOT_CIRCLE_LASER    = 18 #サークルレーザー(イメージファイトみたいなの)
-ENEMY_SHOT_2TURN_LASER     = 19 #2回屈折サーチレーザー(ダライアスバーストみたいなの)
-ENEMY_SHOT_BOUND_LASER     = 20 #反射レーザー(R-TYPEみたいなの)
-ENEMY_SHOT_DROP_BULLET     = 21 #落下弾
-ENEMY_SHOT_CIRCLE_BULLET    = 22 #回転弾
-ENEMY_SHOT_SPLIT_BULLET    = 21 #分裂弾
-ENEMY_SHOT_HOMING_BULLET    = 23 #誘導弾
-ENEMY_SHOT_UP_LASER       = 24 #アップレーザー
-ENEMY_SHOT_DOWN_LASER      = 25 #ダウンレーザー
-ENEMY_SHOT_SPREAD_BOMB     = 26 #スプレッドボム
-ENEMY_SHOT_VECTOR_LASER    = 27 #ベクトルレーザー(グラ２みたいなの)
-ENEMY_SHOT_GREEN_CUTTER    = 28 #「ブリザーディア」が尾翼部から射出するグリーンカッター
+ENEMY_SHOT_WAVE              = 15 #ウェーブカッター(ダライアスみたいなの)
+ENEMY_SHOT_RIPPLW_LASER      = 16 #リップルレーザー(グラディウスⅡみたいなの)
+ENEMY_SHOT_WAINDER_LASER     = 17 #ワインダーレーザー(グラディウスみたいなの)
+ENEMY_SHOT_CIRCLE_LASER      = 18 #サークルレーザー(イメージファイトみたいなの)
+ENEMY_SHOT_2TURN_LASER       = 19 #2回屈折サーチレーザー(ダライアスバーストみたいなの)
+ENEMY_SHOT_BOUND_LASER       = 20 #反射レーザー(R-TYPEみたいなの)
+ENEMY_SHOT_DROP_BULLET       = 21 #落下弾
+ENEMY_SHOT_CIRCLE_BULLET     = 22 #回転弾
+ENEMY_SHOT_SPLIT_BULLET      = 21 #分裂弾
+ENEMY_SHOT_HOMING_BULLET     = 23 #誘導弾
+ENEMY_SHOT_UP_LASER          = 24 #アップレーザー
+ENEMY_SHOT_DOWN_LASER        = 25 #ダウンレーザー
+ENEMY_SHOT_SPREAD_BOMB       = 26 #スプレッドボム
+ENEMY_SHOT_VECTOR_LASER      = 27 #ベクトルレーザー(グラ２みたいなの)
+ENEMY_SHOT_GREEN_CUTTER      = 28 #「ブリザーディア」が尾翼部から射出するグリーンカッター
 
 #!分裂弾の種類の定数定義
 ENEMY_SHOT_DIVISION_3WAY    = 1 #3way分裂弾
@@ -606,10 +616,10 @@ ENEMY_SHOT_DIVISION_7WAY    = 3 #7way分裂弾
 ENEMY_SHOT_DIVISION_9WAY    = 4 #9way分裂弾
 
 #育成する打ち返し弾の種類 Explosionクラスのreturn_bullet_typeに入る,難易度リスト(game_difficulty_list)でも使用してます
-RETURN_BULLET_NONE    = 0 #撃ち返ししない
-RETURN_BULLET_AIM     = 1 #自機狙い弾を1発撃ち返す
+RETURN_BULLET_NONE      = 0 #撃ち返ししない
+RETURN_BULLET_AIM       = 1 #自機狙い弾を1発撃ち返す
 RETURN_BULLET_DELAY_AIM = 2 #自機狙い撃ち返し＆遅れて更に自機狙い弾を撃ち返す 2発
-RETURN_BULLET_3WAY    = 3 #自機狙いの3way弾を撃ち返してくる
+RETURN_BULLET_3WAY      = 3 #自機狙いの3way弾を撃ち返してくる
 
 
 #敵弾クラスで使用する定数定義 主にcollision_typeやwidth,heightに入る
@@ -634,65 +644,65 @@ ESHOT_SIZE15 = 15 #敵ショットのサイズ 15ドット
 ESHOT_SIZE16 = 16 #敵ショットのサイズ 16ドット 
 
 #敵や爆発関連の表示用のプライオリティレベルの定数定義
-PRIORITY_SEND_TO_BACK       = 0  #最背面(スクロールしない背景が多いです)
-PRIORITY_BACK            = 1  #背面
-PRIORITY_MIDDLE          = 2  #中面
-PRIORITY_BOSS_BACK        = 3  #ボスキャラの真後ろ
-PRIORITY_BOSS            = 4  #ボスキャラと同面
-PRIORITY_BOSS_FRONT        = 5  #ボスキャラの直ぐ手前
-PRIORITY_FRONT_SCROLL       = 6  #前面スクロールのすぐ手前
-PRIORITY_FRONT           = 7  #前面
-PRIORITY_MORE_FRONT        = 8  #さらに前面
-PRIORITY_TOP            = 9  #最前面(すべてにおいて最後の描画されるため最前面となる！)
+PRIORITY_SEND_TO_BACK  = 0  #最背面(スクロールしない背景が多いです)
+PRIORITY_BACK          = 1  #背面
+PRIORITY_MIDDLE        = 2  #中面
+PRIORITY_BOSS_BACK     = 3  #ボスキャラの真後ろ
+PRIORITY_BOSS          = 4  #ボスキャラと同面
+PRIORITY_BOSS_FRONT    = 5  #ボスキャラの直ぐ手前
+PRIORITY_FRONT_SCROLL  = 6  #前面スクロールのすぐ手前
+PRIORITY_FRONT         = 7  #前面
+PRIORITY_MORE_FRONT    = 8  #さらに前面
+PRIORITY_TOP           = 9  #最前面(すべてにおいて最後の描画されるため最前面となる！)
 
 #ボスキャラのboss_type定数定義
-BOSS_BREEZARDIA          = 0 #MOUNTAIN_REGIONのボス「ブリザーディア」
-BOSS_FATTY_VALGUARD       = 1 #ADVANCED_BASEのボス  「ファッティバルガード」
+BOSS_BREEZARDIA        = 0 #MOUNTAIN_REGIONのボス「ブリザーディア」
+BOSS_FATTY_VALGUARD    = 1 #ADVANCED_BASEのボス  「ファッティバルガード」
 
 
 #敵キャラが持っているアイテム類のID enemyクラスのitemに代入されます
-E_NO_POW    = 0           #敵は何もパワーアップアイテムを持っていないです・・・涙
+E_NO_POW      = 0           #敵は何もパワーアップアイテムを持っていないです・・・涙
 E_SHOT_POW    = 1           #敵が持っているショットアイテム定数定義
 E_MISSILE_POW = 2           #敵が持っているミサイルアイテム定数定義
 E_SHIELD_POW  = 3           #敵が持っているシールドアイテム定数定義
 
-E_CLAW_POW      = 4        #敵が持っているクローアイテム定数定義
+E_CLAW_POW        = 4        #敵が持っているクローアイテム定数定義
 
 E_TRIANGLE_POW    = 5        #敵が持っている正三角形アイテム（ショット、ミサイル、シールド）アイテム定数定義
 
 E_DESTRUCTION_POW = 6        #敵が持っている破壊アイテム定数定義（ザコ敵を殲滅させるアイテム）
-E_SCORE_POW     = 7        #敵が持っている得点アップアイテムの定数定義
+E_SCORE_POW       = 7        #敵が持っている得点アップアイテムの定数定義
 E_INVINCIBLE_POW  = 8        #敵が持っている無敵アイテムの定数定義
 
-E_TAIL_SHOT_POW      = 10     #敵が持っているテイルショットアイテム定数定義
+E_TAIL_SHOT_POW        = 10     #敵が持っているテイルショットアイテム定数定義
 E_PENETRATE_ROCKET_POW = 11     #敵が持っているペネトレートロケットアイテム定数定義
-E_SEARCH_LASER_POW    = 12     #敵が持っているサーチレーザーアイテム定数定義
+E_SEARCH_LASER_POW     = 12     #敵が持っているサーチレーザーアイテム定数定義
 E_HOMING_MISSILE_POW   = 13     #敵が持っているホーミングミサイルアイテム定数定義
-E_SHOCK_BUMPER_POW    = 14     #敵が持っているショックバンパーアイテム定数定義 
+E_SHOCK_BUMPER_POW     = 14     #敵が持っているショックバンパーアイテム定数定義 
 
 #!bossクラスのstatusに入る定数定義   (状態遷移フラグとして使用します)
-BOSS_STATUS_MOVE_COORDINATE_INIT    = 0   #ボス用のステータス定数定義 移動用座標初期化
+BOSS_STATUS_MOVE_COORDINATE_INIT  = 0   #ボス用のステータス定数定義 移動用座標初期化
 BOSS_STATUS_MOVE_BEZIER_CURVE     = 10  #ボス用のステータス定数定義 ベジェ曲線で移動
-BOSS_STATUS_MOVE_LEMNISCATE_CURVE   = 11  #ボス用のステータス定数定義 レムニスケート曲線で移動
+BOSS_STATUS_MOVE_LEMNISCATE_CURVE = 11  #ボス用のステータス定数定義 レムニスケート曲線で移動
 
-BOSS_STATUS_EXPLOSION_START       = 80  #ボス撃破！爆発開始！
+BOSS_STATUS_EXPLOSION_START    = 80  #ボス撃破！爆発開始！
 BOSS_STATUS_EXPLOSION          = 81  #ボス爆発中！
-BOSS_STATUS_BLAST_SPLIT_START     = 82  #ボス爆破分裂開始
-BOSS_STATUS_BLAST_SPLIT         = 83  #ボス爆破分裂中
-BOSS_STATUS_DISAPPEARANCE        = 89  #ボス消滅・・・・・
+BOSS_STATUS_BLAST_SPLIT_START  = 82  #ボス爆破分裂開始
+BOSS_STATUS_BLAST_SPLIT        = 83  #ボス爆破分裂中
+BOSS_STATUS_DISAPPEARANCE      = 89  #ボス消滅・・・・・
 
 #bossクラスのattack_methodに入る定数定義 (ボスの攻撃方法)
-BOSS_ATTACK_NO_FIRE = 0          #なにも攻撃しないよ
-BOSS_ATTACK_FRONT_5WAY = 1        #前方に5way弾を撃ってきます
-BOSS_ATTACK_RIGHT_GREEN_LASER = 2    #後方に細いグリーンレーザーを撃ってきます
+BOSS_ATTACK_NO_FIRE = 0               #なにも攻撃しないよ
+BOSS_ATTACK_FRONT_5WAY = 1            #前方に5way弾を撃ってきます
+BOSS_ATTACK_RIGHT_GREEN_LASER = 2     #後方に細いグリーンレーザーを撃ってきます
 BOSS_ATTACK_FRONT_5WAY_AIM_BULLET = 3 #前方5way+狙い撃ち弾
-BOSS_ATTACK_FRONT_5WAY_HOMING = 4    #前方5way+ホーミング弾
+BOSS_ATTACK_FRONT_5WAY_HOMING = 4     #前方5way+ホーミング弾
 
-BOSS_HP_BAR_DISPLAY_TIME = 32       #ボスの耐久力バーを表示する時間(弾が当たるたびにこの数値がカウンターに入る)
+BOSS_HP_BAR_DISPLAY_TIME = 32         #ボスの耐久力バーを表示する時間(弾が当たるたびにこの数値がカウンターに入る)
 
 #bossクラスのweapon_statusに入る定数定義(ボスの持つ武器の状態)
 WEAPON_READY          = 0    #何もしていない準備万端な状態
-WEAPON_ROCK_ON         = 1    #目標を定めた状態（予兆エフェクトを表示)
+WEAPON_ROCK_ON        = 1    #目標を定めた状態（予兆エフェクトを表示)
 WEAPON_FIRE           = 2    #武器発射中
 
 #!オブジェクトのクラス宣言エリア####################################################################################################
@@ -2651,18 +2661,22 @@ class App:
         # self.total_game_playtime_seconds = 0    #トータルゲームプレイ時間 (秒)
         self.backup_replay_data = []            #リプレイデータのバックアップ用リストを初期化します   
         
-        self.auto_move_mode = 0                     #自動移動モードのフラグ
-                                                #0 = パッドやキーボード入力によって移動 
-                                                #1 = イベントによる自動移動モードとなり設定された位置まで自動で移動して行きます
-                                                #2 = パッドやキーボード入力によって移動し、さらにリプレイデータも記録します
-                                                #4 = リプレイデータを読み出しそのデータで自動移動しリプレイデータを再現します
+        self.move_mode = MOVE_MANUAL            #移動モードの状態です
+                                                #MOVE_MANUAL = パッドやキーボード入力によって移動
+                                                #MOVE_AUTO = イベントによる自動移動モードとなり設定された位置まで自動で移動して行きます
+        
+        self.replay_status= REPLAY_RECORD       #リプレイ記録のステータスです
+                                                #REPLAY_STOP = 0   #何も作動してない状態です リプレイデータ記録無し,再生無し
+                                                #REPLAY_RECORD = 1 #リプレイデータを記録中です
+                                                #REPLAY_PLAY   = 2 #リプレイデータを再生中です
+        
         #####IPL関連の変数を初期化#####################################################################################
         self.display_ipl_time = 200            #IPLメッセージを表示する時間 200
-        self.text_console_scroll_counter = 0    #テキストコンソールでスクロールして画面上に消えて行った行数
+        self.text_console_scroll_counter = 0   #テキストコンソールでスクロールして画面上に消えて行った行数
         self.ipl_mes_write_line_num = 0        #スクリーンに表示したIPLメッセージデータの行数
-        self.text_screen = []                #テキストスクリーン用のリストを初期化して使えるようにします
+        self.text_screen = []                  #テキストスクリーン用のリストを初期化して使えるようにします
         
-        self.scroll_type = 0                  #スクロールの種類が入る変数を初期化
+        self.scroll_type = 0                   #スクロールの種類が入る変数を初期化
         self.game_playing_flag = 0             #ゲーム中なのか？それ以外の状態なのか？を示すフラグです 0=プレイ以外 1=プレイ中
         self.star_scroll_flag  = 0             #背景のスクロールする星々を表示するかのフラグを初期化
         self.raster_scroll_flag = 0            #背景ラスタスクロールを表示するかのフラグを初期化
@@ -3939,7 +3953,7 @@ class App:
         if (pyxel.frame_count % 10) == 0:
             if len(self.ipl_mes1) > self.ipl_mes_write_line_num: #まだ書き込むべき文字列があるのなら・・・
                 text_mes = str(self.ipl_mes1[self.ipl_mes_write_line_num][0])
-                text_col =    self.ipl_mes1[self.ipl_mes_write_line_num][1]
+                text_col = str(self.ipl_mes1[self.ipl_mes_write_line_num][1])
                 self.text_screen.append([text_mes,text_col]) #文字列群をテキストスクリーンのリストに追加する
                 self.ipl_mes_write_line_num +=1  #スクリーンに表示したIPLメッセージデータの行数カウンタを1インクリメント
 
@@ -3948,68 +3962,68 @@ class App:
         pyxel.load("assets/graphic/min-sht2.pyxres") #タイトル＆ステージ1＆2のリソースファイルを読み込む
         #タイトル関連の変数を初期化
         
-        self.display_title_time = 204          #タイトルを表示する時間
-        self.title_oscillation_count = 200      #タイトルグラフイックの振れ幅カウンター
-        self.title_slash_in_count =    100      #タイトルグラフイックが下から切り込んで競りあがってくる時に使うカウンター
+        self.display_title_time = 204               #タイトルを表示する時間
+        self.title_oscillation_count = 200          #タイトルグラフイックの振れ幅カウンター
+        self.title_slash_in_count =    100          #タイトルグラフイックが下から切り込んで競りあがってくる時に使うカウンター
         
-        # self.display_title_time       = 10      #タイトルを表示する時間
-        # self.title_oscillation_count = 10        #タイトルグラフイックの振れ幅カウンター
-        # self.title_slash_in_count =    10        #タイトルグラフイックが下から切り込んで競りあがってくる時に使うカウンター
+        # self.display_title_time       = 10        #タイトルを表示する時間
+        # self.title_oscillation_count = 10         #タイトルグラフイックの振れ幅カウンター
+        # self.title_slash_in_count =    10         #タイトルグラフイックが下から切り込んで競りあがってくる時に使うカウンター
         
-        self.stars = []                      #タイトル表示時も背景の星を流したいのでリストをここで初期化してやります
+        self.stars = []                        #タイトル表示時も背景の星を流したいのでリストをここで初期化してやります
         self.star_scroll_speed = 1             #背景の流れる星のスクロールスピード 1=通常スピード 0.5なら半分のスピードとなります
-        self.window = []                     #タイトル表示時もメッセージウィンドウを使いたいのでリストをここで初期化してあげます
+        self.window = []                       #タイトル表示時もメッセージウィンドウを使いたいのでリストをここで初期化してあげます
         
-        self.replay_input_data = []    #リプレイ保存用のパッド入力リストを初期化します
+        self.replay_input_data = []   #リプレイ保存用のパッド入力リストを初期化します
         
         self.bg_cls_color = 0         #BGをCLS(クリアスクリーン)するときの色の指定(通常は0=黒色です)ゲーム時に初期値から変更されることがあるのでここで初期化する
         
         # セレクトカーソル関連の変数宣言   タイトル画面でセレクトカーソルを使いたいのでここで変数などを宣言＆初期化します
-        self.cursor_show = False        #セレクトカーソルを表示するかしないかのフラグ用
-        self.cursor_x = 0              #セレクトカーソルのx座標
-        self.cursor_y = 0              #セレクトカーソルのy座標
-        self.cursor_item = 0            #いま指し示しているアイテムナンバー
-        self.cursor_page = 0            #いま指し示しているページナンバー
-        self.cursor_color = 0           #セレクトカーソルの色
-        self.cursor_decision_item = -1    #ボタンが押されて「決定」されたアイテムのナンバー -1は未決定 ここをチェックしてどのアイテムが選択されたのか判断する
-        self.cursor_max_item = 0        #最大項目数 5の場合(0~4)の5項目分カーソルが移動することになります 3だったら(0~2)って感じで
-        self.cursor_menu_layer = 0       #現在選択中のメニューの階層の数値が入ります
-        self.cursor_pre_decision_item = 0 #前の階層で選択したアイテムのナンバーを入れます
-                                    #選択してcursor_decision_itemに入ったアイテムナンバーをcursor_pre_decision_itemに入れて次の階層に潜るって手法かな？
+        self.cursor_show = False            #セレクトカーソルを表示するかしないかのフラグ用
+        self.cursor_x = 0                   #セレクトカーソルのx座標
+        self.cursor_y = 0                   #セレクトカーソルのy座標
+        self.cursor_item = 0                #いま指し示しているアイテムナンバー
+        self.cursor_page = 0                #いま指し示しているページナンバー
+        self.cursor_color = 0               #セレクトカーソルの色
+        self.cursor_decision_item = -1      #ボタンが押されて「決定」されたアイテムのナンバー -1は未決定 ここをチェックしてどのアイテムが選択されたのか判断する
+        self.cursor_max_item = 0            #最大項目数 5の場合(0~4)の5項目分カーソルが移動することになります 3だったら(0~2)って感じで
+        self.cursor_menu_layer = 0          #現在選択中のメニューの階層の数値が入ります
+        self.cursor_pre_decision_item = 0   #前の階層で選択したアイテムのナンバーを入れます
+                                            #選択してcursor_decision_itemに入ったアイテムナンバーをcursor_pre_decision_itemに入れて次の階層に潜るって手法かな？
         
         #system-data.pyxresリソースファイルからこれらの設定値を読み込むようにしたのでコメントアウトしています
         # self.game_difficulty = GAME_NORMAL        #難易度               タイトルメニューで難易度を選択して変化させるのでここで初期化します
         # self.stage_number = STAGE_MOUNTAIN_REGION  #最初に出撃するステージ   タイトルメニューでステージを選択して変化させるのでここで初期化します
         # self.stage_loop   = 1                  #ループ数(ステージ周回数) タイトルメニューで周回数を選択して変化させるのでここで初期化します
         
-        pygame.mixer.init(frequency = 44100)    #pygameミキサー関連の初期化
-        pygame.mixer.music.set_volume(0.7)      #音量設定(0~1の範囲内)
+        pygame.mixer.init(frequency = 44100)     #pygameミキサー関連の初期化
+        pygame.mixer.music.set_volume(0.7)       #音量設定(0~1の範囲内)
         pygame.mixer.music.load('assets/music/BGM200-171031-konotenitsukame-intro.wav') #タイトルイントロ部分のwavファイルを読み込み
-        pygame.mixer.music.play(1)            #イントロを1回だけ再生
+        pygame.mixer.music.play(1)               #イントロを1回だけ再生
         
         self.game_status = SCENE_TITLE           #ゲームステータスを「SCENE_TITLE」にしてタイトル表示を開始する
 
     #タイトルの更新#######################################
     def update_title(self):
-        self.display_title_time -= 1        #タイトルを表示する時間カウンターを1減らす
-        if self.display_title_time <= 0:     #カウンターが0以下になったら・・・
-            self.display_title_time = 0     #強制的に0の状態にする
+        self.display_title_time -= 1          #タイトルを表示する時間カウンターを1減らす
+        if self.display_title_time <= 0:      #カウンターが0以下になったら・・・
+            self.display_title_time = 0       #強制的に0の状態にする
         
-        self.title_oscillation_count -= 1    #タイトルグラフイックの振れ幅カウンターを1減らす
+        self.title_oscillation_count -= 1     #タイトルグラフイックの振れ幅カウンターを1減らす
         if self.title_oscillation_count < 0:  #カウンターが0以下になったら・・・
-            self.title_oscillation_count = 0 #強制的に0の状態にする
+            self.title_oscillation_count = 0  #強制的に0の状態にする
         
-        self.title_slash_in_count -= 1       #タイトルグラフイックが下から切り込んで競りあがってくる時に使うカウンターを1減らす
-        if self.title_slash_in_count < 0:    #カウンターが0以下になったら・・・
-            self.title_slash_in_count = 0    #強制的に0の状態にする
+        self.title_slash_in_count -= 1        #タイトルグラフイックが下から切り込んで競りあがってくる時に使うカウンターを1減らす
+        if self.title_slash_in_count < 0:     #カウンターが0以下になったら・・・
+            self.title_slash_in_count = 0     #強制的に0の状態にする
         
         #BGMイントロ再生が終了したらBGMループ部分を再生し始める
-        if pygame.mixer.music.get_pos() == -1:       #pygame.mixer.music.get_posはBGM再生が終了すると-1を返してきます
+        if pygame.mixer.music.get_pos() == -1:      #pygame.mixer.music.get_posはBGM再生が終了すると-1を返してきます
             pygame.mixer.init(frequency = 44100)    #pygameミキサー関連の初期化
             pygame.mixer.music.set_volume(0.7)      #音量設定(0~1の範囲内)
             pygame.mixer.music.load('assets/music/BGM200-171031-konotenitsukame-loop.wav') #タイトルBGMループ部分のwavファイルを読み込み
-            pygame.mixer.music.play(-1)            #タイトルBGMをループ再生
-            
+            pygame.mixer.music.play(-1)             #タイトルBGMをループ再生
+        
         #全てのカウンター類が0になったらゲームメニューウィンドウを育成する
         if self.title_oscillation_count == 0 and self.title_slash_in_count == 0 and self.display_title_time == 0:
             new_window = Window()
@@ -4025,29 +4039,30 @@ class App:
             44,52,   0,0,  8*8,7*8,   2,1, 1,1,   0,0,    0,0)
             self.window.append(new_window)                      #「SELECT MENU」を育成する
             
-            self.cursor_show = True                            #選択カーソル表示をonにする
-            self.cursor_x = 46                                #セレクトカーソルの座標を設定します
+            self.cursor_show = True                             #選択カーソル表示をonにする
+            self.cursor_x = 46                                  #セレクトカーソルの座標を設定します
             self.cursor_y = 64
-            self.cursor_item = 0                              #いま指示しているアイテムナンバーは0の「YES」
+            self.cursor_item = 0                                #いま指示しているアイテムナンバーは0の「YES」
             self.cursor_decision_item = -1                      #まだボタンも押されておらず未決定状態なのでdecision_itemは-1
-            self.cursor_max_item = 6                           #最大項目数は「GAME START」「SELECT STAGE」「SELECT LOOP NUMBER」「BOSS MODE」「HITBOX」「DIFFICULTY」「REPLAY」の7項目なので 7-1=6を代入
-            self.cursor_menu_layer = 0                         #メニューの階層は最初は0にします
+            self.cursor_max_item = 6                            #最大項目数は「GAME START」「SELECT STAGE」「SELECT LOOP NUMBER」「BOSS MODE」「HITBOX」「DIFFICULTY」「REPLAY」の7項目なので 7-1=6を代入
+            self.cursor_menu_layer = 0                          #メニューの階層は最初は0にします
             self.game_status = SCENE_TITLE_MENU_SELECT #ゲームステータスを「TITLE_MENU_SELECT」(タイトルでメニューを選択中)」にする
 
     #タイトルメニューの選択中の更新#####################################
     def update_title_menu_select(self):
         if self.cursor_menu_layer == 0: #メニューが0階層目の選択分岐
             if   self.cursor_decision_item == 0:            #GAME STARTが押されたら
-                self.cursor_show = False                  #セレクトカーソルの表示をoffにする
-                self.auto_move_mode = 0                   #移動モードを通常ゲーム時の移動にする
-                self.game_status = SCENE_GAME_START_INIT     #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
+                self.cursor_show = False                    #セレクトカーソルの表示をoffにする
+                self.move_mode = MOVE_MANUAL                #移動モードを「手動移動」にする
+                self.replay_status = REPLAY_RECORD          #リプレイデータを「記録中」にする
+                self.game_status = SCENE_GAME_START_INIT    #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
                 
             elif self.cursor_decision_item == 1:            #SELECT STAGEが押されたら
-                self.cursor_pre_x = self.cursor_x                    #新しいウィンドウを開く前に現在のカーソル関連の変数を記憶しておきます
-                self.cursor_pre_y = self.cursor_y                    #
-                self.cursor_pre_item = self.cursor_item                #
-                self.cursor_pre_decision_item = self.cursor_decision_item #
-                self.cursor_pre_max_item = self.cursor_max_item         # 
+                self.cursor_pre_x = self.cursor_x           #新しいウィンドウを開く前に現在のカーソル関連の変数を記憶しておきます
+                self.cursor_pre_y = self.cursor_y             
+                self.cursor_pre_item = self.cursor_item
+                self.cursor_pre_decision_item = self.cursor_decision_item
+                self.cursor_pre_max_item = self.cursor_max_item 
                 
                 new_window = Window()
                 new_window.update(0,0,1,WINDOW_OPEN,\
@@ -4060,21 +4075,22 @@ class App:
                 "",DISP_CENTER,0,7,\
                 "",DISP_CENTER,0,7,\
                 90,60,   0,0,  2*8,5*8,   2,2, 1,1,   0,0,    0,0)
-                self.window.append(new_window)                      #「STAGE」を育成する
-                self.cursor_show = True                            #選択カーソル表示をonにする
-                self.cursor_x = 90                                #セレクトカーソルの座標を設定します
+                self.window.append(new_window)                   #「STAGE」を育成する
+                self.cursor_show = True                          #選択カーソル表示をonにする
+                self.cursor_x = 90                               #セレクトカーソルの座標を設定します
                 self.cursor_y = 72
-                self.cursor_item = 0                              #いま指示しているアイテムナンバーは0の「1」
-                self.cursor_decision_item = -1                      #まだボタンも押されておらず未決定状態なのでdecision_itemは-1
-                self.cursor_max_item = 2                           #最大項目数は3項目なので 3-1=2を代入
+                self.cursor_item = 0                             #いま指示しているアイテムナンバーは0の「1」
+                self.cursor_decision_item = -1                   #まだボタンも押されておらず未決定状態なのでdecision_itemは-1
+                self.cursor_max_item = 2                         #最大項目数は3項目なので 3-1=2を代入
                 
-                self.cursor_menu_layer = 1                         #メニューの階層が増えたので0から1にします
-            elif self.cursor_decision_item == 2:            #SELECT LOOP NUMBERが押されたら
+                self.cursor_menu_layer = 1                       #メニューの階層が増えたので0から1にします
+                
+            elif self.cursor_decision_item == 2:                     #SELECT LOOP NUMBERが押されたら
                 self.cursor_pre_x = self.cursor_x                    #新しいウィンドウを開く前に現在のカーソル関連の変数を記憶しておきます
-                self.cursor_pre_y = self.cursor_y                    #
-                self.cursor_pre_item = self.cursor_item                #
-                self.cursor_pre_decision_item = self.cursor_decision_item #
-                self.cursor_pre_max_item = self.cursor_max_item         # 
+                self.cursor_pre_y = self.cursor_y
+                self.cursor_pre_item = self.cursor_item
+                self.cursor_pre_decision_item = self.cursor_decision_item
+                self.cursor_pre_max_item = self.cursor_max_item 
                 
                 new_window = Window()
                 new_window.update(0,0,0,WINDOW_OPEN,\
@@ -4088,20 +4104,21 @@ class App:
                 "",DISP_CENTER,0,7,\
                 90+22,60+6,   0,0,  2*8,5*8,   2,2, 1,1,   0,0,    0,0)
                 self.window.append(new_window)                      #「LOOP NUMBER」を育成する
-                self.cursor_show = True                            #選択カーソル表示をonにする
-                self.cursor_x = 90+22                                #セレクトカーソルの座標を設定します
+                self.cursor_show = True                             #選択カーソル表示をonにする
+                self.cursor_x = 90+22                               #セレクトカーソルの座標を設定します
                 self.cursor_y = 72+6
-                self.cursor_item = 0                              #いま指示しているアイテムナンバーは0の「1」
+                self.cursor_item = 0                                #いま指示しているアイテムナンバーは0の「1」
                 self.cursor_decision_item = -1                      #まだボタンも押されておらず未決定状態なのでdecision_itemは-1
-                self.cursor_max_item = 2                           #最大項目数は3項目なので 3-1=2を代入
+                self.cursor_max_item = 2                            #最大項目数は3項目なので 3-1=2を代入
                 
-                self.cursor_menu_layer = 1                         #メニューの階層が増えたので0から1にします
-            elif self.cursor_decision_item == 3:            #BOSS MODEが押されたら
-                self.cursor_pre_x = self.cursor_x                    #新しいウィンドウを開く前に現在のカーソル関連の変数を記憶しておきます
-                self.cursor_pre_y = self.cursor_y                    #
-                self.cursor_pre_item = self.cursor_item                #
-                self.cursor_pre_decision_item = self.cursor_decision_item #
-                self.cursor_pre_max_item = self.cursor_max_item         # 
+                self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
+                
+            elif self.cursor_decision_item == 3:                    #BOSS MODEが押されたら
+                self.cursor_pre_x = self.cursor_x                   #新しいウィンドウを開く前に現在のカーソル関連の変数を記憶しておきます
+                self.cursor_pre_y = self.cursor_y
+                self.cursor_pre_item = self.cursor_item
+                self.cursor_pre_decision_item = self.cursor_decision_item
+                self.cursor_pre_max_item = self.cursor_max_item 
                 
                 new_window = Window()
                 new_window.update(0,0,0,WINDOW_OPEN,\
@@ -4115,20 +4132,21 @@ class App:
                 "",DISP_CENTER,0,7,\
                 96+2,60,   0,0,  2*8+6,2*8,   2,1, 1,1,   0,0,    0,0)
                 self.window.append(new_window)                      #「BOSS MODE ON/OFF」を育成する
-                self.cursor_show = True                            #選択カーソル表示をonにする
+                self.cursor_show = True                             #選択カーソル表示をonにする
                 self.cursor_x = 96+2                                #セレクトカーソルの座標を設定します
                 self.cursor_y = 72-8
-                self.cursor_item = 0                              #いま指示しているアイテムナンバーは0の「1」
+                self.cursor_item = 0                                #いま指示しているアイテムナンバーは0の「1」
                 self.cursor_decision_item = -1                      #まだボタンも押されておらず未決定状態なのでdecision_itemは-1
-                self.cursor_max_item = 1                           #最大項目数は2項目なので 2-1=1を代入
+                self.cursor_max_item = 1                            #最大項目数は2項目なので 2-1=1を代入
                 
-                self.cursor_menu_layer = 1                         #メニューの階層が増えたので0から1にします
-            elif self.cursor_decision_item == 4:            #HITBOXが押されたら
-                self.cursor_pre_x = self.cursor_x                    #新しいウィンドウを開く前に現在のカーソル関連の変数を記憶しておきます
-                self.cursor_pre_y = self.cursor_y                    #
-                self.cursor_pre_item = self.cursor_item                #
-                self.cursor_pre_decision_item = self.cursor_decision_item #
-                self.cursor_pre_max_item = self.cursor_max_item         # 
+                self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
+                
+            elif self.cursor_decision_item == 4:               #HITBOXが押されたら
+                self.cursor_pre_x = self.cursor_x              #新しいウィンドウを開く前に現在のカーソル関連の変数を記憶しておきます
+                self.cursor_pre_y = self.cursor_y
+                self.cursor_pre_item = self.cursor_item
+                self.cursor_pre_decision_item = self.cursor_decision_item
+                self.cursor_pre_max_item = self.cursor_max_item 
                 
                 new_window = Window()
                 new_window.update(0,0,0,WINDOW_OPEN,\
@@ -4142,20 +4160,21 @@ class App:
                 "",DISP_CENTER,0,7,\
                 96+2,60,   0,0,  2*8+6,2*8,   2,1, 1,1,   0,0,    0,0)
                 self.window.append(new_window)                      #「HITBOX ON/OFF」を育成する
-                self.cursor_show = True                            #選択カーソル表示をonにする
+                self.cursor_show = True                             #選択カーソル表示をonにする
                 self.cursor_x = 96+2                                #セレクトカーソルの座標を設定します
                 self.cursor_y = 72-8
-                self.cursor_item = 0                              #いま指示しているアイテムナンバーは0の「1」
+                self.cursor_item = 0                                #いま指示しているアイテムナンバーは0の「1」
                 self.cursor_decision_item = -1                      #まだボタンも押されておらず未決定状態なのでdecision_itemは-1
-                self.cursor_max_item = 1                           #最大項目数は2項目なので 2-1=1を代入
+                self.cursor_max_item = 1                            #最大項目数は2項目なので 2-1=1を代入
                 
-                self.cursor_menu_layer = 1                         #メニューの階層が増えたので0から1にします
-            elif self.cursor_decision_item == 5:            #DIFFICULTYが押されたら
-                self.cursor_pre_x = self.cursor_x                    #新しいウィンドウを開く前に現在のカーソル関連の変数を記憶しておきます
-                self.cursor_pre_y = self.cursor_y                    #
-                self.cursor_pre_item = self.cursor_item                #
-                self.cursor_pre_decision_item = self.cursor_decision_item #
-                self.cursor_pre_max_item = self.cursor_max_item         # 
+                self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
+                
+            elif self.cursor_decision_item == 5:                #DIFFICULTYが押されたら
+                self.cursor_pre_x = self.cursor_x               #新しいウィンドウを開く前に現在のカーソル関連の変数を記憶しておきます
+                self.cursor_pre_y = self.cursor_y
+                self.cursor_pre_item = self.cursor_item
+                self.cursor_pre_decision_item = self.cursor_decision_item
+                self.cursor_pre_max_item = self.cursor_max_item 
                 
                 new_window = Window()
                 new_window.update(0,0,1,WINDOW_OPEN,\
@@ -4169,144 +4188,146 @@ class App:
                 "",DISP_LEFT_ALIGN,0,7,\
                 93,52,   0,0,  6*8,6*8,   3,3, 1,1,   0,0,    0,0)
                 self.window.append(new_window)                      #「DIFFICULTY」を育成する
-                self.cursor_show = True                            #選択カーソル表示をonにする
-                self.cursor_x = 96                                #セレクトカーソルの座標を設定します
+                self.cursor_show = True                             #選択カーソル表示をonにする
+                self.cursor_x = 96                                  #セレクトカーソルの座標を設定します
                 self.cursor_y = 72
-                self.cursor_item = 2                              #いま指示しているアイテムナンバーは2の「NORMAL」
+                self.cursor_item = 2                                #いま指示しているアイテムナンバーは2の「NORMAL」
                 self.cursor_decision_item = -1                      #まだボタンも押されておらず未決定状態なのでdecision_itemは-1
-                self.cursor_max_item = 5                           #最大項目数は6項目なので 6-1=5を代入
+                self.cursor_max_item = 5                            #最大項目数は6項目なので 6-1=5を代入
                 
-                self.cursor_menu_layer = 1                         #メニューの階層が増えたので0から1にします
-            elif self.cursor_decision_item == 6:            #REPLAYが押されたら
-                if not self.backup_replay_data:            #リプレイデータのバックアップ用リストが空だったらリプレイ再生できないので
-                    self.cursor_show = True               #カーソルだけは表示
-                else:                                 #リプレイデータのバックアップ用リストが存在したのなら
-                    self.cursor_show = False              #セレクトカーソルの表示をoffにする
-                    self.auto_move_mode = 4               #移動モードを「リプレイによる自動移動再生」にする
-                    self.update_restore_replay_data()       #リプレイデータをリストア(復元)する関数を呼び出す                
-                    self.game_status = SCENE_GAME_START_INIT #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
+                self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
+                
+            elif self.cursor_decision_item == 6:               #REPLAYが押されたら
+                if not self.backup_replay_data:                #リプレイデータのバックアップ用リストが空だったらリプレイ再生できないので
+                    self.cursor_show = True                    #カーソルだけは表示
+                else:                                          #リプレイデータのバックアップ用リストが存在したのなら
+                    self.cursor_show = False                   #セレクトカーソルの表示をoffにする
+                    self.move_mode = MOVE_MANUAL               #移動モードを「手動移動」にします
+                    self.replay_status = REPLAY_PLAY           #リプレイ機能の状態を「再生中」にします
+                    self.update_restore_replay_data()          #リプレイデータをリストア(復元)する関数を呼び出す                
+                    self.game_status = SCENE_GAME_START_INIT   #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
             
         elif self.cursor_menu_layer == 1: #メニューが1階層目の選択分岐
             if self.cursor_pre_decision_item == 1 and self.cursor_decision_item == 0:
                 #「SELECT STAGE」→「1」
-                self.stage_number   = 1  #ステージナンバー1
+                self.stage_number   = 1                          #ステージナンバー1
                 window_count = len(self.window)
-                del self.window[window_count - 1] #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0      #階層を0にする
-                self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y                    #
-                self.cursor_item = self.cursor_pre_item                #
-                self.cursor_max_item = self.cursor_pre_max_item         #
+                del self.window[window_count - 1]                #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
+                self.cursor_menu_layer =  0                      #階層を0にする
+                self.cursor_x = self.cursor_pre_x                #カーソルの変数を前回の物に戻してやります
+                self.cursor_y = self.cursor_pre_y
+                self.cursor_item = self.cursor_pre_item
+                self.cursor_max_item = self.cursor_pre_max_item
                 self.cursor_decision_item = -1
                 self.cursor_pre_decision_item = -1
             elif self.cursor_pre_decision_item == 1 and self.cursor_decision_item == 1:
                 #「SELECT STAGE」→「2」
-                self.stage_number   = 2  #ステージナンバー2
+                self.stage_number   = 2                         #ステージナンバー2
                 window_count = len(self.window)
-                del self.window[window_count - 1] #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0   #階層を0にする
-                self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y                    #
-                self.cursor_item = self.cursor_pre_item                #
-                self.cursor_max_item = self.cursor_pre_max_item         #
+                del self.window[window_count - 1]               #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
+                self.cursor_menu_layer =  0                     #階層を0にする
+                self.cursor_x = self.cursor_pre_x               #カーソルの変数を前回の物に戻してやります
+                self.cursor_y = self.cursor_pre_y
+                self.cursor_item = self.cursor_pre_item
+                self.cursor_max_item = self.cursor_pre_max_item
                 self.cursor_decision_item = -1
                 self.cursor_pre_decision_item = -1
             elif self.cursor_pre_decision_item == 1 and self.cursor_decision_item == 2:
                 #「SELECT STAGE」→「3」
-                self.stage_number   = 3  #ステージナンバー3
+                self.stage_number   = 3                        #ステージナンバー3
                 window_count = len(self.window)
-                del self.window[window_count - 1] #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0   #階層を0にする
-                self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y                    #
-                self.cursor_item = self.cursor_pre_item                #
-                self.cursor_max_item = self.cursor_pre_max_item         #
+                del self.window[window_count - 1]              #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
+                self.cursor_menu_layer =  0                    #階層を0にする
+                self.cursor_x = self.cursor_pre_x              #カーソルの変数を前回の物に戻してやります
+                self.cursor_y = self.cursor_pre_y
+                self.cursor_item = self.cursor_pre_item
+                self.cursor_max_item = self.cursor_pre_max_item
                 self.cursor_decision_item = -1
                 self.cursor_pre_decision_item = -1
                 
             elif self.cursor_pre_decision_item == 2 and self.cursor_decision_item == 0:
                 #「SELECT LOOP NUMBER」→「1」
-                self.stage_loop = 1  #ループ数に1週目を代入
+                self.stage_loop = 1                           #ループ数に1週目を代入
                 window_count = len(self.window)
-                del self.window[window_count - 1] #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0      #階層を0にする
-                self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y                    #
-                self.cursor_item = self.cursor_pre_item                #
-                self.cursor_max_item = self.cursor_pre_max_item         #
+                del self.window[window_count - 1]             #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
+                self.cursor_menu_layer =  0                   #階層を0にする
+                self.cursor_x = self.cursor_pre_x             #カーソルの変数を前回の物に戻してやります
+                self.cursor_y = self.cursor_pre_y
+                self.cursor_item = self.cursor_pre_item
+                self.cursor_max_item = self.cursor_pre_max_item
                 self.cursor_decision_item = -1
                 self.cursor_pre_decision_item = -1
             elif self.cursor_pre_decision_item == 2 and self.cursor_decision_item == 1:
                 #「SELECT LOOP NUMBER」→「2」
-                self.stage_loop = 2  #ループ数に2週目を代入
+                self.stage_loop = 2                           #ループ数に2週目を代入
                 window_count = len(self.window)
-                del self.window[window_count - 1] #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0      #階層を0にする
-                self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y                    #
-                self.cursor_item = self.cursor_pre_item                #
-                self.cursor_max_item = self.cursor_pre_max_item         #
+                del self.window[window_count - 1]             #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
+                self.cursor_menu_layer =  0                   #階層を0にする
+                self.cursor_x = self.cursor_pre_x             #カーソルの変数を前回の物に戻してやります
+                self.cursor_y = self.cursor_pre_y
+                self.cursor_item = self.cursor_pre_item
+                self.cursor_max_item = self.cursor_pre_max_item
                 self.cursor_decision_item = -1
                 self.cursor_pre_decision_item = -1
             elif self.cursor_pre_decision_item == 2 and self.cursor_decision_item == 2:
                 #「SELECT LOOP NUMBER」→「3」
-                self.stage_loop = 3  #ループ数に3週目を代入
+                self.stage_loop = 3                          #ループ数に3週目を代入
                 window_count = len(self.window)
-                del self.window[window_count - 1] #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0      #階層を0にする
-                self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y                    #
-                self.cursor_item = self.cursor_pre_item                #
-                self.cursor_max_item = self.cursor_pre_max_item         #
+                del self.window[window_count - 1]            #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
+                self.cursor_menu_layer =  0                  #階層を0にする
+                self.cursor_x = self.cursor_pre_x            #カーソルの変数を前回の物に戻してやります
+                self.cursor_y = self.cursor_pre_y
+                self.cursor_item = self.cursor_pre_item
+                self.cursor_max_item = self.cursor_pre_max_item
                 self.cursor_decision_item = -1
                 self.cursor_pre_decision_item = -1
                 
             elif self.cursor_pre_decision_item == 3 and self.cursor_decision_item == 0:
                 #「BOSS MODE」→「ON」
-                self.boss_test_mode = 1  #ボステストモードをon
+                self.boss_test_mode = 1                              #ボステストモードをon
                 window_count = len(self.window)
-                del self.window[window_count - 1] #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0      #階層を0にする
+                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
+                self.cursor_menu_layer =  0                          #階層を0にする
                 self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y                    #
-                self.cursor_item = self.cursor_pre_item                #
-                self.cursor_max_item = self.cursor_pre_max_item         #
+                self.cursor_y = self.cursor_pre_y
+                self.cursor_item = self.cursor_pre_item
+                self.cursor_max_item = self.cursor_pre_max_item
                 self.cursor_decision_item = -1
                 self.cursor_pre_decision_item = -1
             elif self.cursor_pre_decision_item == 3 and self.cursor_decision_item == 1:
                 #「BOSS MODE」→「OFF」
-                self.boss_test_mode = 0  #ボステストモードをoff
+                self.boss_test_mode = 0                              #ボステストモードをoff
                 window_count = len(self.window)
-                del self.window[window_count - 1] #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0      #階層を0にする
+                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
+                self.cursor_menu_layer =  0                          #階層を0にする
                 self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y                    #
-                self.cursor_item = self.cursor_pre_item                #
-                self.cursor_max_item = self.cursor_pre_max_item         #
+                self.cursor_y = self.cursor_pre_y
+                self.cursor_item = self.cursor_pre_item
+                self.cursor_max_item = self.cursor_pre_max_item
                 self.cursor_decision_item = -1
                 self.cursor_pre_decision_item = -1
             elif self.cursor_pre_decision_item == 4 and self.cursor_decision_item == 0:
                 #「HITBOX」→「ON」
-                self.boss_collision_rect_display_flag = 1  #ボス当たり判定表示をon
+                self.boss_collision_rect_display_flag = 1            #ボス当たり判定表示をon
                 window_count = len(self.window)
-                del self.window[window_count - 1] #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0      #階層を0にする
+                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
+                self.cursor_menu_layer =  0                          #階層を0にする
                 self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y                    #
-                self.cursor_item = self.cursor_pre_item                #
-                self.cursor_max_item = self.cursor_pre_max_item         #
+                self.cursor_y = self.cursor_pre_y
+                self.cursor_item = self.cursor_pre_item
+                self.cursor_max_item = self.cursor_pre_max_item
                 self.cursor_decision_item = -1
                 self.cursor_pre_decision_item = -1
             elif self.cursor_pre_decision_item == 4 and self.cursor_decision_item == 1:
                 #「HITBOX」→「OFF」
-                self.boss_collision_rect_display_flag = 0  #ボス当たり判定表示をoff
+                self.boss_collision_rect_display_flag = 0            #ボス当たり判定表示をoff
                 window_count = len(self.window)
-                del self.window[window_count - 1] #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0      #階層を0にする
+                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
+                self.cursor_menu_layer =  0                          #階層を0にする
                 self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y                    #
-                self.cursor_item = self.cursor_pre_item                #
-                self.cursor_max_item = self.cursor_pre_max_item         #
+                self.cursor_y = self.cursor_pre_y
+                self.cursor_item = self.cursor_pre_item
+                self.cursor_max_item = self.cursor_pre_max_item
                 self.cursor_decision_item = -1
                 self.cursor_pre_decision_item = -1
                 
@@ -4314,72 +4335,72 @@ class App:
                 #「DIFFICULTY」→「VERY_EASY」
                 self.game_difficulty = GAME_VERY_EASY
                 window_count = len(self.window)
-                del self.window[window_count - 1] #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0      #階層を0にする
+                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
+                self.cursor_menu_layer =  0                          #階層を0にする
                 self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
                 self.cursor_y = self.cursor_pre_y                    #
-                self.cursor_item = self.cursor_pre_item                #
-                self.cursor_max_item = self.cursor_pre_max_item         #
+                self.cursor_item = self.cursor_pre_item              #
+                self.cursor_max_item = self.cursor_pre_max_item      #
                 self.cursor_decision_item = -1
                 self.cursor_pre_decision_item = -1
             elif self.cursor_pre_decision_item == 5 and self.cursor_decision_item == 1:
                 #「DIFFICULTY」→「EASY」
                 self.game_difficulty = GAME_EASY
                 window_count = len(self.window)
-                del self.window[window_count - 1] #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0   #階層を0にする
+                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
+                self.cursor_menu_layer =  0                          #階層を0にする
                 self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
                 self.cursor_y = self.cursor_pre_y                    #
-                self.cursor_item = self.cursor_pre_item                #
-                self.cursor_max_item = self.cursor_pre_max_item         #
+                self.cursor_item = self.cursor_pre_item              #
+                self.cursor_max_item = self.cursor_pre_max_item      #
                 self.cursor_decision_item = -1
                 self.cursor_pre_decision_item = -1
             elif self.cursor_pre_decision_item == 5 and self.cursor_decision_item == 2:
                 #「DIFFICULTY」→「NORMAL」
                 self.game_difficulty = GAME_NORMAL
                 window_count = len(self.window)
-                del self.window[window_count - 1] #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0   #階層を0にする
+                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
+                self.cursor_menu_layer =  0                          #階層を0にする
                 self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
                 self.cursor_y = self.cursor_pre_y                    #
-                self.cursor_item = self.cursor_pre_item                #
-                self.cursor_max_item = self.cursor_pre_max_item         #
+                self.cursor_item = self.cursor_pre_item              #
+                self.cursor_max_item = self.cursor_pre_max_item      #
                 self.cursor_decision_item = -1
                 self.cursor_pre_decision_item = -1
             elif self.cursor_pre_decision_item == 5 and self.cursor_decision_item == 3:
                 #「DIFFICULTY」→「HARD」
                 self.game_difficulty = GAME_HARD
                 window_count = len(self.window)
-                del self.window[window_count - 1] #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0   #階層を0にする
+                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
+                self.cursor_menu_layer =  0                          #階層を0にする
                 self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
                 self.cursor_y = self.cursor_pre_y                    #
-                self.cursor_item = self.cursor_pre_item                #
-                self.cursor_max_item = self.cursor_pre_max_item         #
+                self.cursor_item = self.cursor_pre_item              #
+                self.cursor_max_item = self.cursor_pre_max_item      #
                 self.cursor_decision_item = -1
                 self.cursor_pre_decision_item = -1
             elif self.cursor_pre_decision_item == 5 and self.cursor_decision_item == 4:
                 #「DIFFICULTY」→「VERY_HARD」
                 self.game_difficulty = GAME_VERY_HARD
                 window_count = len(self.window)
-                del self.window[window_count - 1] #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0   #階層を0にする
+                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
+                self.cursor_menu_layer =  0                          #階層を0にする
                 self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
                 self.cursor_y = self.cursor_pre_y                    #
-                self.cursor_item = self.cursor_pre_item                #
-                self.cursor_max_item = self.cursor_pre_max_item         #
+                self.cursor_item = self.cursor_pre_item              #
+                self.cursor_max_item = self.cursor_pre_max_item      #
                 self.cursor_decision_item = -1
                 self.cursor_pre_decision_item = -1
             elif self.cursor_pre_decision_item == 5 and self.cursor_decision_item == 5:
                 #「DIFFICULTY」→「INSAME」
                 self.game_difficulty = GAME_INSAME
                 window_count = len(self.window)
-                del self.window[window_count - 1] #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0   #階層を0にする
+                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
+                self.cursor_menu_layer =  0                          #階層を0にする
                 self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
                 self.cursor_y = self.cursor_pre_y                    #
-                self.cursor_item = self.cursor_pre_item                #
-                self.cursor_max_item = self.cursor_pre_max_item         #
+                self.cursor_item = self.cursor_pre_item              #
+                self.cursor_max_item = self.cursor_pre_max_item      #
                 self.cursor_decision_item = -1
                 self.cursor_pre_decision_item = -1
 
@@ -4424,7 +4445,7 @@ class App:
         self.game_play_count = 0        #ゲーム開始から経過したフレームカウント数(1フレームは60分の1秒)1面～今プレイしている面までのトータルフレームカウント数です
         self.rnd09_num = 0            #乱数0~9ルーレットの初期化
         
-        if self.auto_move_mode != 4: #リプレイデータでの再生時は乱数の種の更新は行いません
+        if self.move_mode != 4: #リプレイデータでの再生時は乱数の種の更新は行いません
             self.rnd_seed = pyxel.frame_count % 256 #線形合同法を使った乱数関数で使用する乱数種を現在のフレーム数とします(0~255の範囲)
             self.master_rnd_seed = self.rnd_seed    #リプレイデータ記録用として元となる乱数種を保存しておきます
         
@@ -4475,8 +4496,8 @@ class App:
         pyxel.load("assets/graphic/min-sht2.pyxres")
         pygame.mixer.init(frequency = 44100)    #pygameミキサー関連の初期化
         pygame.mixer.music.set_volume(0.7)      #音量設定(0~1の範囲内)
-        self.load_stage_bgm()                #BGMファイルの読み込み
-        pygame.mixer.music.play(-1)            #BGMループ再生
+        self.load_stage_bgm()                   #BGMファイルの読み込み
+        pygame.mixer.music.play(-1)             #BGMループ再生
         self.my_x = 24    #自機のx座標の初期値
         self.my_y = 50    #自機のy座標の初期値
         self.my_vx = 1    #自機のx方向の移動量
@@ -4486,28 +4507,22 @@ class App:
                                     #各ビットの詳細
                                     # 上から 0,0,0,0, RS,LS,START,SELECT,   BY,BX,BB,BA, R,L,D,U
                                     # U=上 D=下 L=左 R=右 BA~BY=各ボタン START,SELECT=スタート,セレクト LS,RS=左ショルダー,右ショルダーボタン
-        self.replay_farame = 0               #リプレイ時のリストインデックス値を初期化
+        self.replay_farame = 0      #リプレイ時のリストインデックス値を初期化
         
         #各ステージに応じた数値をリストから取得する
         self.get_stage_data() #ステージデータリストからステージごとに設定された数値を取り出す関数の呼び出し
         
         self.present_repair_item_flag = 0 #ボス破壊後の爆発シーンでリペアアイテムを出すときに使用するフラグ 0=まだアイテム出してない 1=アイテム放出したよ～
-        self.rank_down_count = 0        #ダメージを受けて難易度別に設定された規定値まで行ったかどうかをカウントする変数
-        self.bg_cls_color = 0          #BGをCLS(クリアスクリーン)するときの色の指定(通常は0=黒色です) ゲーム中のイベントで変化することもあるのでステージスタート時でも初期化する
-        self.bg_transparent_color = 0    #BGタイルマップを敷き詰めるときに指定する透明色です          ゲーム中のイベントで変化することもあるのでステージスタート時でも初期化する
+        self.rank_down_count = 0          #ダメージを受けて難易度別に設定された規定値まで行ったかどうかをカウントする変数
+        self.bg_cls_color = 0             #BGをCLS(クリアスクリーン)するときの色の指定(通常は0=黒色です) ゲーム中のイベントで変化することもあるのでステージスタート時でも初期化する
+        self.bg_transparent_color = 0     #BGタイルマップを敷き詰めるときに指定する透明色です          ゲーム中のイベントで変化することもあるのでステージスタート時でも初期化する
         
         self.my_boost_injection_count = 0 #ステージクリア後のブースト噴射用のカウンター
         
-        self.timer_flare_flag = 0           #タイマーフレア（触れると物質の時間経過が遅くなるフレア）を放出するかどうかのフラグ
+        self.timer_flare_flag = 0         #タイマーフレア（触れると物質の時間経過が遅くなるフレア）を放出するかどうかのフラグ
         
-        #    self.auto_move_mode = 0                      #自動移動モードのフラグ
-                                            #    0 = パッドやキーボード入力によって移動 
-                                                #1 = イベントによる自動移動モードとなり設定された位置まで自動で移動して行きます
-                                                #2 = パッドやキーボード入力によって移動し、さらにリプレイデータも記録します
-                                                #4 = リプレイデータを読み出しそのデータで自動移動しリプレイデータを再現します
-        
-        self.auto_move_mode_x,self.auto_move_mode_y = 0,0 #自動移動モードがonの時はこの座標に向かって毎フレームごと自動で移動して行きます
-        self.auto_move_mode_complete = 0               #自動移動モードで目標座標まで移動したらこのフラグを立てます
+        self.move_mode_auto_x,self.move_mode_auto_y = 0,0 #自動移動モードがonの時はこの座標に向かって毎フレームごと自動で移動して行きます
+        self.move_mode_auto_complete                = 0   #自動移動モードで目標座標まで移動したらこのフラグを立てます
         
         self.add_appear_flag = 0     #敵を追加発生させる時に立てるフラグです
         
@@ -4520,82 +4535,82 @@ class App:
         
         self.stage_count = 0          #ステージ開始から経過したフレームカウント数(1フレームは60分の1秒)常に整数だよ
         
-        self.side_scroll_speed            =1  #横スクロールするスピードの現在値が入ります 1フレームで1ドットスクロール(実数ですのん)
+        self.side_scroll_speed              =1  #横スクロールするスピードの現在値が入ります 1フレームで1ドットスクロール(実数ですのん)
         self.side_scroll_speed_set_value    =1  #横スクロールスピードの設定値(変化量の分だけ1フレームごと増加減させ、この設定値までもって行く)
         self.side_scroll_speed_variation    =0  #横スクロールスピードを変化させる時の差分(変化量)
         
-        self.vertical_scroll_speed         =0  #縦スクロールするスピードの現在値が入ります 1フレームで1ドットスクロール(実数ですのん)
+        self.vertical_scroll_speed           =0  #縦スクロールするスピードの現在値が入ります 1フレームで1ドットスクロール(実数ですのん)
         self.vertical_scroll_speed_set_value =0  #縦スクロールスピードの設定値(変化量の分だけ1フレームごと増加減させ、この設定値までもって行く)
         self.vertical_scroll_speed_variation =0  #縦スクロールスピードを変化させる時の差分(変化量)
         
         self.display_cloud_flag    = 0    #背景の流れる雲を表示するかどうかのフラグ(0=表示しない 1=表示する)
         
-        self.cloud_append_interval  = 6    #雲を追加させる間隔
+        self.cloud_append_interval = 6    #雲を追加させる間隔
         self.cloud_quantity        = 0    #雲の量
         self.cloud_how_flow        = 0    #雲の流れ方
         self.cloud_flow_speed      = 0    #雲の流れるスピード
         
-        self.warning_dialog_flag        = 0 #WARINIGダイアログを表示するかどうかのフラグ
-        self.warning_dialog_display_time  = 0 #WARINIGダイアログの表示時間(フレーム単位)
+        self.warning_dialog_flag         = 0 #WARINIGダイアログを表示するかどうかのフラグ
+        self.warning_dialog_display_time = 0 #WARINIGダイアログの表示時間(フレーム単位)
         self.warning_dialog_logo_time    = 0 #WARNINGグラフイックロゴの表示に掛ける時間(フレーム単位)
         self.warning_dialog_text_time    = 0 #WARNINGテキスト表示に掛ける時間(フレーム単位)
         
-        self.stage_clear_dialog_flag        = 0 #STAGE CLEARダイアログを表示するかどうかのフラグ
-        self.stage_clear_dialog_display_time  = 0 #STAGE CLEARダイアログの表示時間(フレーム単位)
-        self.stage_clear_dialog_logo_time1    = 0 #STAGE CLEARグラフイックロゴの表示に掛ける時間その１(フレーム単位)
-        self.stage_clear_dialog_logo_time2    = 0 #STAGE CLEARグラフイックロゴの表示に掛ける時間その２(フレーム単位)
+        self.stage_clear_dialog_flag         = 0 #STAGE CLEARダイアログを表示するかどうかのフラグ
+        self.stage_clear_dialog_display_time = 0 #STAGE CLEARダイアログの表示時間(フレーム単位)
+        self.stage_clear_dialog_logo_time1   = 0 #STAGE CLEARグラフイックロゴの表示に掛ける時間その１(フレーム単位)
+        self.stage_clear_dialog_logo_time2   = 0 #STAGE CLEARグラフイックロゴの表示に掛ける時間その２(フレーム単位)
         self.stage_clear_dialog_text_time    = 0 #STAGE CLEARテキスト表示に掛ける時間(フレーム単位)
         
-        self.event_index = 0           #イベントリストのインデックス値（イベントリストが現在どの位置にあるのかを示す値です）
-        self.type_check_quantity = 0    #特定のショットタイプがリストにどれだけあるのかチェックして数えた数がここに入る
-        self.my_ship_explosion_timer = 0 #自機が爆発した後、まだどれだけゲームが進行するかのタイマーカウント
-        self.game_over_timer = 0        #ゲームオーバーダイアログを表示した後まだどれだけゲームが進行するかのタイマーカウント
-        self.fade_in_out_counter = 0    #フェードイン＆フェードアウト用エフェクトスクリーン用のカウンタ（基本的にx軸(キャラクター単位）の値です)
-                                        #0~19 で 19になった状態が一番右端を描画したという事になります
-                                        #19になった時点で完了となります
-        self.fade_complete_flag = 0     #フェードイン＆フェードアウトが完了したかのフラグが入る所(0=まだ終わっていない 1=完了！)
+        self.event_index = 0                #イベントリストのインデックス値（イベントリストが現在どの位置にあるのかを示す値です）
+        self.type_check_quantity = 0        #特定のショットタイプがリストにどれだけあるのかチェックして数えた数がここに入る
+        self.my_ship_explosion_timer = 0    #自機が爆発した後、まだどれだけゲームが進行するかのタイマーカウント
+        self.game_over_timer = 0            #ゲームオーバーダイアログを表示した後まだどれだけゲームが進行するかのタイマーカウント
+        self.fade_in_out_counter = 0        #フェードイン＆フェードアウト用エフェクトスクリーン用のカウンタ（基本的にx軸(キャラクター単位）の値です)
+                                            #0~19 で 19になった状態が一番右端を描画したという事になります
+                                            #19になった時点で完了となります
+        self.fade_complete_flag = 0             #フェードイン＆フェードアウトが完了したかのフラグが入る所(0=まだ終わっていない 1=完了！)
         self.shadow_in_out_counter = 0          #シャドウイン＆シャドウアウト用エフェクトスクリーン用のカウンタ
-        self.shadow_in_out_complete_flag = 0     #シャドウイン＆シャドウアウトが完了したかのフラグが入る所(0=まだ終わっていない 1=完了！)
+        self.shadow_in_out_complete_flag = 0    #シャドウイン＆シャドウアウトが完了したかのフラグが入る所(0=まだ終わっていない 1=完了！)
         
         self.current_formation_id = 1   #現在の敵編隊のＩＤナンバー（0は単独機で編隊群は1からの数字が割り当てられます）
                                         #編隊が1編隊出現するごとにこの数字が1増えていく
                                         #例 1→2→3→4→5→6→7→8→9→10みたいな感じで増えていく
         self.fast_forward_destruction_num = 0       #早回しの条件を満たすのに必要な「破壊するべき編隊の総数」が入ります
         self.fast_forward_destruction_count = 0     #破壊するべき編隊の総数」が1以上ならば編隊を破壊すると次の編隊の出現カウントがこの数値だけ少なくなり出現が早まります
-        self.add_appear_flag = 0                 #早回しの条件をすべて満たしたときに建つフラグです、このフラグが立った時、イベントリストに「EVENT_ADD_APPEAR_ENEMY」があったらそこで敵編隊を追加発生させます
+        self.add_appear_flag = 0                    #早回しの条件をすべて満たしたときに建つフラグです、このフラグが立った時、イベントリストに「EVENT_ADD_APPEAR_ENEMY」があったらそこで敵編隊を追加発生させます
         
-        self.my_rolling_flag = 0 #0=通常の向き  1=下方向に移動中のキャラチップ使用  2=上方向に移動中のキャラチップ使用
-        self.my_moved_flag = 0   #自機が移動したかどうかのフラグ（トレースクローの時、自機のＸＹ座標を履歴リストに記録するのか？しないのか？で使う）
-                            #0=自機は止まっているので座標履歴リストに記録はしない 
-                            #1=自機は移動したので座標履歴リストに記録する
+        self.my_rolling_flag = 0    #0=通常の向き  1=下方向に移動中のキャラチップ使用  2=上方向に移動中のキャラチップ使用
+        self.my_moved_flag = 0      #自機が移動したかどうかのフラグ（トレースクローの時、自機のＸＹ座標を履歴リストに記録するのか？しないのか？で使う）
+                                    #0=自機は止まっているので座標履歴リストに記録はしない 
+                                    #1=自機は移動したので座標履歴リストに記録する
         
         self.invincible_counter = 0 #無敵時間(単位はフレーム)のカウンタ 0の時以外は無敵状態です
         
         self.enemy_bound_collision_flag = 0 #ホッパー君が地面に接触してバウンドしたかどうかのフラグ(デバッグ用に使います)
-        self.mountain_x = 0              #8wayフリースクロール＋ラスタースクロール時の背景に表示される山のBGX座標用の変数です（デバッグ様に使用します）
-        self.cp = 0                    #外積計算用の変数(何故か判らないけど関数内で宣言せずに使うとintじゃなくてtupleになってしまうので・・・何故？)
+        self.mountain_x = 0                 #8wayフリースクロール＋ラスタースクロール時の背景に表示される山のBGX座標用の変数です（デバッグ様に使用します）
+        self.cp = 0                         #外積計算用の変数(何故か判らないけど関数内で宣言せずに使うとintじゃなくてtupleになってしまうので・・・何故？)
         self.point_inside_triangle_flag = 0 #三角形の中に点が存在するかを判別する関数用のフラグを初期化
         
         #リスト群の初期化#############################################################################
         #新しいクラスを作った時はここで必ず初期化するコードを記述する事！！！！！！
         #リストは初期化しないと使えないっポイ！？ぞ・・・っと・・・・・・
         #############################################################################################
-        self.shots = []             #自機弾のリスト
-        self.missile = []            #ミサイルのリスト
-        self.claw_shot = []          #クローの弾のリスト
-        self.enemy = []            #敵のリスト
-        self.enemy_shot = []         #敵の弾のリスト
-        self.obtain_item = []        #取得アイテム類のリスト(パワーアップカプセルなど)
-        self.stars = []             #背景の流れる星々のリスト         当たり判定はありません
-        self.explosions = []         #爆発パターン群のリスト           当たり判定はありません
-        self.particle = []           #パーティクル（火花の粒子）のリスト  当たり判定はありません
+        self.shots = []                #自機弾のリスト
+        self.missile = []              #ミサイルのリスト
+        self.claw_shot = []            #クローの弾のリスト
+        self.enemy = []                #敵のリスト
+        self.enemy_shot = []           #敵の弾のリスト
+        self.obtain_item = []          #取得アイテム類のリスト(パワーアップカプセルなど)
+        self.stars = []                #背景の流れる星々のリスト         当たり判定はありません
+        self.explosions = []           #爆発パターン群のリスト           当たり判定はありません
+        self.particle = []             #パーティクル（火花の粒子）のリスト  当たり判定はありません
         self.background_object = []    #背景オブジェクトのリスト         当たり判定はありません
-        self.window = []            #メッセージウィンドウのリスト       当たり判定はありません
-        self.claw_coordinates = []    #自機クロー（トレースモード）のxy座標リスト まぁオプションのxy座標が入るリストです
-        self.enemy_formation = []     #敵の編隊数のＩＤと出現時の総数と現在の生存数が入るリストです
+        self.window = []               #メッセージウィンドウのリスト       当たり判定はありません
+        self.claw_coordinates = []     #自機クロー（トレースモード）のxy座標リスト まぁオプションのxy座標が入るリストです
+        self.enemy_formation = []      #敵の編隊数のＩＤと出現時の総数と現在の生存数が入るリストです
         self.event_append_request = [] #イベント追加リクエストが入るリストです(敵などの臨時追加発注発生）
-        self.boss = []              #ボスのリスト
-        self.raster_scroll = []       #ラスタースクロール用のリスト
+        self.boss = []                 #ボスのリスト
+        self.raster_scroll = []        #ラスタースクロール用のリスト
         
         #各ステージのイベントリストだよ
         #イベントリストは早回しで「イベントが実行されるステージカウント数タイマー」が書き換えられるので関数「update_stage_start_init」内でリスタートごとに再読み込みする
@@ -4992,40 +5007,40 @@ class App:
         
         self.create_raster_scroll_data() #ラスタースクロール用のデータの初期化＆育成
 
-    # キーボードとゲームパッド、または移動座標先を指定しての自動モードによる自機の移動処理を行う関数です
+    #自機の移動          キーボードとゲームパッド、または移動座標先を指定しての「自動移動モード」による自機の移動処理を行う関数です
     def update_my_ship(self):
-        self.my_rolling_flag = 0  #自機ローリングフラグ(旋回フラグ）を0に初期化する
+        self.my_rolling_flag = 0  #自機ローリングフラグ(旋回フラグ)を0に初期化する
         self.my_moved_flag = 0    #自機が動いたかどうかのフラグを0に初期化する
         
         if self.game_status == SCENE_STAGE_CLEAR_MY_SHIP_BOOST: #ゲームステータスが「ステージクリア後、自機がブースト加速して右に過ぎ去っていく」なら
             self.my_x += self.my_vx
-            self.my_vx += 0.025 #速度0.01で加速していく
+            self.my_vx += 0.025                #速度0.01で加速していく
             self.my_boost_injection_count += 1 #ステージクリア後のブースト噴射用のカウンターを1増やしていく
-            self.my_moved_flag = 1          #トレースクローも動かしたいので自機移動フラグOnにする
+            self.my_moved_flag = 1             #トレースクローも動かしたいので自機移動フラグOnにする
             
-        elif self.auto_move_mode == 0: #手動移動モードの処理
+        elif self.replay_status != REPLAY_PLAY and self.move_mode == MOVE_MANUAL: #リプレイステータスが(再生中)では無い & 移動モードが(MANUAL)の時は
             self.my_vx,self.my_vy = 0,0 #自機の自機の移動量(vx,vy)を0に初期化する
             
-            # 左入力されたら  ｘ座標を  my_speedの数値だけ減らす
+            # 左入力があったのなら  x座標を  1*my_speedの数値だけ減らす
             if pyxel.btn(pyxel.KEY_LEFT) or pyxel.btn(pyxel.GAMEPAD_1_LEFT) or pyxel.btn(pyxel.GAMEPAD_2_LEFT):
                 self.my_moved_flag = 1#自機移動フラグOn
                 self.my_vx = -1
                 self.pad_data += PAD_LEFT
-                
-            # 右入力されたら  ｘ座標を  my_speedの数値だけ増やす
+            
+            # 右入力があったのなら  x座標を  1*my_speedの数値だけ増やす
             if pyxel.btn(pyxel.KEY_RIGHT) or pyxel.btn(pyxel.GAMEPAD_1_RIGHT) or pyxel.btn(pyxel.GAMEPAD_2_RIGHT):
                 self.my_moved_flag = 1#自機移動フラグOn
                 self.my_vx = 1
                 self.pad_data += PAD_RIGHT
-                
-            # 上入力されたら  y座標を  my_speedの数値だけ減らす
+            
+            # 上入力があったのなら  y座標を  1*my_speedの数値だけ減らす
             if pyxel.btn(pyxel.KEY_UP) or pyxel.btn(pyxel.GAMEPAD_1_UP) or pyxel.btn(pyxel.GAMEPAD_2_UP):
                 self.my_rolling_flag = 2
                 self.my_moved_flag = 1#自機移動フラグOn
                 self.my_vy = -1
                 self.pad_data += PAD_UP
             
-            # 下入力されたら  y座標を  my_speedの数値だけ増やす
+            # 下入力があったのなら  y座標を  1*my_speedの数値だけ増やす
             if pyxel.btn(pyxel.KEY_DOWN) or pyxel.btn(pyxel.GAMEPAD_1_DOWN) or pyxel.btn(pyxel.GAMEPAD_2_DOWN):
                 self.my_rolling_flag = 1
                 self.my_moved_flag = 1#自機移動フラグOn
@@ -5035,60 +5050,60 @@ class App:
             self.my_x += self.my_vx * self.my_speed #自機の移動量(vx,vy)と自機の速度(speed)を使って自機の座標を更新する（移動！）
             self.my_y += self.my_vy * self.my_speed
             
-        elif self.auto_move_mode == 4: #リプレイモードの処理
+        elif self.replay_status == REPLAY_PLAY and self.move_mode == MOVE_MANUAL: #リプレイステータスが「PLAY」で移動モードが「MANUAL」のときは
             self.my_vx,self.my_vy = 0,0 #自機の自機の移動量(vx,vy)を0に初期化する
             #リプレイデータを調べて左入力だったのなら  x座標を  my_speedの数値だけ減らす
             if self.backup_replay_data[self.replay_farame] & 0b0000000000000100 == 0b0000000000000100:
                 self.my_moved_flag = 1#自機移動フラグOn
                 self.my_vx = -1
-            #リプレイデータを調べて右入力だったのなら x座標を  my_speedの数値だけ増やす
+            
+            #リプレイデータを調べて右入力があったのなら x座標を  my_speedの数値だけ増やす
             if self.backup_replay_data[self.replay_farame] & 0b0000000000001000 == 0b0000000000001000:
                 self.my_moved_flag = 1#自機移動フラグOn
                 self.my_vx = 1
-            #リプレイデータを調べて上入力だったのなら y座標を  my_speedの数値だけ減らす
+            
+            #リプレイデータを調べて上入力があったのなら y座標を  my_speedの数値だけ減らす
             if self.backup_replay_data[self.replay_farame] & 0b0000000000000001 == 0b0000000000000001:
                 self.my_rolling_flag = 2
                 self.my_moved_flag = 1#自機移動フラグOn
                 self.my_vy = -1
-            #リプレイデータを調べて下入力だったのなら y座標を  my_speedの数値だけ増やす
+            
+            #リプレイデータを調べて下入力があったのなら y座標を  my_speedの数値だけ増やす
             if self.backup_replay_data[self.replay_farame] & 0b0000000000000010 == 0b0000000000000010:
                 self.my_rolling_flag = 1
                 self.my_moved_flag = 1#自機移動フラグOn
                 self.my_vy = 1
+            
             self.my_x += self.my_vx * self.my_speed #自機の移動量(vx,vy)と自機の速度(speed)を使って自機の座標を更新する（移動！）
             self.my_y += self.my_vy * self.my_speed
             
-        elif self.auto_move_mode == 1 and self.auto_move_mode_complete == 0: #自動移動モード＆まだ移動完了フラグが建っていなかったら・・・
+        elif self.move_mode == MOVE_AUTO and self.move_mode_auto_complete == 0: #移動モード「AUTO」&まだ移動完了フラグが建っていなかったら・・・
             self.my_vx,self.my_vy = 0,0 #自機の自機の移動量(vx,vy)を0に初期化する
             
-            #左に自動移動
-            if self.my_x > self.auto_move_mode_x:
-                self.my_moved_flag = 1#自機移動フラグOn
-                self.my_vx = -0.5
-            #右に自動移動
-            if self.my_x < self.auto_move_mode_x:
-                self.my_moved_flag = 1#自機移動フラグOn
-                self.my_vx = 0.5
-            #上に自動移動
-            if self.my_y > self.auto_move_mode_y:
+            if self.my_x > self.move_mode_auto_x:
+                self.my_moved_flag = 1                #自機移動フラグOn
+                self.my_vx = -0.5                     #左に自動移動
+            else:
+                self.my_moved_flag = 1                #自機移動フラグOn
+                self.my_vx = 0.5                      #右に自動移動
+            
+            if self.my_y > self.move_mode_auto_y:
                 self.my_rolling_flag = 2
-                self.my_moved_flag = 1#自機移動フラグOn
-                self.my_vy = -0.5
-            #下に自動移動
-            if self.my_y < self.auto_move_mode_y:
+                self.my_moved_flag = 1                #自機移動フラグOn
+                self.my_vy = -0.5                     #上に自動移動
+            else:
                 self.my_rolling_flag = 1
-                self.my_moved_flag = 1#自機移動フラグOn
-                self.my_vy = 0.5
+                self.my_moved_flag = 1                #自機移動フラグOn
+                self.my_vy = 0.5                      #下に自動移動
             
             self.my_x += self.my_vx #自機の移動量(vx,vy)を使って自機の座標を更新する（移動！）
             self.my_y += self.my_vy
             
-            if -1 <= self.my_x - self.auto_move_mode_x <= 1 and -1 <= self.my_y - self.auto_move_mode_y <= 1: #自機座標(x,y)と移動目的先の座標の差が誤差+-1以内ならば
-                self.auto_move_mode_complete = 1   #自動移動完了フラグをonにする
-                if self.game_status == SCENE_PLAY: #ゲームステータスが「PLAY」の時だけ
-                    self.auto_move_mode = 0      #自動移動モードを解除し手動移動モードに移行します
-                elif self.game_status == SCENE_STAGE_CLEAR_MOVE_MY_SHIP: #ゲームステータスが「ステージクリア後の自機自動移動」だったら
-                    self.game_status = SCENE_STAGE_CLEAR_MY_SHIP_BOOST  #ゲームステータスを「ステージクリア後、自機がブーストして右へ過ぎ去っていくシーン」にする
+            if -1 <= self.my_x - self.move_mode_auto_x <= 1 and -1 <= self.my_y - self.move_mode_auto_y <= 1: #自機座標(x,y)と移動目的先の座標の差が誤差+-1以内ならば
+                self.move_mode_auto_complete = 1    #自動移動完了フラグをonにする
+                if self.game_status == SCENE_STAGE_CLEAR_MOVE_MY_SHIP: #ゲームステータスが「ステージクリア後の自機自動移動」だったら
+                    self.move_mode = MOVE_MANUAL    #自動移動モードを解除し手動移動モードに移行します
+                    self.game_status = SCENE_STAGE_CLEAR_MY_SHIP_BOOST   #ゲームステータスを「ステージクリア後、自機がブーストして右へ過ぎ去っていくシーン」にする
                     self.my_vx = -1.3 #ブースト開始の初期スピードは左へ1ドット毎フレーム（ちょっと左に戻ってから加速し、右へ飛んでいく）
                     self.my_boost_injection_count = 1 #ステージクリア後のブースト噴射用のカウンターの数値を初期化
                     self.my_moved_flag = 1          #トレースクローも動かしたいので自機移動フラグOnにする
@@ -5123,25 +5138,33 @@ class App:
             if self.missile_level > 2:
                 self.missile_level = 0
 
-    #キーボードの3かゲームパッドの「SELECT」ボタンが入力されたらが押されたらスピード変化させる    KEY 3  GAMEPAD SELECT
-    def update_change_speed(self):
-        if pyxel.btnp(pyxel.KEY_3) or pyxel.btnp(pyxel.GAMEPAD_1_SELECT) or pyxel.btnp(pyxel.GAMEPAD_2_SELECT):
-            self.pad_data += PAD_SELECT #パッド入力データのSELECTボタンの情報ビットを立てる
-            if self.my_speed == 1:
-                self.my_speed = 1.5
-            elif self.my_speed == 1.5:
-                self.my_speed = 1.75
-            else:
-                self.my_speed = 1
+    #キーボードの3かゲームパッドの「SELECT」ボタンが入力されたボタンが押されたか？チェックする(スピードチェンジ)     KEY 3 GAMEPAD SELECT
+    def update_check_change_speed(self):
+        if self.replay_status == REPLAY_PLAY: #リプレイステータスが「再生中」の場合は
+            if self.backup_replay_data[self.replay_farame] & 0b0000000100000000 == 0b0000000100000000: #リプレイデータを調べてPAD SELECTが押された記録だったのなら...
+                self.update_change_speed() #スピードチェンジ関数呼び出し！
+        elif self.move_mode == MOVE_MANUAL: #手動移動モードの場合は
+            if pyxel.btnp(pyxel.KEY_3) or pyxel.btnp(pyxel.GAMEPAD_1_SELECT) or pyxel.btnp(pyxel.GAMEPAD_2_SELECT):
+                self.pad_data += PAD_SELECT #パッド入力データのSELECTボタンの情報ビットを立てる
+                self.update_change_speed() #スピードチェンジ関数呼び出し！
 
-    #スペースキーかゲームパッドAが押されたかどうか？もしくはリプレイモードでショット発射したのか調べる
+    #自機のスピードチェンジ!!!!
+    def update_change_speed(self):
+        if self.my_speed == 1:
+            self.my_speed = 1.5
+        elif self.my_speed == 1.5:
+            self.my_speed = 1.75
+        else:
+            self.my_speed = 1
+
+    #スペースキーかゲームパッドAが押されたかどうか？もしくはリプレイモードでショット発射したのか調べる     KEY SPACE GAMEPAD A
     def update_check_fire_shot(self):
-        if self.auto_move_mode == 0: #手動移動モードの場合は
+        if self.replay_status == REPLAY_PLAY: #リプレイステータスが「再生中」の場合は
+            if self.backup_replay_data[self.replay_farame] & 0b0000000000010000 == 0b0000000000010000: #リプレイデータを調べてPAD Aが押された記録だったのなら...
+                self.update_fire_shot() #ショット発射関数呼び出し！
+        elif self.move_mode == MOVE_MANUAL: #手動移動モードの場合は
             if pyxel.btn(pyxel.KEY_SPACE) or pyxel.btn(pyxel.GAMEPAD_1_A) or pyxel.btn(pyxel.GAMEPAD_2_A): #パッドAかスペースキーが押されたか？
                 self.pad_data += PAD_A #コントロールパッド入力記録にAボタンを押した情報ビットを立てて記録する
-                self.update_fire_shot() #ショット発射関数呼び出し！
-        elif self.auto_move_mode == 4: #リプレイモードの場合は
-            if self.backup_replay_data[self.replay_farame] & 0b0000000000010000 == 0b0000000000010000: #リプレイデータを調べてPAD Aが押された記録だったのなら...
                 self.update_fire_shot() #ショット発射関数呼び出し！
 
     #ショットを発射する!!!!!
@@ -5351,14 +5374,14 @@ class App:
                     new_shot.update(self.shot_level,self.my_x + 6,self.my_y + 2,    5,1,     8,8,    0,  1,1)
                     self.shots.append(new_shot)
 
-    #スペースキーかゲームバットＢボタンが押さたかどうか？もしくはリプレイモードでミサイル発射したのか調べる
+    #スペースキーかゲームバットBボタンが押さたかどうか？もしくはリプレイモードでミサイル発射したのか調べる KEY SPACE GAMEPAD B
     def update_check_fire_missile(self):
-        if self.auto_move_mode == 0: #手動移動モードの場合は
+        if self.replay_status == REPLAY_PLAY: #リプレイステータスが「再生中」の場合は
+            if self.backup_replay_data[self.replay_farame] & 0b0000000000100000 == 0b0000000000100000: #リプレイデータを調べてPAD Bが押された記録だったのなら...
+                self.update_fire_missile() #ミサイル発射関数呼び出し！
+        elif self.move_mode == MOVE_MANUAL: #手動移動モードの場合は
             if pyxel.btn(pyxel.KEY_SPACE) or pyxel.btn(pyxel.GAMEPAD_1_B) or pyxel.btn(pyxel.GAMEPAD_2_B): #パッドBかスペースキーが押されたか？
                 self.pad_data += PAD_B #コントロールパッド入力記録にBボタンを押した情報ビットを立てて記録する
-                self.update_fire_missile() #ミサイル発射関数呼び出し！
-        elif self.auto_move_mode == 4: #リプレイモードの場合は
-            if self.backup_replay_data[self.replay_farame] & 0b0000000000100000 == 0b0000000000100000: #リプレイデータを調べてPAD Bが押された記録だったのなら...
                 self.update_fire_missile() #ミサイル発射関数呼び出し！
 
     #ミサイルを発射する!!!!!
@@ -6208,11 +6231,11 @@ class App:
 
     #クローが弾を発射するのか調べる関数
     def update_check_fire_claw_shot(self):
-        if self.auto_move_mode == 0: #手動移動モードの場合は
-            if pyxel.btn(pyxel.KEY_SPACE) or pyxel.btn(pyxel.GAMEPAD_1_A) or pyxel.btn(pyxel.GAMEPAD_2_A): #パッドAかスペースキーが押されたか？
-                self.update_fire_claw_shot() #クローショット発射関数呼び出し！
-        elif self.auto_move_mode == 4: #リプレイモードの場合は
+        if self.replay_status == REPLAY_PLAY: #リプレイステータスが「再生中」の場合は
             if self.backup_replay_data[self.replay_farame] & 0b0000000000010000 == 0b0000000000010000: #リプレイデータを調べてPAD Aが押された記録だったのなら...
+                self.update_fire_claw_shot() #クローショット発射関数呼び出し！
+        elif self.move_mode == MOVE_MANUAL: #手動移動モードの場合は
+            if pyxel.btn(pyxel.KEY_SPACE) or pyxel.btn(pyxel.GAMEPAD_1_A) or pyxel.btn(pyxel.GAMEPAD_2_A): #パッドAかスペースキーが押されたか？
                 self.update_fire_claw_shot() #クローショット発射関数呼び出し！
 
     #クローが弾を発射!!!!!!
@@ -7208,7 +7231,7 @@ class App:
             self.claw.append(new_claw)
             return
 
-    #クローの消滅                                            KEY W
+    #クローの消滅                                                       KEY W
     def update_delete_claw(self):
         if pyxel.btnp(pyxel.KEY_W):   #wキーが押されたら自機クローを消滅させる
             claw_count = len(self.claw)
@@ -7218,31 +7241,48 @@ class App:
             
             self.claw_number = 0     #クローの数を0機にする
 
-    #フイックスクローの間隔を変化させる                            KEY N
+    #フイックスクローの間隔変化ボタンが押されたかチェックする               KEY N  GAMEPAD RIGHT_SHOULDER
+    def update_check_change_fix_claw_interval(self):
+        if self.replay_status == REPLAY_PLAY: #リプレイステータスが「再生中」の場合は
+            if self.backup_replay_data[self.replay_farame] & 0b0000100000000000 == 0b0000100000000000: #リプレイデータを調べてPAD_RIGHT_Sが押された記録だったのなら...
+                self.update_change_fix_claw_interval() #フイックスクローの間隔変化関数呼び出し！
+        elif self.move_mode == MOVE_MANUAL: #手動移動モードの場合は
+            if pyxel.btn(pyxel.KEY_N) or pyxel.btn(pyxel.GAMEPAD_1_RIGHT_SHOULDER) or pyxel.btn(pyxel.GAMEPAD_2_RIGHT_SHOULDER):#NキーかPAD_RIGHT_Sが押されたらフックスクローの間隔を変化させる
+                self.pad_data += PAD_RIGHT_S #パッド入力データのRIGHT_SHOULDERボタンの情報ビットを立てる
+                self.update_change_fix_claw_interval() #フイックスクローの間隔変化関数呼び出し！
+
+    #フイックスクローの間隔を変化させる
     def update_change_fix_claw_interval(self):
         if (pyxel.frame_count % 8) == 0:
-            if pyxel.btn(pyxel.KEY_N) or pyxel.btn(pyxel.GAMEPAD_1_RIGHT_SHOULDER) or pyxel.btn(pyxel.GAMEPAD_2_RIGHT_SHOULDER):#Nキーが押されたらフックスクローの間隔を変化させる
-                self.fix_claw_magnification += 0.1      #ボタンが押されたら0.1刻みで増加させる
-                if self.fix_claw_magnification >= 2:
-                    self.fix_claw_magnification = 0.4   #2以上になったら0.4にする
+            self.fix_claw_magnification += 0.1      #ボタンが押されたら0.1刻みで増加させる
+            if self.fix_claw_magnification >= 2:
+                self.fix_claw_magnification = 0.4   #2以上になったら0.4にする
 
-    #クロースタイルの変更                                      KEY M
+    #クロースタイル変更ボタンが押されたかチェックする                      KEY M  GAMEPAD LEFT_SHOULDER
+    def update_check_change_claw_style(self):
+        if self.replay_status == REPLAY_PLAY: #リプレイステータスが「再生中」の場合は
+            if self.backup_replay_data[self.replay_farame] & 0b0000010000000000 == 0b0000010000000000: #リプレイデータを調べてPAD_LEFT_Sが押された記録だったのなら...
+                self.update_change_claw_style() #クロースタイル変更関数呼び出し！
+        elif self.move_mode == MOVE_MANUAL: #手動移動モードの場合は
+            if pyxel.btnp(pyxel.KEY_M) or pyxel.btnp(pyxel.GAMEPAD_1_LEFT_SHOULDER) or pyxel.btnp(pyxel.GAMEPAD_2_LEFT_SHOULDER):#MキーかPAD_LEFT_Sが押されたらクローの種類を変更する
+                self.pad_data += PAD_LEFT_S #パッド入力データのLEFT_SHOULDERボタンの情報ビットを立てる
+                self.update_change_claw_style() #クロースタイル変更関数呼び出し！
+
+    #クロースタイルの変更
     def update_change_claw_style(self):
-        if (pyxel.frame_count % 8) == 0:
-            if pyxel.btn(pyxel.KEY_M) or pyxel.btn(pyxel.GAMEPAD_1_LEFT_SHOULDER) or pyxel.btn(pyxel.GAMEPAD_2_LEFT_SHOULDER):#Mキーが押されたらクローの種類を変更する
-                self.claw_type += 1#クローの種類を変化させる
-                if self.claw_type > 3:#もしtype3のリバースタイプを超えてしまったら0のローリングタイプにする
-                    self.claw_type =0
-                
-                claw_count = len(self.claw)
-                for i in reversed(range(claw_count)):
-                    self.claw[i].status = 0#全てのクローのステータスを0=回転開始や固定開始の初期位置まで動いていくにする
+        self.claw_type += 1#クローの種類を変化させる
+        if self.claw_type > 3:#もしtype3のリバースタイプを超えてしまったら0のローリングタイプにする
+            self.claw_type = 0
+        
+        claw_count = len(self.claw)
+        for i in reversed(range(claw_count)):
+            self.claw[i].status = 0#全てのクローのステータスを0=回転開始や固定開始の初期位置まで動いていくにする
 
     #####################################敵関連の処理関数######################################
     #イベントリストによる敵の発生システム
     def update_enemy_append_event_system(self):
         if self.stage_count == self.event_list[self.event_index][0]:#ステージカウントとリストのカウント値が同じならリスト内容を実行する
-            if   self.event_list[self.event_index][1] == EVENT_ENEMY:           #イベント「敵出現」の場合
+            if   self.event_list[self.event_index][1] == EVENT_ENEMY:             #イベント「敵出現」の場合
                 if   self.event_list[self.event_index][2] == CIR_COIN:      #サーコイン発生！
                     for number in range(self.event_list[self.event_index][5]):
                         #編隊なので現在の編隊ＩＤナンバーであるcurrent_formation_idも出現時にenemyクラスに情報を書き込みます
@@ -7292,7 +7332,7 @@ class App:
                 self.fast_forward_destruction_num = 0       #
                 self.fast_forward_destruction_count = 0     #
                 self.add_appear_flag = 0                 #早回し関連のパラメーター数値、フラグは全てリセットします
-            elif self.event_list[self.event_index][1] == EVENT_SCROLL:          #イベント「スクロール」の場合
+            elif self.event_list[self.event_index][1] == EVENT_SCROLL:            #イベント「スクロール」の場合
                 #スクロールスタート
                 if   self.event_list[self.event_index][2] == SCROLL_START:
                     self.side_scroll_speed         = 1 #スクロールスピードを通常の1にする
@@ -7318,13 +7358,13 @@ class App:
                     self.vertical_scroll_speed_set_value = self.event_list[self.event_index][5] #縦スクロールスピードの設定値を代入
                     self.vertical_scroll_speed_variation = self.event_list[self.event_index][6] #縦スクロールスピードの変化量を代入
                 
-            elif self.event_list[self.event_index][1] == EVENT_DISPLAY_STAR:              #イベントが「EVENT_DISPLAY_STAR」の場合
+            elif self.event_list[self.event_index][1] == EVENT_DISPLAY_STAR:                 #イベントが「EVENT_DISPLAY_STAR」の場合
                 self.star_scroll_flag = self.event_list[self.event_index][2] #星スクロールのon/offのフラグを代入する
-            elif self.event_list[self.event_index][1] == EVENT_CHANGE_BG_CLS_COLOR:        #イベントが「EVENT_CHANGE_BG_CLS_COLOR」の場合
+            elif self.event_list[self.event_index][1] == EVENT_CHANGE_BG_CLS_COLOR:          #イベントが「EVENT_CHANGE_BG_CLS_COLOR」の場合
                 self.bg_cls_color = self.event_list[self.event_index][2]    #BGをCLS(クリアスクリーン)するときの色を代入する
             elif self.event_list[self.event_index][1] == EVENT_CHANGE_BG_TRANSPARENT_COLOR:  #イベントが「EVENT_CHANGE_BG_TRANSPARENT_COLOR」の場合
                 self.bg_transparent_color = self.event_list[self.event_index][2]    #BGを敷き詰める時の透明色を指定する
-            elif self.event_list[self.event_index][1] == EVENT_CLOUD:                    #イベントが「背景雲の表示設定」の場合
+            elif self.event_list[self.event_index][1] == EVENT_CLOUD:                        #イベントが「背景雲の表示設定」の場合
                 #雲のパラメータを設定します
                 if   self.event_list[self.event_index][2] == CLOUD_NUM_SET:
                     self.cloud_append_interval  = self.event_list[self.event_index][3]    #雲を追加する間隔を設定
@@ -7338,7 +7378,7 @@ class App:
                 elif self.event_list[self.event_index][2] == CLOUD_STOP:
                     self.display_cloud_flag = 0 #雲の表示フラグをoffにします
                 
-            elif self.event_list[self.event_index][1] == EVENT_RASTER_SCROLL:    #イベントが「ラスタースクロールの制御」の場合
+            elif self.event_list[self.event_index][1] == EVENT_RASTER_SCROLL:     #イベントが「ラスタースクロールの制御」の場合
                 search_id = self.event_list[self.event_index][3] #ラスタスクロールのidを変数に代入
                 #IDごとにラスタスクロールの表示をon/offする
                 if self.event_list[self.event_index][2] == RASTER_SCROLL_ON:     #ラスタスクロールon
@@ -7356,7 +7396,7 @@ class App:
                 
             elif self.event_list[self.event_index][1] == EVENT_ENTRY_SPARK_ON_OFF:#イベントが「大気圏突入の火花エフェクト表示のオンオフ」の場合
                 self.atmospheric_entry_spark_flag = self.event_list[self.event_index][2] #火花エフェクトのon/offのフラグを代入する
-            elif self.event_list[self.event_index][1] == EVENT_WARNING:         #イベントが「WARNING表示」の場合
+            elif self.event_list[self.event_index][1] == EVENT_WARNING:           #イベントが「WARNING表示」の場合
                 self.warning_dialog_flag = 1                                    #WARNING警告表示フラグをonにする
                 self.warning_dialog_display_time = self.event_list[self.event_index][2] #警告表示時間を代入(単位は1フレーム)
                 self.warning_dialog_logo_time    = self.event_list[self.event_index][3] #グラフイックロゴ表示にかける時間を代入(単位は1フレーム)
@@ -7364,7 +7404,7 @@ class App:
                 
                 #pyxel.playm(0)#警告音発生！緊急地震速報Ver・・・・怖い・・・
                 pyxel.playm(2)#警告音発生！
-            elif self.event_list[self.event_index][1] == EVENT_BOSS:            #イベントの内容が「BOSS」の場合
+            elif self.event_list[self.event_index][1] == EVENT_BOSS:              #イベントの内容が「BOSS」の場合
                 self.game_status = SCENE_BOSS_APPEAR                       #ゲームのステータスを「BOSS_APPEAR」ボス出現！にします
                 self.born_boss()                                       #各面のボスを生み出す関数を呼び出します
                 
@@ -8230,16 +8270,16 @@ class App:
                 elif self.boss[i].status == BOSS_STATUS_DISAPPEARANCE:        #ボスステータスが「ボス消滅」の処理
                     self.game_status = SCENE_STAGE_CLEAR_MOVE_MY_SHIP #ゲームステータス(状態遷移)を「ステージクリア自機自動移動」にする
                     
-                    self.stage_clear_dialog_flag        = 1   #STAGE CLEARダイアログ表示フラグをonにする
+                    self.stage_clear_dialog_flag          = 1   #STAGE CLEARダイアログ表示フラグをonにする
                     self.stage_clear_dialog_display_time  = 300 #STAGE CLEARダイアログ表示時間その1を代入(単位は1フレーム)
                     
-                    self.stage_clear_dialog_logo_time1    = 90 #グラフイックロゴ表示にかける時間を代入その1(単位は1フレーム)
-                    self.stage_clear_dialog_logo_time2    = 90 #グラフイックロゴ表示にかける時間を代入その2(単位は1フレーム)
-                    self.stage_clear_dialog_text_time          = 180 #テキスト表示にかける時間を代入(単位は1フレーム)だんだん減っていく
-                    self.stage_clear_dialog_text_time_master    = 180 #テキスト表示にかける時間を代入(単位は1フレーム)元の値が入ります
+                    self.stage_clear_dialog_logo_time1       = 90 #グラフイックロゴ表示にかける時間を代入その1(単位は1フレーム)
+                    self.stage_clear_dialog_logo_time2       = 90 #グラフイックロゴ表示にかける時間を代入その2(単位は1フレーム)
+                    self.stage_clear_dialog_text_time        = 180 #テキスト表示にかける時間を代入(単位は1フレーム)だんだん減っていく
+                    self.stage_clear_dialog_text_time_master = 180 #テキスト表示にかける時間を代入(単位は1フレーム)元の値が入ります
                     
-                    self.auto_move_mode = 1                        #自機のオートムーブモードをonにして自動移動を開始する
-                    self.auto_move_mode_x,self.auto_move_mode_y = 25,40  #移動先の座標を指定 
+                    self.move_mode = MOVE_AUTO                           #自機のオートムーブモードをonにして自動移動を開始する
+                    self.move_mode_auto_x,self.move_mode_auto_y = 25,40  #移動先の座標を指定 
                     
                     del self.boss[i]                      #ボスのインスタンスを消去する・・・さよならボス・・（けもふれ？）
                     break                               #ループから抜け出す
@@ -8381,19 +8421,19 @@ class App:
                 elif self.boss[i].status == BOSS_STATUS_DISAPPEARANCE:        #ボスステータスが「ボス消滅」の処理
                     self.game_status = SCENE_STAGE_CLEAR_MOVE_MY_SHIP #ゲームステータス(状態遷移)を「ステージクリア自機自動移動」にする
                     
-                    self.stage_clear_dialog_flag        = 1   #STAGE CLEARダイアログ表示フラグをonにする
-                    self.stage_clear_dialog_display_time  = 300 #STAGE CLEARダイアログ表示時間その1を代入(単位は1フレーム)
+                    self.stage_clear_dialog_flag             = 1   #STAGE CLEARダイアログ表示フラグをonにする
+                    self.stage_clear_dialog_display_time     = 300 #STAGE CLEARダイアログ表示時間その1を代入(単位は1フレーム)
                     
-                    self.stage_clear_dialog_logo_time1    = 90 #グラフイックロゴ表示にかける時間を代入その1(単位は1フレーム)
-                    self.stage_clear_dialog_logo_time2    = 90 #グラフイックロゴ表示にかける時間を代入その2(単位は1フレーム)
-                    self.stage_clear_dialog_text_time          = 180 #テキスト表示にかける時間を代入(単位は1フレーム)だんだん減っていく
-                    self.stage_clear_dialog_text_time_master    = 180 #テキスト表示にかける時間を代入(単位は1フレーム)元の値が入ります
+                    self.stage_clear_dialog_logo_time1       = 90 #グラフイックロゴ表示にかける時間を代入その1(単位は1フレーム)
+                    self.stage_clear_dialog_logo_time2       = 90 #グラフイックロゴ表示にかける時間を代入その2(単位は1フレーム)
+                    self.stage_clear_dialog_text_time        = 180 #テキスト表示にかける時間を代入(単位は1フレーム)だんだん減っていく
+                    self.stage_clear_dialog_text_time_master = 180 #テキスト表示にかける時間を代入(単位は1フレーム)元の値が入ります
                     
-                    self.auto_move_mode = 1                        #自機のオートムーブモードをonにして自動移動を開始する
-                    self.auto_move_mode_x,self.auto_move_mode_y = 25,40  #移動先の座標を指定 
+                    self.move_mode = MOVE_AUTO                           #自機の移動モードをを「AUTO」にして自動移動を開始する
+                    self.move_mode_auto_x,self.move_mode_auto_y = 25,40  #移動先の座標を指定 
                     
                     del self.boss[i]                      #ボスのインスタンスを消去する・・・さよならボス・・（けもふれ？）
-                    break                               #ループから抜け出す
+                    break                                 #ループから抜け出す
                 
                 ####ここからはボスの攻撃パターンです############################################################
                 if self.boss[i].attack_method == BOSS_ATTACK_FRONT_5WAY: #画面上部を左から右に弧を描いて移動中
@@ -8534,18 +8574,26 @@ class App:
         if self.collision_flag == 1: #コリジョンフラグが建っていたのなら
             self.update_my_ship_damage(1) #障害物に当たったので自機のシールド値を減らす
 
-    #ゲームパッドのYが推されたらサブウェポンを切り替える                 GAMEPAD Y
+    #サブウェポン切り替えボタンが押された＆サブウェポンを一つでも所維持しているのか？チェックする      GAMEPAD Y
+    def update_check_change_sub_weapon(self):
+        if self.replay_status == REPLAY_PLAY: #リプレイステータスが「再生中」の場合は
+            if self.backup_replay_data[self.replay_farame] & 0b0000000010000000 == 0b0000000010000000: #リプレイデータを調べてPAD Yが押された記録だったのなら...
+                self.update_change_sub_weapon() #サブウェポン切り替え関数呼び出し！
+        elif self.move_mode == MOVE_MANUAL: #手動移動モードの場合は
+            if pyxel.btnp(pyxel.GAMEPAD_1_Y) or pyxel.btnp(pyxel.GAMEPAD_2_Y) and self.select_sub_weapon_id != -1:#サブウェポン切り替えボタンが押された＆サブウェポンを一つでも所維持しているのか？
+                self.pad_data += PAD_Y #コントロールパッド入力記録にYボタンを押した情報ビットを立てて記録する
+                self.update_change_sub_weapon() #サブウェポン切り替え関数呼び出し！
+
+    #サブウェポンを切り替える!!!!!
     def update_change_sub_weapon(self):
-        if pyxel.btnp(pyxel.GAMEPAD_1_Y) or pyxel.btnp(pyxel.GAMEPAD_2_Y) and self.select_sub_weapon_id != -1:#サブウェポン切り替えボタンが押された＆サブウェポンを一つでも所維持しているのなら以下の命令を実行する
-            self.pad_data += PAD_Y #パッド入力データのYボタンの情報ビットを立てる
-            for __i in range(5):#5回繰り返す
-                self.select_sub_weapon_id += 1#サブウェポンIDを増やして切り替えていく
-                if self.select_sub_weapon_id >= 5:#idナンバーが5以上になったら
-                    self.select_sub_weapon_id = 0#強制的にidナンバーを0にする
-                
-                if self.sub_weapon_list[self.select_sub_weapon_id] != 0:#サブウェポンを変更してそれが所持しているものならば
-                    break#ブレイクしてループを抜け出す
-                #そうでないのならばサブウェポンは5種類あるので,最大5回ループして所持しているものを見つけ出すまで繰り返す
+        for __i in range(5):#5回繰り返す
+            self.select_sub_weapon_id += 1#サブウェポンIDを増やして切り替えていく
+            if self.select_sub_weapon_id >= 5:#idナンバーが5以上になったら
+                self.select_sub_weapon_id = 0#強制的にidナンバーを0にする
+            
+            if self.sub_weapon_list[self.select_sub_weapon_id] != 0:#サブウェポンを変更してそれが所持しているものならば
+                break#ブレイクしてループを抜け出す
+            #そうでないのならばサブウェポンは5種類あるので,最大5回ループして所持しているものを見つけ出すまで繰り返す
 
     #自機が被弾しダメージを受け、シールドパワー減少、ダメージ音再生、ダメージを受けた後の無敵時間の設定
     def update_my_ship_damage(self,damage):
@@ -8636,7 +8684,6 @@ class App:
                     if self.obtain_item[i].animation_number == 8: #最後のパターン数までいったのなら
                         self.obtain_item[i].status = 3 #状態遷移を「取得完了」にする
                     
-                    
                 elif self.obtain_item[i].status == 3:#状態遷移statusが「取得完了」の場合
                     self.shot_exp    += self.obtain_item[i].shot    #ショット経験値をショットパワーの増加量の分だけパワーアップさせる
                     self.missile_exp += self.obtain_item[i].missile #ミサイル経験値をミサイルパワーの増加量の分だけパワーアップさせる
@@ -8691,7 +8738,6 @@ class App:
                     if self.select_sub_weapon_id == -1: #もしサブウェポンを何も所持していない状態でアイテムを取ったのなら・・・
                         self.select_sub_weapon_id = TAIL_SHOT #強制的にテイルショットを選択させる
                     
-                    
                 elif self.obtain_item[i].item_type == ITEM_PENETRATE_ROCKET_POWER_UP: #ペネトレートロケットパワーアップの処理
                     pyxel.play(0,0)            #パワーアップアイテムゲットの音を鳴らすのだ
                     del self.obtain_item[i]     #インスタンスを破棄する(アイテム消滅)
@@ -8699,7 +8745,6 @@ class App:
                         self.sub_weapon_list[PENETRATE_ROCKET] += 1  #サブウェポンリスト内のペネトレートロケットの所持数を１増やす
                     if self.select_sub_weapon_id == -1: #もしサブウェポンを何も所持していない状態でアイテムを取ったのなら・・・
                         self.select_sub_weapon_id = PENETRATE_ROCKET #強制的にペネトレートロケットを選択させる
-                    
                     
                 elif self.obtain_item[i].item_type == ITEM_SEARCH_LASER_POWER_UP: #サーチレーザーパワーアップの処理
                     pyxel.play(0,0)            #パワーアップアイテムゲットの音を鳴らすのだ
@@ -8709,7 +8754,6 @@ class App:
                     if self.select_sub_weapon_id == -1: #もしサブウェポンを何も所持していない状態でアイテムを取ったのなら・・・
                         self.select_sub_weapon_id = SEARCH_LASER #強制的にサーチレーザーを選択させる
                     
-                    
                 elif self.obtain_item[i].item_type == ITEM_HOMING_MISSILE_POWER_UP: #ホーミングミサイルパワーアップの処理
                     pyxel.play(0,0)            #パワーアップアイテムゲットの音を鳴らすのだ
                     del self.obtain_item[i]     #インスタンスを破棄する(アイテム消滅)
@@ -8718,11 +8762,10 @@ class App:
                     if self.select_sub_weapon_id == -1: #もしサブウェポンを何も所持していない状態でアイテムを取ったのなら・・・
                         self.select_sub_weapon_id = HOMING_MISSILE #強制的にホーミングミサイルを選択させる
                     
-                    
                 elif self.obtain_item[i].item_type == ITEM_SHOCK_BUMPER_POWER_UP: #ショックバンバーパワーアップの処理
                     pyxel.play(0,0)            #パワーアップアイテムゲットの音を鳴らすのだ
                     del self.obtain_item[i]     #インスタンスを破棄する(アイテム消滅)
-
+                    
                     if self.sub_weapon_list[SHOCK_BUMPER] < SUB_WEAPON_LEVEL_MAXIMUM:#ショックバンバーのレベルがサブウェポンのレベル最大値を超えていないのならば
                         self.sub_weapon_list[SHOCK_BUMPER] += 1  #サブウェポンリスト内のショックバンバーの所持数を１増やす
                     if self.select_sub_weapon_id == -1: #もしサブウェポンを何も所持していない状態でアイテムを取ったのなら・・・
@@ -8749,7 +8792,7 @@ class App:
     def update_clip_obtain_item(self):
         obtain_item_count = len(self.obtain_item)
         for i in reversed(range (obtain_item_count)):
-            if -50 < self.obtain_item[i].posx < WINDOW_W + 150 and -100 < self.obtain_item[i].posy < WINDOW_H + 100: #xは-50~160+150 Yは-100~120+100以内？
+            if -50 < self.obtain_item[i].posx < WINDOW_W + 200 and -150 < self.obtain_item[i].posy < WINDOW_H + 150: #xは-50~160+200 Yは-150~120+150以内？
                 continue
             else:
                 del self.obtain_item[i]#パワーアップアイテムが画面外に存在するときはインスタンスを破棄する(アイテム消滅)
@@ -9035,16 +9078,19 @@ class App:
         if pyxel.btnp(pyxel.KEY_SPACE) or pyxel.btnp(pyxel.GAMEPAD_1_A) or pyxel.btnp(pyxel.GAMEPAD_2_A) or pyxel.btnp(pyxel.GAMEPAD_1_B) or pyxel.btnp(pyxel.GAMEPAD_2_B):
             self.cursor_decision_item = self.cursor_item #ボタンが押されて決定されたら、いま指示しているアイテムナンバーをcursor_decision_itemに代入！
 
-    #リプレイデータの記録
+    #リプレイデータの記録   自動移動モードの時とステージクリアのブーストの時とリプレイ再生中の時はリプレイデータを記録しません
     def update_record_replay_data(self):
-        if self.auto_move_mode != 1: #自動移動モードの時はリプレイデータを記録しません
-            self.replay_input_data.append(self.pad_data) #リプレイデータリストにパッド入力データを記録追加します
-        self.pad_data = 0b0000000000000000             #次のフレーム時の記録のためにデータを初期化してあげます
+        if     self.move_mode != MOVE_AUTO\
+            or self.game_status != SCENE_STAGE_CLEAR_MY_SHIP_BOOST\
+            or self.replay_status != REPLAY_PLAY:
+            
+            self.replay_input_data.append(self.pad_data)   #リプレイデータリストにパッド入力データを記録追加します
+            self.pad_data = 0b0000000000000000             #次のフレーム時の記録のためにデータを初期化してあげます
 
     #リプレイデータ(ステータス関連)をバックアップする(プッシュする感じみたいな？？？)
     def update_backup_replay_data_status(self):
-        self.backup_rnd_seed        = self.rnd_seed        #乱数の種をバックアップ
-        self.backup_game_difficulty   = self.game_difficulty   #難易度をバックアップ
+        self.backup_rnd_seed         = self.rnd_seed         #乱数の種をバックアップ
+        self.backup_game_difficulty  = self.game_difficulty  #難易度をバックアップ
         self.backup_stage_number     = self.stage_number     #ステージ数をバックアップ
         self.backup_stage_loop       = self.stage_loop       #ループ数をバックアップ
 
@@ -9054,11 +9100,10 @@ class App:
 
     #リプレイデータをリストアする(ポップする感じみたいな？？？)
     def update_restore_replay_data(self):
-        self.replay_input_data = self.backup_replay_data      #入力データリストをリストア
-        self.rnd_seed        = self.backup_rnd_seed        #乱数の種をリストア
-        self.game_difficulty   = self.backup_game_difficulty   #難易度をリストア
-        self.stage_number     = self.backup_stage_number     #ステージ数をリストア
-        self.stage_loop       = self.backup_stage_loop       #ループ数をリストア
+        self.rnd_seed          = self.backup_rnd_seed         #乱数の種をリストア
+        self.game_difficulty   = self.backup_game_difficulty  #難易度をリストア
+        self.stage_number      = self.backup_stage_number     #ステージ数をリストア
+        self.stage_loop        = self.backup_stage_loop       #ループ数をリストア
 
     #乱数0_9関数(0~9)の更新
     def update_rnd0_9(self):
@@ -9596,6 +9641,7 @@ class App:
                     pyxel.blt(self.missile[i].posx    , self.missile[i].posy, IMG2,   48,16,   8,8  * -(self.missile[i].y_reverse),  13)
                 elif self.missile[i].missile_flag1 == 2:#状態遷移が(縦に進行中=2)なら上方向＆下方向のレーザーの画像を表示
                     pyxel.blt(self.missile[i].posx    , self.missile[i].posy + (self.missile[i].y_reverse) * 8, IMG2,   88,8,    8,16 * -(self.missile[i].y_reverse),  13)
+                
             elif self.missile[i].missile_type == 7:#ホーミングミサイルの表示
                 pyxel.blt(self.missile[i].posx, self.missile[i].posy, IMG2,   56,16,    8,8,  13)
 
@@ -9617,12 +9663,12 @@ class App:
         if self.invincible_counter > 0: #無敵中のカウントが0より大きい時は無敵状態なので点滅表示する
             if pyxel.frame_count % 4 == 0: #4フレーム置きに自機を表示
                 pyxel.blt(self.my_x   ,self.my_y,IMG2,8 + ((self.my_rolling_flag) * 8),0,SHIP_W,SHIP_H,0) #自機本体の表示
-                
+            
             self.invincible_counter -= 1 #無敵時間カウントを1減らす
             
         else:
             pyxel.blt(self.my_x   ,self.my_y,IMG2,8 + ((self.my_rolling_flag) * 8),0,SHIP_W,SHIP_H,0) #自機本体の表示
-            
+        
         if self.game_status == SCENE_STAGE_CLEAR_MY_SHIP_BOOST:
             pyxel.blt(self.my_x -6*8,self.my_y,IMG2,    208,120 + (pyxel.frame_count // 2  % 2) * 8,    6*8,8,0) #ブーストモードイオンエンジン噴射の描画
         else:
@@ -9792,9 +9838,9 @@ class App:
         #自機スピード表示
         if self.my_speed == 1:
             pyxel.blt(126,-1,IMG2, 104,72, 8,8, 0)
-        if self.my_speed == 1.5:
+        elif self.my_speed == 1.5:
             pyxel.blt(126,-1,IMG2, 112,72, 8,8, 0)
-        if self.my_speed == 1.75:
+        elif self.my_speed == 1.75:
             pyxel.blt(126,-1,IMG2, 120,72, 8,8, 0)
         #pyxel.text(32, 1, "SPEED " + str(self.my_speed), 7)
         #自機シールドパワー表示
@@ -9806,7 +9852,7 @@ class App:
     def draw_debug_status(self):
         if self.debug_menu_status == 0: #デバッグメニュー表示ステータスが0なら表示せずリターンする
             return
-            
+        
         #星の数の表示
         pyxel.blt(143,WINDOW_H - 8, IMG2, 64,72, 8,8, 0)
         pyxel.text(153,WINDOW_H - 6,str(len(self.stars)),1)
@@ -9955,9 +10001,6 @@ class App:
         #ランクの表示
         pyxel.text(160-16,73,"RA" + str(self.rank), 7)
         
-        #リプレイデータのサイズ表示
-        num = "{:>8}".format(int(len(self.replay_input_data)))
-        pyxel.text(40,120-26,num,8)
         
         if self.debug_menu_status == 2: #デバッグメニュー表示ステータスが2の時だけ表示する
             #コントロールパッド操作データの表示
@@ -9988,7 +10031,7 @@ class App:
                 input_pad_data = input_pad_data.lstrip("0b")
                 input_pad_data = "{:0>12}".format(input_pad_data)
                 pyxel.text(0,120-33-21,input_pad_data, 7)
-                
+        
         if self.debug_menu_status == 3: #デバッグメニュー表示ステータスが3の時だけ表示する
             #漢字表示テスト
             self.kanji_text(0,36,"文字列を分割できる関数",7)
@@ -10013,19 +10056,23 @@ class App:
             pyxel.text(72,WINDOW_H - 13,str(self.claw[1].posx),5)
             pyxel.text(72,WINDOW_H - 20,str(self.claw[1].posy),5)
         
-        #乱数0_9ルーレットの表示
-        pyxel.text(80,120-26,str(self.rnd0_9_num),9)
+        # 乱数0_9ルーレットの表示
+        # pyxel.text(80,120-26,str(self.rnd0_9_num),9)
         #乱数0_99ルーレットの表示
-        pyxel.text(90,120-26,str(self.rnd0_99_num),10)
+        # pyxel.text(90,120-26,str(self.rnd0_99_num),10)
         
         #線形合同法で最初に使用した元となる乱数種の表示
         pyxel.text(140,120-35,"SD" + str(self.master_rnd_seed),11)
         #線形合同法乱数の表示
-        self.s_rnd()#線形合同法による乱数関数の呼び出し
-        rd_num = "{:>6}".format(str(self.rnd_seed))
-        pyxel.text(136,120-29,rd_num,3)
+        # self.s_rnd()#線形合同法による乱数関数の呼び出し
+        # rd_num = "{:>6}".format(str(self.rnd_seed))
+        # pyxel.text(136,120-29,rd_num,3)
         
-        pyxel.text(0,120-39,str(self.s_rndint(10,600)),8)
+        # pyxel.text(0,120-39,str(self.s_rndint(10,600)),8)
+        
+        #リプレイデータのサイズ表示
+        num = "{:>8}".format(int(len(self.replay_input_data)))
+        pyxel.text(128,120-22,num,8)
 
     #BGチップデータ書き換えアニメーション実装のために作ったダミーテスト関数 画面左から2列目の縦1列を取得し、そのＢＧデータを画面左端1列目に表示する
     def draw_dummy_put_bg_xy(self):
@@ -10071,7 +10118,7 @@ class App:
     def draw_stage_clear_dialog(self):
         if self.stage_clear_dialog_display_time <= 0: #STAGE CLEAR表示時間が0以下だったらリターンする
             return
-            
+        
         #画像「STAGE」の表示
         for i in range(8):
             pyxel.blt(40    + self.stage_clear_dialog_logo_time1 / 16 * i,48 + i,     IMG2,    128,    120 +i,   8,1,   0)
@@ -10086,7 +10133,7 @@ class App:
         
         if self.stage_clear_dialog_logo_time1 > 0:   #ロゴ表示時間その1が0より大きいのなら
             self.stage_clear_dialog_logo_time1 -= 1 #1減らす
-            
+        
         #画像「CLEAR」の表示
         if self.stage_clear_dialog_logo_time1 <= 0:   #ロゴ表示時間その1の数値が0以下の場合は画像「STAGE」は表示し終わったので「CLEAR」を表示開始する
             for i in range(8):
@@ -10099,7 +10146,7 @@ class App:
                 pyxel.blt(40 +64 + self.stage_clear_dialog_logo_time2 / 2  * i,48 + i,     IMG2,    128 +64,120 +i,   8,1,   0)
             for i in range(8):
                 pyxel.blt(40 +72 + self.stage_clear_dialog_logo_time2     * i,48 + i,     IMG2,    128 +72,120 +i,   8,1,   0)
-                
+            
             if self.stage_clear_dialog_logo_time2 > 0:   #ロゴ表示時間その2が0より大きいのなら
                 self.stage_clear_dialog_logo_time2 -= 1 #1減らす
         #任務完了！速やかに次のステージへ移動せよ
@@ -10117,7 +10164,7 @@ class App:
             self.stage_clear_dialog_display_time -= 1    #STAGE CLEAR表示時間を1減らす
             if self.stage_clear_dialog_display_time == 0: #STAGE CLEAR表示時間が0になったら
                 self.game_status = SCENE_STAGE_CLEAR_FADE_OUT #ゲームステータスを「ステージクリア後のフェードアウト」にする
-                
+            
             if self.stage_clear_dialog_text_time > 0:   #テキスト表示に掛ける時間が0より大きいのなら
                 self.stage_clear_dialog_text_time -= 1 #STAGE CLEARテキスト表示に掛ける時間を1減らす
 
@@ -10145,7 +10192,7 @@ class App:
                             IMG2,
                             96 + self.window[i].window_type * 32,88,
                             8,8, 13)
-                            
+            
             #ウィンドウ横パーツ描画#############################################################
             for w in range(self.window[i].width // 8 + 1):
                 #上部の横パーツ描画
@@ -10170,7 +10217,7 @@ class App:
                     IMG2,
                     104 + self.window[i].window_type * 32,88,
                     8,8, 13)
-                    
+            
             #################ウィンドウ四隅の角の描画#####################################
             #左上のウィンドウパーツの描画
             pyxel.blt(self.window[i].posx                      ,self.window[i].posy                        ,
@@ -10203,10 +10250,10 @@ class App:
             if self.window[i].window_status == WINDOW_OPEN: #ステータスがウィンドウ開き中ならば
                 if self.window[i].width < self.window[i].open_width:#widthをopen_widthの数値になるまで増加させていく
                     self.window[i].width += int(self.window[i].vx * self.window[i].open_speed)
-                    
+                
                 if self.window[i].height < self.window[i].open_height:#heightをopen_heightの数値になるまで増加させていく
                     self.window[i].height += int(self.window[i].vy * self.window[i].open_speed)
-                    
+                
                 #ウィンドウが開ききったのか判断する
                 if  -2 <= self.window[i].open_width  - self.window[i].width  <= 2 and\
                     -2 <= self.window[i].open_height - self.window[i].height <= 2:#もしwidthとheightの値がopenした時の数値と+-2以内になったのなら
@@ -10214,7 +10261,7 @@ class App:
                     
                     self.window[i].width  = self.window[i].open_width #小数点以下の座標の誤差を修正するために強制的にopen時の座標数値を現在座標数値に代入してやる
                     self.window[i].height = self.window[i].open_height
-                    
+            
             if     self.window[i].window_status == WINDOW_WRITE_MESSAGE \
                 or self.window[i].window_status == WINDOW_OPEN_COMPLETED: #ステータスがテキストメッセージの表示中もしくはオープン完了ならば
                 if self.window[i].mes1 != "":#メッセージ1行目の描画 ループで処理したいけどどうやったら良いのかわからぬ・・・クラスの横方向（？）に補正値を入れるのどうやったらいいのん？？？
@@ -10222,43 +10269,43 @@ class App:
                     pyxel.text(self.window[i].posx + self.window[i].mes1_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes1) * 2,self.window[i].posy + 6 +8 ,str(self.window[i].mes1),0)
                     
                     pyxel.text(self.window[i].posx + self.window[i].mes1_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes1) * 2,self.window[i].posy + 5 +8 ,str(self.window[i].mes1),self.window[i].mes1_color)
-                    
+                
                 if self.window[i].mes2 != "":#メッセージ2行目の描画
                     pyxel.text(self.window[i].posx + self.window[i].mes2_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes2) * 2,self.window[i].posy + 5 +16,str(self.window[i].mes2),0)
                     pyxel.text(self.window[i].posx + self.window[i].mes2_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes2) * 2,self.window[i].posy + 6 +16,str(self.window[i].mes2),0)
                     
                     pyxel.text(self.window[i].posx + self.window[i].mes2_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes2) * 2,self.window[i].posy + 5 +16,str(self.window[i].mes2),self.window[i].mes2_color)
-                    
+                
                 if self.window[i].mes3 != "":#メッセージ3行目の描画
                     pyxel.text(self.window[i].posx + self.window[i].mes3_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes3) * 2,self.window[i].posy + 5 +24,str(self.window[i].mes3),0)
                     pyxel.text(self.window[i].posx + self.window[i].mes3_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes3) * 2,self.window[i].posy + 6 +24,str(self.window[i].mes3),0)
                     
                     pyxel.text(self.window[i].posx + self.window[i].mes3_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes3) * 2,self.window[i].posy + 5 +24,str(self.window[i].mes3),self.window[i].mes3_color)
-                    
+                
                 if self.window[i].mes4 != "":#メッセージ4行目の描画
                     pyxel.text(self.window[i].posx + self.window[i].mes4_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes4) * 2,self.window[i].posy + 5 +32,str(self.window[i].mes4),0)
                     pyxel.text(self.window[i].posx + self.window[i].mes4_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes4) * 2,self.window[i].posy + 6 +32,str(self.window[i].mes4),0)
                     
                     pyxel.text(self.window[i].posx + self.window[i].mes4_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes4) * 2,self.window[i].posy + 5 +32,str(self.window[i].mes4),self.window[i].mes4_color)
-                    
+                
                 if self.window[i].mes5 != "":#メッセージ5行目の描画
                     pyxel.text(self.window[i].posx + self.window[i].mes5_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes5) * 2,self.window[i].posy + 5 +40,str(self.window[i].mes5),0)
                     pyxel.text(self.window[i].posx + self.window[i].mes5_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes5) * 2,self.window[i].posy + 6 +40,str(self.window[i].mes5),0)
                     
                     pyxel.text(self.window[i].posx + self.window[i].mes5_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes5) * 2,self.window[i].posy + 5 +40,str(self.window[i].mes5),self.window[i].mes5_color)
-                    
+                
                 if self.window[i].mes6 != "":#メッセージ6行目の描画
                     pyxel.text(self.window[i].posx + self.window[i].mes6_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes6) * 2,self.window[i].posy + 5 +48,str(self.window[i].mes6),0)
                     pyxel.text(self.window[i].posx + self.window[i].mes6_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes6) * 2,self.window[i].posy + 6 +48,str(self.window[i].mes6),0)
                     
                     pyxel.text(self.window[i].posx + self.window[i].mes6_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes6) * 2,self.window[i].posy + 5 +48,str(self.window[i].mes6),self.window[i].mes6_color)
-                    
+                
                 if self.window[i].mes7 != "":#メッセージ7行目の描画
                     pyxel.text(self.window[i].posx + self.window[i].mes7_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes7) * 2,self.window[i].posy + 5 +56,str(self.window[i].mes7),0)
                     pyxel.text(self.window[i].posx + self.window[i].mes7_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes7) * 2,self.window[i].posy + 6 +56,str(self.window[i].mes7),0)
                     
                     pyxel.text(self.window[i].posx + self.window[i].mes7_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes7) * 2,self.window[i].posy + 5 +56,str(self.window[i].mes7),self.window[i].mes7_color)
-                    
+                
                 self.window[i].window_status == WINDOW_OPEN_COMPLETED #ウィンドウオープン完了！
 
     #セレクトカーソルの表示
@@ -10320,31 +10367,37 @@ class App:
     #######################################################################
     def update(self):
         ################################起動処理中 IPL ###################################################################
-        if self.game_status == SCENE_IPL:           #ゲームステータスが「SCENE_IPL」の場合IPLメッセージの更新を行う
-            self.update_ipl()                    #IPLの更新
+        if self.game_status == SCENE_IPL:         #ゲームステータスが「SCENE_IPL」の場合IPLメッセージの更新を行う
+            self.update_ipl()                     #IPLの更新
+        
         ################################ タイトル関連の変数を初期化 ###################################################################
-        if self.game_status == SCENE_TITLE_INIT:     #ゲームステータスが「SCENE_TITLE_INIT」の場合タイトル関連の変数を初期化する関数を呼び出す
+        if self.game_status == SCENE_TITLE_INIT:  #ゲームステータスが「SCENE_TITLE_INIT」の場合タイトル関連の変数を初期化する関数を呼び出す
             self.update_title_init()              #タイトル関連の変数の初期化関数を呼び出す
+        
         ################################ タイトル ###################################################################
-        if self.game_status == SCENE_TITLE:         #ゲームステータスが「SCENE_TITLE」の場合タイトルの更新を行う
-            self.update_title()                  #タイトルの更新
+        if self.game_status == SCENE_TITLE:       #ゲームステータスが「SCENE_TITLE」の場合タイトルの更新を行う
+            self.update_title()                   #タイトルの更新
             self.update_append_star()             #背景の星の追加＆発生育成関数呼び出し
-            self.update_star()                   #背景の星の更新（移動）関数呼び出し
+            self.update_star()                    #背景の星の更新（移動）関数呼び出し
+        
         ################################ タイトルでメニュー選択中 ###################################################################
         if self.game_status == SCENE_TITLE_MENU_SELECT:
-            self.update_title_menu_select()        #タイトルでのメニュー選択処理をする関数の呼び出し
+            self.update_title_menu_select()       #タイトルでのメニュー選択処理をする関数の呼び出し
             self.update_append_star()             #背景の星の追加＆発生育成関数呼び出し
-            self.update_star()                   #背景の星の更新（移動）関数呼び出し
-            self.update_select_cursor()            #セレクトカーソルでメニューを選択する関数を呼び出す
+            self.update_star()                    #背景の星の更新（移動）関数呼び出し
+            self.update_select_cursor()           #セレクトカーソルでメニューを選択する関数を呼び出す
+        
         ################################ ゲームスタート時の初期化 #################################################################
         if self.game_status == SCENE_GAME_START_INIT: #ゲームステータスが「GAME_START_INIT」の場合（ゲームスタート時の状態遷移）は以下を実行する
-            self.update_game_start_init()           #ゲーム開始前の初期化    スコアやシールド値、ショットレベルやミサイルレベルなどの初期化
+            self.update_game_start_init()             #ゲーム開始前の初期化    スコアやシールド値、ショットレベルやミサイルレベルなどの初期化
             self.update_backup_replay_data_status()   #リプレイデータ(ステータス関連)をバックアップする関数の呼び出し
             self.game_status = SCENE_STAGE_START_INIT #ゲームステータスを「STAGE_START_INIT」にする
+        
         ################################ステージスタート時の初期化 #################################################################
         if self.game_status == SCENE_STAGE_START_INIT: #ゲームステータスが「GAME_START_INIT」の場合（ゲームスタート時の状態遷移）は以下を実行する
-            self.update_stage_start_init()           #ステージ開始前の初期化   自機の座標や各リストの初期化、カウンター類の初期化
-            self.game_status = SCENE_PLAY            #ゲームステータスを「STAGE_START_INIT」にする
+            self.update_stage_start_init()             #ステージ開始前の初期化   自機の座標や各リストの初期化、カウンター類の初期化
+            self.game_status = SCENE_PLAY              #ゲームステータスを「STAGE_START_INIT」にする
+        
         ################################ ゲームプレイ中！！！！！！ ###############################################################
         if     self.game_status == SCENE_PLAY\
             or self.game_status == SCENE_EXPLOSION\
@@ -10359,128 +10412,136 @@ class App:
             or self.game_status == SCENE_STAGE_CLEAR_FADE_OUT:
             #自機関連の処理######################################################################################
             # ##################################################################################################
-            self.update_my_ship()                #自機の更新処理（移動処理）関数を呼び出す
-            self.update_my_ship_record_coordinate()  #自機の座標を過去履歴リストに書き込んでいく関数（トレースクローの座標として使用します）を呼び出す
-            self.update_clip_my_ship()            #自機をはみ出さないようにする関数を呼び出す
+            self.update_my_ship()                  #自機の更新処理（移動処理）関数を呼び出す
+            self.update_my_ship_record_coordinate()#自機の座標を過去履歴リストに書き込んでいく関数（トレースクローの座標として使用します）を呼び出す
+            self.update_clip_my_ship()             #自機をはみ出さないようにする関数を呼び出す
             #パワーアップ関連の処理################################################
-            self.update_powerup_shot()            #ショットのパワーアップ処理関数を呼び出し
+            self.update_powerup_shot()             #ショットのパワーアップ処理関数を呼び出し
             self.update_powerup_missile()          #ミサイルのパワーアップ処理関数の呼び出し
-            self.update_change_speed()            #自機スピードのチェンジ処理関数呼び出し
+            #自機スピードチェンジ###################################################
+            self.update_check_change_speed()       #自機スピードチェンジボタンが押されたか調べる関数呼び出し
             #自機ショット関連の処理#################################################
-            self.update_my_shot()                #自機弾の更新関数を呼び出す
-            self.update_clip_my_shot()            #自機弾をはみ出さないようにする関数を呼び出す
-            self.update_collision_my_shot_bg()      #自機弾と背景との当たり判定を行う関数を呼び出す
-            self.update_collision_my_shot_enemy()    #自機弾と敵の当たり判定を行う関数を呼び出す
-            self.update_collision_my_shot_boss()    #自機弾とボスの当たり判定を行う関数を呼び出す
+            self.update_my_shot()                  #自機弾の更新関数を呼び出す
+            self.update_clip_my_shot()             #自機弾をはみ出さないようにする関数を呼び出す
+            self.update_collision_my_shot_bg()     #自機弾と背景との当たり判定を行う関数を呼び出す
+            self.update_collision_my_shot_enemy()  #自機弾と敵の当たり判定を行う関数を呼び出す
+            self.update_collision_my_shot_boss()   #自機弾とボスの当たり判定を行う関数を呼び出す
             #ミサイル関連の処理###################################################################
-            self.update_my_missile()              #自機ミサイルの更新（移動処理）関数を呼び出す
+            self.update_my_missile()               #自機ミサイルの更新（移動処理）関数を呼び出す
             self.update_clip_my_missile()          #自機ミサイルをはみ出さないようにする関数を呼び出す
-            self.update_collision_missile_enemy()    #自機ミサイルと敵との当たり判定を行う関数の呼び出す
-            self.update_collision_missile_boss()    #自機ミサイルとボスとの当たり判定を行う関数を呼び出す
+            self.update_collision_missile_enemy()  #自機ミサイルと敵との当たり判定を行う関数の呼び出す
+            self.update_collision_missile_boss()   #自機ミサイルとボスとの当たり判定を行う関数を呼び出す
             #クロー関連の処理 ####################################################################
-            self.update_claw()                   #クローの更新（移動処理）関数を呼び出す
-            self.update_claw_shot()               #クローの弾の更新（移動処理）を呼び出す
-            self.update_collision_claw_shot_enemy()  #クローの弾と敵との当たり判定関数を呼び出す
-            self.update_collision_claw_shot_boss()   #クローの弾とボスとの当たり判定関数を呼び出す
+            self.update_claw()                      #クローの更新（移動処理）関数を呼び出す
+            self.update_claw_shot()                 #クローの弾の更新（移動処理）を呼び出す
+            self.update_collision_claw_shot_enemy() #クローの弾と敵との当たり判定関数を呼び出す
+            self.update_collision_claw_shot_boss()  #クローの弾とボスとの当たり判定関数を呼び出す
             self.update_collision_claw_shot_bg()    #クローの弾と背景との当たり判定関数を呼び出す
             #敵の弾関連の処理 ###################################################################################
             ####################################################################################################
-            self.update_enemy_shot()              #敵の弾の更新（移動処理とか）＆自機と敵弾と自機との当たり判定の関数の呼び出し
+            self.update_enemy_shot()               #敵の弾の更新（移動処理とか）＆自機と敵弾と自機との当たり判定の関数の呼び出し
             self.update_clip_enemy_shot()          #敵の弾が画面からはみ出したら消去する関数の呼び出し
-            self.update_collision_enemy_shot_bg()    #敵の弾と背景との当たり判定を行う関数の呼び出し
+            self.update_collision_enemy_shot_bg()  #敵の弾と背景との当たり判定を行う関数の呼び出し
             #クロー関連の処理###########################################################################################################
-            self.update_delete_claw()             #クローの消滅関数の呼び出し
-            self.update_change_fix_claw_interval()   #フイックスクローの間隔を変化させる関数を呼び出す
-            self.update_change_claw_style()        #クロースタイルを変更する関数を呼び出す    
+            self.update_delete_claw()                    #クローの消滅関数の呼び出し
+            self.update_check_change_fix_claw_interval() #フイックスクロー間隔変化ボタンが押されたか調べる関数を呼び出す
+            self.update_check_change_claw_style()        #クロースタイル変更ボタンが押されたか調べる関数を呼び出す    
             #敵関連の処理###############################################################################################################
-            self.update_enemy_append_event_system()  #イベントリストシステムによる敵の発生関数を呼び出す
-            self.update_enemy_append_map_scroll()    #マップスクロールによる敵の発生関数を呼び出す
+            self.update_enemy_append_event_system() #イベントリストシステムによる敵の発生関数を呼び出す
+            self.update_enemy_append_map_scroll()   #マップスクロールによる敵の発生関数を呼び出す
             self.update_event_append_request()      #イベントアペンドリストによる敵の追加発生関数を呼び出す（早回しなどの追加注文発生とかの処理）(イベント追加依頼）
-            self.update_enemy()                  #敵の更新（移動とか）関数を呼び出す
-            self.update_clip_enemy()              #画面からはみ出た敵を消去する関数を呼び出し
+            self.update_enemy()                     #敵の更新（移動とか）関数を呼び出す
+            self.update_clip_enemy()                #画面からはみ出た敵を消去する関数を呼び出し
             #ボス関連の処理#############################################################################################################
-            self.update_boss()                   #ボスの更新移動とかを行う関数を呼び出す
+            self.update_boss()                      #ボスの更新移動とかを行う関数を呼び出す
             #パワーアップアイテム類の処理################################################################################################
-            self.update_obtain_item()                  #パワーアップアイテム類の更新（移動とか）する関数を呼び出します
+            self.update_obtain_item()                      #パワーアップアイテム類の更新（移動とか）する関数を呼び出します
             self.update_collision_obtain_item_enemy_shot() #パワーアップアイテムと敵弾の当たり判定を行う関数を呼び出します
-            self.update_clip_obtain_item()              #画面からはみ出したパワーアップアイテム類を消去する関数を呼び出します
-            self.stage_count += 1                     #ステージ開始から経過したフレームカウント数を1増加させる
+            self.update_clip_obtain_item()                 #画面からはみ出したパワーアップアイテム類を消去する関数を呼び出します
+            self.stage_count += 1                          #ステージ開始から経過したフレームカウント数を1増加させる
             #ランクアップ処理#############################################################################################################
             self.update_rank_up_look_at_playtime()   #時間経過によるランクアップ関数を呼び出します
             #スクロール関連の処理#########################################################################################################
-            if self.boss_test_mode == 0:               #ボス戦テストモードオフの時だけ
-                self.scroll_count += self.side_scroll_speed   #スクロールカウント数をスクロールスピード分(通常は1)増加させていく
-                self.vertical_scroll_count += self.vertical_scroll_speed   #縦スクロールカウント数を縦スクロールスピード分(大抵のステージは縦スクロールしないので0)増加させていく
+            if self.boss_test_mode == 0:                                 #ボス戦テストモードオフの時だけ
+                self.scroll_count += self.side_scroll_speed              #スクロールカウント数をスクロールスピード分(通常は1)増加させていく
+                self.vertical_scroll_count += self.vertical_scroll_speed #縦スクロールカウント数を縦スクロールスピード分(大抵のステージは縦スクロールしないので0)増加させていく
+            
             #横スクロールのスピード調整##################################################################################################
-            if self.side_scroll_speed != self.side_scroll_speed_set_value: #現在の横スクロールスピードと設定値が違っていたのならば
+            if self.side_scroll_speed != self.side_scroll_speed_set_value:         #現在の横スクロールスピードと設定値が違っていたのならば
                 self.side_scroll_speed += self.side_scroll_speed_variation #スピード変化量を加算減算してやって設定値まで近づけていきます
                 if  -0.01 <= self.side_scroll_speed - self.side_scroll_speed_set_value <= 0.01:
                     self.side_scroll_speed = self.side_scroll_speed_set_value #横スクロールスピードが設定値の近似値(誤差-0.01~0.01)なら強制的に現在スピードを設定値にしちゃうのだ！
+            
             #縦スクロールのスピード調整###################################################################################################
             if self.vertical_scroll_speed != self.vertical_scroll_speed_set_value: #現在の縦スクロールスピードと設定値が違っていたのならば
                 self.vertical_scroll_speed += self.vertical_scroll_speed_variation #スピード変化量を加算減算してやって設定値まで近づけていきます
                 if  -0.01 <= self.vertical_scroll_speed - self.vertical_scroll_speed_set_value <= 0.01:
                     self.vertical_scroll_speed = self.vertical_scroll_speed_set_value #縦スクロールスピードが設定値の近似値(誤差-0.01~0.01)なら強制的に現在スピードを設定値にしちゃうのだ！
+            
             #ラスタスクロールの更新#######################################################################################################
-            self.update_raster_scroll()              #ラスタースクロールの更新関数の呼び出し
+            self.update_raster_scroll()               #ラスタースクロールの更新関数の呼び出し
             #マップチップナンバー書き換えによるアニメーション関連の更新######################################################################
             self.update_bg_rewrite_animation()        #BG書き換えによるアニメーション関数の呼び出し
             # self.update_dummy_bg_animation()        #BG 座標直接指定による書き換えダミーテスト
             #リプレイデータの記録と再生###################################################################################################
-            self.update_record_replay_data()          #パッド＆キーボード入力によるリプレイデータの記録を行う関数を呼び出します
-            self.replay_farame += 1                 #リプレイ用のリストインデックスフレームカウントを1進める
+            self.update_record_replay_data()   #パッド＆キーボード入力によるリプレイデータの記録を行う関数を呼び出します
+            self.replay_farame += 1            #リプレイ用のリストインデックスフレームカウントを1進める
             #乱数ルーレットの更新########################################################################################################
             self.update_rnd0_9()                    #乱数ルーレット( 0~9)の更新
             self.update_rnd0_99()                   #乱数ルーレット(0~99)の更新
-        if    self.game_status == SCENE_PLAY\
+        
+        if     self.game_status == SCENE_PLAY\
             or self.game_status == SCENE_BOSS_APPEAR\
             or self.game_status == SCENE_BOSS_BATTLE\
             or self.game_status == SCENE_BOSS_EXPLOSION :#「プレイ中」とボス関連の時だけ自機の当たり判定関連とシールド値のチェック&ボタンを押したら何かをする処理を実行する
             #自機と色んなオブジェクトとの当たり判定処理#############################
             self.update_collision_my_ship_enemy()       #自機と敵との当たり判定関数を呼び出す             
-            self.update_collision_my_ship_bg()         #自機と背景障害物との当たり判定関数を呼び出す
-            self.update_collision_my_ship_obtain_item()  #自機とパワーアップアイテム類の当たり判定（パワーアップゲットしたかな？どうかな？）
+            self.update_collision_my_ship_bg()          #自機と背景障害物との当たり判定関数を呼び出す
+            self.update_collision_my_ship_obtain_item() #自機とパワーアップアイテム類の当たり判定（パワーアップゲットしたかな？どうかな？）
             self.update_collision_my_ship_boss()        #自機とボスとの当たり判定を行う関数を呼び出す
             #自機シールドのチェック###############################################
-            self.update_check_my_shield()             #自機のシールドが残っているのかチェックする関数を呼び出す
-            #武器発射関連の処理##################################################
-            self.update_check_fire_shot()         #ショットを発射したかどうかを調べる関数を呼び出す
-            self.update_check_fire_missile()       #ミサイルを発射したかどうかを調べる関数を呼び出す
-            self.update_check_fire_claw_shot()     #クローが弾を発射したかどうかを調べる関数を呼び出す
-            self.update_change_sub_weapon()        #サブウェポンの切り替え関数を呼び出す
+            self.update_check_my_shield()         #自機のシールドが残っているのかチェックする関数を呼び出す
+            #武器発射関連の処理###################################################
+            self.update_check_fire_shot()         #ショット発射ボタンが押されたかどうか？を調べる関数を呼び出す
+            self.update_check_fire_missile()      #ミサイル発射ボタンが押されたかどうか？を調べる関数を呼び出す
+            self.update_check_fire_claw_shot()    #クローが弾を発射するボタンが押された？かどうかを調べる関数を呼び出す
+            self.update_check_change_sub_weapon() #サブウェポンの切り替えボタンが押されたか？どうかを調べる関数を呼び出す
             #デバッグモードによる敵や敵弾の追加発生（ボタンを押したら敵が出てくる！？）###################################################
             # self.update_debug_mode_enemy_append()  #デバッグモードによる敵＆敵弾追加発生
             #プレイ時間の計算#####################################################
-            self.update_calc_playtime()           #プレイ時間を計算する関数を呼び出す
+            self.update_calc_playtime()        #プレイ時間を計算する関数を呼び出す
             #ハイスコアの更新チェック##############################################
-            self.update_check_hi_score()          #ハイスコアが更新されているか調べる関数を呼び出す
+            self.update_check_hi_score()       #ハイスコアが更新されているか調べる関数を呼び出す
             #タイマーフレア放出###################################################
-            self.update_timer_flare()            #タイマーフレア放出の更新処理関数を呼び出す
-            #大気圏突入時の火花の発生#############################################
+            self.update_timer_flare()          #タイマーフレア放出の更新処理関数を呼び出す
+            #大気圏突入時の火花の発生##########################################################
             self.update_atmospheric_entry_spark()   #大気圏突入時の火花を発せさせる関数の呼び出し
+        
         if self.game_status == SCENE_BOSS_EXPLOSION:         #「BOSS_EXPLOSION」の時は
             self.uddate_present_repair_item()              #リペアアイテムを出現させる関数の呼び出し
-        if self.game_status == SCENE_EXPLOSION:             #「EXPLOSION」の時は
+        
+        if self.game_status == SCENE_EXPLOSION:              #「EXPLOSION」の時は
             self.my_ship_explosion_timer += 1              # my_ship_explosionタイマーを加算していき
             if self.my_ship_explosion_timer >= SHIP_EXPLOSION_TIMER_LIMIT:#リミット値まで行ったのなら
                 self.game_status = SCENE_GAME_OVER         #「GAME_OVER」にする
-                pygame.mixer.music.fadeout(6000)            #BGMフェードアウト開始
-        #######ゲームオーバー後の処理###############
-        if self.game_status == SCENE_GAME_OVER:             #「GAME_OVER」の時は
-            self.game_over_timer += 1                    # game_overタイマーを加算していき
+                pygame.mixer.music.fadeout(6000)           #BGMフェードアウト開始
+        
+        #######ゲームオーバー後の処理#############################################################
+        if self.game_status == SCENE_GAME_OVER:              #「GAME_OVER」の時は
+            self.game_over_timer += 1                         # game_overタイマーを加算していき
             if self.game_over_timer >= GAME_OVER_TIMER_LIMIT: #リミット値まで行ったのなら
-                self.game_status = SCENE_GAME_OVER_FADE_OUT  #「ゲームオーバーフェードアウト開始」にする
-                
-        if self.game_status == SCENE_GAME_OVER_FADE_OUT:      #「GAME_OVER_FADE_OUT」の時は
-            if self.fade_complete_flag == 1:                #フェードアウト完了のフラグが建ったのなら
-                self.game_status = SCENE_GAME_OVER_SHADOW_IN   #「GAME_OVER_SHADOW_IN」状態にする
-                self.bg_cls_color = 0                     #クリアスクリーン時の塗りつぶし色を初期値の0(黒)に戻す（イベントとかで変化する場合があるため） 
-                self.star_scroll_flag = 1                  #背景星のスクロール表示をonにする（イベントとかで変化する場合があるため） 
-                
-        if self.game_status == SCENE_GAME_OVER_SHADOW_IN:     #「GAME_OVER_SHADOW_IN」の時は
+                self.game_status = SCENE_GAME_OVER_FADE_OUT   #「ゲームオーバーフェードアウト開始」にする
+        
+        if self.game_status == SCENE_GAME_OVER_FADE_OUT:     #「GAME_OVER_FADE_OUT」の時は
+            if self.fade_complete_flag == 1:                 #フェードアウト完了のフラグが建ったのなら
+                self.game_status = SCENE_GAME_OVER_SHADOW_IN #「GAME_OVER_SHADOW_IN」状態にする
+                self.bg_cls_color = 0                        #クリアスクリーン時の塗りつぶし色を初期値の0(黒)に戻す（イベントとかで変化する場合があるため） 
+                self.star_scroll_flag = 1                    #背景星のスクロール表示をonにする（イベントとかで変化する場合があるため） 
+        
+        if self.game_status == SCENE_GAME_OVER_SHADOW_IN:    #「GAME_OVER_SHADOW_IN」の時は
             if self.shadow_in_out_complete_flag == 1:        #シャドウイン完了のフラグが建ったのなら
-                self.game_status = SCENE_GAME_OVER_STOP       #「GAME_OVER_STOP」状態にする
-                
+                self.game_status = SCENE_GAME_OVER_STOP      #「GAME_OVER_STOP」状態にする
+        
         if self.game_status == SCENE_GAME_OVER_STOP:         #「GAME_OVER_STOP」の時は
             new_window = Window()
             new_window.update(0,0,2,WINDOW_OPEN,\
@@ -10494,54 +10555,57 @@ class App:
                 "",DISP_CENTER,0,7,\
                 
                 43,68,   0,0,  8*8,3*8,   2,1, 1,1,   0,0,    0,0)
-            self.window.append(new_window)                      #「TITLE RETURN」選択メニューを育成する
-            self.cursor_show = True                            #選択カーソル表示をonにする
+            self.window.append(new_window)                    #「TITLE RETURN」選択メニューを育成する
+            self.cursor_show = True                           #選択カーソル表示をonにする
             self.cursor_x = 64                                #セレクトカーソルの座標を設定します
             self.cursor_y = 80
             self.cursor_item = 0                              #いま指示しているアイテムナンバーは0の「YES」
-            self.cursor_decision_item = -1                      #まだボタンも押されておらず未決定状態なのでdecision_itemは-1
-            self.cursor_max_item = 1                           #最大項目数は「YES」「NO」の2項目なので 2-1=1を代入
-            self.game_status = SCENE_RETURN_TITLE                #ゲームステータスを「RETURN_TITLE」にする
-            
-        if self.game_status == SCENE_RETURN_TITLE:           #「RETURN_TITLE」の時は            
+            self.cursor_decision_item = -1                    #まだボタンも押されておらず未決定状態なのでdecision_itemは-1
+            self.cursor_max_item = 1                          #最大項目数は「YES」「NO」の2項目なので 2-1=1を代入
+            self.game_status = SCENE_RETURN_TITLE             #ゲームステータスを「RETURN_TITLE」にする
+        
+        if self.game_status == SCENE_RETURN_TITLE:         #「RETURN_TITLE」の時は            
             if pyxel.btnp(pyxel.KEY_ENTER):                #リターンキーが押されたら
-                self.game_status = SCENE_TITLE_INIT          #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
+                self.game_status = SCENE_TITLE_INIT        #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
                 self.game_playing_flag = 0                 #ゲームプレイ中のフラグを降ろす
                 self.save_system_data()                    #システムデータをセーブする関数の呼び出し
-                self.update_backup_replay_data_list()        #リプレイデータ(リスト本体)をバックアップします
-                
-            if self.cursor_decision_item == 0:              #メニューでアイテムナンバー0の「YES」が押されたら
-                self.game_status = SCENE_TITLE_INIT          #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
+                self.update_backup_replay_data_list()      #リプレイデータ(リスト本体)をバックアップします
+                self.replay_input_data = []                #リプレイデータのバックアップは取ったので元のデータは消去します
+            
+            
+            if self.cursor_decision_item == 0:             #メニューでアイテムナンバー0の「YES」が押されたら
+                self.game_status = SCENE_TITLE_INIT        #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
                 self.game_playing_flag = 0                 #ゲームプレイ中のフラグを降ろす
                 self.save_system_data()                    #システムデータをセーブする関数の呼び出し
-                self.update_backup_replay_data_list()        #リプレイデータ(リスト本体)をバックアップします
-                
-        #########ステージクリア後の処理#################
-        if self.game_status == SCENE_STAGE_CLEAR_FADE_OUT:    #「SCENE_STAGE_CLEAR_FADE_OUT」の時は
+                self.update_backup_replay_data_list()      #リプレイデータ(リスト本体)をバックアップします
+                self.replay_input_data = []                #リプレイデータのバックアップは取ったので元のデータは消去します
+        
+        #########ステージクリア後の処理#############################################################
+        if self.game_status == SCENE_STAGE_CLEAR_FADE_OUT:   #「SCENE_STAGE_CLEAR_FADE_OUT」の時は
             if self.fade_complete_flag == 1:                #フェードアウト完了のフラグが建ったのなら
                 self.stage_number += 1    #ステージ数を1増やす
-                if self.stage_number == STAGE_VOLCANIC_BELT: #ステージ3 火山地帯はまだ未完成なので・・・
+                if self.stage_number == STAGE_VOLCANIC_BELT:  #ステージ3 火山地帯はまだ未完成なので・・・
                     self.stage_number = STAGE_MOUNTAIN_REGION #ステージ1 山岳地帯に戻してやります
-                    self.stage_loop += 1 #ループ数を1増やします
+                    self.stage_loop += 1     #ループ数を1増やします
                     if self.stage_loop >= 4: #4周目以降は作っていないので\\\
-                        self.stage_loop = 1 #1周目に戻ります
-                    
-                self.game_status = SCENE_STAGE_START_INIT    #ゲームステータスを「STAGE_START_INIT」にして次のステージへ・・・・
+                        self.stage_loop = 1  #1周目に戻ります
                 
+                self.game_status = SCENE_STAGE_START_INIT    #ゲームステータスを「STAGE_START_INIT」にして次のステージへ・・・・
+        
         if self.game_playing_flag == 1: #ゲームプレイ中のフラグが立っていたのなら以下の処理を行う
-            self.update_debug_status()      #デバッグステータス表示＆非表示の切り替え
+            self.update_debug_status()  #デバッグステータス表示＆非表示の切り替え
             #映像オブジェクト関連の処理################################################################################################
             self.update_append_star()       #背景の星の追加＆発生育成関数呼び出し
             self.update_append_cloud()      #背景の雲の追加＆発生育成関数呼び出し
-            self.update_star()            #背景の星の更新（移動）関数呼び出し
-            self.update_particle()         #パーティクルの更新関数呼び出し
-            self.update_background_object()  #背景オブジェクトの更新関数の呼び出し
-            self.update_explosion()        #爆発パターンの更新関数呼び出し 
+            self.update_star()              #背景の星の更新（移動）関数呼び出し
+            self.update_particle()          #パーティクルの更新関数呼び出し
+            self.update_background_object() #背景オブジェクトの更新関数の呼び出し
+            self.update_explosion()         #爆発パターンの更新関数呼び出し 
             #一時停止(pause)の処理###################################################################################################
             self.update_game_pause()        #ボタンが押されたらポーズをかける関数を呼び出し
             #メニューカーソル関連の処理###############################################################################################
             self.update_select_cursor()     #メニューカーソルの更新（移動とか）関数を呼び出し
-
+    
     ###########################################################
     ###########################################################
     ###########################################################
@@ -10553,15 +10617,16 @@ class App:
         pyxel.cls(self.bg_cls_color)                #背景を指定色で消去する(初期値は0なので真っ黒になります)
         if self.game_status == SCENE_IPL:
             self.draw_ipl()
+        
         if self.game_status == SCENE_TITLE or self.game_status == SCENE_TITLE_MENU_SELECT:
-            self.draw_star()        #背景の星を表示する関数の呼び出し
-            self.draw_title()        #タイトルロゴの表示関数の呼び出し
-            self.draw_window()       #メニューウィンドウの表示関数の呼び出し
+            self.draw_star()          #背景の星を表示する関数の呼び出し
+            self.draw_title()         #タイトルロゴの表示関数の呼び出し
+            self.draw_window()        #メニューウィンドウの表示関数の呼び出し
             self.draw_select_cursor() #セレクトカーソルの表示関数の呼び出し
-            
+        
         if self.game_playing_flag == 1 and self.star_scroll_flag == 1:#ゲームプレイ中フラグon,星スクロールフラグonの時は背景の星を表示する
-            self.draw_star()        #背景の星を表示する関数の呼び出し 
-            
+            self.draw_star()          #背景の星を表示する関数の呼び出し 
+        
         if     self.game_status == SCENE_PLAY\
             or self.game_status == SCENE_BOSS_APPEAR\
             or self.game_status == SCENE_BOSS_BATTLE\
@@ -10597,30 +10662,29 @@ class App:
                 
             elif self.stage_number == STAGE_ADVANCE_BASE:
                 pyxel.bltm(-(self.scroll_count // 8) + 250,0,0,0,240,256,120,self.bg_transparent_color)
-                
+            
             ####################背景表示
             ###################pyxel.bltm(-(pyxel.frame_count // 8),0,0,((pyxel.frame_count / 2) - 160) ,0,160,120,0)最初はこれで上手くいかなかった・・・・なぜ？
             ###################奥の背景表示
             ###################pyxel.bltm(-(pyxel.frame_count // 4) + 400,0,0,0,16,256,120,0)
-                
+            
             if self.stage_number == STAGE_ADVANCE_BASE:
                 pyxel.bltm(-(self.scroll_count // 4) + 400,0,0,0,224,256,120,self.bg_transparent_color)
-            
             elif self.stage_number == STAGE_MOUNTAIN_REGION:
                     if self.disp_flag_bg_front == DISP_ON:
                         pyxel.bltm(-int(self.scroll_count % (256*8 - 160)),     -self.vertical_scroll_count,  1,    0,0,    256,256,    self.bg_transparent_color)
-                        
+            
             self.draw_background_object()    #背景オブジェクトの描画関数の呼び出し
             
             self.draw_enemy_shot(PRIORITY_BOSS_BACK)   #敵の弾を表示する関数を呼び出す(ボスキャラの真後ろ)---------------------------
-            self.draw_boss()        #ボスを表示する関数を呼び出す
+            self.draw_boss()         #ボスを表示する関数を呼び出す
             self.draw_boss_hp()      #ボスの耐久力を表示する関数を呼び出す
             self.draw_enemy_shot(PRIORITY_BOSS_FRONT)   #敵の弾を表示する関数を呼び出す(ボスキャラのすぐ手前)-------------------------
             
-            self.draw_obtain_item()   #パワーアップアイテム類の表示
+            self.draw_obtain_item()  #パワーアップアイテム類の表示
             
             self.draw_enemy()        #敵を表示する関数を呼び出す
-            self.draw_enemy_shot(PRIORITY_FRONT)      #敵の弾を表示する関数を呼び出す (前面)---------------------------------------
+            self.draw_enemy_shot(PRIORITY_FRONT)       #敵の弾を表示する関数を呼び出す (前面)---------------------------------------
             self.draw_enemy_shot(PRIORITY_MORE_FRONT)  #敵の弾を表示する関数を呼び出す (敵弾の中でもさらに前面)-----------------------
             PRIORITY_MORE_FRONT
             self.draw_particle()     #パーティクルを表示する関数の呼び出し
@@ -10651,45 +10715,45 @@ class App:
             or self.game_status == SCENE_STAGE_CLEAR_FADE_OUT\
             or self.game_status == SCENE_PAUSE:
             
-            self.draw_my_ship()      #自機表示
+            self.draw_my_ship()     #自機表示
             self.draw_claw()        #クローの表示
-            self.draw_ls_shield()    #Ｌ'sシールドシステムの表示
-            
-        if self.game_playing_flag == 1:#「ゲームプレイ中」の時は爆発パターン表示
-            self.draw_explosion(PRIORITY_FRONT)     #爆発パターン(前面)の表示
+            self.draw_ls_shield()   #Ｌ'sシールドシステムの表示
+        
+        if self.game_playing_flag == 1:              #「ゲームプレイ中」の時は爆発パターン表示
+            self.draw_explosion(PRIORITY_FRONT)      #爆発パターン(前面)の表示
             self.draw_explosion(PRIORITY_MORE_FRONT) #爆発パターン(さらに前面)の表示
-            
+        
         #フェードアウトスクリーンの表示###############################################
         if    self.game_status == SCENE_GAME_OVER_FADE_OUT\
             or self.game_status == SCENE_STAGE_CLEAR_FADE_OUT:
             
             self.draw_fade_in_out_screen(FADE_OUT,0)        #フェードイン＆フェードアウト用のエフェクトスクリーンの描画表示
-            
+        
         #画面中央80ドットだけ表示する処理###########################################
         if    self.game_status == SCENE_GAME_OVER_SHADOW_IN\
             or self.game_status == SCENE_GAME_OVER_STOP\
             or self.game_status == SCENE_RETURN_TITLE:
             
             self.draw_shadow_out_screen(40,0)  #中央付近80ドット分だけ残してシャドウアウトする
-            
-        if self.game_playing_flag == 1:#「ゲームプレイ中」の時は以下の処理も行う
+        
+        if self.game_playing_flag == 1:             #「ゲームプレイ中」の時は以下の処理も行う
             self.draw_sub_weapon_select_guidebox()  #選択中のサブウェポンのカーソルガイドボックスの表示
-            self.draw_sub_weapon_select_gauge()    #サブウェポン一覧表示
+            self.draw_sub_weapon_select_gauge()     #サブウェポン一覧表示
             
-            self.draw_status()                 #スコアやスピード、自機耐久力などの表示関数の呼び出し （通常ステータス表示）
-            self.draw_debug_status()            #デバッグ用ステータスの表示関数の呼び出し          （デバック用ステータス表示）
-            self.draw_window()                 #メッセージウィンドウの表示
-            self.draw_select_cursor()            #セレクトカーソルの表示
+            self.draw_status()             #スコアやスピード、自機耐久力などの表示関数の呼び出し （通常ステータス表示）
+            self.draw_debug_status()       #デバッグ用ステータスの表示関数の呼び出し          （デバック用ステータス表示）
+            self.draw_window()             #メッセージウィンドウの表示
+            self.draw_select_cursor()      #セレクトカーソルの表示
             
-            self.draw_warning_dialog()           #WARNINGダイアログの表示
-            self.draw_stage_clear_dialog()        #STAGE CLEARダイアログの表示
+            self.draw_warning_dialog()     #WARNINGダイアログの表示
+            self.draw_stage_clear_dialog() #STAGE CLEARダイアログの表示
             
-            # self.draw_dummy_put_bg_xy()          #BG Get&Put dummy test
-            
+            # self.draw_dummy_put_bg_xy()  #BG Get&Put dummy test
+        
         #一時停止・ポーズメッセージの表示#########################################
         if self.game_status == SCENE_PAUSE:
-            self.draw_pause_message() #一時停止・ポーズメッセージの表示
-            
+            self.draw_pause_message()      #一時停止・ポーズメッセージの表示
+        
         #ゲームオーバー画像の表示##################################################
         if     self.game_status == SCENE_GAME_OVER\
             or self.game_status == SCENE_GAME_OVER_FADE_OUT\
