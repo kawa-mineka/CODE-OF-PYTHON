@@ -55,8 +55,7 @@
 #todo84 機体選択シーンにおける各機体のタイポモーションロゴのアニメーション作成(難しそう)
 
 #todo90 MagiForceとJusticePythonの合体演出
-#todo92 自前の乱数育成関数を作製しリプレイ時で決まった数値を返すような乱数を育成できるようにする(古典的な乱数表を作ってパッド入力データとフレームすうでバラけるようにしてもいいかも？わかんないけど・・)
-#todo96 漢字フォントの読み込み時に遅くなるので高速化する(案としては分割してローディング？)
+#todo99 漢字フォントの読み込み時に遅くなるので高速化する(案としては分割してローディング？)
 
 #todo703 画面上の任意の位置＆画面下の任意の位置から降下、上昇してくる敵編隊の実装
 #todo705 子世代まで分裂する隕石の実装(結構硬い感じで)
@@ -81,6 +80,14 @@
 #todo91a 美咲フォントを使用した日本語テキスト表示関数の実装→コード変換表の作成とフォント画像ファイルの作成終了 2021 04/25→表示関数の実装に入ります
 #todo91b 美咲フォントを使用した日本語テキスト表示関数の実装→実装完了と言いたいけど半角文字や特定の文字で文字化けする模様・・・orz 2021 04/25
 #todo    難易度によるアイテム引き寄せ範囲の変化、アイテムのバウンド回数の変化の実装 2021 04/27
+
+#todo92  線形合同法による乱数関数の実装 2021 05/01
+#todo92a 自前の乱数育成関数を作製しリプレイ時で決まった数値を返すような乱数を育成できるようにする(古典的な乱数表を作ってパッド入力データとフレームすうでバラけるようにしてもいいかも？わかんないけど・・)→標準ライブラリのrandint関数に置き換える感じでs_rndint関数を実装 2021 05/01
+#todo92b デバッグステータスの表示項目をトグル切り替え表示できるようにした 2021 05/01
+#todo93  インデントが全てスペース5個だったのでpython標準のスペース4個に修正 2021 05/03
+#todo93a リプレイデータの再生実装で地獄を見る・・・リプレイ再生ズレまくりぃいい！ 2021 05/04
+#todo93b ステージごとにリプレイデータを分割する案を検討 2021 05/04
+
 
 # from random import randint   #random.randint(n,m) と呼ぶと、nからm(m自身を含む)までの間の整数が 等しい確率で、ランダムに返される
 from random import random    #random.random() と呼ぶと、0から1の範囲(1は含まない)のランダムな実数が返される(主にパーティクル系で使用します)
@@ -2102,18 +2109,18 @@ class App:
         pyxel.init(WINDOW_W,WINDOW_H,caption="mineka shooting game",fps=60) #ゲームウィンドウのタイトルバーの表示とfpsの設定(60fpsにした)
         
         self.load_system_data()        #システムデータをロードする関数の呼び出し
-        pyxel.mouse(False)            #マウスカーソルを非表示にする
+        pyxel.mouse(False)             #マウスカーソルを非表示にする
         self.bg_cls_color = 0          #BGをCLS(クリアスクリーン)するときの色の指定(通常は0=黒色です)
-        self.bg_transparent_color = 0    #BGタイルマップを敷き詰めるときに指定する透明色です
+        self.bg_transparent_color = 0  #BGタイルマップを敷き詰めるときに指定する透明色です
         
-        self.rnd_seed = 0             #線形合同法で使用する乱数の種を初期化します
+        self.rnd_seed = 0              #線形合同法で使用する乱数の種を初期化します
         
         #ゲーム中で絶対に変化することのないリスト群はここで作成します#######################################
         #サブウェポンセレクターカーソルなどで使用する点滅用カラーリスト群(pyxelのカラーナンバーだよ)
-        self.blinking_color        = [0,1,5,12, 6,7,6,12,5,1]
-        self.red_flash_color       = [0,1,5, 4, 2,8,2, 4,5,1]
-        self.green_flash_color     = [0,1,5, 3,11,11,3,5,1,0]
-        self.yellow_flash_color    = [0,2,4,9,9,10,9,9,4,2,0]
+        self.blinking_color         = [0,1,5,12, 6,7,6,12,5,1]
+        self.red_flash_color        = [0,1,5, 4, 2,8,2, 4,5,1]
+        self.green_flash_color      = [0,1,5, 3,11,11,3,5,1,0]
+        self.yellow_flash_color     = [0,2,4,9,9,10,9,9,4,2,0]
         self.monochrome_flash_color = [0,0,1,5,12,13,15,7,7,15,13,12,5,1,0]
         self.rainbow_flash_color    = [3,4,5,6,7,8,9,10,11,12,13,14,15,1,2]
         
@@ -2317,12 +2324,12 @@ class App:
         # [難易度名,sショットb,sミサイルb,sシールドb,クロー初期値,ステージ後に回復するシールド値,撃ち返し弾の有無,      スコア倍率, ランク上昇frame,sランク数,被弾後無敵時間,アイテム取得後無敵時間,アイテム敵弾消去,ランク限界,撃ち返し開始loop,撃ち返し開始stage,1ランクダウンに必要なダメージ数,ループ時の動作,        アイテムが接近開始してくる距離, アイテムバウンド数       ]
         #]
         self.game_difficulty_list = [
-            [GAME_VERY_EASY,6,6,6,             THREE_CLAW, REPAIR_SHIELD3,           RETURN_BULLET_NONE,    1.0,      3000,         0,     60,        10,               1,            50,      2,            6,             1,                    LOOP_POWER_CONTINUE,   1600,                    8], 
-            [GAME_EASY    ,3,3,3,             ONE_CLAW,   REPAIR_SHIELD2,           RETURN_BULLET_NONE,    1.0,      2400,         0,     45,        5,                1,            50,      2,            4,             1,                    LOOP_ONE_LEVEL_DOWN,   900,                     7],
-            [GAME_NORMAL   ,0,0,0,             NO_CLAW,    REPAIR_SHIELD2,           RETURN_BULLET_AIM,     1.0,      2000,         0,     30,        3,                0,            60,      2,            1,             2,                    LOOP_TWO_LEVEL_DOWN,   800,                     6],
-            [GAME_HARD    ,0,0,0,             NO_CLAW,    REPAIR_SHIELD1,           RETURN_BULLET_AIM,     1.0,      1800,        10,     29,        2,                0,            70,      1,            8,             2,                    LOOP_THREE_LEVEL_DOWN, 700,                     5],
-            [GAME_VERY_HARD,0,0,0,             NO_CLAW,    REPAIR_SHIELD1,           RETURN_BULLET_DELAY_AIM,2.0,      1200,        20,     26,        0,                0,            80,      1,            6,             3,                    LOOP_FIVE_LEVEL_DOWN,  600,                     4],
-            [GAME_INSAME   ,0,0,0,             NO_CLAW,    REPAIR_SHIELD0,           RETURN_BULLET_DELAY_AIM,3.0,       900,        40,     23,        0,                0,            99,      1,            2,             3,                    LOOP_ALL_RESET,       500,                     3],
+            [GAME_VERY_EASY,6,6,6,             THREE_CLAW, REPAIR_SHIELD3,           RETURN_BULLET_NONE,         1.0,        3000,           0,     60,           10,                  1,              50,       2,              6,               1,                         LOOP_POWER_CONTINUE,     1600,                       8], 
+            [GAME_EASY     ,3,3,3,             ONE_CLAW,   REPAIR_SHIELD2,           RETURN_BULLET_NONE,         1.0,        2400,           0,     45,            5,                  1,              50,       2,              4,               1,                         LOOP_ONE_LEVEL_DOWN,      900,                       7],
+            [GAME_NORMAL   ,0,0,0,             NO_CLAW,    REPAIR_SHIELD2,           RETURN_BULLET_AIM,          1.0,        2000,           0,     30,            3,                  0,              60,       2,              1,               2,                         LOOP_TWO_LEVEL_DOWN,      800,                       6],
+            [GAME_HARD     ,0,0,0,             NO_CLAW,    REPAIR_SHIELD1,           RETURN_BULLET_AIM,          1.0,        1800,          10,     29,            2,                  0,              70,       1,              8,               2,                         LOOP_THREE_LEVEL_DOWN,    700,                       5],
+            [GAME_VERY_HARD,0,0,0,             NO_CLAW,    REPAIR_SHIELD1,           RETURN_BULLET_DELAY_AIM,    2.0,        1200,          20,     26,            0,                  0,              80,       1,              6,               3,                         LOOP_FIVE_LEVEL_DOWN,     600,                       4],
+            [GAME_INSAME   ,0,0,0,             NO_CLAW,    REPAIR_SHIELD0,           RETURN_BULLET_DELAY_AIM,    3.0,         900,          40,     23,            0,                  0,              99,       1,              2,               3,                         LOOP_ALL_RESET,           500,                       3],
             ]
         #ランク値による各種設定数値のリスト
         #フォーマット
@@ -2434,9 +2441,9 @@ class App:
         #サブウェポンのレベルデータリスト
         #    [レベル,連射数 ,スピード ,攻撃力 ,1-2-3-5way?,加速度]
         self.sub_weapon_tail_shot_level_data_list = [
-            [ 1,    1,     1.0,    1.5,     1,      1    ],
-            [ 2,    1,     1.1,    1.6,     1,      1    ],
-            [ 3,    2,     1.3,    1.8,     1,      1    ],
+            [ 1,     1,     1.0,    1.5,     1,      1    ],
+            [ 2,     1,     1.1,    1.6,     1,      1    ],
+            [ 3,     2,     1.3,    1.8,     1,      1    ],
             [ 4,   2*2,     1.1,    1.9,     2,      1    ],
             [ 5,   2*2,     1.2,    2.0,     2,      1    ],
             [ 6,   2*2,     1.3,    2.1,     2,      1    ],
@@ -2448,9 +2455,9 @@ class App:
         
         #    [レベル,連射数 ,スピード ,攻撃力 ,1-2-3-5way?,加速度]
         self.sub_weapon_homing_missile_level_data_list = [
-            [ 1,    4,     0.7,    0.2,     1,      1    ],
-            [ 2,    4,     0.9,    0.3,     1,      1    ],
-            [ 3,    4,     1.0,    0.4,     1,      1    ],
+            [ 1,     4,     0.7,    0.2,     1,      1    ],
+            [ 2,     4,     0.9,    0.3,     1,      1    ],
+            [ 3,     4,     1.0,    0.4,     1,      1    ],
             [ 4,   4*2,     0.9,    0.3,     2,      1    ],
             [ 5,   4*2,     1.0,    0.4,     2,      1    ],
             [ 6,   4*2,     1.1,    0.5,     2,      1    ],
@@ -2657,10 +2664,19 @@ class App:
                                                     #将来的には「起動処理中」とか「タイトル表示中」にする予定
         
         #再スタートで初期化してはいけない変数はここ(appクラスの__init__関数)で定義します###################################
-        self.hi_score =  100                   #ハイスコア
-        # self.total_game_playtime_seconds = 0    #トータルゲームプレイ時間 (秒)
-        self.backup_replay_data = []            #リプレイデータのバックアップ用リストを初期化します   
+        self.hi_score =  100                    #ハイスコア
+        # self.total_game_playtime_seconds = 0  #トータルゲームプレイ時間 (秒)
         
+        #self.replay_data = [[]]*50              #リプレイデータ用に使用する横無限大,縦50ステージ分の空っぽのリプレイデータリストを作成します
+        #上の方法で空リストを作成すると1つのリストに数値を入れると他の全てのリストに数値が代入されちゃう・・・・・なんでや！
+        #なんか上の方法だと要素のリストがすべて同じオブジェクトになるらしい・・・聞いてないよそんなの・・・
+        #内包表記って言うのを使えば良いらしい！？
+        self.replay_data =[[] for i in range(50)] #これでいいのかな？？？
+        
+        print("replay_data")
+        print(self.replay_data)
+        
+        self.replay_stage_num = 0       #リプレイ再生、録画時のステージ数を0で初期化します(1ステージ目=0→2ステージ目=1→3ステージ目=2って感じ)
         self.move_mode = MOVE_MANUAL            #移動モードの状態です
                                                 #MOVE_MANUAL = パッドやキーボード入力によって移動
                                                 #MOVE_AUTO = イベントによる自動移動モードとなり設定された位置まで自動で移動して行きます
@@ -2682,7 +2698,7 @@ class App:
         self.raster_scroll_flag = 0            #背景ラスタスクロールを表示するかのフラグを初期化
         self.reference_tilemap  = 0            #BGタイルマップを調べたり書き換えたりする時、どのタイルマップナンバーを使用するのかの変数の初期化です
         
-        self.load_kanji_font_data()   #漢字フォントデータのローディング
+        self.load_kanji_font_data()            #漢字フォントデータのローディング
         
         #毎フレームごとにupdateとdrawを呼び出す
         pyxel.run(self.update,self.draw)#この命令でこれ以降は１フレームごとに自動でupdate関数とdraw関数が交互に実行されることとなります
@@ -3966,7 +3982,7 @@ class App:
         self.title_oscillation_count = 200          #タイトルグラフイックの振れ幅カウンター
         self.title_slash_in_count =    100          #タイトルグラフイックが下から切り込んで競りあがってくる時に使うカウンター
         
-        # self.display_title_time       = 10        #タイトルを表示する時間
+        # self.display_title_time      = 10         #タイトルを表示する時間
         # self.title_oscillation_count = 10         #タイトルグラフイックの振れ幅カウンター
         # self.title_slash_in_count =    10         #タイトルグラフイックが下から切り込んで競りあがってくる時に使うカウンター
         
@@ -3974,7 +3990,11 @@ class App:
         self.star_scroll_speed = 1             #背景の流れる星のスクロールスピード 1=通常スピード 0.5なら半分のスピードとなります
         self.window = []                       #タイトル表示時もメッセージウィンドウを使いたいのでリストをここで初期化してあげます
         
-        self.replay_input_data = []   #リプレイ保存用のパッド入力リストを初期化します
+        #リプレイレコーディング用に使用する横無限大,縦50ステージ分の空っぽのリプレイデータリストを作成します
+        self.replay_recording_data =[[] for i in range(50)]
+        
+        print("replay_recording_data")
+        print(self.replay_recording_data) #ターミナルにリプレイ録画データの中身を表示
         
         self.bg_cls_color = 0         #BGをCLS(クリアスクリーン)するときの色の指定(通常は0=黒色です)ゲーム時に初期値から変更されることがあるのでここで初期化する
         
@@ -3992,9 +4012,9 @@ class App:
                                             #選択してcursor_decision_itemに入ったアイテムナンバーをcursor_pre_decision_itemに入れて次の階層に潜るって手法かな？
         
         #system-data.pyxresリソースファイルからこれらの設定値を読み込むようにしたのでコメントアウトしています
-        # self.game_difficulty = GAME_NORMAL        #難易度               タイトルメニューで難易度を選択して変化させるのでここで初期化します
+        # self.game_difficulty = GAME_NORMAL         #難易度                  タイトルメニューで難易度を選択して変化させるのでここで初期化します
         # self.stage_number = STAGE_MOUNTAIN_REGION  #最初に出撃するステージ   タイトルメニューでステージを選択して変化させるのでここで初期化します
-        # self.stage_loop   = 1                  #ループ数(ステージ周回数) タイトルメニューで周回数を選択して変化させるのでここで初期化します
+        # self.stage_loop   = 1                      #ループ数(ステージ周回数) タイトルメニューで周回数を選択して変化させるのでここで初期化します
         
         pygame.mixer.init(frequency = 44100)     #pygameミキサー関連の初期化
         pygame.mixer.music.set_volume(0.7)       #音量設定(0~1の範囲内)
@@ -4197,15 +4217,19 @@ class App:
                 
                 self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
                 
-            elif self.cursor_decision_item == 6:               #REPLAYが押されたら
-                if not self.backup_replay_data:                #リプレイデータのバックアップ用リストが空だったらリプレイ再生できないので
-                    self.cursor_show = True                    #カーソルだけは表示
-                else:                                          #リプレイデータのバックアップ用リストが存在したのなら
-                    self.cursor_show = False                   #セレクトカーソルの表示をoffにする
-                    self.move_mode = MOVE_MANUAL               #移動モードを「手動移動」にします
-                    self.replay_status = REPLAY_PLAY           #リプレイ機能の状態を「再生中」にします
-                    self.update_restore_replay_data()          #リプレイデータをリストア(復元)する関数を呼び出す                
-                    self.game_status = SCENE_GAME_START_INIT   #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
+            elif self.cursor_decision_item == 6:                     #REPLAYが押されたら
+                if len(self.replay_data[self.replay_stage_num]) == 0:#リプレイデータのリストが空(長さが0)だったらリプレイ再生できないので
+                    self.cursor_show = True                          #カーソルだけは表示
+                else:                                                #リプレイデータのバックアップ用リストが存在したのなら
+                    self.cursor_show = False                         #セレクトカーソルの表示をoffにする
+                    self.move_mode = MOVE_MANUAL                     #移動モードを「手動移動」にします
+                    self.replay_status = REPLAY_PLAY                 #リプレイ機能の状態を「再生中」にします
+                    self.update_restore_replay_data()                #リプレイデータをリストア(復元)する関数を呼び出す
+                    
+                    print("start replay-------------------------------")
+                    print(self.replay_data)                          #(デバッグ用)ターミナルに記録されたリプレイデータデータの中身をプリント  
+                    self.replay_stage_num = 0                        #リプレイデータを最初のステージから再生できるように0初期化
+                    self.game_status = SCENE_GAME_START_INIT         #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
             
         elif self.cursor_menu_layer == 1: #メニューが1階層目の選択分岐
             if self.cursor_pre_decision_item == 1 and self.cursor_decision_item == 0:
@@ -4406,7 +4430,7 @@ class App:
 
     #!ゲームスタート時の初期化#########################################
     def update_game_start_init(self):
-        self.score = 0              #スコア
+        self.score = 0               #スコア
         self.my_shield = 5           #自機のシールド耐久値
         self.my_speed = 1            #自機の初期スピード
         
@@ -4421,21 +4445,21 @@ class App:
         
         self.select_shot_id = 0        #現在使用しているショットのIDナンバー(ナンバーの詳細はshot_levelを参照するのです！)
         
-        self.shot_exp = 0               #自機ショットの経験値 パワーアップアイテムを取ることにより経験値がたまりショットのレベルが上がっていく
-        self.shot_level = 0             #自機ショットのレベル  0~3バルカンショット  4=レーザー 5=ツインレーザー 6=3WAYレーザー
-                                    #7=ウェーブカッターLv1  8=ウェーブカッターLv2  9=ウェーブカッターLv3   10=ウェーブカッターLv4
-        self.shot_speed_magnification=1    #自機ショットのスピードに掛ける倍率(vxに掛け合わせる)  
-        self.shot_rapid_of_fire = 1       #自機ショットの連射数  初期値は1連射
+        self.shot_exp = 0                   #自機ショットの経験値 パワーアップアイテムを取ることにより経験値がたまりショットのレベルが上がっていく
+        self.shot_level = 0                 #自機ショットのレベル  0~3バルカンショット  4=レーザー 5=ツインレーザー 6=3WAYレーザー
+                                            #7=ウェーブカッターLv1  8=ウェーブカッターLv2  9=ウェーブカッターLv3   10=ウェーブカッターLv4
+        self.shot_speed_magnification=1     #自機ショットのスピードに掛ける倍率(vxに掛け合わせる)  
+        self.shot_rapid_of_fire = 1         #自機ショットの連射数  初期値は1連射
         
-        self.missile_exp = 0            #自機ミサイルの経験値 パワーアップアイテムを取ることにより経験値が溜まりミサイルのレベルが上がっていく
-        self.missile_level = 0           #自機ミサイルのレベル  0~2 0=右下のみ  1=右下左上前方2方向  2=右下右上  左下左上4方向
+        self.missile_exp = 0               #自機ミサイルの経験値 パワーアップアイテムを取ることにより経験値が溜まりミサイルのレベルが上がっていく
+        self.missile_level = 0             #自機ミサイルのレベル  0~2 0=右下のみ  1=右下左上前方2方向  2=右下右上  左下左上4方向
         self.missile_speed_magnification=1 #自機ミサイルのスピードに掛ける倍率(vxに掛け合わせる)
-        self.missile_rapid_of_fire = 1    #自機ミサイルの連射数  初期値は1連射
+        self.missile_rapid_of_fire = 1     #自機ミサイルの連射数  初期値は1連射
         
         self.select_sub_weapon_id = 0      #現在使用しているサブウェポンのIDナンバー -1だと何も所有していない状態
         self.sub_weapon_list = [10,10,10,10,10] #どのサブウェポンを所持しているかのリスト(インデックスオフセット値)
                                         #0=テイルショット 1=ペネトレートロケット 2=サーチレーザー 3=ホーミングミサイル 4=ショックバンバー
-        self.star_scroll_speed = 1         #背景の流れる星のスクロールスピード 1=通常スピード 0.5なら半分のスピードとなります
+        self.star_scroll_speed = 1          #背景の流れる星のスクロールスピード 1=通常スピード 0.5なら半分のスピードとなります
         #self.pow_item_bounce_num = 6       #パワーアップアイテムが画面の左端で跳ね返って戻ってくる回数
                                             #初期値は6でアップグレードすると増えていくです
         
@@ -4443,26 +4467,28 @@ class App:
         self.one_game_playtime_seconds = 0 #1プレイでのゲームプレイ時間(秒単位)
         
         self.game_play_count = 0        #ゲーム開始から経過したフレームカウント数(1フレームは60分の1秒)1面～今プレイしている面までのトータルフレームカウント数です
-        self.rnd09_num = 0            #乱数0~9ルーレットの初期化
+        self.rnd09_num = 0              #乱数0~9ルーレットの初期化
+
+        self.replay_stage_num = 0       #リプレイ再生、録画時のステージ数を0で初期化します(1ステージ目=0→2ステージ目=1→3ステージ目=2って感じ)
         
-        if self.move_mode != 4: #リプレイデータでの再生時は乱数の種の更新は行いません
+        if self.replay_status != REPLAY_PLAY:       #リプレイデータでの再生時は乱数の種の更新は行いません、それ以外の時は更新します
             self.rnd_seed = pyxel.frame_count % 256 #線形合同法を使った乱数関数で使用する乱数種を現在のフレーム数とします(0~255の範囲)
             self.master_rnd_seed = self.rnd_seed    #リプレイデータ記録用として元となる乱数種を保存しておきます
         
         self.claw_type = 0              # クローのタイプ 
-                                    # 0=ローリングクロー 1=トレースクロー 2=フィックスクロー 3=リバースクロー
-        self.claw_number = 0           # クローの装備数 0=装備無し 1=1機 2=2機 3=3機 4=4機
+                                        # 0=ローリングクロー 1=トレースクロー 2=フィックスクロー 3=リバースクロー
+        self.claw_number = 0            # クローの装備数 0=装備無し 1=1機 2=2機 3=3機 4=4機
         self.claw_difference = 360      # クロ―同士の角度間隔 1機=360 2機=180度 3機=120度 4機=90度
         self.trace_claw_index = 0       #トレースクロー（オプション）時のトレース用配列のインデックス値
-        self.trace_claw_distance = 12    #トレースクロー同士の間隔
-        self.fix_claw_magnification = 1  #フイックスクロー同士の間隔の倍率 0.5~2まで0.1刻み
+        self.trace_claw_distance = 12   #トレースクロー同士の間隔
+        self.fix_claw_magnification = 1 #フイックスクロー同士の間隔の倍率 0.5~2まで0.1刻み
         self.reverse_claw_svx = 1       #リバースクロー用の攻撃方向ベクトル(x軸)
         self.reverse_claw_svy = 0       #リバースクロー用の攻撃方向ベクトル(y軸)
         self.claw_shot_speed = 2        #クローショットのスピード（初期値は移動量２ドット）
         
-        self.ls_shield_hp = 0          #L'sシールドの耐久力 0=シールド装備していない 1以上はシールド耐久値を示す
+        self.ls_shield_hp = 0           #L'sシールドの耐久力 0=シールド装備していない 1以上はシールド耐久値を示す
         
-        self.claw = []                #クローのリスト クローのリストはステージスタート時に初期化してしまうと次のステージに進んだときクローが消滅してしまうのでgame_start_initで初期化します
+        self.claw = []                  #クローのリスト クローのリストはステージスタート時に初期化してしまうと次のステージに進んだときクローが消滅してしまうのでgame_start_initで初期化します
         
         #難易度に応じた数値をリストから取得する
         self.get_difficulty_data() #難易度データリストから数値を取り出す関数の呼び出し
@@ -4478,15 +4504,15 @@ class App:
         self.shot_exp  += self.start_bonus_shot
         self.missile_exp += self.start_bonus_missile
         self.my_shield += self.start_bonus_shield
-        self.level_up_my_shot()     #自機ショットの経験値を調べ可能な場合レベルアップをさせる関数を呼び出す
-        self.level_up_my_missile()   #自機ミサイルの経験値を調べ可能な場合レベルアップをさせる関数を呼び出す
+        self.level_up_my_shot()            #自機ショットの経験値を調べ可能な場合レベルアップをさせる関数を呼び出す
+        self.level_up_my_missile()         #自機ミサイルの経験値を調べ可能な場合レベルアップをさせる関数を呼び出す
         if self.start_claw == ONE_CLAW:    #ゲーム開始時クローの数が1の時は
-            self.update_append_claw() #クロー追加ボーナスの数値の回数分、追加関数を呼び出す
-        elif self.start_claw == TWO_CLAW:   #ゲーム開始時クローの数が2の時は
-            self.update_append_claw() #2回呼び出し
+            self.update_append_claw()      #クロー追加ボーナスの数値の回数分、追加関数を呼び出す
+        elif self.start_claw == TWO_CLAW:  #ゲーム開始時クローの数が2の時は
+            self.update_append_claw()      #2回呼び出し
             self.update_append_claw()
         elif self.start_claw == THREE_CLAW: #ゲーム開始時クローの数が3の時は
-            self.update_append_claw() #3回呼び出し
+            self.update_append_claw()       #3回呼び出し
             self.update_append_claw()
             self.update_append_claw()
 
@@ -4507,10 +4533,10 @@ class App:
                                     #各ビットの詳細
                                     # 上から 0,0,0,0, RS,LS,START,SELECT,   BY,BX,BB,BA, R,L,D,U
                                     # U=上 D=下 L=左 R=右 BA~BY=各ボタン START,SELECT=スタート,セレクト LS,RS=左ショルダー,右ショルダーボタン
-        self.replay_farame = 0      #リプレイ時のリストインデックス値を初期化
+        self.replay_frame_index = 0 #リプレイ時のフレームインデックス値を初期化
         
         #各ステージに応じた数値をリストから取得する
-        self.get_stage_data() #ステージデータリストからステージごとに設定された数値を取り出す関数の呼び出し
+        self.get_stage_data()             #ステージデータリストからステージごとに設定された数値を取り出す関数の呼び出し
         
         self.present_repair_item_flag = 0 #ボス破壊後の爆発シーンでリペアアイテムを出すときに使用するフラグ 0=まだアイテム出してない 1=アイテム放出したよ～
         self.rank_down_count = 0          #ダメージを受けて難易度別に設定された規定値まで行ったかどうかをカウントする変数
@@ -4526,7 +4552,7 @@ class App:
         
         self.add_appear_flag = 0     #敵を追加発生させる時に立てるフラグです
         
-        self.record_games_status = 0  #ポーズを掛けたときに直前のゲームステータスを記録しておく変数
+        self.record_games_status = 0 #ポーズを掛けたときに直前のゲームステータスを記録しておく変数
         
         self.scroll_count = 0           #ステージ開始からスクロールした背景のドット数カウンタ
                                         #(スクロールスピードが小数になったときはこのカウントも少数になるので注意！)
@@ -5053,23 +5079,23 @@ class App:
         elif self.replay_status == REPLAY_PLAY and self.move_mode == MOVE_MANUAL: #リプレイステータスが「PLAY」で移動モードが「MANUAL」のときは
             self.my_vx,self.my_vy = 0,0 #自機の自機の移動量(vx,vy)を0に初期化する
             #リプレイデータを調べて左入力だったのなら  x座標を  my_speedの数値だけ減らす
-            if self.backup_replay_data[self.replay_farame] & 0b0000000000000100 == 0b0000000000000100:
+            if self.replay_data[self.replay_stage_num][self.replay_frame_index] & 0b0000000000000100 == 0b0000000000000100:
                 self.my_moved_flag = 1#自機移動フラグOn
                 self.my_vx = -1
             
             #リプレイデータを調べて右入力があったのなら x座標を  my_speedの数値だけ増やす
-            if self.backup_replay_data[self.replay_farame] & 0b0000000000001000 == 0b0000000000001000:
+            if self.replay_data[self.replay_stage_num][self.replay_frame_index] & 0b0000000000001000 == 0b0000000000001000:
                 self.my_moved_flag = 1#自機移動フラグOn
                 self.my_vx = 1
             
             #リプレイデータを調べて上入力があったのなら y座標を  my_speedの数値だけ減らす
-            if self.backup_replay_data[self.replay_farame] & 0b0000000000000001 == 0b0000000000000001:
+            if self.replay_data[self.replay_stage_num][self.replay_frame_index] & 0b0000000000000001 == 0b0000000000000001:
                 self.my_rolling_flag = 2
                 self.my_moved_flag = 1#自機移動フラグOn
                 self.my_vy = -1
             
             #リプレイデータを調べて下入力があったのなら y座標を  my_speedの数値だけ増やす
-            if self.backup_replay_data[self.replay_farame] & 0b0000000000000010 == 0b0000000000000010:
+            if self.replay_data[self.replay_stage_num][self.replay_frame_index] & 0b0000000000000010 == 0b0000000000000010:
                 self.my_rolling_flag = 1
                 self.my_moved_flag = 1#自機移動フラグOn
                 self.my_vy = 1
@@ -5141,7 +5167,7 @@ class App:
     #キーボードの3かゲームパッドの「SELECT」ボタンが入力されたボタンが押されたか？チェックする(スピードチェンジ)     KEY 3 GAMEPAD SELECT
     def update_check_change_speed(self):
         if self.replay_status == REPLAY_PLAY: #リプレイステータスが「再生中」の場合は
-            if self.backup_replay_data[self.replay_farame] & 0b0000000100000000 == 0b0000000100000000: #リプレイデータを調べてPAD SELECTが押された記録だったのなら...
+            if self.replay_data[self.replay_stage_num][self.replay_frame_index] & 0b0000000100000000 == 0b0000000100000000: #リプレイデータを調べてPAD SELECTが押された記録だったのなら...
                 self.update_change_speed() #スピードチェンジ関数呼び出し！
         elif self.move_mode == MOVE_MANUAL: #手動移動モードの場合は
             if pyxel.btnp(pyxel.KEY_3) or pyxel.btnp(pyxel.GAMEPAD_1_SELECT) or pyxel.btnp(pyxel.GAMEPAD_2_SELECT):
@@ -5160,7 +5186,7 @@ class App:
     #スペースキーかゲームパッドAが押されたかどうか？もしくはリプレイモードでショット発射したのか調べる     KEY SPACE GAMEPAD A
     def update_check_fire_shot(self):
         if self.replay_status == REPLAY_PLAY: #リプレイステータスが「再生中」の場合は
-            if self.backup_replay_data[self.replay_farame] & 0b0000000000010000 == 0b0000000000010000: #リプレイデータを調べてPAD Aが押された記録だったのなら...
+            if self.replay_data[self.replay_stage_num][self.replay_frame_index] & 0b0000000000010000 == 0b0000000000010000: #リプレイデータを調べてPAD Aが押された記録だったのなら...
                 self.update_fire_shot() #ショット発射関数呼び出し！
         elif self.move_mode == MOVE_MANUAL: #手動移動モードの場合は
             if pyxel.btn(pyxel.KEY_SPACE) or pyxel.btn(pyxel.GAMEPAD_1_A) or pyxel.btn(pyxel.GAMEPAD_2_A): #パッドAかスペースキーが押されたか？
@@ -5377,7 +5403,7 @@ class App:
     #スペースキーかゲームバットBボタンが押さたかどうか？もしくはリプレイモードでミサイル発射したのか調べる KEY SPACE GAMEPAD B
     def update_check_fire_missile(self):
         if self.replay_status == REPLAY_PLAY: #リプレイステータスが「再生中」の場合は
-            if self.backup_replay_data[self.replay_farame] & 0b0000000000100000 == 0b0000000000100000: #リプレイデータを調べてPAD Bが押された記録だったのなら...
+            if self.replay_data[self.replay_stage_num][self.replay_frame_index] & 0b0000000000100000 == 0b0000000000100000: #リプレイデータを調べてPAD Bが押された記録だったのなら...
                 self.update_fire_missile() #ミサイル発射関数呼び出し！
         elif self.move_mode == MOVE_MANUAL: #手動移動モードの場合は
             if pyxel.btn(pyxel.KEY_SPACE) or pyxel.btn(pyxel.GAMEPAD_1_B) or pyxel.btn(pyxel.GAMEPAD_2_B): #パッドBかスペースキーが押されたか？
@@ -6232,7 +6258,7 @@ class App:
     #クローが弾を発射するのか調べる関数
     def update_check_fire_claw_shot(self):
         if self.replay_status == REPLAY_PLAY: #リプレイステータスが「再生中」の場合は
-            if self.backup_replay_data[self.replay_farame] & 0b0000000000010000 == 0b0000000000010000: #リプレイデータを調べてPAD Aが押された記録だったのなら...
+            if self.replay_data[self.replay_stage_num][self.replay_frame_index] & 0b0000000000010000 == 0b0000000000010000: #リプレイデータを調べてPAD Aが押された記録だったのなら...
                 self.update_fire_claw_shot() #クローショット発射関数呼び出し！
         elif self.move_mode == MOVE_MANUAL: #手動移動モードの場合は
             if pyxel.btn(pyxel.KEY_SPACE) or pyxel.btn(pyxel.GAMEPAD_1_A) or pyxel.btn(pyxel.GAMEPAD_2_A): #パッドAかスペースキーが押されたか？
@@ -7244,7 +7270,7 @@ class App:
     #フイックスクローの間隔変化ボタンが押されたかチェックする               KEY N  GAMEPAD RIGHT_SHOULDER
     def update_check_change_fix_claw_interval(self):
         if self.replay_status == REPLAY_PLAY: #リプレイステータスが「再生中」の場合は
-            if self.backup_replay_data[self.replay_farame] & 0b0000100000000000 == 0b0000100000000000: #リプレイデータを調べてPAD_RIGHT_Sが押された記録だったのなら...
+            if self.replay_data[self.replay_stage_num][self.replay_frame_index] & 0b0000100000000000 == 0b0000100000000000: #リプレイデータを調べてPAD_RIGHT_Sが押された記録だったのなら...
                 self.update_change_fix_claw_interval() #フイックスクローの間隔変化関数呼び出し！
         elif self.move_mode == MOVE_MANUAL: #手動移動モードの場合は
             if pyxel.btn(pyxel.KEY_N) or pyxel.btn(pyxel.GAMEPAD_1_RIGHT_SHOULDER) or pyxel.btn(pyxel.GAMEPAD_2_RIGHT_SHOULDER):#NキーかPAD_RIGHT_Sが押されたらフックスクローの間隔を変化させる
@@ -7261,7 +7287,7 @@ class App:
     #クロースタイル変更ボタンが押されたかチェックする                      KEY M  GAMEPAD LEFT_SHOULDER
     def update_check_change_claw_style(self):
         if self.replay_status == REPLAY_PLAY: #リプレイステータスが「再生中」の場合は
-            if self.backup_replay_data[self.replay_farame] & 0b0000010000000000 == 0b0000010000000000: #リプレイデータを調べてPAD_LEFT_Sが押された記録だったのなら...
+            if self.replay_data[self.replay_stage_num][self.replay_frame_index] & 0b0000010000000000 == 0b0000010000000000: #リプレイデータを調べてPAD_LEFT_Sが押された記録だったのなら...
                 self.update_change_claw_style() #クロースタイル変更関数呼び出し！
         elif self.move_mode == MOVE_MANUAL: #手動移動モードの場合は
             if pyxel.btnp(pyxel.KEY_M) or pyxel.btnp(pyxel.GAMEPAD_1_LEFT_SHOULDER) or pyxel.btnp(pyxel.GAMEPAD_2_LEFT_SHOULDER):#MキーかPAD_LEFT_Sが押されたらクローの種類を変更する
@@ -8577,7 +8603,7 @@ class App:
     #サブウェポン切り替えボタンが押された＆サブウェポンを一つでも所維持しているのか？チェックする      GAMEPAD Y
     def update_check_change_sub_weapon(self):
         if self.replay_status == REPLAY_PLAY: #リプレイステータスが「再生中」の場合は
-            if self.backup_replay_data[self.replay_farame] & 0b0000000010000000 == 0b0000000010000000: #リプレイデータを調べてPAD Yが押された記録だったのなら...
+            if self.replay_data[self.replay_stage_num][self.replay_frame_index] & 0b0000000010000000 == 0b0000000010000000: #リプレイデータを調べてPAD Yが押された記録だったのなら...
                 self.update_change_sub_weapon() #サブウェポン切り替え関数呼び出し！
         elif self.move_mode == MOVE_MANUAL: #手動移動モードの場合は
             if pyxel.btnp(pyxel.GAMEPAD_1_Y) or pyxel.btnp(pyxel.GAMEPAD_2_Y) and self.select_sub_weapon_id != -1:#サブウェポン切り替えボタンが押された＆サブウェポンを一つでも所維持しているのか？
@@ -9080,23 +9106,32 @@ class App:
 
     #リプレイデータの記録   自動移動モードの時とステージクリアのブーストの時とリプレイ再生中の時はリプレイデータを記録しません
     def update_record_replay_data(self):
-        if     self.move_mode != MOVE_AUTO\
-            or self.game_status != SCENE_STAGE_CLEAR_MY_SHIP_BOOST\
-            or self.replay_status != REPLAY_PLAY:
-            
-            self.replay_input_data.append(self.pad_data)   #リプレイデータリストにパッド入力データを記録追加します
+        if     self.move_mode     == MOVE_AUTO\
+            or self.game_status   == SCENE_STAGE_CLEAR_MOVE_MY_SHIP\
+            or self.game_status   == SCENE_STAGE_CLEAR_MY_SHIP_BOOST\
+            or self.game_status   == SCENE_STAGE_CLEAR_FADE_OUT\
+            or self.replay_status == REPLAY_PLAY:
             self.pad_data = 0b0000000000000000             #次のフレーム時の記録のためにデータを初期化してあげます
+            return
+        else:
+            self.replay_recording_data[self.replay_stage_num].append(self.pad_data)   #リプレイデータリストにパッド入力データを記録追加します
+            self.pad_data = 0b0000000000000000             #次のフレーム時の記録のためにデータを初期化してあげます
+    
+    #リプレイデータ再生用のインデックス値を1増やしていく関数(リプレイフレームインデックス値の更新)
+    def update_replay_frame_index(self):
+        if self.replay_frame_index < len(self.replay_data[self.replay_stage_num]) - 1:
+            self.replay_frame_index += 1  #インデックス値がリストの大きさを超えていなかったら1増やして次のデータを取り込めるようにしてやります
 
     #リプレイデータ(ステータス関連)をバックアップする(プッシュする感じみたいな？？？)
-    def update_backup_replay_data_status(self):
+    def update_replay_data_status(self):
         self.backup_rnd_seed         = self.rnd_seed         #乱数の種をバックアップ
         self.backup_game_difficulty  = self.game_difficulty  #難易度をバックアップ
         self.backup_stage_number     = self.stage_number     #ステージ数をバックアップ
         self.backup_stage_loop       = self.stage_loop       #ループ数をバックアップ
 
     #リプレイデータ(リスト本体)をバックアップする(プッシュする感じみたいな？？？)
-    def update_backup_replay_data_list(self):
-        self.backup_replay_data      = self.replay_input_data #入力データリストをバックアップ
+    def update_replay_data_list(self):
+        self.replay_data      = self.replay_recording_data    #録画されたリプレイデータをデータリストを登録
 
     #リプレイデータをリストアする(ポップする感じみたいな？？？)
     def update_restore_replay_data(self):
@@ -10071,9 +10106,14 @@ class App:
         # pyxel.text(0,120-39,str(self.s_rndint(10,600)),8)
         
         #リプレイデータのサイズ表示
-        num = "{:>8}".format(int(len(self.replay_input_data)))
-        pyxel.text(128,120-22,num,8)
-
+        if self.replay_status == REPLAY_RECORD:  #録画時はreplay_recording_dataのリスト長をひょうじする
+            num = "{:>8}".format(int(len(self.replay_recording_data[self.replay_stage_num])))
+            pyxel.text(128,120-22,num,8)
+        elif self.replay_status == REPLAY_PLAY:  #再生時はreplay_dataのリスト長と現在のリプレイフレームインデックス値を表示する
+            num1 = "{:>8}".format(self.replay_frame_index)
+            pyxel.text(128,120-29,num1,9)
+            num2 = "{:>8}".format(int(len(self.replay_data[self.replay_stage_num])))
+            pyxel.text(128,120-22,num2,10)
     #BGチップデータ書き換えアニメーション実装のために作ったダミーテスト関数 画面左から2列目の縦1列を取得し、そのＢＧデータを画面左端1列目に表示する
     def draw_dummy_put_bg_xy(self):
         if self.scroll_type == SCROLL_TYPE_8FREEWAY_SCROLL_AND_RASTER: #全方向フリースクロール＋ラスタースクロールの場合
@@ -10390,7 +10430,7 @@ class App:
         ################################ ゲームスタート時の初期化 #################################################################
         if self.game_status == SCENE_GAME_START_INIT: #ゲームステータスが「GAME_START_INIT」の場合（ゲームスタート時の状態遷移）は以下を実行する
             self.update_game_start_init()             #ゲーム開始前の初期化    スコアやシールド値、ショットレベルやミサイルレベルなどの初期化
-            self.update_backup_replay_data_status()   #リプレイデータ(ステータス関連)をバックアップする関数の呼び出し
+            self.update_replay_data_status()          #リプレイデータ(ステータス関連)をバックアップする関数の呼び出し
             self.game_status = SCENE_STAGE_START_INIT #ゲームステータスを「STAGE_START_INIT」にする
         
         ################################ステージスタート時の初期化 #################################################################
@@ -10484,8 +10524,8 @@ class App:
             self.update_bg_rewrite_animation()        #BG書き換えによるアニメーション関数の呼び出し
             # self.update_dummy_bg_animation()        #BG 座標直接指定による書き換えダミーテスト
             #リプレイデータの記録と再生###################################################################################################
-            self.update_record_replay_data()   #パッド＆キーボード入力によるリプレイデータの記録を行う関数を呼び出します
-            self.replay_farame += 1            #リプレイ用のリストインデックスフレームカウントを1進める
+            self.update_record_replay_data()          #パッド＆キーボード入力によるリプレイデータの記録を行う関数を呼び出します
+            self.update_replay_frame_index()          #リプレイ用のフレームインデックス値を1進めていく関数を呼びますぅ
             #乱数ルーレットの更新########################################################################################################
             self.update_rnd0_9()                    #乱数ルーレット( 0~9)の更新
             self.update_rnd0_99()                   #乱数ルーレット(0~99)の更新
@@ -10564,26 +10604,33 @@ class App:
             self.cursor_max_item = 1                          #最大項目数は「YES」「NO」の2項目なので 2-1=1を代入
             self.game_status = SCENE_RETURN_TITLE             #ゲームステータスを「RETURN_TITLE」にする
         
-        if self.game_status == SCENE_RETURN_TITLE:         #「RETURN_TITLE」の時は            
+        if self.game_status == SCENE_RETURN_TITLE:           #「RETURN_TITLE」の時は            
             if pyxel.btnp(pyxel.KEY_ENTER):                #リターンキーが押されたら
                 self.game_status = SCENE_TITLE_INIT        #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
                 self.game_playing_flag = 0                 #ゲームプレイ中のフラグを降ろす
                 self.save_system_data()                    #システムデータをセーブする関数の呼び出し
-                self.update_backup_replay_data_list()      #リプレイデータ(リスト本体)をバックアップします
-                self.replay_input_data = []                #リプレイデータのバックアップは取ったので元のデータは消去します
+                self.update_replay_data_list()             #録画したリプレイデータを登録します
+                self.replay_recording_data = []            #録画したリプレイデータは登録したで元のデータは消去します
             
             
             if self.cursor_decision_item == 0:             #メニューでアイテムナンバー0の「YES」が押されたら
                 self.game_status = SCENE_TITLE_INIT        #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
                 self.game_playing_flag = 0                 #ゲームプレイ中のフラグを降ろす
                 self.save_system_data()                    #システムデータをセーブする関数の呼び出し
-                self.update_backup_replay_data_list()      #リプレイデータ(リスト本体)をバックアップします
-                self.replay_input_data = []                #リプレイデータのバックアップは取ったので元のデータは消去します
+                print("replay_recording_data")
+                print(self.replay_recording_data)          #ターミナルにリプレイ録画データの中身を表示
+                self.update_replay_data_list()             #録画したリプレイデータを登録します
+                self.replay_recording_data = []            #録画したリプレイデータは登録したで元のデータは消去します
         
         #########ステージクリア後の処理#############################################################
         if self.game_status == SCENE_STAGE_CLEAR_FADE_OUT:   #「SCENE_STAGE_CLEAR_FADE_OUT」の時は
-            if self.fade_complete_flag == 1:                #フェードアウト完了のフラグが建ったのなら
+            if self.fade_complete_flag == 1:                 #フェードアウト完了のフラグが建ったのなら
                 self.stage_number += 1    #ステージ数を1増やす
+                self.replay_stage_num += 1#リプレイ再生記録用のステージ数も1増やします
+                if self.replay_stage_num > 50:            #リプレイ記録用のファイルは50ステージ分しか今の所用意していないので
+                    self.replay_status = REPLAY_STOP      #リプレイの記録はストップさせるようにします
+                    self.replay_stage_num = 50            #念のため記録ステージ数は最高の50で丸めておきます
+                
                 if self.stage_number == STAGE_VOLCANIC_BELT:  #ステージ3 火山地帯はまだ未完成なので・・・
                     self.stage_number = STAGE_MOUNTAIN_REGION #ステージ1 山岳地帯に戻してやります
                     self.stage_loop += 1     #ループ数を1増やします
