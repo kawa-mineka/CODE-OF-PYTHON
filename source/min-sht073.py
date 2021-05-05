@@ -99,13 +99,13 @@ import pygame.mixer #MP3再生するためだけに使用する予定・・・�
 #定数の定義関連##################################################################################################
 WINDOW_W = 160    #ゲームウィンドウの横サイズ
 WINDOW_H = 120    #ゲームウィンドウの縦サイズ
-SHIP_H = 8       #自機の縦サイズ
-SHIP_W = 8       #自機の横サイズ
-MOVE_LIMIT = 20    #前方に進める限界距離
+SHIP_H = 8        #自機の縦サイズ
+SHIP_W = 8        #自機の横サイズ
+MOVE_LIMIT = 20   #前方に進める限界距離
 
 ALL_STAGE_NUMBER = 10 #全ステージ数(撃ち返し弾を出すとき ループ数×ALL_STAGE_NUMBER+ステージ数を計算して撃ち返すのか撃ち返さないのか判断します)
 
-SHOT_EXP_MAXIMUM    = 71 #自機ショットの最大経験値（この数値を超えちゃダメだよ）
+SHOT_EXP_MAXIMUM = 71 #自機ショットの最大経験値（この数値を超えちゃダメだよ）
                 #例 self.j_python_shot_table_listのy軸の最大値がこの数と一致します
                 #これより大きい数値にしちゃうとindex erroerになっちゃうからね
 MISSILE_EXP_MAXIMUM = 71 #自機ミサイルの最大経験値（この数値を超えちゃダメだよ）
@@ -712,7 +712,7 @@ WEAPON_READY          = 0    #何もしていない準備万端な状態
 WEAPON_ROCK_ON        = 1    #目標を定めた状態（予兆エフェクトを表示)
 WEAPON_FIRE           = 2    #武器発射中
 
-#!オブジェクトのクラス宣言エリア####################################################################################################
+#!クラス宣言エリア####################################################################################################
 #そもそもクラスって何なのか今でも判らない・・・設計図（？）みたいなものらしいが・・・
 #配列リストはこのように使いますよ～～～って言うのを記述した設計図？ってことなん？？？？？
 
@@ -2098,6 +2098,70 @@ class System_data: #ゲーム関連のシステムデータ関連のクラス設
         self.get_my_ship                    = [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0] #手に入れた機体0=未入手 1=入手 機体のIDナンバーがリストのインデックス値となります
                                                                         #例 J_PYTHONはIDナンバー0なので リスト先頭の1番目の数値となる  (0始まりなので)
                                                                         #   FIRST_BASICはIDナンバー8なのでリスト先頭の9番目の数値となる(0始まりなので)
+class Replay_mode_stage_data: #リプレイモードでの毎ステージスタート時の自機データ
+    def __init__(self):
+        self.st_score                   = 0   #毎ステージごとのスコア
+        self.st_my_shield               = 0   #自機のシールド耐久値
+        self.st_my_speed                = 0   #自機のスピード
+        self.st_select_shot_id          = 0   #現在使用しているショットのIDナンバー
+        self.st_shot_exp                = 0   #自機ショットの経験値
+        self.st_shot_level              = 0   #自機ショットのレベル
+        self.st_shot_speed_magnification    = 0   #自機ショットのスピードに掛ける倍率
+        self.st_shot_rapid_of_fire          = 0   #自機ショットの連射数
+        self.st_missile_exp                 = 0   #自機ミサイルの経験値
+        self.st_missile_level               = 0   #自機ミサイルのレベル
+        self.st_missile_speed_magnification = 0   #自機ミサイルのスピードに掛ける倍率
+        self.st_missile_rapid_of_fire       = 0   #自機ミサイルの連射数
+        self.st_select_sub_weapon_id        = 0   #現在使用しているサブウェポンのIDナンバー
+        
+        self.st_claw_type              = 0   #クローのタイプ
+        self.st_claw_number            = 0   #クローの装備数
+        self.st_claw_difference        = 0   #クロ―同士の角度間隔
+        self.st_trace_claw_index       = 0   #トレースクロー（オプション）時のトレース用配列のインデックス値
+        self.st_trace_claw_distance    = 0   #トレースクロー同士の間隔
+        self.st_fix_claw_magnification = 0   #フイックスクロー同士の間隔の倍率
+        self.st_reverse_claw_svx       = 0   #リバースクロー用の攻撃方向ベクトル(x軸)
+        self.st_reverse_claw_svy       = 0   #リバースクロー用の攻撃方向ベクトル(y軸)
+        self.st_claw_shot_speed        = 0   #クローショットのスピード
+        
+        self.st_ls_shield_hp           = 0   #L'sシールドの耐久力
+    def update(self,st_score,st_my_shield,st_my_speed,st_select_shot_id,
+            st_shot_exp,st_shot_level,st_shot_speed_magnification,st_shot_rapid_of_fire,
+            st_missile_exp,st_missile_level,st_missile_speed_magnification,st_missile_rapid_of_fire,
+            st_select_sub_weapon_id,
+            st_claw_type,st_claw_number,st_claw_difference,
+            st_trace_claw_index,st_trace_claw_distance,
+            st_fix_claw_magnification,
+            st_reverse_claw_svx,st_reverse_claw_svy,
+            st_claw_shot_speed,
+            st_ls_shield_hp):
+        self.st_score = st_score
+        self.st_my_shield = st_my_shield
+        self.st_my_speed = st_my_speed
+        self.st_select_shot_id = st_select_shot_id
+        self.st_shot_exp = st_shot_exp
+        self.st_shot_level = st_shot_level
+        self.st_shot_speed_magnification = st_shot_speed_magnification
+        self.st_shot_rapid_of_fire = st_shot_rapid_of_fire
+        self.st_missile_exp = st_missile_exp
+        self.st_missile_level = st_missile_level
+        self.st_missile_speed_magnification = st_missile_speed_magnification
+        self.st_missile_rapid_of_fire = st_missile_rapid_of_fire
+        self.st_select_sub_weapon_id = st_select_sub_weapon_id
+        
+        self.st_claw_type = st_claw_type
+        self.st_claw_number = st_claw_number
+        self.st_claw_difference = st_claw_difference
+        self.st_trace_claw_index = st_trace_claw_index
+        self.st_trace_claw_distance = st_trace_claw_distance
+        self.st_fix_claw_magnification = st_fix_claw_magnification
+        self.st_reverse_claw_svx = st_reverse_claw_svx
+        self.st_reverse_claw_svy = st_reverse_claw_svy
+        
+        self.st_claw_shot_speed = st_claw_shot_speed
+        
+        self.st_ls_shield_hp = st_ls_shield_hp
+    
 class App:
     ##########################################################################################################################################
     #関数を定義沢山定義するところだよ############################################################################################################
@@ -2676,6 +2740,8 @@ class App:
         print("replay_data")
         print(self.replay_data)
         
+        self.replay_stage_my_data = [[] for i in range(50)] #リプレイ録画時、ステージスタート時に記録される自機関連のデータが入るリスト横無限大,縦50ステージ分
+        
         self.replay_stage_num = 0       #リプレイ再生、録画時のステージ数を0で初期化します(1ステージ目=0→2ステージ目=1→3ステージ目=2って感じ)
         self.move_mode = MOVE_MANUAL            #移動モードの状態です
                                                 #MOVE_MANUAL = パッドやキーボード入力によって移動
@@ -2876,14 +2942,14 @@ class App:
     def save_system_data(self):
         pyxel.load("assets/system/system-data.pyxres") #システムデータにアクセスするためにローディングだけしてやります(グラフイック関連のアセットをローディングしている時がほとんどなので)
         #各種設定値書き込み 数字の[0]はアスキーコード16番なので16足してアスキーコードとしての0にしてやります
-        pyxel.tilemap(0).set(0,120,self.game_difficulty + 16)              #難易度書き込み
-        pyxel.tilemap(0).set(0,121,self.stage_number + 16)                #スタートステージ数書き込み
-        pyxel.tilemap(0).set(0,122,self.stage_loop + 16)                  #スタート周回数書き込み
-        pyxel.tilemap(0).set(0,126,self.debug_menu_status + 16)            #デバッグメニュー表示フラグ書き込み
+        pyxel.tilemap(0).set(0,120,self.game_difficulty + 16)                 #難易度書き込み
+        pyxel.tilemap(0).set(0,121,self.stage_number + 16)                    #スタートステージ数書き込み
+        pyxel.tilemap(0).set(0,122,self.stage_loop + 16)                      #スタート周回数書き込み
+        pyxel.tilemap(0).set(0,126,self.debug_menu_status + 16)               #デバッグメニュー表示フラグ書き込み
         pyxel.tilemap(0).set(0,127,self.boss_collision_rect_display_flag + 16)#ボス当たり判定矩形表示フラグ書き込み
-        pyxel.tilemap(0).set(0,128,self.bg_collision_Judgment_flag + 16)     #BGとの当たり判定フラグ書き込み
-        pyxel.tilemap(0).set(0,129,self.boss_test_mode + 16)               #ボステストモードフラグ書き込み
-        pyxel.tilemap(0).set(0,130,self.no_enemy_mode + 16)                #敵が出ないモードフラグ書き込み
+        pyxel.tilemap(0).set(0,128,self.bg_collision_Judgment_flag + 16)      #BGとの当たり判定フラグ書き込み
+        pyxel.tilemap(0).set(0,129,self.boss_test_mode + 16)                  #ボステストモードフラグ書き込み
+        pyxel.tilemap(0).set(0,130,self.no_enemy_mode + 16)                   #敵が出ないモードフラグ書き込み
         
         #総ゲームプレイ時間(秒)のそれぞれの桁の数値を計算する (自分でも訳が分からないよ・・・)------------------------------
         t_sec = self.total_game_playtime_seconds
@@ -3815,46 +3881,46 @@ class App:
 
     #ランクに応じた数値をリストから取得する
     def get_rank_data(self):
-        self.enemy_speed_mag         = self.game_rank_data_list[self.rank][LIST_RANK_E_SPEED_MAG]            #敵スピード倍率をリストを参照してランク数で取得、変数に代入する
+        self.enemy_speed_mag           = self.game_rank_data_list[self.rank][LIST_RANK_E_SPEED_MAG]            #敵スピード倍率をリストを参照してランク数で取得、変数に代入する
         self.enemy_bullet_speed_mag    = self.game_rank_data_list[self.rank][LIST_RANK_BULLET_SPEED_MAG]        #敵狙い撃ち弾スピード倍率をリストを参照してランク数で取得、変数に代入する
         self.return_bullet_probability = self.game_rank_data_list[self.rank][LIST_RANK_RETURN_BULLET_PROBABILITY] #敵撃ち返し弾発射確率をリストを参照してランク数で取得、変数に代入する
-        self.enemy_hp_mag            = self.game_rank_data_list[self.rank][LIST_RANK_E_HP_MAG]               #敵耐久力倍率をリストを参照してランク数で取得、変数に代入する
-        self.enemy_bullet_append      = self.game_rank_data_list[self.rank][LIST_RANK_E_BULLET_APPEND]         #弾追加数をリストを参照してランク数で取得、変数に代入する
-        self.enemy_bullet_interval    = self.game_rank_data_list[self.rank][LIST_RANK_E_BULLET_INTERVAL]        #弾発射間隔減少パーセントをリストを参照してランク数で取得、変数に代入する
-        self.enemy_nway_level        = self.game_rank_data_list[self.rank][LIST_RANK_NWAY_LEVEL]             #nWAY弾のレベルをリストを参照してランク数で取得、変数に代入する
+        self.enemy_hp_mag              = self.game_rank_data_list[self.rank][LIST_RANK_E_HP_MAG]               #敵耐久力倍率をリストを参照してランク数で取得、変数に代入する
+        self.enemy_bullet_append       = self.game_rank_data_list[self.rank][LIST_RANK_E_BULLET_APPEND]         #弾追加数をリストを参照してランク数で取得、変数に代入する
+        self.enemy_bullet_interval     = self.game_rank_data_list[self.rank][LIST_RANK_E_BULLET_INTERVAL]        #弾発射間隔減少パーセントをリストを参照してランク数で取得、変数に代入する
+        self.enemy_nway_level          = self.game_rank_data_list[self.rank][LIST_RANK_NWAY_LEVEL]             #nWAY弾のレベルをリストを参照してランク数で取得、変数に代入する
 
     #難易度に応じた数値をリストから取得する
     def get_difficulty_data(self):
-        self.start_bonus_shot        = self.game_difficulty_list[self.game_difficulty][LIST_START_BONUS_SHOT]           #初期ショットボーナスをリストを参照し難易度に合わせて取得、変数に代入する
-        self.start_bonus_missile     = self.game_difficulty_list[self.game_difficulty][LIST_START_BONUS_MISSILE]        #初期ミサイルボーナスをリストを参照し難易度に合わせて取得、変数に代入する
-        self.start_bonus_shield      = self.game_difficulty_list[self.game_difficulty][LIST_START_BONUS_SHIELD]         #初期シールドボーナスをリストを参照し難易度に合わせて取得、変数に代入する
-        self.start_claw            = self.game_difficulty_list[self.game_difficulty][LIST_START_CLAW]                #初期クローボーナスをリストを参照し難易度に合わせて取得、変数に代入する
-        self.repair_shield          = self.game_difficulty_list[self.game_difficulty][LIST_REPAIR_SHIELD]             #ステージクリア後に回復するシールド値をリストを参照し難易度に合わせて取得、変数に代入する
-        self.return_bullet          = self.game_difficulty_list[self.game_difficulty][LIST_RETURN_BULLET]             #撃ち返し弾の有無とありの時の種類をリストを参照し難易度に合わせて取得、変数に代入する
-        self.score_magnification     = self.game_difficulty_list[self.game_difficulty][LIST_SCORE_MAGNIFICATION]        #スコア倍率をリストを参照し難易度に合わせて取得、変数に代入する
-        self.rank_up_frame          = self.game_difficulty_list[self.game_difficulty][LIST_RANK_UP_FRAME]             #ランク上昇フレーム数をリストを参照し難易度に合わせて取得、変数に代入する
-        self.rank                 = self.game_difficulty_list[self.game_difficulty][LIST_START_RANK]                #ゲームスタート時のランク数をリストを参照し難易度に合わせて取得、変数に代入する
-        self.invincible_time        = self.game_difficulty_list[self.game_difficulty][LIST_DAMAGE_AFTER_INVINCIBLE_TIME] #被弾後の無敵時間をリストを参照し難易度に合わせて取得、変数に代入する
+        self.start_bonus_shot         = self.game_difficulty_list[self.game_difficulty][LIST_START_BONUS_SHOT]           #初期ショットボーナスをリストを参照し難易度に合わせて取得、変数に代入する
+        self.start_bonus_missile      = self.game_difficulty_list[self.game_difficulty][LIST_START_BONUS_MISSILE]        #初期ミサイルボーナスをリストを参照し難易度に合わせて取得、変数に代入する
+        self.start_bonus_shield       = self.game_difficulty_list[self.game_difficulty][LIST_START_BONUS_SHIELD]         #初期シールドボーナスをリストを参照し難易度に合わせて取得、変数に代入する
+        self.start_claw               = self.game_difficulty_list[self.game_difficulty][LIST_START_CLAW]                #初期クローボーナスをリストを参照し難易度に合わせて取得、変数に代入する
+        self.repair_shield            = self.game_difficulty_list[self.game_difficulty][LIST_REPAIR_SHIELD]             #ステージクリア後に回復するシールド値をリストを参照し難易度に合わせて取得、変数に代入する
+        self.return_bullet            = self.game_difficulty_list[self.game_difficulty][LIST_RETURN_BULLET]             #撃ち返し弾の有無とありの時の種類をリストを参照し難易度に合わせて取得、変数に代入する
+        self.score_magnification      = self.game_difficulty_list[self.game_difficulty][LIST_SCORE_MAGNIFICATION]        #スコア倍率をリストを参照し難易度に合わせて取得、変数に代入する
+        self.rank_up_frame            = self.game_difficulty_list[self.game_difficulty][LIST_RANK_UP_FRAME]             #ランク上昇フレーム数をリストを参照し難易度に合わせて取得、変数に代入する
+        self.rank                     = self.game_difficulty_list[self.game_difficulty][LIST_START_RANK]                #ゲームスタート時のランク数をリストを参照し難易度に合わせて取得、変数に代入する
+        self.invincible_time          = self.game_difficulty_list[self.game_difficulty][LIST_DAMAGE_AFTER_INVINCIBLE_TIME] #被弾後の無敵時間をリストを参照し難易度に合わせて取得、変数に代入する
         self.get_item_invincible_time = self.game_difficulty_list[self.game_difficulty][LIST_GET_ITEM_INVINCIBLE_TIME]    #アイテム取得後の無敵時間をリストを参照し難易度に合わせて取得、変数に代入する
         self.item_erace_bullet_flag   = self.game_difficulty_list[self.game_difficulty][LIST_ITEM_ERACE_BULLET]          #パワーアップアイテムが敵弾を消去するかどうか？のフラグをリストを参照し難易度に合わせて取得、変数に代入する
-        self.rank_limit            = self.game_difficulty_list[self.game_difficulty][LIST_RANK_LIMIT]                #ランク数の上限値をリストを参照し難易度に合わせて取得、変数に代入する
+        self.rank_limit               = self.game_difficulty_list[self.game_difficulty][LIST_RANK_LIMIT]                #ランク数の上限値をリストを参照し難易度に合わせて取得、変数に代入する
         self.return_bullet_start_loop = self.game_difficulty_list[self.game_difficulty][LIST_RETURN_BULLET_START_LOOP]    #撃ち返しを始めてくるループ数をリストを参照し難易度に合わせて取得、変数に代入する
         self.return_bullet_start_stage= self.game_difficulty_list[self.game_difficulty][LIST_RETURN_BULLET_START_STAGE]    #撃ち返しを始めてくるステージ数をリストを参照し難易度に合わせて取得、変数に代入する
         self.rank_down_need_damage    = self.game_difficulty_list[self.game_difficulty][LIST_RANK_DOWN_NEED_DAMAGE]       #1ランクダウンに必要なダメージ数をリストを参照し難易度に合わせて取得、変数に代入する
-        self.loop_power_control      = self.game_difficulty_list[self.game_difficulty][LIST_LOOP_POWER_CONTROL]         #次のループに移る時のパワーアップ調整関連の動作の仕方をリストを参照し難易度に合わせて取得、変数に代入する
+        self.loop_power_control       = self.game_difficulty_list[self.game_difficulty][LIST_LOOP_POWER_CONTROL]         #次のループに移る時のパワーアップ調整関連の動作の仕方をリストを参照し難易度に合わせて取得、変数に代入する
         self.item_range_of_attraction = self.game_difficulty_list[self.game_difficulty][LIST_ITEM_RANGE_OF_ATTRACTION]    #アイテムを引き寄せる範囲をリストを参照し難易度に合わせて取得、変数に代入する
-        self.pow_item_bounce_num     = self.game_difficulty_list[self.game_difficulty][LIST_ITEM_BOUNCE_NUM]            #アイテムの跳ね返り回数をリストを参照し難易度に合わせて取得、変数に代入する
+        self.pow_item_bounce_num      = self.game_difficulty_list[self.game_difficulty][LIST_ITEM_BOUNCE_NUM]            #アイテムの跳ね返り回数をリストを参照し難易度に合わせて取得、変数に代入する
 
     #ステージデータリストから各ステージの設定データを取り出す
     def get_stage_data(self):
-        self.bg_obstacle_y             = self.stage_data_list[self.stage_number - 1][1] #BG障害物とみなすＹ座標位置をリストを参照して取得、変数に代入する
-        self.reference_tilemap          = self.stage_data_list[self.stage_number - 1][2] #BGにアクセスするときどのタイルマップを使用するかの数値をリストを参照して取得、変数に代入する
-        self.scroll_type               = self.stage_data_list[self.stage_number - 1][3] #スクロールの種類をリストを参照して取得、変数に代入する
-        self.star_scroll_flag           = self.stage_data_list[self.stage_number - 1][4] #背景のスクロールする星々を表示するかのフラグをリストを参照して取得、変数に代入する
-        self.raster_scroll_flag         = self.stage_data_list[self.stage_number - 1][5] #背景のラスタースクロールを表示するかのフラグをリストを参照して取得、変数に代入する
-        self.disp_flag_bg_front         = self.stage_data_list[self.stage_number - 1][6] #BG背景(手前)を表示するかどうかのフラグをリストを参照して取得、変数に代入する
-        self.disp_flag_bg_middle        = self.stage_data_list[self.stage_number - 1][7] #BG背景(中間)を表示するかどうかのフラグをリストを参照して取得、変数に代入する
-        self.disp_flag_bg_back          = self.stage_data_list[self.stage_number - 1][8] #BG背景(奥)を表示するかどうかのフラグをリストを参照して取得、変数に代入する
+        self.bg_obstacle_y                = self.stage_data_list[self.stage_number - 1][1] #BG障害物とみなすＹ座標位置をリストを参照して取得、変数に代入する
+        self.reference_tilemap            = self.stage_data_list[self.stage_number - 1][2] #BGにアクセスするときどのタイルマップを使用するかの数値をリストを参照して取得、変数に代入する
+        self.scroll_type                  = self.stage_data_list[self.stage_number - 1][3] #スクロールの種類をリストを参照して取得、変数に代入する
+        self.star_scroll_flag             = self.stage_data_list[self.stage_number - 1][4] #背景のスクロールする星々を表示するかのフラグをリストを参照して取得、変数に代入する
+        self.raster_scroll_flag           = self.stage_data_list[self.stage_number - 1][5] #背景のラスタースクロールを表示するかのフラグをリストを参照して取得、変数に代入する
+        self.disp_flag_bg_front           = self.stage_data_list[self.stage_number - 1][6] #BG背景(手前)を表示するかどうかのフラグをリストを参照して取得、変数に代入する
+        self.disp_flag_bg_middle          = self.stage_data_list[self.stage_number - 1][7] #BG背景(中間)を表示するかどうかのフラグをリストを参照して取得、変数に代入する
+        self.disp_flag_bg_back            = self.stage_data_list[self.stage_number - 1][8] #BG背景(奥)を表示するかどうかのフラグをリストを参照して取得、変数に代入する
         self.atmospheric_entry_spark_flag = self.stage_data_list[self.stage_number - 1][9] #大気圏突入時の火花を発生させるかどうかのフラグをリストを参照して取得、変数に代入する
 
     #ランクダウンさせる関数
@@ -3990,7 +4056,7 @@ class App:
         self.star_scroll_speed = 1             #背景の流れる星のスクロールスピード 1=通常スピード 0.5なら半分のスピードとなります
         self.window = []                       #タイトル表示時もメッセージウィンドウを使いたいのでリストをここで初期化してあげます
         
-        #リプレイレコーディング用に使用する横無限大,縦50ステージ分の空っぽのリプレイデータリストを作成します
+        #リプレイレ記録用に使用する横無限大,縦50ステージ分の空っぽのリプレイデータリストを作成します
         self.replay_recording_data =[[] for i in range(50)]
         
         print("replay_recording_data")
@@ -4013,8 +4079,9 @@ class App:
         
         #system-data.pyxresリソースファイルからこれらの設定値を読み込むようにしたのでコメントアウトしています
         # self.game_difficulty = GAME_NORMAL         #難易度                  タイトルメニューで難易度を選択して変化させるのでここで初期化します
-        # self.stage_number = STAGE_MOUNTAIN_REGION  #最初に出撃するステージ   タイトルメニューでステージを選択して変化させるのでここで初期化します
-        # self.stage_loop   = 1                      #ループ数(ステージ周回数) タイトルメニューで周回数を選択して変化させるのでここで初期化します
+        
+        self.stage_number = STAGE_MOUNTAIN_REGION  #最初に出撃するステージ   タイトルメニューでステージを選択して変化させるのでここで初期化します
+        self.stage_loop   = 1                      #ループ数(ステージ周回数) タイトルメニューで周回数を選択して変化させるのでここで初期化します
         
         pygame.mixer.init(frequency = 44100)     #pygameミキサー関連の初期化
         pygame.mixer.music.set_volume(0.7)       #音量設定(0~1の範囲内)
@@ -4225,9 +4292,13 @@ class App:
                     self.move_mode = MOVE_MANUAL                     #移動モードを「手動移動」にします
                     self.replay_status = REPLAY_PLAY                 #リプレイ機能の状態を「再生中」にします
                     self.update_restore_replay_data()                #リプレイデータをリストア(復元)する関数を呼び出す
+                    self.replay_mode_stage_data = self.replay_mode_stage_data_backup #各ステージ開始時のデータ履歴をリストア(復元)します
                     
-                    print("start replay-------------------------------")
-                    print(self.replay_data)                          #(デバッグ用)ターミナルに記録されたリプレイデータデータの中身をプリント  
+                    print("start replay-------CONTROL-DATA--------------------------")
+                    print(self.replay_data)                          #(デバッグ用)ターミナルに記録されたリプレイデータデータの中身をプリント
+                    print("start replay-------STAGE-DATA----------------------------")
+                    print(self.replay_mode_stage_data)                #(デバッグ用)ターミナルに記録されたリプレイデータデータの中身をプリント  
+                    
                     self.replay_stage_num = 0                        #リプレイデータを最初のステージから再生できるように0初期化
                     self.game_status = SCENE_GAME_START_INIT         #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
             
@@ -4468,7 +4539,7 @@ class App:
         
         self.game_play_count = 0        #ゲーム開始から経過したフレームカウント数(1フレームは60分の1秒)1面～今プレイしている面までのトータルフレームカウント数です
         self.rnd09_num = 0              #乱数0~9ルーレットの初期化
-
+        
         self.replay_stage_num = 0       #リプレイ再生、録画時のステージ数を0で初期化します(1ステージ目=0→2ステージ目=1→3ステージ目=2って感じ)
         
         if self.replay_status != REPLAY_PLAY:       #リプレイデータでの再生時は乱数の種の更新は行いません、それ以外の時は更新します
@@ -4488,7 +4559,9 @@ class App:
         
         self.ls_shield_hp = 0           #L'sシールドの耐久力 0=シールド装備していない 1以上はシールド耐久値を示す
         
-        self.claw = []                  #クローのリスト クローのリストはステージスタート時に初期化してしまうと次のステージに進んだときクローが消滅してしまうのでgame_start_initで初期化します
+        self.claw = []                  #クローのリスト初期化 クローのリストはステージスタート時に初期化してしまうと次のステージに進んだときクローが消滅してしまうのでgame_start_initで初期化します
+        self.replay_mode_stage_data        =[] #リプレイモードでの毎ステージスタート時の自機データ収納リストを初期化します
+        self.replay_mode_stage_data_backup =[] #リプレイモードでの毎ステージスタート時の自機データ収納リスト(バックアップ用)を初期化します
         
         #難易度に応じた数値をリストから取得する
         self.get_difficulty_data() #難易度データリストから数値を取り出す関数の呼び出し
@@ -4529,6 +4602,13 @@ class App:
         self.my_vx = 1    #自機のx方向の移動量
         self.my_vy = 0    #自機のy方向の移動量
         
+        if self.replay_status == REPLAY_RECORD:
+            self.update_save_replay_stage_data()    #リプレイ保存時は,ステージスタート時のパラメーターをセーブする関数を呼び出します(リプレイ再生で使用)
+        elif self.replay_status == REPLAY_PLAY:
+            self.update_load_replay_stage_data()    #リプレイ再生時は,ステージスタート時のパラメーターをロードする関数を呼び出します
+        
+        print(len(self.replay_mode_stage_data))
+
         self.pad_data = 0b0000000000000000  #パッド入力用ビットパターンデータを初期化します
                                     #各ビットの詳細
                                     # 上から 0,0,0,0, RS,LS,START,SELECT,   BY,BX,BB,BA, R,L,D,U
@@ -9140,6 +9220,60 @@ class App:
         self.stage_number      = self.backup_stage_number     #ステージ数をリストア
         self.stage_loop        = self.backup_stage_loop       #ループ数をリストア
 
+    #リプレイデータ記録中に使用するステージスタート時のパラメータのセーブ
+    def update_save_replay_stage_data(self):
+        new_stage_data = Replay_mode_stage_data()
+        new_stage_data.update(
+            self.score,
+            self.my_shield,self.my_speed,
+            self.select_shot_id,
+            self.shot_exp,self.shot_level,self.shot_speed_magnification,self.shot_rapid_of_fire,
+            self.missile_exp,self.missile_level,self.missile_speed_magnification,self.missile_rapid_of_fire,
+            self.select_sub_weapon_id,
+            self.claw_type,self.claw_number,self.claw_difference,
+            self.trace_claw_index,self.trace_claw_distance,
+            self.fix_claw_magnification,
+            self.reverse_claw_svx,
+            self.reverse_claw_svy,
+            self.claw_shot_speed,
+            self.ls_shield_hp)
+        self.replay_mode_stage_data.append(new_stage_data)
+
+    #リプレイデータ記録中に使用するステージスタート時のパラメータのロード
+    def update_load_replay_stage_data(self):
+        self.score     = self.replay_mode_stage_data[self.replay_stage_num].st_score      #リプレイファイルに記録されたスコアをロード
+        self.my_shield = self.replay_mode_stage_data[self.replay_stage_num].st_my_shield  #リプレイファイルに記録されたシールド値をロード
+        self.my_speed  = self.replay_mode_stage_data[self.replay_stage_num].st_my_speed   #リプレイファイルに記録された自機移動スピードをロード
+        
+        self.select_shot_id  = self.replay_mode_stage_data[self.replay_stage_num].st_select_shot_id #リプレイファイルに記録されたショットIDをロード
+        
+        self.shot_exp                 = self.replay_mode_stage_data[self.replay_stage_num].st_shot_exp   #リプレイファイルに記録された自機ショットの経験値をロード
+        self.shot_level               = self.replay_mode_stage_data[self.replay_stage_num].st_shot_level #リプレイファイルに記録された自機ショットのレベルをロード
+        self.shot_speed_magnification = self.replay_mode_stage_data[self.replay_stage_num].st_shot_speed_magnification #リプレイファイルに記録された自機ショットのスピードに掛ける倍率をロード
+        self.shot_rapid_of_fire       = self.replay_mode_stage_data[self.replay_stage_num].st_shot_rapid_of_fire  #リプレイファイルに記録された自機ショットの連射数をロード
+        
+        self.missile_exp                 = self.replay_mode_stage_data[self.replay_stage_num].st_missile_exp   #リプレイファイルに記録された自機ミサイルの経験値をロード
+        self.missile_level               = self.replay_mode_stage_data[self.replay_stage_num].st_missile_level #リプレイファイルに記録された自機ミサイルのレベルをロード
+        self.missile_speed_magnification = self.replay_mode_stage_data[self.replay_stage_num].st_missile_speed_magnification #リプレイファイルに記録された自機ミサイルのスピードに掛ける倍率をロード
+        self.missile_rapid_of_fire       = self.replay_mode_stage_data[self.replay_stage_num].st_missile_rapid_of_fire #リプレイファイルに記録された自機ミサイルの連射数をロード
+        
+        self.select_sub_weapon_id        = self.replay_mode_stage_data[self.replay_stage_num].st_select_sub_weapon_id #リプレイファイルに記録された現在使用しているサブウェポンのIDナンバーをロード
+        
+        self.claw_type                   = self.replay_mode_stage_data[self.replay_stage_num].st_claw_type       #リプレイファイルに記録されたクローのタイプをロード
+        self.claw_number                 = self.replay_mode_stage_data[self.replay_stage_num].st_claw_number     #リプレイファイルに記録されたクローの装備数をロード
+        self.claw_difference             = self.replay_mode_stage_data[self.replay_stage_num].st_claw_difference #リプレイファイルに記録されたクロ―同士の角度間隔をロード
+        
+        self.trace_claw_index            = self.replay_mode_stage_data[self.replay_stage_num].st_trace_claw_index     #リプレイファイルに記録されたトレースクロー（オプション）時のトレース用配列のインデックス値をロード
+        self.trace_claw_distance         = self.replay_mode_stage_data[self.replay_stage_num].st_trace_claw_distance  #リプレイファイルに記録されたトレースクロー同士の間隔をロード
+        
+        self.fix_claw_magnification      = self.replay_mode_stage_data[self.replay_stage_num].st_fix_claw_magnification #リプレイファイルに記録されたフイックスクロー同士の間隔の倍率をロード
+        
+        self.reverse_claw_svx            = self.replay_mode_stage_data[self.replay_stage_num].st_reverse_claw_svx  #リプレイファイルに記録されたリバースクロー用の攻撃方向ベクトル(x軸)をロード
+        self.reverse_claw_svy            = self.replay_mode_stage_data[self.replay_stage_num].st_reverse_claw_svy  #リプレイファイルに記録されたリバースクロー用の攻撃方向ベクトル(y軸)をロード
+        
+        self.claw_shot_speed             = self.replay_mode_stage_data[self.replay_stage_num].st_claw_shot_speed  #リプレイファイルに記録されたクローショットのスピードをロード
+        self.ls_shield_hp                = self.replay_mode_stage_data[self.replay_stage_num].st_ls_shield_hp     #リプレイファイルに記録されたL'sシールドの耐久力をロード
+
     #乱数0_9関数(0~9)の更新
     def update_rnd0_9(self):
         self.rnd0_9_num  = pyxel.frame_count %  10 #フレームカウント数を 10で割った余りが変数rnd0_9_numに入ります(0~9の数値が1フレームごとに変化する)
@@ -10036,13 +10170,12 @@ class App:
         #ランクの表示
         pyxel.text(160-16,73,"RA" + str(self.rank), 7)
         
-        
         if self.debug_menu_status == 2: #デバッグメニュー表示ステータスが2の時だけ表示する
             #コントロールパッド操作データの表示
             replay_count = len(self.replay_input_data)
             input_pad_data = bin(self.replay_input_data[replay_count-1]) #パッド入力データを2進数に変換します
-            input_pad_data = input_pad_data.lstrip("0b")            #文字列の頭からバイナリー文字の"ob"を取り除きます lstripで先頭から取り除くって判りにくい・・・lstripのlってなんやねん・・・
-            input_pad_data = "{:0>12}".format(input_pad_data)        #文字列を整形します 0ゼロ埋め >右寄せ 12桁        
+            input_pad_data = input_pad_data.lstrip("0b")      #文字列の頭からバイナリー文字の"ob"を取り除きます lstripで先頭から取り除くって判りにくい・・・lstripのlってなんやねん・・・
+            input_pad_data = "{:0>12}".format(input_pad_data) #文字列を整形します 0ゼロ埋め >右寄せ 12桁        
             pyxel.text(0,120-26,input_pad_data, 10)
             
             #コントロールパッド操作データ履歴の表示
@@ -10114,6 +10247,7 @@ class App:
             pyxel.text(128,120-29,num1,9)
             num2 = "{:>8}".format(int(len(self.replay_data[self.replay_stage_num])))
             pyxel.text(128,120-22,num2,10)
+
     #BGチップデータ書き換えアニメーション実装のために作ったダミーテスト関数 画面左から2列目の縦1列を取得し、そのＢＧデータを画面左端1列目に表示する
     def draw_dummy_put_bg_xy(self):
         if self.scroll_type == SCROLL_TYPE_8FREEWAY_SCROLL_AND_RASTER: #全方向フリースクロール＋ラスタースクロールの場合
@@ -10395,15 +10529,15 @@ class App:
     #######################################################################
     #######################################################################
     #######################################################################
-    #     ゲームで扱う情報を更新したり、キー入力（コントロ―ラー入力）を行う    # 
-    #                あっぷで～～と☆彡    KANSUU                   #
+    #     ゲームで扱う情報を更新したり、キー入力（コントロ―ラー入力）を行う     # 
+    #                あっぷで～～と☆彡    KANSUU                           #
     #######################################################################
     #######################################################################
-    #          ウィンドウズアップデートはあってはならない文明            #
-    #                      滅ぶべし・・・                        #
+    #          ウィンドウズアップデートはあってはならない文明                 #
+    #                      滅ぶべし・・・                                  #
     #######################################################################
-    #パイソンはどうして関数を呼び出すだけなのにselfを付けないといけないのか    #
-    #謎である                                                  # 
+    #パイソンはどうして関数を呼び出すだけなのにselfを付けないといけないのか     #
+    #謎である                                                              # 
     #######################################################################
     def update(self):
         ################################起動処理中 IPL ###################################################################
@@ -10610,17 +10744,23 @@ class App:
                 self.game_playing_flag = 0                 #ゲームプレイ中のフラグを降ろす
                 self.save_system_data()                    #システムデータをセーブする関数の呼び出し
                 self.update_replay_data_list()             #録画したリプレイデータを登録します
-                self.replay_recording_data = []            #録画したリプレイデータは登録したで元のデータは消去します
+                self.replay_recording_data = []            #録画したリプレイデータは登録したので元のデータは消去します
+                self.replay_mode_stage_data_backup = self.replay_mode_stage_data #各ステージ開始時のデータ履歴をバックアップ
             
             
             if self.cursor_decision_item == 0:             #メニューでアイテムナンバー0の「YES」が押されたら
                 self.game_status = SCENE_TITLE_INIT        #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
                 self.game_playing_flag = 0                 #ゲームプレイ中のフラグを降ろす
                 self.save_system_data()                    #システムデータをセーブする関数の呼び出し
-                print("replay_recording_data")
-                print(self.replay_recording_data)          #ターミナルにリプレイ録画データの中身を表示
+                
+                print("replay_recording_data   ######### CONTROL ########")
+                print(self.replay_recording_data)          #ターミナルにリプレイ録画データの中身を表示(デバッグ用)
+                print("replay_mode_stage_data  ###### STAGE DATA ######")
+                print(self.replay_mode_stage_data)          #ターミナルにリプレイ録画データ(毎ステージのデータ群)の中身を表示(デバッグ用)
+                
                 self.update_replay_data_list()             #録画したリプレイデータを登録します
-                self.replay_recording_data = []            #録画したリプレイデータは登録したで元のデータは消去します
+                self.replay_recording_data = []            #録画したリプレイデータは登録したので元のデータは消去します
+                self.replay_mode_stage_data_backup = self.replay_mode_stage_data #各ステージ開始時のデータ履歴をバックアップ
         
         #########ステージクリア後の処理#############################################################
         if self.game_status == SCENE_STAGE_CLEAR_FADE_OUT:   #「SCENE_STAGE_CLEAR_FADE_OUT」の時は
@@ -10656,7 +10796,7 @@ class App:
     ###########################################################
     ###########################################################
     ###########################################################
-    # ゲーム内での描画処理を行う            どろ～～☆彡      #
+    # ゲーム内での描画処理を行う            どろ～～☆彡          #
     ###########################################################
     ###########################################################
     ###########################################################
