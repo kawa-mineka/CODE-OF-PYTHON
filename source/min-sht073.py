@@ -318,14 +318,14 @@ LOOP_MAIN_WEAPON_MISSILE_TYPE_RESET = 90   #メインウェポンとミサイル
 LOOP_ALL_RESET                 = 100  #メインウェポンもミサイルもゲーム開始時と同じ初期状態に戻ります
 
 #!ステージの名称関連の定数定義################################################################
-STAGE_MOUNTAIN_REGION         = 1 #ステージ1 山岳地帯         Mountain Region
-STAGE_ADVANCE_BASE            = 2 #ステージ2 前線基地         Advance Base
-STAGE_VOLCANIC_BELT           = 3 #ステージ3 火山地帯         Volcanic Belt
-STAGE_NIGHT_SKYSCRAPER        = 4 #ステージ4 夜間超高層ビル地帯    Night Skyscraper
+STAGE_MOUNTAIN_REGION         = 1 #ステージ1 山岳地帯          Mountain Region
+STAGE_ADVANCE_BASE            = 2 #ステージ2 前線基地          Advance Base
+STAGE_VOLCANIC_BELT           = 3 #ステージ3 火山地帯          Volcanic Belt
+STAGE_NIGHT_SKYSCRAPER        = 4 #ステージ4 夜間超高層ビル地帯 Night Skyscraper
 STAGE_AMPHIBIOUS_ASSAULT_SHIP = 5 #ステージ5 強襲揚陸艦襲撃     Amphibious Assault Ship
-STAGE_DEEP_SEA_TRENCH         = 6 #ステージ6 深海海溝         Deep Sea Trench
-STAGE_INTERMEDIATE_FORTRESS   = 7 #ステージ7 中間要塞         Intermediate Fortress
-STAGE_ESCAPE_FORTRESS         = 8 #ステージ8 要塞脱出         Escape Fortress
+STAGE_DEEP_SEA_TRENCH         = 6 #ステージ6 深海海溝          Deep Sea Trench
+STAGE_INTERMEDIATE_FORTRESS   = 7 #ステージ7 中間要塞          Intermediate Fortress
+STAGE_ESCAPE_FORTRESS         = 8 #ステージ8 要塞脱出          Escape Fortress
 SATGE_BOSS_RUSH               = 9 #ステージ9 連続強敵襲来       Boss Rush
 
 #クロー関連の定数定義（主にトレースクロー）
@@ -367,6 +367,31 @@ PAD_SELECT  =  256 #0b 0000 0001 0000 0000
 PAD_START   =  512 #0b 0000 0010 0000 0000
 PAD_LEFT_S  = 1024 #0b 0000 0100 0000 0000
 PAD_RIGHT_S = 2048 #0b 0000 1000 0000 0000
+
+#リプレイモードでの毎ステージ開始時の自機データの記録用で使用する定数
+ST_SCORE                       = 0   #毎ステージごとのスコア
+ST_MY_SHIELD                   = 1   #自機のシールド耐久値
+ST_MY_SPEED                    = 2   #自機のスピード
+ST_SELECT_SHOT_ID              = 3   #現在使用しているショットのIDナンバー
+ST_SHOT_EXP                    = 4   #自機ショットの経験値
+ST_SHOT_LEVEL                  = 5   #自機ショットのレベル
+ST_SHOT_SPEED_MAGNIFICATION    = 6   #自機ショットのスピードに掛ける倍率
+ST_SHOT_RAPID_OF_FIRE          = 7   #自機ショットの連射数
+ST_MISSILE_EXP                 = 8   #自機ミサイルの経験値
+ST_MISSILE_LEVEL               = 9   #自機ミサイルのレベル
+ST_MISSILE_SPEED_MAGNIFICATION = 10   #自機ミサイルのスピードに掛ける倍率
+ST_MISSILE_RAPID_OF_FIRE       = 11   #自機ミサイルの連射数
+ST_SELECT_SUB_WEAPON_ID        = 12   #現在使用しているサブウェポンのIDナンバー
+ST_CLAW_TYPE                   = 13   #クローのタイプ
+ST_CLAW_NUMBER                 = 14   #クローの装備数
+ST_CLAW_DIFFERENCE             = 15   #クロ―同士の角度間隔
+ST_TRACE_CLAW_INDEX            = 16   #トレースクロー（オプション）時のトレース用配列のインデックス値
+ST_TRACE_CLAW_DISTANCE         = 17   #トレースクロー同士の間隔
+ST_FIX_CLAW_MAGNIFICATION      = 18   #フイックスクロー同士の間隔の倍率
+ST_REVERSE_CLAW_SVX            = 19   #リバースクロー用の攻撃方向ベクトル(x軸)
+ST_REVERSE_CLAW_SVY            = 20   #リバースクロー用の攻撃方向ベクトル(y軸)
+ST_CLAW_SHOT_SPEED             = 21   #クローショットのスピード
+ST_LS_SHIELD_HP                = 22   #L'sシールドの耐久力
 
 #パーティクルの種類
 PARTICLE_DOT    = 0           #パーティクルタイプ 1~2ドット描画タイプ(破壊後のエフェクト)
@@ -2098,69 +2123,6 @@ class System_data: #ゲーム関連のシステムデータ関連のクラス設
         self.get_my_ship                    = [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0] #手に入れた機体0=未入手 1=入手 機体のIDナンバーがリストのインデックス値となります
                                                                         #例 J_PYTHONはIDナンバー0なので リスト先頭の1番目の数値となる  (0始まりなので)
                                                                         #   FIRST_BASICはIDナンバー8なのでリスト先頭の9番目の数値となる(0始まりなので)
-class Replay_mode_stage_data: #リプレイモードでの毎ステージスタート時の自機データ
-    def __init__(self):
-        self.st_score                   = 0   #毎ステージごとのスコア
-        self.st_my_shield               = 0   #自機のシールド耐久値
-        self.st_my_speed                = 0   #自機のスピード
-        self.st_select_shot_id          = 0   #現在使用しているショットのIDナンバー
-        self.st_shot_exp                = 0   #自機ショットの経験値
-        self.st_shot_level              = 0   #自機ショットのレベル
-        self.st_shot_speed_magnification    = 0   #自機ショットのスピードに掛ける倍率
-        self.st_shot_rapid_of_fire          = 0   #自機ショットの連射数
-        self.st_missile_exp                 = 0   #自機ミサイルの経験値
-        self.st_missile_level               = 0   #自機ミサイルのレベル
-        self.st_missile_speed_magnification = 0   #自機ミサイルのスピードに掛ける倍率
-        self.st_missile_rapid_of_fire       = 0   #自機ミサイルの連射数
-        self.st_select_sub_weapon_id        = 0   #現在使用しているサブウェポンのIDナンバー
-        
-        self.st_claw_type              = 0   #クローのタイプ
-        self.st_claw_number            = 0   #クローの装備数
-        self.st_claw_difference        = 0   #クロ―同士の角度間隔
-        self.st_trace_claw_index       = 0   #トレースクロー（オプション）時のトレース用配列のインデックス値
-        self.st_trace_claw_distance    = 0   #トレースクロー同士の間隔
-        self.st_fix_claw_magnification = 0   #フイックスクロー同士の間隔の倍率
-        self.st_reverse_claw_svx       = 0   #リバースクロー用の攻撃方向ベクトル(x軸)
-        self.st_reverse_claw_svy       = 0   #リバースクロー用の攻撃方向ベクトル(y軸)
-        self.st_claw_shot_speed        = 0   #クローショットのスピード
-        
-        self.st_ls_shield_hp           = 0   #L'sシールドの耐久力
-    def update(self,st_score,st_my_shield,st_my_speed,st_select_shot_id,
-            st_shot_exp,st_shot_level,st_shot_speed_magnification,st_shot_rapid_of_fire,
-            st_missile_exp,st_missile_level,st_missile_speed_magnification,st_missile_rapid_of_fire,
-            st_select_sub_weapon_id,
-            st_claw_type,st_claw_number,st_claw_difference,
-            st_trace_claw_index,st_trace_claw_distance,
-            st_fix_claw_magnification,
-            st_reverse_claw_svx,st_reverse_claw_svy,
-            st_claw_shot_speed,
-            st_ls_shield_hp):
-        self.st_score = st_score
-        self.st_my_shield = st_my_shield
-        self.st_my_speed = st_my_speed
-        self.st_select_shot_id = st_select_shot_id
-        self.st_shot_exp = st_shot_exp
-        self.st_shot_level = st_shot_level
-        self.st_shot_speed_magnification = st_shot_speed_magnification
-        self.st_shot_rapid_of_fire = st_shot_rapid_of_fire
-        self.st_missile_exp = st_missile_exp
-        self.st_missile_level = st_missile_level
-        self.st_missile_speed_magnification = st_missile_speed_magnification
-        self.st_missile_rapid_of_fire = st_missile_rapid_of_fire
-        self.st_select_sub_weapon_id = st_select_sub_weapon_id
-        
-        self.st_claw_type = st_claw_type
-        self.st_claw_number = st_claw_number
-        self.st_claw_difference = st_claw_difference
-        self.st_trace_claw_index = st_trace_claw_index
-        self.st_trace_claw_distance = st_trace_claw_distance
-        self.st_fix_claw_magnification = st_fix_claw_magnification
-        self.st_reverse_claw_svx = st_reverse_claw_svx
-        self.st_reverse_claw_svy = st_reverse_claw_svy
-        
-        self.st_claw_shot_speed = st_claw_shot_speed
-        
-        self.st_ls_shield_hp = st_ls_shield_hp
     
 class App:
     ##########################################################################################################################################
@@ -2735,14 +2697,24 @@ class App:
         #上の方法で空リストを作成すると1つのリストに数値を入れると他の全てのリストに数値が代入されちゃう・・・・・なんでや！
         #なんか上の方法だと要素のリストがすべて同じオブジェクトになるらしい・・・聞いてないよそんなの・・・
         #内包表記って言うのを使えば良いらしい！？
-        self.replay_data =[[] for i in range(50)] #これでいいのかな？？？
-        
-        print("replay_data")
-        print(self.replay_data)
+        self.replay_data          = [[] for i in range(50)] #これでいいのかな？？？
+        # print("replay_data")
+        # print(self.replay_data)
         
         self.replay_stage_my_data = [[] for i in range(50)] #リプレイ録画時、ステージスタート時に記録される自機関連のデータが入るリスト横無限大,縦50ステージ分
+        # print("replay_stage_my_data")
+        # print(self.replay_stage_my_data)
         
-        self.replay_stage_num = 0       #リプレイ再生、録画時のステージ数を0で初期化します(1ステージ目=0→2ステージ目=1→3ステージ目=2って感じ)
+        self.replay_mode_stage_data        =[[0] * 30 for i in range(50)] #リプレイモードでの毎ステージスタート時の自機データ収納リストを初期化します                 (横30,縦50ステージ分の空リスト)
+        self.replay_mode_stage_data_backup =[[0] * 30 for i in range(50)] #リプレイモードでの毎ステージスタート時の自機データ収納リスト(バックアップ用)を初期化します  (横30,縦50ステージ分の空リスト)
+        # print("\nreplay_recording_data(STAGE)")
+        # print(self.replay_mode_stage_data) #ターミナルにリプレイ録画データ(毎ステージ用)の中身を表示
+        # print("\nreplay_recording_data(STAGE BACKUP)")
+        # print(self.replay_mode_stage_data_backup) #ターミナルにリプレイ録画データ(毎ステージ用バックアップ)の中身を表示
+        
+        
+        
+        self.replay_stage_num = 0               #リプレイ再生、録画時のステージ数を0で初期化します(1ステージ目=0→2ステージ目=1→3ステージ目=2って感じ)
         self.move_mode = MOVE_MANUAL            #移動モードの状態です
                                                 #MOVE_MANUAL = パッドやキーボード入力によって移動
                                                 #MOVE_AUTO = イベントによる自動移動モードとなり設定された位置まで自動で移動して行きます
@@ -4056,11 +4028,10 @@ class App:
         self.star_scroll_speed = 1             #背景の流れる星のスクロールスピード 1=通常スピード 0.5なら半分のスピードとなります
         self.window = []                       #タイトル表示時もメッセージウィンドウを使いたいのでリストをここで初期化してあげます
         
-        #リプレイレ記録用に使用する横無限大,縦50ステージ分の空っぽのリプレイデータリストを作成します
+        #リプレイ記録用に使用する横無限大,縦50ステージ分の空っぽのリプレイデータリストを作成します
         self.replay_recording_data =[[] for i in range(50)]
-        
-        print("replay_recording_data")
-        print(self.replay_recording_data) #ターミナルにリプレイ録画データの中身を表示
+        # print("\nreplay_recording_data")
+        # print(self.replay_recording_data) #ターミナルにリプレイ録画データの中身を表示
         
         self.bg_cls_color = 0         #BGをCLS(クリアスクリーン)するときの色の指定(通常は0=黒色です)ゲーム時に初期値から変更されることがあるのでここで初期化する
         
@@ -4294,9 +4265,9 @@ class App:
                     self.update_restore_replay_data()                #リプレイデータをリストア(復元)する関数を呼び出す
                     self.replay_mode_stage_data = self.replay_mode_stage_data_backup #各ステージ開始時のデータ履歴をリストア(復元)します
                     
-                    print("start replay-------CONTROL-DATA--------------------------")
+                    print("\nstart replay-------CONTROL-DATA--------------------------")
                     print(self.replay_data)                          #(デバッグ用)ターミナルに記録されたリプレイデータデータの中身をプリント
-                    print("start replay-------STAGE-DATA----------------------------")
+                    print("\nstart replay-------STAGE-DATA----------------------------")
                     print(self.replay_mode_stage_data)                #(デバッグ用)ターミナルに記録されたリプレイデータデータの中身をプリント  
                     
                     self.replay_stage_num = 0                        #リプレイデータを最初のステージから再生できるように0初期化
@@ -4560,8 +4531,6 @@ class App:
         self.ls_shield_hp = 0           #L'sシールドの耐久力 0=シールド装備していない 1以上はシールド耐久値を示す
         
         self.claw = []                  #クローのリスト初期化 クローのリストはステージスタート時に初期化してしまうと次のステージに進んだときクローが消滅してしまうのでgame_start_initで初期化します
-        self.replay_mode_stage_data        =[] #リプレイモードでの毎ステージスタート時の自機データ収納リストを初期化します
-        self.replay_mode_stage_data_backup =[] #リプレイモードでの毎ステージスタート時の自機データ収納リスト(バックアップ用)を初期化します
         
         #難易度に応じた数値をリストから取得する
         self.get_difficulty_data() #難易度データリストから数値を取り出す関数の呼び出し
@@ -4604,9 +4573,19 @@ class App:
         
         if self.replay_status == REPLAY_RECORD:
             self.update_save_replay_stage_data()    #リプレイ保存時は,ステージスタート時のパラメーターをセーブする関数を呼び出します(リプレイ再生で使用)
+            print("\nSAVE!!!!  replay_mode_stage_data")
+            print("stage num = " + str(self.replay_stage_num))
+            print(self.replay_mode_stage_data)
         elif self.replay_status == REPLAY_PLAY:
+            print("\nロード前の replay_mode_stage_data")
+            print("stage num = " + str(self.replay_stage_num))
+            print(self.replay_mode_stage_data)
             self.update_load_replay_stage_data()    #リプレイ再生時は,ステージスタート時のパラメーターをロードする関数を呼び出します
+            print("\nLOAD!!!!  replay_mode_stage_data")
+            print("stage num = " + str(self.replay_stage_num))
+            print(self.replay_mode_stage_data)
         
+        print("\nreplay_mode_stage_dataの長さ")
         print(len(self.replay_mode_stage_data))
 
         self.pad_data = 0b0000000000000000  #パッド入力用ビットパターンデータを初期化します
@@ -9222,57 +9201,72 @@ class App:
 
     #リプレイデータ記録中に使用するステージスタート時のパラメータのセーブ
     def update_save_replay_stage_data(self):
-        new_stage_data = Replay_mode_stage_data()
-        new_stage_data.update(
-            self.score,
-            self.my_shield,self.my_speed,
-            self.select_shot_id,
-            self.shot_exp,self.shot_level,self.shot_speed_magnification,self.shot_rapid_of_fire,
-            self.missile_exp,self.missile_level,self.missile_speed_magnification,self.missile_rapid_of_fire,
-            self.select_sub_weapon_id,
-            self.claw_type,self.claw_number,self.claw_difference,
-            self.trace_claw_index,self.trace_claw_distance,
-            self.fix_claw_magnification,
-            self.reverse_claw_svx,
-            self.reverse_claw_svy,
-            self.claw_shot_speed,
-            self.ls_shield_hp)
-        self.replay_mode_stage_data.append(new_stage_data)
+        self.replay_mode_stage_data[self.replay_stage_num][ST_SCORE]                       = self.score          #リプレイファイルに記録されたスコアをセーブ
+        self.replay_mode_stage_data[self.replay_stage_num][ST_MY_SHIELD]                   = self.my_shield      #リプレイファイルに記録されたシールド値をセーブ
+        self.replay_mode_stage_data[self.replay_stage_num][ST_MY_SPEED]                    = self.my_speed       #リプレイファイルに記録された自機移動スピードをセーブ
+        self.replay_mode_stage_data[self.replay_stage_num][ST_SELECT_SHOT_ID]              = self.select_shot_id #リプレイファイルに記録されたショットIDをセーブ
+        
+        self.replay_mode_stage_data[self.replay_stage_num][ST_SHOT_EXP]                    = self.shot_exp       #リプレイファイルに記録された自機ショットの経験値をセーブ
+        self.replay_mode_stage_data[self.replay_stage_num][ST_SHOT_LEVEL]                  = self.shot_level     #リプレイファイルに記録された自機ショットのレベルをセーブ
+        self.replay_mode_stage_data[self.replay_stage_num][ST_SHOT_SPEED_MAGNIFICATION]    = self.shot_speed_magnification #リプレイファイルに記録された自機ショットのスピードに掛ける倍率をセーブ
+        self.replay_mode_stage_data[self.replay_stage_num][ST_SHOT_RAPID_OF_FIRE]          = self.shot_rapid_of_fire       #リプレイファイルに記録された自機ショットの連射数をセーブ
+        
+        self.replay_mode_stage_data[self.replay_stage_num][ST_MISSILE_EXP]                 = self.missile_exp              #リプレイファイルに記録された自機ミサイルの経験値をセーブ
+        self.replay_mode_stage_data[self.replay_stage_num][ST_MISSILE_LEVEL]               = self.missile_level            #リプレイファイルに記録された自機ミサイルのレベルをセーブ
+        self.replay_mode_stage_data[self.replay_stage_num][ST_MISSILE_SPEED_MAGNIFICATION] = self.missile_speed_magnification #リプレイファイルに記録された自機ミサイルのスピードに掛ける倍率をセーブ
+        self.replay_mode_stage_data[self.replay_stage_num][ST_MISSILE_RAPID_OF_FIRE]       = self.missile_rapid_of_fire   #リプレイファイルに記録された自機ミサイルの連射数をセーブ
+        
+        self.replay_mode_stage_data[self.replay_stage_num][ST_SELECT_SUB_WEAPON_ID]        = self.select_sub_weapon_id    #リプレイファイルに記録された現在使用しているサブウェポンのIDナンバーをセーブ
+        
+        self.replay_mode_stage_data[self.replay_stage_num][ST_CLAW_TYPE]                   = self.claw_type               #リプレイファイルに記録されたクローのタイプをセーブ
+        self.replay_mode_stage_data[self.replay_stage_num][ST_CLAW_NUMBER]                 = self.claw_number             #リプレイファイルに記録されたクローの装備数をセーブ
+        self.replay_mode_stage_data[self.replay_stage_num][ST_CLAW_DIFFERENCE]             = self.claw_difference         #リプレイファイルに記録されたクロ―同士の角度間隔をセーブ
+        
+        self.replay_mode_stage_data[self.replay_stage_num][ST_TRACE_CLAW_INDEX]            = self.trace_claw_index        #リプレイファイルに記録されたトレースクロー（オプション）時のトレース用配列のインデックス値をセーブ
+        self.replay_mode_stage_data[self.replay_stage_num][ST_TRACE_CLAW_DISTANCE]         = self.trace_claw_distance     #リプレイファイルに記録されたトレースクロー同士の間隔をセーブ
+        
+        self.replay_mode_stage_data[self.replay_stage_num][ST_FIX_CLAW_MAGNIFICATION]      = self.fix_claw_magnification  #リプレイファイルに記録されたフイックスクロー同士の間隔の倍率をセーブ
+        
+        self.replay_mode_stage_data[self.replay_stage_num][ST_REVERSE_CLAW_SVX]            = self.reverse_claw_svx        #リプレイファイルに記録されたリバースクロー用の攻撃方向ベクトル(x軸)をセーブ
+        self.replay_mode_stage_data[self.replay_stage_num][ST_REVERSE_CLAW_SVY]            = self.reverse_claw_svy        #リプレイファイルに記録されたリバースクロー用の攻撃方向ベクトル(y軸)をセーブ
+        
+        self.replay_mode_stage_data[self.replay_stage_num][ST_CLAW_SHOT_SPEED]             = self.claw_shot_speed         #リプレイファイルに記録されたクローショットのスピードをセーブ
+        self.replay_mode_stage_data[self.replay_stage_num][ST_LS_SHIELD_HP]                = self.ls_shield_hp            #リプレイファイルに記録されたL'sシールドの耐久力をセーブ
 
     #リプレイデータ記録中に使用するステージスタート時のパラメータのロード
     def update_load_replay_stage_data(self):
-        self.score     = self.replay_mode_stage_data[self.replay_stage_num].st_score      #リプレイファイルに記録されたスコアをロード
-        self.my_shield = self.replay_mode_stage_data[self.replay_stage_num].st_my_shield  #リプレイファイルに記録されたシールド値をロード
-        self.my_speed  = self.replay_mode_stage_data[self.replay_stage_num].st_my_speed   #リプレイファイルに記録された自機移動スピードをロード
+        self.score     = self.replay_mode_stage_data[self.replay_stage_num][ST_SCORE]                #リプレイファイルに記録されたスコアをロード
+        self.my_shield = self.replay_mode_stage_data[self.replay_stage_num][ST_MY_SHIELD]            #リプレイファイルに記録されたシールド値をロード
+        self.my_speed  = self.replay_mode_stage_data[self.replay_stage_num][ST_MY_SPEED]             #リプレイファイルに記録された自機移動スピードをロード
         
-        self.select_shot_id  = self.replay_mode_stage_data[self.replay_stage_num].st_select_shot_id #リプレイファイルに記録されたショットIDをロード
+        self.select_shot_id  = self.replay_mode_stage_data[self.replay_stage_num][ST_SELECT_SHOT_ID] #リプレイファイルに記録されたショットIDをロード
         
-        self.shot_exp                 = self.replay_mode_stage_data[self.replay_stage_num].st_shot_exp   #リプレイファイルに記録された自機ショットの経験値をロード
-        self.shot_level               = self.replay_mode_stage_data[self.replay_stage_num].st_shot_level #リプレイファイルに記録された自機ショットのレベルをロード
-        self.shot_speed_magnification = self.replay_mode_stage_data[self.replay_stage_num].st_shot_speed_magnification #リプレイファイルに記録された自機ショットのスピードに掛ける倍率をロード
-        self.shot_rapid_of_fire       = self.replay_mode_stage_data[self.replay_stage_num].st_shot_rapid_of_fire  #リプレイファイルに記録された自機ショットの連射数をロード
+        self.shot_exp                 = self.replay_mode_stage_data[self.replay_stage_num][ST_SHOT_EXP]                 #リプレイファイルに記録された自機ショットの経験値をロード
+        self.shot_level               = self.replay_mode_stage_data[self.replay_stage_num][ST_SHOT_LEVEL]               #リプレイファイルに記録された自機ショットのレベルをロード
+        self.shot_speed_magnification = self.replay_mode_stage_data[self.replay_stage_num][ST_SHOT_SPEED_MAGNIFICATION] #リプレイファイルに記録された自機ショットのスピードに掛ける倍率をロード
+        self.shot_rapid_of_fire       = self.replay_mode_stage_data[self.replay_stage_num][ST_SHOT_RAPID_OF_FIRE]       #リプレイファイルに記録された自機ショットの連射数をロード
         
-        self.missile_exp                 = self.replay_mode_stage_data[self.replay_stage_num].st_missile_exp   #リプレイファイルに記録された自機ミサイルの経験値をロード
-        self.missile_level               = self.replay_mode_stage_data[self.replay_stage_num].st_missile_level #リプレイファイルに記録された自機ミサイルのレベルをロード
-        self.missile_speed_magnification = self.replay_mode_stage_data[self.replay_stage_num].st_missile_speed_magnification #リプレイファイルに記録された自機ミサイルのスピードに掛ける倍率をロード
-        self.missile_rapid_of_fire       = self.replay_mode_stage_data[self.replay_stage_num].st_missile_rapid_of_fire #リプレイファイルに記録された自機ミサイルの連射数をロード
+        self.missile_exp                 = self.replay_mode_stage_data[self.replay_stage_num][ST_MISSILE_EXP]                 #リプレイファイルに記録された自機ミサイルの経験値をロード
+        self.missile_level               = self.replay_mode_stage_data[self.replay_stage_num][ST_MISSILE_LEVEL]               #リプレイファイルに記録された自機ミサイルのレベルをロード
+        self.missile_speed_magnification = self.replay_mode_stage_data[self.replay_stage_num][ST_MISSILE_SPEED_MAGNIFICATION] #リプレイファイルに記録された自機ミサイルのスピードに掛ける倍率をロード
+        self.missile_rapid_of_fire       = self.replay_mode_stage_data[self.replay_stage_num][ST_MISSILE_RAPID_OF_FIRE]       #リプレイファイルに記録された自機ミサイルの連射数をロード
         
-        self.select_sub_weapon_id        = self.replay_mode_stage_data[self.replay_stage_num].st_select_sub_weapon_id #リプレイファイルに記録された現在使用しているサブウェポンのIDナンバーをロード
+        self.select_sub_weapon_id        = self.replay_mode_stage_data[self.replay_stage_num][ST_SELECT_SUB_WEAPON_ID] #リプレイファイルに記録された現在使用しているサブウェポンのIDナンバーをロード
         
-        self.claw_type                   = self.replay_mode_stage_data[self.replay_stage_num].st_claw_type       #リプレイファイルに記録されたクローのタイプをロード
-        self.claw_number                 = self.replay_mode_stage_data[self.replay_stage_num].st_claw_number     #リプレイファイルに記録されたクローの装備数をロード
-        self.claw_difference             = self.replay_mode_stage_data[self.replay_stage_num].st_claw_difference #リプレイファイルに記録されたクロ―同士の角度間隔をロード
+        self.claw_type                   = self.replay_mode_stage_data[self.replay_stage_num][ST_CLAW_TYPE]       #リプレイファイルに記録されたクローのタイプをロード
+        self.claw_number                 = self.replay_mode_stage_data[self.replay_stage_num][ST_CLAW_NUMBER]     #リプレイファイルに記録されたクローの装備数をロード
+        self.claw_difference             = self.replay_mode_stage_data[self.replay_stage_num][ST_CLAW_DIFFERENCE] #リプレイファイルに記録されたクロ―同士の角度間隔をロード
         
-        self.trace_claw_index            = self.replay_mode_stage_data[self.replay_stage_num].st_trace_claw_index     #リプレイファイルに記録されたトレースクロー（オプション）時のトレース用配列のインデックス値をロード
-        self.trace_claw_distance         = self.replay_mode_stage_data[self.replay_stage_num].st_trace_claw_distance  #リプレイファイルに記録されたトレースクロー同士の間隔をロード
+        self.trace_claw_index            = self.replay_mode_stage_data[self.replay_stage_num][ST_TRACE_CLAW_INDEX]     #リプレイファイルに記録されたトレースクロー（オプション）時のトレース用配列のインデックス値をロード
+        self.trace_claw_distance         = self.replay_mode_stage_data[self.replay_stage_num][ST_TRACE_CLAW_DISTANCE]  #リプレイファイルに記録されたトレースクロー同士の間隔をロード
         
-        self.fix_claw_magnification      = self.replay_mode_stage_data[self.replay_stage_num].st_fix_claw_magnification #リプレイファイルに記録されたフイックスクロー同士の間隔の倍率をロード
+        self.fix_claw_magnification      = self.replay_mode_stage_data[self.replay_stage_num][ST_FIX_CLAW_MAGNIFICATION] #リプレイファイルに記録されたフイックスクロー同士の間隔の倍率をロード
         
-        self.reverse_claw_svx            = self.replay_mode_stage_data[self.replay_stage_num].st_reverse_claw_svx  #リプレイファイルに記録されたリバースクロー用の攻撃方向ベクトル(x軸)をロード
-        self.reverse_claw_svy            = self.replay_mode_stage_data[self.replay_stage_num].st_reverse_claw_svy  #リプレイファイルに記録されたリバースクロー用の攻撃方向ベクトル(y軸)をロード
+        self.reverse_claw_svx            = self.replay_mode_stage_data[self.replay_stage_num][ST_REVERSE_CLAW_SVX]  #リプレイファイルに記録されたリバースクロー用の攻撃方向ベクトル(x軸)をロード
+        self.reverse_claw_svy            = self.replay_mode_stage_data[self.replay_stage_num][ST_REVERSE_CLAW_SVY]  #リプレイファイルに記録されたリバースクロー用の攻撃方向ベクトル(y軸)をロード
         
-        self.claw_shot_speed             = self.replay_mode_stage_data[self.replay_stage_num].st_claw_shot_speed  #リプレイファイルに記録されたクローショットのスピードをロード
-        self.ls_shield_hp                = self.replay_mode_stage_data[self.replay_stage_num].st_ls_shield_hp     #リプレイファイルに記録されたL'sシールドの耐久力をロード
+        self.claw_shot_speed             = self.replay_mode_stage_data[self.replay_stage_num][ST_CLAW_SHOT_SPEED]  #リプレイファイルに記録されたクローショットのスピードをロード
+        self.ls_shield_hp                = self.replay_mode_stage_data[self.replay_stage_num][ST_LS_SHIELD_HP]     #リプレイファイルに記録されたL'sシールドの耐久力をロード
 
     #乱数0_9関数(0~9)の更新
     def update_rnd0_9(self):
@@ -10740,7 +10734,7 @@ class App:
         
         if self.game_status == SCENE_RETURN_TITLE:           #「RETURN_TITLE」の時は            
             if pyxel.btnp(pyxel.KEY_ENTER):                #リターンキーが押されたら
-                self.game_status = SCENE_TITLE_INIT        #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
+                self.game_status = SCENE_TITLE_INIT        #ゲームステータスを「SCENE_TITLE_INIT」にしてタイトルの初期化工程にする
                 self.game_playing_flag = 0                 #ゲームプレイ中のフラグを降ろす
                 self.save_system_data()                    #システムデータをセーブする関数の呼び出し
                 self.update_replay_data_list()             #録画したリプレイデータを登録します
@@ -10749,13 +10743,14 @@ class App:
             
             
             if self.cursor_decision_item == 0:             #メニューでアイテムナンバー0の「YES」が押されたら
-                self.game_status = SCENE_TITLE_INIT        #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
+                self.game_status = SCENE_TITLE_INIT        #ゲームステータスを「SCENE_TITLE_INIT」にしてタイトルの初期化工程にする
                 self.game_playing_flag = 0                 #ゲームプレイ中のフラグを降ろす
                 self.save_system_data()                    #システムデータをセーブする関数の呼び出し
                 
-                print("replay_recording_data   ######### CONTROL ########")
+                print("\nreplay_recording_data   ######### CONTROL ########")
                 print(self.replay_recording_data)          #ターミナルにリプレイ録画データの中身を表示(デバッグ用)
-                print("replay_mode_stage_data  ###### STAGE DATA ######")
+                
+                print("\nreplay_mode_stage_data  ###### STAGE DATA ######")
                 print(self.replay_mode_stage_data)          #ターミナルにリプレイ録画データ(毎ステージのデータ群)の中身を表示(デバッグ用)
                 
                 self.update_replay_data_list()             #録画したリプレイデータを登録します
