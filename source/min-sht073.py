@@ -86,7 +86,10 @@
 #todo92b デバッグステータスの表示項目をトグル切り替え表示できるようにした 2021 05/01
 #todo93  インデントが全てスペース5個だったのでpython標準のスペース4個に修正 2021 05/03
 #todo93a リプレイデータの再生実装で地獄を見る・・・リプレイ再生ズレまくりぃいい！ 2021 05/04
-#todo93b ステージごとにリプレイデータを分割する案を検討 2021 05/04
+#todo93b ステージごとにリプレイデータを分割する案を検討(余裕をもって50ステージ分確保) 2021 05/04
+#todo93c ステージごとにリプレイデータを分割しステージ開始時の自機装備関連のステータスも記録するようにした 2021 05/06
+#todo93d だめだ。。上手くいかないGWは全てリプレイ再生の実装で潰れそう 2021 05/06
+#todo93e 最後までリプレイファイルが正常に再生されたらトロフィー(実績解除)取得！とかそんな事を考えている 2021 05/06
 
 
 # from random import randint   #random.randint(n,m) と呼ぶと、nからm(m自身を含む)までの間の整数が 等しい確率で、ランダムに返される
@@ -148,6 +151,7 @@ SCENE_GAME_OVER_FADE_OUT  = 61 #ゲームオーバーメッセージ表示中（
 SCENE_GAME_OVER_SHADOW_IN = 62 #ゲームオーバーメッセージ表示中（ゲーム自体は停止、画面をシャドウインさせていく）
 SCENE_GAME_OVER_STOP      = 63 #ゲームオーバーメッセージ表示中（ゲーム自体は停止している）
 SCENE_RETURN_TITLE        = 64 #ゲームオーバーになりタイトルに戻るかどうかカーソルを出して選択待ち
+SCENE_SELECT_SAVE_SLOT    = 65 #タイトルに戻る前にリプレイファイルどのスロットにセーブするのか選択待ち
 
 SCENE_STAGE_CLEAR               = 70 #ステージクリア
 SCENE_STAGE_CLEAR_MOVE_MY_SHIP  = 71 #ステージクリア後、自機がステージクリア画像左上まで自動に動いていくシーン
@@ -355,18 +359,19 @@ REPLAY_RECORD = 1 #リプレイデータを記録中です
 REPLAY_PLAY   = 2 #リプレイデータを再生中です
 
 #パッド入力でのリプレイデータ記録に使用する定数定義
-PAD_UP      =    1 #0b 0000 0000 0000 0001
-PAD_DOWN    =    2 #0b 0000 0000 0000 0010
-PAD_LEFT    =    4 #0b 0000 0000 0000 0100
-PAD_RIGHT   =    8 #0b 0000 0000 0000 1000
-PAD_A       =   16 #0b 0000 0000 0001 0000
-PAD_B       =   32 #0b 0000 0000 0010 0000
-PAD_X       =   64 #0b 0000 0000 0100 0000
-PAD_Y       =  128 #0b 0000 0000 1000 0000
-PAD_SELECT  =  256 #0b 0000 0001 0000 0000
-PAD_START   =  512 #0b 0000 0010 0000 0000
-PAD_LEFT_S  = 1024 #0b 0000 0100 0000 0000
-PAD_RIGHT_S = 2048 #0b 0000 1000 0000 0000
+PAD_UP      =    1 #0b 0000 0001 Low byte
+PAD_DOWN    =    2 #0b 0000 0010
+PAD_LEFT    =    4 #0b 0000 0100
+PAD_RIGHT   =    8 #0b 0000 1000
+PAD_A       =   16 #0b 0001 0000
+PAD_B       =   32 #0b 0010 0000
+PAD_X       =   64 #0b 0100 0000
+PAD_Y       =  128 #0b 1000 0000
+
+PAD_SELECT  =    1 #0b 0000 0001 Hige byte
+PAD_START   =    2 #0b 0000 0010 
+PAD_LEFT_S  =    4 #0b 0000 0100 
+PAD_RIGHT_S =    8 #0b 0000 1000 
 
 #リプレイモードでの毎ステージ開始時の自機データの記録用で使用する定数
 ST_SCORE                       = 0   #毎ステージごとのスコア
@@ -425,16 +430,21 @@ EXPLOSION_NORMAL =   0  #標準サイズ(8x8サイズ)の敵を倒したとき�
 EXPLOSION_MIDDLE =   1  #スクランブルハッチや重爆撃機系の敵を倒したときの中くらいの爆発パターン 
 EXPLOSION_MY_SHIP = 10  #自機の爆発パターン
 
-#メッセージウィンドウ関連の定数定義 window_statusに代入されます
-WINDOW_OPEN = 0                #テキストウィンドウ開き進行中
+#ウィンドウのタイプの定数定義 windowクラスの window_typeに入ります
+WINDOW_TRANSLUCENT     = 0 #半透明
+WINDOW_BLUE_BACK       = 1 #青地
+WINDOW_LOW_TRANSLUCENT = 2 #ちょっと半透明
+
+#メッセージウィンドウ関連の定数定義 windowクラスの window_statusに入ります
+WINDOW_OPEN            = 0     #テキストウィンドウ開き進行中
 WINDOW_WRITE_TITLE_BAR = 4     #テキストウィンドウのタイトルバー表示中
-WINDOW_WRITE_MESSAGE = 5       #テキストメッセージの表示中
-WINDOW_SELECT_YES_NO = 8       #「はい」「いいえ」の2択表示中
-WINDOW_OPEN_COMPLETED = 9      #テキストウィンドウ開き完了！
-WINDOW_CLOSE = 10              #テキストウィンドウ閉め進行中
+WINDOW_WRITE_MESSAGE   = 5     #テキストメッセージの表示中
+WINDOW_SELECT_YES_NO   = 8     #「はい」「いいえ」の2択表示中
+WINDOW_OPEN_COMPLETED  = 9     #テキストウィンドウ開き完了！
+WINDOW_CLOSE           = 10    #テキストウィンドウ閉め進行中
 WINDOW_CLOSE_COMPLETED = 11    #テキストウィンドウ閉め完了！ 
 
-#メッセージの表示の仕方
+#メッセージの表示の仕方 windowクラスの (mes1~mes7)_flagに入ります
 DISP_OFF = 0               #0=表示しない
 DISP_ON = 1                #1=表示する 
 DISP_CENTER = 2            #2=中央表示
@@ -656,7 +666,7 @@ RETURN_BULLET_3WAY      = 3 #自機狙いの3way弾を撃ち返してくる
 
 #敵弾クラスで使用する定数定義 主にcollision_typeやwidth,heightに入る
 ESHOT_COL_MIN88 = 0 #最小の正方形8x8ドットでの当たり判定タイプ    collision_typeに入る
-ESHOT_COL_BOX   = 1 #長方形での当たり判定タイプ             collision_typeに入る 判定はwidth,heightを見て行います
+ESHOT_COL_BOX   = 1 #長方形での当たり判定タイプ                  collision_typeに入る 判定はwidth,heightを見て行います
 
 ESHOT_SIZE1  =  1 #敵ショットのサイズ  1ドット width,heightに入ります
 ESHOT_SIZE2  =  2 #敵ショットのサイズ  2ドット
@@ -1863,7 +1873,7 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
     def __init__(self):
         self.window_id = 0
         self.window_id_sub = 0
-        self.window_type = 0
+        self.window_type = 0  #ウィンドウの種類(主に背景) 0=シースルー 1=完全な青地 2=ちょっとシースルー
         self.window_status = 0
         self.window_title = ""
         self.window_title_flag = 0
@@ -2124,6 +2134,7 @@ class System_data: #ゲーム関連のシステムデータ関連のクラス設
                                                                         #例 J_PYTHONはIDナンバー0なので リスト先頭の1番目の数値となる  (0始まりなので)
                                                                         #   FIRST_BASICはIDナンバー8なのでリスト先頭の9番目の数値となる(0始まりなので)
     
+    
 class App:
     ##########################################################################################################################################
     #関数を定義沢山定義するところだよ############################################################################################################
@@ -2139,7 +2150,10 @@ class App:
         self.bg_cls_color = 0          #BGをCLS(クリアスクリーン)するときの色の指定(通常は0=黒色です)
         self.bg_transparent_color = 0  #BGタイルマップを敷き詰めるときに指定する透明色です
         
-        self.rnd_seed = 0              #線形合同法で使用する乱数の種を初期化します
+        self.rnd_seed = 0              #線形合同法で使用する乱数の種を初期化します(r_randintが呼ばれるごとにrnd_seedの中身が変化するので注意！)
+        self.master_rnd_seed = 0       #線形合同法で使用する乱数の種(ゲームスタート時のrnd_seedを保存してリプレイファイル再生時の最初の乱数の種として使用します初期化します
+        
+        self.replay_slot_num = 0       #リプレイファイルをセーブしたりロードするスロットナンバーが入ります(0~9)
         
         #ゲーム中で絶対に変化することのないリスト群はここで作成します#######################################
         #サブウェポンセレクターカーソルなどで使用する点滅用カラーリスト群(pyxelのカラーナンバーだよ)
@@ -2826,7 +2840,7 @@ class App:
                     y += 12
 
     #システムデータからの数値読み込み
-    def read_system_data_num(self,x,y,digit): #x,yは1の位の座標です digitは桁数です
+    def read_system_data_num(self,x,y,digit):      #x,yは1の位の座標です digitは桁数です
         global num   #なんやようわからんが・・・global命令で 「numはグローバル変数やで～」って宣言したら上手くいくようになった、なんでや・・・？？謎
         num = 0
         a = 1
@@ -2969,7 +2983,12 @@ class App:
         pyxel.tilemap(0).set(1,3,hour_1000 + 16) #時の   1000の位を書き込む
         pyxel.tilemap(0).set(0,3,hour_10000 + 16) #時の   10000の位を書き込む
         
-        self.write_system_data_num(16,152,16,8777992360588341)   #!############################ test write
+        self.write_system_data_num(16,152,16,8777992360588341) #!############################ test write
+        
+        test_num = -0.123
+        test_num = test_num * 1000
+        test_num = test_num + 1000                             #この式と逆の方法で計算してやれば符号の付いた実数値を取り出せる
+        self.write_system_data_num(10,162,10,int(test_num))    #!############################ test write マイナス符号付き実数値の数値が書き込めるかのテスト
         
         pyxel.save("assets/system/system-data.pyxres") #システムデータを書き込み
 
@@ -3944,6 +3963,28 @@ class App:
         num = num_0_1 + num_0_01 + num_0_001 + num_0_0001 + num_0_00001 #全ての桁数を足し合わせると小数点5桁までの乱数となる(0.00000~0.99999)
         return (num)
 
+    #リプレイファイルスロット選択ウィンドウの表示
+    def window_replay_data_slot_select(self):
+        new_window = Window()
+        new_window.update(0,0,1,WINDOW_OPEN,\
+        "SLOT",DISP_CENTER,\
+        "1",DISP_CENTER,0,7,\
+        "2",DISP_CENTER,0,7,\
+        "3",DISP_CENTER,0,7,\
+        "4",DISP_CENTER,0,7,\
+        "5",DISP_CENTER,0,7,\
+        "6",DISP_CENTER,0,7,\
+        "7",DISP_CENTER,0,7,\
+        62,52-8,   0,0,  8*3-4,7*9+4,   2,1, 2,1,   0,0,    0,0)
+        self.window.append(new_window)                      #「SELECT SLOT」を育成する
+        self.cursor_show = True                             #選択カーソル表示をonにする
+        self.cursor_x = 66                                  #セレクトカーソルの座標を設定します
+        self.cursor_y = 64-8
+        self.cursor_item = 0                                #いま指示しているアイテムナンバーは0の「1」
+        self.cursor_decision_item = -1                      #まだボタンも押されておらず未決定状態なのでdecision_itemは-1
+        self.cursor_max_item = 6                            #最大項目数は「1」「2」「3」「4」「5」「6」「7」の7項目なので 7-1=6を代入
+        self.cursor_menu_layer = 0                          #メニューの階層は最初は0にします
+
     ################################################################ボツ関数群・・・・・・(涙)##########################################################
     #外積を計算する関数 self.cpに結果が入る(バグありなので使えないっぽい・・・この関数)
     def cross_product_calc_function(self,ax,ay,bx,by,cx,cy):
@@ -3987,7 +4028,6 @@ class App:
         self.cross_product_calc_function(px,py,cx,cy,ax,ay)
         d3 = self.cp
         if (d1 < 0 and d2 < 0 and d3 < 0) or (d1 > 0 and d2 > 0 and d3 > 0):#d1~d3が全てマイナスの数値 または d1~d3が全てプラスの数値だったら
-
             self.point_inside_triangle_flag = 1 #三角形の内側に点があった！のでフラグをon
         else:
             self.point_inside_triangle_flag = 0 #三角形の外側だった・・・・のでフラグをoff   
@@ -4108,7 +4148,7 @@ class App:
 
     #タイトルメニューの選択中の更新#####################################
     def update_title_menu_select(self):
-        if self.cursor_menu_layer == 0: #メニューが0階層目の選択分岐
+        if   self.cursor_menu_layer == 0: #メニューが0階層目の選択分岐
             if   self.cursor_decision_item == 0:            #GAME STARTが押されたら
                 self.cursor_show = False                    #セレクトカーソルの表示をoffにする
                 self.move_mode = MOVE_MANUAL                #移動モードを「手動移動」にする
@@ -4143,7 +4183,7 @@ class App:
                 
                 self.cursor_menu_layer = 1                       #メニューの階層が増えたので0から1にします
                 
-            elif self.cursor_decision_item == 2:                     #SELECT LOOP NUMBERが押されたら
+            elif self.cursor_decision_item == 2:            #SELECT LOOP NUMBERが押されたら
                 self.cursor_pre_x = self.cursor_x                    #新しいウィンドウを開く前に現在のカーソル関連の変数を記憶しておきます
                 self.cursor_pre_y = self.cursor_y
                 self.cursor_pre_item = self.cursor_item
@@ -4171,7 +4211,7 @@ class App:
                 
                 self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
                 
-            elif self.cursor_decision_item == 3:                    #BOSS MODEが押されたら
+            elif self.cursor_decision_item == 3:            #BOSS MODEが押されたら
                 self.cursor_pre_x = self.cursor_x                   #新しいウィンドウを開く前に現在のカーソル関連の変数を記憶しておきます
                 self.cursor_pre_y = self.cursor_y
                 self.cursor_pre_item = self.cursor_item
@@ -4199,7 +4239,7 @@ class App:
                 
                 self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
                 
-            elif self.cursor_decision_item == 4:               #HITBOXが押されたら
+            elif self.cursor_decision_item == 4:            #HITBOXが押されたら
                 self.cursor_pre_x = self.cursor_x              #新しいウィンドウを開く前に現在のカーソル関連の変数を記憶しておきます
                 self.cursor_pre_y = self.cursor_y
                 self.cursor_pre_item = self.cursor_item
@@ -4227,7 +4267,7 @@ class App:
                 
                 self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
                 
-            elif self.cursor_decision_item == 5:                #DIFFICULTYが押されたら
+            elif self.cursor_decision_item == 5:            #DIFFICULTYが押されたら
                 self.cursor_pre_x = self.cursor_x               #新しいウィンドウを開く前に現在のカーソル関連の変数を記憶しておきます
                 self.cursor_pre_y = self.cursor_y
                 self.cursor_pre_item = self.cursor_item
@@ -4255,7 +4295,7 @@ class App:
                 
                 self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
                 
-            elif self.cursor_decision_item == 6:                     #REPLAYが押されたら
+            elif self.cursor_decision_item == 6:            #REPLAYが押されたら
                 if len(self.replay_data[self.replay_stage_num]) == 0:#リプレイデータのリストが空(長さが0)だったらリプレイ再生できないので
                     self.cursor_show = True                          #カーソルだけは表示
                 else:                                                #リプレイデータのバックアップ用リストが存在したのなら
@@ -4265,16 +4305,16 @@ class App:
                     self.update_restore_replay_data()                #リプレイデータをリストア(復元)する関数を呼び出す
                     self.replay_mode_stage_data = self.replay_mode_stage_data_backup #各ステージ開始時のデータ履歴をリストア(復元)します
                     
-                    print("\nstart replay-------CONTROL-DATA--------------------------")
-                    print(self.replay_data)                          #(デバッグ用)ターミナルに記録されたリプレイデータデータの中身をプリント
-                    print("\nstart replay-------STAGE-DATA----------------------------")
-                    print(self.replay_mode_stage_data)                #(デバッグ用)ターミナルに記録されたリプレイデータデータの中身をプリント  
+                    #print("\nstart replay-------CONTROL-DATA--------------------------")
+                    #print(self.replay_data)                          #(デバッグ用)ターミナルに記録されたリプレイデータデータの中身をプリント
+                    #print("\nstart replay-------STAGE-DATA----------------------------")
+                    #print(self.replay_mode_stage_data)                #(デバッグ用)ターミナルに記録されたリプレイデータデータの中身をプリント  
                     
                     self.replay_stage_num = 0                        #リプレイデータを最初のステージから再生できるように0初期化
                     self.game_status = SCENE_GAME_START_INIT         #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
             
         elif self.cursor_menu_layer == 1: #メニューが1階層目の選択分岐
-            if self.cursor_pre_decision_item == 1 and self.cursor_decision_item == 0:
+            if   self.cursor_pre_decision_item == 1 and self.cursor_decision_item == 0:
                 #「SELECT STAGE」→「1」
                 self.stage_number   = 1                          #ステージナンバー1
                 window_count = len(self.window)
@@ -4553,7 +4593,7 @@ class App:
         elif self.start_claw == TWO_CLAW:  #ゲーム開始時クローの数が2の時は
             self.update_append_claw()      #2回呼び出し
             self.update_append_claw()
-        elif self.start_claw == THREE_CLAW: #ゲーム開始時クローの数が3の時は
+        elif self.start_claw == THREE_CLAW:#ゲーム開始時クローの数が3の時は
             self.update_append_claw()       #3回呼び出し
             self.update_append_claw()
             self.update_append_claw()
@@ -4573,24 +4613,25 @@ class App:
         
         if self.replay_status == REPLAY_RECORD:
             self.update_save_replay_stage_data()    #リプレイ保存時は,ステージスタート時のパラメーターをセーブする関数を呼び出します(リプレイ再生で使用)
-            print("\nSAVE!!!!  replay_mode_stage_data")
-            print("stage num = " + str(self.replay_stage_num))
-            print(self.replay_mode_stage_data)
+            #print("\nSAVE!!!!  replay_mode_stage_data")
+            #print("stage num = " + str(self.replay_stage_num))
+            #print(self.replay_mode_stage_data)
         elif self.replay_status == REPLAY_PLAY:
-            print("\nロード前の replay_mode_stage_data")
-            print("stage num = " + str(self.replay_stage_num))
-            print(self.replay_mode_stage_data)
+            #print("\nロード前の replay_mode_stage_data")
+            #print("stage num = " + str(self.replay_stage_num))
+            #print(self.replay_mode_stage_data)
             self.update_load_replay_stage_data()    #リプレイ再生時は,ステージスタート時のパラメーターをロードする関数を呼び出します
-            print("\nLOAD!!!!  replay_mode_stage_data")
-            print("stage num = " + str(self.replay_stage_num))
-            print(self.replay_mode_stage_data)
+            #print("\nLOAD!!!!  replay_mode_stage_data")
+            #print("stage num = " + str(self.replay_stage_num))
+            #print(self.replay_mode_stage_data)
         
-        print("\nreplay_mode_stage_dataの長さ")
-        print(len(self.replay_mode_stage_data))
-
-        self.pad_data = 0b0000000000000000  #パッド入力用ビットパターンデータを初期化します
-                                    #各ビットの詳細
-                                    # 上から 0,0,0,0, RS,LS,START,SELECT,   BY,BX,BB,BA, R,L,D,U
+        #print("\nreplay_mode_stage_dataの長さ")
+        #print(len(self.replay_mode_stage_data))
+        
+        self.pad_data_h = 0b00000000#パッド入力用ビットパターンデータを初期化します
+        self.pad_data_l = 0b00000000#各ビットの詳細
+                                    #上位バイトから 0,0,0,0, RS,LS,START,SELECT
+                                    #下位バイトは   BY,BX,BB,BA, R,L,D,U
                                     # U=上 D=下 L=左 R=右 BA~BY=各ボタン START,SELECT=スタート,セレクト LS,RS=左ショルダー,右ショルダーボタン
         self.replay_frame_index = 0 #リプレイ時のフレームインデックス値を初期化
         
@@ -5110,51 +5151,53 @@ class App:
             if pyxel.btn(pyxel.KEY_LEFT) or pyxel.btn(pyxel.GAMEPAD_1_LEFT) or pyxel.btn(pyxel.GAMEPAD_2_LEFT):
                 self.my_moved_flag = 1#自機移動フラグOn
                 self.my_vx = -1
-                self.pad_data += PAD_LEFT
+                self.pad_data_l += PAD_LEFT
             
             # 右入力があったのなら  x座標を  1*my_speedの数値だけ増やす
             if pyxel.btn(pyxel.KEY_RIGHT) or pyxel.btn(pyxel.GAMEPAD_1_RIGHT) or pyxel.btn(pyxel.GAMEPAD_2_RIGHT):
                 self.my_moved_flag = 1#自機移動フラグOn
                 self.my_vx = 1
-                self.pad_data += PAD_RIGHT
+                self.pad_data_l += PAD_RIGHT
             
             # 上入力があったのなら  y座標を  1*my_speedの数値だけ減らす
             if pyxel.btn(pyxel.KEY_UP) or pyxel.btn(pyxel.GAMEPAD_1_UP) or pyxel.btn(pyxel.GAMEPAD_2_UP):
                 self.my_rolling_flag = 2
                 self.my_moved_flag = 1#自機移動フラグOn
                 self.my_vy = -1
-                self.pad_data += PAD_UP
+                self.pad_data_l += PAD_UP
             
             # 下入力があったのなら  y座標を  1*my_speedの数値だけ増やす
             if pyxel.btn(pyxel.KEY_DOWN) or pyxel.btn(pyxel.GAMEPAD_1_DOWN) or pyxel.btn(pyxel.GAMEPAD_2_DOWN):
                 self.my_rolling_flag = 1
                 self.my_moved_flag = 1#自機移動フラグOn
                 self.my_vy = 1
-                self.pad_data += PAD_DOWN
+                self.pad_data_l += PAD_DOWN
             
             self.my_x += self.my_vx * self.my_speed #自機の移動量(vx,vy)と自機の速度(speed)を使って自機の座標を更新する（移動！）
             self.my_y += self.my_vy * self.my_speed
             
         elif self.replay_status == REPLAY_PLAY and self.move_mode == MOVE_MANUAL: #リプレイステータスが「PLAY」で移動モードが「MANUAL」のときは
             self.my_vx,self.my_vy = 0,0 #自機の自機の移動量(vx,vy)を0に初期化する
+            #self.replay_frame_index    インデックス値のリストの内容はパッド入力データのHigh Byte
+            #self.replay_frame_index + 1インデックス値のリストの内容はパッド入力データのLow Byte となります
             #リプレイデータを調べて左入力だったのなら  x座標を  my_speedの数値だけ減らす
-            if self.replay_data[self.replay_stage_num][self.replay_frame_index] & 0b0000000000000100 == 0b0000000000000100:
+            if self.replay_data[self.replay_stage_num][self.replay_frame_index + 1] & 0b00000100 == 0b00000100:  #LowByte
                 self.my_moved_flag = 1#自機移動フラグOn
                 self.my_vx = -1
             
             #リプレイデータを調べて右入力があったのなら x座標を  my_speedの数値だけ増やす
-            if self.replay_data[self.replay_stage_num][self.replay_frame_index] & 0b0000000000001000 == 0b0000000000001000:
+            if self.replay_data[self.replay_stage_num][self.replay_frame_index + 1] & 0b00001000 == 0b00001000:  #LowByte
                 self.my_moved_flag = 1#自機移動フラグOn
                 self.my_vx = 1
             
             #リプレイデータを調べて上入力があったのなら y座標を  my_speedの数値だけ減らす
-            if self.replay_data[self.replay_stage_num][self.replay_frame_index] & 0b0000000000000001 == 0b0000000000000001:
+            if self.replay_data[self.replay_stage_num][self.replay_frame_index + 1] & 0b00000001 == 0b00000001:  #LowByte
                 self.my_rolling_flag = 2
                 self.my_moved_flag = 1#自機移動フラグOn
                 self.my_vy = -1
             
             #リプレイデータを調べて下入力があったのなら y座標を  my_speedの数値だけ増やす
-            if self.replay_data[self.replay_stage_num][self.replay_frame_index] & 0b0000000000000010 == 0b0000000000000010:
+            if self.replay_data[self.replay_stage_num][self.replay_frame_index + 1] & 0b00000010 == 0b00000010:  #LowByte
                 self.my_rolling_flag = 1
                 self.my_moved_flag = 1#自機移動フラグOn
                 self.my_vy = 1
@@ -5226,11 +5269,11 @@ class App:
     #キーボードの3かゲームパッドの「SELECT」ボタンが入力されたボタンが押されたか？チェックする(スピードチェンジ)     KEY 3 GAMEPAD SELECT
     def update_check_change_speed(self):
         if self.replay_status == REPLAY_PLAY: #リプレイステータスが「再生中」の場合は
-            if self.replay_data[self.replay_stage_num][self.replay_frame_index] & 0b0000000100000000 == 0b0000000100000000: #リプレイデータを調べてPAD SELECTが押された記録だったのなら...
+            if self.replay_data[self.replay_stage_num][self.replay_frame_index] & 0b00000001 == 0b00000001: #HighByte リプレイデータを調べてPAD SELECTが押された記録だったのなら...
                 self.update_change_speed() #スピードチェンジ関数呼び出し！
         elif self.move_mode == MOVE_MANUAL: #手動移動モードの場合は
             if pyxel.btnp(pyxel.KEY_3) or pyxel.btnp(pyxel.GAMEPAD_1_SELECT) or pyxel.btnp(pyxel.GAMEPAD_2_SELECT):
-                self.pad_data += PAD_SELECT #パッド入力データのSELECTボタンの情報ビットを立てる
+                self.pad_data_h += PAD_SELECT #パッド入力データのSELECTボタンの情報ビットを立てる
                 self.update_change_speed() #スピードチェンジ関数呼び出し！
 
     #自機のスピードチェンジ!!!!
@@ -5245,11 +5288,11 @@ class App:
     #スペースキーかゲームパッドAが押されたかどうか？もしくはリプレイモードでショット発射したのか調べる     KEY SPACE GAMEPAD A
     def update_check_fire_shot(self):
         if self.replay_status == REPLAY_PLAY: #リプレイステータスが「再生中」の場合は
-            if self.replay_data[self.replay_stage_num][self.replay_frame_index] & 0b0000000000010000 == 0b0000000000010000: #リプレイデータを調べてPAD Aが押された記録だったのなら...
+            if self.replay_data[self.replay_stage_num][self.replay_frame_index + 1 ] & 0b00010000 == 0b00010000: #LowByte リプレイデータを調べてPAD Aが押された記録だったのなら...
                 self.update_fire_shot() #ショット発射関数呼び出し！
         elif self.move_mode == MOVE_MANUAL: #手動移動モードの場合は
             if pyxel.btn(pyxel.KEY_SPACE) or pyxel.btn(pyxel.GAMEPAD_1_A) or pyxel.btn(pyxel.GAMEPAD_2_A): #パッドAかスペースキーが押されたか？
-                self.pad_data += PAD_A #コントロールパッド入力記録にAボタンを押した情報ビットを立てて記録する
+                self.pad_data_l += PAD_A #コントロールパッド入力記録にAボタンを押した情報ビットを立てて記録する
                 self.update_fire_shot() #ショット発射関数呼び出し！
 
     #ショットを発射する!!!!!
@@ -5462,11 +5505,11 @@ class App:
     #スペースキーかゲームバットBボタンが押さたかどうか？もしくはリプレイモードでミサイル発射したのか調べる KEY SPACE GAMEPAD B
     def update_check_fire_missile(self):
         if self.replay_status == REPLAY_PLAY: #リプレイステータスが「再生中」の場合は
-            if self.replay_data[self.replay_stage_num][self.replay_frame_index] & 0b0000000000100000 == 0b0000000000100000: #リプレイデータを調べてPAD Bが押された記録だったのなら...
+            if self.replay_data[self.replay_stage_num][self.replay_frame_index + 1] & 0b00100000 == 0b00100000: #LowByte リプレイデータを調べてPAD Bが押された記録だったのなら...
                 self.update_fire_missile() #ミサイル発射関数呼び出し！
         elif self.move_mode == MOVE_MANUAL: #手動移動モードの場合は
             if pyxel.btn(pyxel.KEY_SPACE) or pyxel.btn(pyxel.GAMEPAD_1_B) or pyxel.btn(pyxel.GAMEPAD_2_B): #パッドBかスペースキーが押されたか？
-                self.pad_data += PAD_B #コントロールパッド入力記録にBボタンを押した情報ビットを立てて記録する
+                self.pad_data_l += PAD_B #コントロールパッド入力記録にBボタンを押した情報ビットを立てて記録する
                 self.update_fire_missile() #ミサイル発射関数呼び出し！
 
     #ミサイルを発射する!!!!!
@@ -6317,7 +6360,7 @@ class App:
     #クローが弾を発射するのか調べる関数
     def update_check_fire_claw_shot(self):
         if self.replay_status == REPLAY_PLAY: #リプレイステータスが「再生中」の場合は
-            if self.replay_data[self.replay_stage_num][self.replay_frame_index] & 0b0000000000010000 == 0b0000000000010000: #リプレイデータを調べてPAD Aが押された記録だったのなら...
+            if self.replay_data[self.replay_stage_num][self.replay_frame_index + 1] & 0b00010000 == 0b00010000: #LowByte リプレイデータを調べてPAD Aが押された記録だったのなら...
                 self.update_fire_claw_shot() #クローショット発射関数呼び出し！
         elif self.move_mode == MOVE_MANUAL: #手動移動モードの場合は
             if pyxel.btn(pyxel.KEY_SPACE) or pyxel.btn(pyxel.GAMEPAD_1_A) or pyxel.btn(pyxel.GAMEPAD_2_A): #パッドAかスペースキーが押されたか？
@@ -7329,11 +7372,11 @@ class App:
     #フイックスクローの間隔変化ボタンが押されたかチェックする               KEY N  GAMEPAD RIGHT_SHOULDER
     def update_check_change_fix_claw_interval(self):
         if self.replay_status == REPLAY_PLAY: #リプレイステータスが「再生中」の場合は
-            if self.replay_data[self.replay_stage_num][self.replay_frame_index] & 0b0000100000000000 == 0b0000100000000000: #リプレイデータを調べてPAD_RIGHT_Sが押された記録だったのなら...
+            if self.replay_data[self.replay_stage_num][self.replay_frame_index] & 0b00001000 == 0b00001000: #HighByte リプレイデータを調べてPAD_RIGHT_Sが押された記録だったのなら...
                 self.update_change_fix_claw_interval() #フイックスクローの間隔変化関数呼び出し！
         elif self.move_mode == MOVE_MANUAL: #手動移動モードの場合は
             if pyxel.btn(pyxel.KEY_N) or pyxel.btn(pyxel.GAMEPAD_1_RIGHT_SHOULDER) or pyxel.btn(pyxel.GAMEPAD_2_RIGHT_SHOULDER):#NキーかPAD_RIGHT_Sが押されたらフックスクローの間隔を変化させる
-                self.pad_data += PAD_RIGHT_S #パッド入力データのRIGHT_SHOULDERボタンの情報ビットを立てる
+                self.pad_data_h += PAD_RIGHT_S #パッド入力データのRIGHT_SHOULDERボタンの情報ビットを立てる
                 self.update_change_fix_claw_interval() #フイックスクローの間隔変化関数呼び出し！
 
     #フイックスクローの間隔を変化させる
@@ -7346,11 +7389,11 @@ class App:
     #クロースタイル変更ボタンが押されたかチェックする                      KEY M  GAMEPAD LEFT_SHOULDER
     def update_check_change_claw_style(self):
         if self.replay_status == REPLAY_PLAY: #リプレイステータスが「再生中」の場合は
-            if self.replay_data[self.replay_stage_num][self.replay_frame_index] & 0b0000010000000000 == 0b0000010000000000: #リプレイデータを調べてPAD_LEFT_Sが押された記録だったのなら...
+            if self.replay_data[self.replay_stage_num][self.replay_frame_index] & 0b00000100 == 0b00000100: #HighByte リプレイデータを調べてPAD_LEFT_Sが押された記録だったのなら...
                 self.update_change_claw_style() #クロースタイル変更関数呼び出し！
         elif self.move_mode == MOVE_MANUAL: #手動移動モードの場合は
             if pyxel.btnp(pyxel.KEY_M) or pyxel.btnp(pyxel.GAMEPAD_1_LEFT_SHOULDER) or pyxel.btnp(pyxel.GAMEPAD_2_LEFT_SHOULDER):#MキーかPAD_LEFT_Sが押されたらクローの種類を変更する
-                self.pad_data += PAD_LEFT_S #パッド入力データのLEFT_SHOULDERボタンの情報ビットを立てる
+                self.pad_data_h += PAD_LEFT_S #パッド入力データのLEFT_SHOULDERボタンの情報ビットを立てる
                 self.update_change_claw_style() #クロースタイル変更関数呼び出し！
 
     #クロースタイルの変更
@@ -8662,11 +8705,11 @@ class App:
     #サブウェポン切り替えボタンが押された＆サブウェポンを一つでも所維持しているのか？チェックする      GAMEPAD Y
     def update_check_change_sub_weapon(self):
         if self.replay_status == REPLAY_PLAY: #リプレイステータスが「再生中」の場合は
-            if self.replay_data[self.replay_stage_num][self.replay_frame_index] & 0b0000000010000000 == 0b0000000010000000: #リプレイデータを調べてPAD Yが押された記録だったのなら...
+            if self.replay_data[self.replay_stage_num][self.replay_frame_index + 1] & 0b10000000 == 0b10000000: #LowByte リプレイデータを調べてPAD Yが押された記録だったのなら...
                 self.update_change_sub_weapon() #サブウェポン切り替え関数呼び出し！
         elif self.move_mode == MOVE_MANUAL: #手動移動モードの場合は
             if pyxel.btnp(pyxel.GAMEPAD_1_Y) or pyxel.btnp(pyxel.GAMEPAD_2_Y) and self.select_sub_weapon_id != -1:#サブウェポン切り替えボタンが押された＆サブウェポンを一つでも所維持しているのか？
-                self.pad_data += PAD_Y #コントロールパッド入力記録にYボタンを押した情報ビットを立てて記録する
+                self.pad_data_l += PAD_Y #コントロールパッド入力記録にYボタンを押した情報ビットを立てて記録する
                 self.update_change_sub_weapon() #サブウェポン切り替え関数呼び出し！
 
     #サブウェポンを切り替える!!!!!
@@ -9170,20 +9213,23 @@ class App:
             or self.game_status   == SCENE_STAGE_CLEAR_MY_SHIP_BOOST\
             or self.game_status   == SCENE_STAGE_CLEAR_FADE_OUT\
             or self.replay_status == REPLAY_PLAY:
-            self.pad_data = 0b0000000000000000             #次のフレーム時の記録のためにデータを初期化してあげます
+            self.pad_data_h = 0b00000000             #次のフレーム時の記録のためにデータを初期化してあげます
+            self.pad_data_l = 0b00000000
             return
         else:
-            self.replay_recording_data[self.replay_stage_num].append(self.pad_data)   #リプレイデータリストにパッド入力データを記録追加します
-            self.pad_data = 0b0000000000000000             #次のフレーム時の記録のためにデータを初期化してあげます
-    
+            self.replay_recording_data[self.replay_stage_num].append(self.pad_data_h)   #リプレイデータリストにパッド入力データを記録追加します
+            self.replay_recording_data[self.replay_stage_num].append(self.pad_data_l)
+            self.pad_data_h = 0b00000000             #次のフレーム時の記録のためにデータを初期化してあげます
+            self.pad_data_l = 0b00000000
+
     #リプレイデータ再生用のインデックス値を1増やしていく関数(リプレイフレームインデックス値の更新)
     def update_replay_frame_index(self):
-        if self.replay_frame_index < len(self.replay_data[self.replay_stage_num]) - 1:
-            self.replay_frame_index += 1  #インデックス値がリストの大きさを超えていなかったら1増やして次のデータを取り込めるようにしてやります
+        if self.replay_frame_index < len(self.replay_data[self.replay_stage_num]) - 2:
+            self.replay_frame_index += 2  #インデックス値がリストの大きさを超えていなかったら2(PADデータは2バイト長(16ビット長)なので次のデータに移行するには2増やす)増やして次のデータを取り込めるようにしてやります
 
     #リプレイデータ(ステータス関連)をバックアップする(プッシュする感じみたいな？？？)
     def update_replay_data_status(self):
-        self.backup_rnd_seed         = self.rnd_seed         #乱数の種をバックアップ
+        self.backup_rnd_seed         = self.master_rnd_seed  #乱数の種(ゲームスタート時)をバックアップ
         self.backup_game_difficulty  = self.game_difficulty  #難易度をバックアップ
         self.backup_stage_number     = self.stage_number     #ステージ数をバックアップ
         self.backup_stage_loop       = self.stage_loop       #ループ数をバックアップ
@@ -9194,7 +9240,7 @@ class App:
 
     #リプレイデータをリストアする(ポップする感じみたいな？？？)
     def update_restore_replay_data(self):
-        self.rnd_seed          = self.backup_rnd_seed         #乱数の種をリストア
+        self.master_rnd_seed   = self.backup_rnd_seed         #乱数の種(ゲームスタート時)をリストア
         self.game_difficulty   = self.backup_game_difficulty  #難易度をリストア
         self.stage_number      = self.backup_stage_number     #ステージ数をリストア
         self.stage_loop        = self.backup_stage_loop       #ループ数をリストア
@@ -9275,6 +9321,82 @@ class App:
     #乱数099関数(0~999)の更新
     def update_rnd0_99(self):
         self.rnd0_99_num = pyxel.frame_count % 100 #フレームカウント数を100で割った余りが変数rnd0_99_numに入ります(0~99の数値が1フレームごとに変化する)
+
+    #リプレイデータ・ファイルセーブ
+    def update_replay_data_file_save(self):
+        slot_num = "slot_" + str(self.replay_slot_num)
+        pyxel.load("assets/replay/" + slot_num + "/replay_status.pyxres") #リプレイステータスファイルにアクセスするためにローディングだけしてやります(グラフイック関連のアセットをローディングしている時がほとんどなので)
+        #各種設定値書き込み 数字の[0]はアスキーコード16番なので16足してアスキーコードとしての0にしてやります
+        print("乱数の種(ゲームスタート時)= " + str(self.master_rnd_seed))
+        pyxel.tilemap(0).set(0,0,self.master_rnd_seed)                      #乱数の種(ゲームスタート時)を書き込み(数文字には変換しない)
+        pyxel.tilemap(0).set(0,1,self.game_difficulty + 16)                 #難易度書き込み
+        pyxel.tilemap(0).set(0,2,self.stage_number + 16)                    #ステージ数書き込み
+        pyxel.tilemap(0).set(0,3,self.stage_loop + 16)                      #ループ数書き込み
+        
+        #ステージ毎ごとの自機関連パラメーターのセーブ--------------------------------------------------------------------------------
+        for i in range(self.replay_stage_num + 1):
+            self.write_system_data_num(5   -1+10,10+i, 10,int(self.replay_mode_stage_data[i][ST_SCORE]))           #座標(5,10+i)に10ケタのスコア(整数)を書き込みます
+            self.write_system_data_num(16  -1 +5,10+i,  5,int(self.replay_mode_stage_data[i][ST_MY_SHIELD]))       #座標(16,10+i)に5ケタのシールド値を書き込みます
+            self.write_system_data_num(22  -1 +3,10+i,  3,int(self.replay_mode_stage_data[i][ST_MY_SPEED]*100))    #座標(22,10+i)に3ケタの自機スピード(0.75とか1.25とか小数点第2位まで行くので100倍した値を書き込みます)
+            
+            self.write_system_data_num(27  -1 +2,10+i,  2,int(self.replay_mode_stage_data[i][ST_SELECT_SHOT_ID]))  #座標(27,10+i)に2ケタのショットIDを書き込みます
+            
+            self.write_system_data_num(31  -1 +4,10+i,  4,int(self.replay_mode_stage_data[i][ST_SHOT_EXP]))              #座標(31,10+i)に4ケタのショットの経験値を書き込みます
+            self.write_system_data_num(36  -1 +2,10+i,  2,int(self.replay_mode_stage_data[i][ST_SHOT_LEVEL]))            #座標(36,10+i)に2ケタのショットのレベルを書き込みます
+            self.write_system_data_num(39  -1 +5,10+i,  5,int(self.replay_mode_stage_data[i][ST_SHOT_SPEED_MAGNIFICATION] * 1000)) #座標(39,10+i)に5ケタのショットのスピードに掛ける倍率を書き込みます(小数点第3位まで行くので1000倍した値を書き込みます)
+            self.write_system_data_num(45  -1 +2,10+i,  2,int(self.replay_mode_stage_data[i][ST_SHOT_RAPID_OF_FIRE]))    #座標(45,10+i)に2ケタのショットの連射数を書き込みます
+            
+            self.write_system_data_num(49  -1 +4,10+i,  4,int(self.replay_mode_stage_data[i][ST_MISSILE_EXP]))                  #座標(49,10+i)に4ケタのミサイルの経験値を書き込みます
+            self.write_system_data_num(54  -1 +2,10+i,  2,int(self.replay_mode_stage_data[i][ST_MISSILE_LEVEL]))                #座標(54,10+i)に2ケタのミサイルのレベルを書き込みます
+            self.write_system_data_num(57  -1 +5,10+i,  5,int(self.replay_mode_stage_data[i][ST_MISSILE_SPEED_MAGNIFICATION]* 1000))  #座標(57,10+i)に5ケタのミサイルのスピードに掛ける倍率を書き込みます(小数点第3位まで行くので1000倍した値を書き込みます)
+            self.write_system_data_num(63  -1 +2,10+i,  2,int(self.replay_mode_stage_data[i][ST_MISSILE_RAPID_OF_FIRE]))        #座標(63,10+i)に2ケタのミサイルの連射数を書き込みます
+            
+            self.write_system_data_num(68  -1 +2,10+i,  2,int(self.replay_mode_stage_data[i][ST_SELECT_SUB_WEAPON_ID]))   #座標(68,10+i)に2ケタの現在使用しているサブウェポンのIDナンバーを書き込みます
+            
+            self.write_system_data_num(74  -1 +2,10+i,  2,int(self.replay_mode_stage_data[i][ST_CLAW_NUMBER]))            #座標(74,10+i)に2ケタのクローの装備数を書き込みます
+            self.write_system_data_num(71  -1 +2,10+i,  2,int(self.replay_mode_stage_data[i][ST_CLAW_TYPE]))              #座標(71,10+i)に2ケタのクローのタイプを書き込みます
+            self.write_system_data_num(77  -1 +4,10+i,  4,int(self.replay_mode_stage_data[i][ST_CLAW_DIFFERENCE]))        #座標(77,10+i)に4ケタのクロ―同士の角度間隔を書き込みます
+            
+            self.write_system_data_num(82  -1 +2,10+i,  2,int(self.replay_mode_stage_data[i][ST_TRACE_CLAW_INDEX]))       #座標(82,10+i)に2ケタのトレースクロー（オプション）時のトレース用配列のインデックス値を書き込みます
+            self.write_system_data_num(85  -1 +5,10+i,  5,int(self.replay_mode_stage_data[i][ST_TRACE_CLAW_DISTANCE] * 1000))    #座標(85,10+i)に5ケタのトレースクロー同士の間隔を書き込みます(小数点第3位まで行くので1000倍した値を書き込みます)
+            
+            self.write_system_data_num(91  -1 +5,10+i,  5,int(self.replay_mode_stage_data[i][ST_FIX_CLAW_MAGNIFICATION] * 1000)) #座標(91,10+i)に5ケタのフイックスクロー同士の間隔の倍率を書き込みます(小数点第3位まで行くので1000倍した値を書き込みます)
+            
+            self.write_system_data_num(97  -1 +5,10+i,  5,int(self.replay_mode_stage_data[i][ST_REVERSE_CLAW_SVX] * 1000))       #座標(97,10+i)に5ケタのリバースクロー用の攻撃方向ベクトル(x軸)を書き込みます(小数点第3位まで行くので1000倍した値を書き込みます)
+            self.write_system_data_num(103 -1 +5,10+i,  5,int(self.replay_mode_stage_data[i][ST_REVERSE_CLAW_SVY] * 1000))       #座標(103,10+i)に5ケタのリバースクロー用の攻撃方向ベクトル(y軸)を書き込みます(小数点第3位まで行くので1000倍した値を書き込みます)
+            
+            self.write_system_data_num(109 -1 +5,10+i,  5,int(self.replay_mode_stage_data[i][ST_CLAW_SHOT_SPEED] * 1000))        #座標(109,10+i)に5ケタのクローショットのスピードを書き込みます(小数点第3位まで行くので1000倍した値を書き込みます)
+            self.write_system_data_num(115 -1 +4,10+i,  4,int(self.replay_mode_stage_data[i][ST_LS_SHIELD_HP]))           #座標(115,10+i)に4ケタのL'sシールドの耐久力を書き込みます
+        pyxel.save("assets/replay/" + slot_num + "/replay_status.pyxres")#プレイステータスファイルをセーブ！
+        
+        # print(self.replay_data)
+        
+        #各ステージのパッド入力データのセーブ---------------------------------------------------------------------------------------
+        for st in range(self.replay_stage_num + 1): #st(ステージ指定用に作った変数は0始まりなので注意)
+            file_number = "{:>03}".format(st + 1)
+            file_name = "assets/replay/" + slot_num + "/" + file_number + ".pyxres"
+            pyxel.load(file_name) #リプレイパッド入力データファイルにアクセスするためにローディングだけしてやります(グラフイック関連のアセットをローディングしている時がほとんどなので)
+            replay_control_data_count = len(self.replay_data[st]) #stステージ目のreplay_dataのリスト長(要素数)を代入
+            print (str(st + 1) + "ステージ目のコントロールデータの長さは " + str(replay_control_data_count) + " バイトです")
+            for z in range(8): #データクリア処理-------------------------------------
+                for y in range(256):
+                    for x in range(256):
+                        # pyxel.tilemap(z).set(x,y,128-16+6-16)
+                        pyxel.tilemap(z).set(x,y,0)
+            
+            #カウント65536でタイルマップを1枚埋め尽くす事になります
+            #カウント65537だとタイルマップ1枚と次のタイルマップ1マス分必要となります
+            #タイルマップ1ページ分はカウントが0~65536間の場合書き込み開始 65537だとエラーになります(なんか書き込む(SET)時は座標が256越えてもエラーが出ないみたい)
+            #う～ん上手く行ってるのか謎・・・・
+            for i in range (replay_control_data_count):
+                num = int(self.replay_data[st][i])    #リストからパッド入力データ取得
+                x = int(i % 256)                   #x座標は現在のカウント値iを256で割った余り
+                y = int(i // 256) % 256            #y座標は現在のカウント値iを256で割った数(切り捨て)を更に256で割った余り
+                z = int(i // 65536)                #z座標(この場合はタイルマップナンバーになります)は65536で割った数(切り捨て)
+                pyxel.tilemap(z).set(x,y,num) #numをタイルマップ(z),座標(x,y)に書き込む
+            
+            pyxel.save(file_name) #リプレイパッド入力データファイルをセーブ！
+            print (str(st + 1) + "ステージ目のコントロールデータ セーブ完了！" + file_name)
 
     #!###############################################################################################################################
     #!################################################################################################################################
@@ -9987,7 +10109,7 @@ class App:
         if self.select_sub_weapon_id != -1:#サブウェポンを全く所持していない状態（id=-1）以外ならガイドボックスを点滅表示させる
             pyxel.rectb(60 -1 + self.select_sub_weapon_id * 10,-1, 10,8, self.blinking_color[pyxel.frame_count // 8 % 10])
 
-    #スコア表示やスピード、自機耐久力などのステータスの表示（画面上部の物）
+    #スコア表示やスピード、自機耐久力などのステータスの表示（画面上部の物やリプレイ再生中とか)
     def draw_status(self):
         s = "{:>7}".format(self.score)
         pyxel.text(9, 1, s, 1) #点数の影部分の表示
@@ -10010,18 +10132,23 @@ class App:
         pyxel.blt(137,0,IMG2, 72,72, 8,8, 0)
         pyxel.text(148,1,str(self.my_shield), 1)
         pyxel.text(147,1,str(self.my_shield), 7)
+        
+        if self.replay_status == REPLAY_PLAY: #リプレイ再生時に表示します
+            pyxel.text(160-4*6,120 - 6,"REPLAY", self.rainbow_flash_color[pyxel.frame_count // 8 % 10])
 
     #デバッグ用ステータスの表示
     def draw_debug_status(self):
         if self.debug_menu_status == 0: #デバッグメニュー表示ステータスが0なら表示せずリターンする
             return
         
-        #星の数の表示
-        pyxel.blt(143,WINDOW_H - 8, IMG2, 64,72, 8,8, 0)
-        pyxel.text(153,WINDOW_H - 6,str(len(self.stars)),1)
-        pyxel.text(152,WINDOW_H - 6,str(len(self.stars)),7)
-        #敵ホッパータイプのバウンドフラグの表示（地面と衝突したか？）
-        pyxel.blt(131,WINDOW_H - 7, IMG2, (self.enemy_bound_collision_flag * 8),80, 8,8, 0)
+        if self.replay_status != REPLAY_PLAY: #リプレイ再生時は邪魔なので表示しません
+            #星の数の表示
+            pyxel.blt(143,WINDOW_H - 8, IMG2, 64,72, 8,8, 0)
+            pyxel.text(153,WINDOW_H - 6,str(len(self.stars)),1)
+            pyxel.text(152,WINDOW_H - 6,str(len(self.stars)),7)
+        
+            #敵ホッパータイプのバウンドフラグの表示（地面と衝突したか？）
+            pyxel.blt(131,WINDOW_H - 7, IMG2, (self.enemy_bound_collision_flag * 8),80, 8,8, 0)
         #敵の数の表示
         pyxel.blt(0,WINDOW_H - 8, IMG2, 128,72, 8,8, 0)
         pyxel.text(10,WINDOW_H - 6,str(len(self.enemy)),1)
@@ -10064,7 +10191,8 @@ class App:
         pyxel.text(110,WINDOW_H - 6,str((self.bg_chip % 16) * 8),6)
         
         #自機に重なっているキャラチップを表示
-        pyxel.blt(120,WINDOW_H - 8,IMG2, (self.bg_chip % 16) * 8,(self.bg_chip // 4), 8,8)
+        if self.replay_status != REPLAY_PLAY: #リプレイ再生時は邪魔なので表示しません
+            pyxel.blt(120,WINDOW_H - 8,IMG2, (self.bg_chip % 16) * 8,(self.bg_chip // 4), 8,8)
         
         #ミサイルタイプチェッカーのカウント数の表示 デバッグ用
         #通常ミサイルの総数
@@ -10164,35 +10292,48 @@ class App:
         #ランクの表示
         pyxel.text(160-16,73,"RA" + str(self.rank), 7)
         
-        if self.debug_menu_status == 2: #デバッグメニュー表示ステータスが2の時だけ表示する
+        if self.debug_menu_status != 2: #デバッグメニュー表示ステータスが2の時は表示しない
+            #1番目のクローの座標の表示
+            if self.claw_number >= 1:
+                pyxel.text(0,WINDOW_H - 13,str(self.claw[0].posx),6)
+                pyxel.text(0,WINDOW_H - 20,str(self.claw[0].posy),6)
+            #2番目のクローの座標の表示
+            if self.claw_number >= 2:
+                pyxel.text(72,WINDOW_H - 13,str(self.claw[1].posx),5)
+                pyxel.text(72,WINDOW_H - 20,str(self.claw[1].posy),5)
+        
+        if self.debug_menu_status == 2 and self.replay_status == REPLAY_RECORD: #デバッグメニュー表示ステータスが2尚且つリプレイ記録中の時だけ表示する
             #コントロールパッド操作データの表示
-            replay_count = len(self.replay_input_data)
-            input_pad_data = bin(self.replay_input_data[replay_count-1]) #パッド入力データを2進数に変換します
-            input_pad_data = input_pad_data.lstrip("0b")      #文字列の頭からバイナリー文字の"ob"を取り除きます lstripで先頭から取り除くって判りにくい・・・lstripのlってなんやねん・・・
-            input_pad_data = "{:0>12}".format(input_pad_data) #文字列を整形します 0ゼロ埋め >右寄せ 12桁        
-            pyxel.text(0,120-26,input_pad_data, 10)
-            
+            replay_count = len(self.replay_recording_data[self.replay_stage_num])
+            if replay_count >= 2: #入力履歴はカウント２になったらデータが1個(2バイト)記録されるので取り出すことが出来るぞ！
+                input_pad_data_h = bin(self.replay_recording_data[self.replay_stage_num][replay_count-2]) #パッド入力データHighByteを2進数に変換します
+                input_pad_data_l = bin(self.replay_recording_data[self.replay_stage_num][replay_count-1]) #パッド入力データLowByteを2進数に変換します
+                input_pad_data_h = input_pad_data_h.lstrip("0b")      #文字列の頭からバイナリー文字の"ob"を取り除きます lstripで先頭から取り除くって判りにくい・・・lstripのlってなんやねん・・・
+                input_pad_data_l = input_pad_data_l.lstrip("0b")
+                input_pad_data_h = "{:0>8}".format(input_pad_data_h) #文字列を整形します 0ゼロ埋め >右寄せ 8桁
+                input_pad_data_l = "{:0>8}".format(input_pad_data_l) #文字列を整形します 0ゼロ埋め >右寄せ 8桁
+                pyxel.text(0  ,120-14,input_pad_data_h, 10)
+                pyxel.text(4*8,120-14,input_pad_data_l, 11)
             #コントロールパッド操作データ履歴の表示
-            input_pad_data = bin(self.replay_input_data[replay_count-2])
-            input_pad_data = input_pad_data.lstrip("0b")
-            input_pad_data = "{:0>12}".format(input_pad_data)
-            pyxel.text(0,120-33  ,input_pad_data, 7)
-            
-            if replay_count >= 3:
-                input_pad_data = bin(self.replay_input_data[replay_count-3])
-                input_pad_data = input_pad_data.lstrip("0b")
-                input_pad_data = "{:0>12}".format(input_pad_data)
-                pyxel.text(0,120-33-7,input_pad_data, 7)
             if replay_count >= 4:
-                input_pad_data = bin(self.replay_input_data[replay_count-4])
-                input_pad_data = input_pad_data.lstrip("0b")
-                input_pad_data = "{:0>12}".format(input_pad_data)
-                pyxel.text(0,120-33-14,input_pad_data, 7)
-            if replay_count >= 5:
-                input_pad_data = bin(self.replay_input_data[replay_count-5])
-                input_pad_data = input_pad_data.lstrip("0b")
-                input_pad_data = "{:0>12}".format(input_pad_data)
-                pyxel.text(0,120-33-21,input_pad_data, 7)
+                input_pad_data_h = bin(self.replay_recording_data[self.replay_stage_num][replay_count-4]) #パッド入力データHighByteを2進数に変換します
+                input_pad_data_l = bin(self.replay_recording_data[self.replay_stage_num][replay_count-3]) #パッド入力データLowByteを2進数に変換します
+                input_pad_data_h = input_pad_data_h.lstrip("0b")      #文字列の頭からバイナリー文字の"ob"を取り除きます lstripで先頭から取り除くって判りにくい・・・lstripのlってなんやねん・・・
+                input_pad_data_l = input_pad_data_l.lstrip("0b")
+                input_pad_data_h = "{:0>8}".format(input_pad_data_h) #文字列を整形します 0ゼロ埋め >右寄せ 8桁
+                input_pad_data_l = "{:0>8}".format(input_pad_data_l) #文字列を整形します 0ゼロ埋め >右寄せ 8桁
+                pyxel.text(0  ,120-20,input_pad_data_h, 7)
+                pyxel.text(4*8,120-20,input_pad_data_l, 7)
+            if replay_count >= 6:
+                input_pad_data_h = bin(self.replay_recording_data[self.replay_stage_num][replay_count-6]) #パッド入力データHighByteを2進数に変換します
+                input_pad_data_l = bin(self.replay_recording_data[self.replay_stage_num][replay_count-5]) #パッド入力データLowByteを2進数に変換します
+                input_pad_data_h = input_pad_data_h.lstrip("0b")      #文字列の頭からバイナリー文字の"ob"を取り除きます lstripで先頭から取り除くって判りにくい・・・lstripのlってなんやねん・・・
+                input_pad_data_l = input_pad_data_l.lstrip("0b")
+                input_pad_data_h = "{:0>8}".format(input_pad_data_h) #文字列を整形します 0ゼロ埋め >右寄せ 8桁
+                input_pad_data_l = "{:0>8}".format(input_pad_data_l) #文字列を整形します 0ゼロ埋め >右寄せ 8桁
+                pyxel.text(0  ,120-26,input_pad_data_h, 7)
+                pyxel.text(4*8,120-26,input_pad_data_l, 7)
+            
         
         if self.debug_menu_status == 3: #デバッグメニュー表示ステータスが3の時だけ表示する
             #漢字表示テスト
@@ -10209,14 +10350,6 @@ class App:
                 # if col == 7:
                     # pyxel.pset(x,y,col)
         
-        #1番目のクローの座標の表示
-        if self.claw_number >= 1:
-            pyxel.text(0,WINDOW_H - 13,str(self.claw[0].posx),6)
-            pyxel.text(0,WINDOW_H - 20,str(self.claw[0].posy),6)
-        #2番目のクローの座標の表示
-        if self.claw_number >= 2:
-            pyxel.text(72,WINDOW_H - 13,str(self.claw[1].posx),5)
-            pyxel.text(72,WINDOW_H - 20,str(self.claw[1].posy),5)
         
         # 乱数0_9ルーレットの表示
         # pyxel.text(80,120-26,str(self.rnd0_9_num),9)
@@ -10231,9 +10364,11 @@ class App:
         # pyxel.text(136,120-29,rd_num,3)
         
         # pyxel.text(0,120-39,str(self.s_rndint(10,600)),8)
+        #今現在の乱数の表示
+        # pyxel.text(0,120-35,"RND" + str(self.rnd_seed),11)
         
         #リプレイデータのサイズ表示
-        if self.replay_status == REPLAY_RECORD:  #録画時はreplay_recording_dataのリスト長をひょうじする
+        if self.replay_status == REPLAY_RECORD:  #録画時はreplay_recording_dataのリスト長を表示する
             num = "{:>8}".format(int(len(self.replay_recording_data[self.replay_stage_num])))
             pyxel.text(128,120-22,num,8)
         elif self.replay_status == REPLAY_PLAY:  #再生時はreplay_dataのリスト長と現在のリプレイフレームインデックス値を表示する
@@ -10713,9 +10848,9 @@ class App:
         if self.game_status == SCENE_GAME_OVER_STOP:         #「GAME_OVER_STOP」の時は
             new_window = Window()
             new_window.update(0,0,2,WINDOW_OPEN,\
-                "RETURN TITLE??",DISP_CENTER,\
-                "YES",DISP_CENTER,0,7,\
-                "NO",DISP_CENTER,0,3,\
+                "RETURN TITLE?",DISP_CENTER,\
+                "RETURN",DISP_CENTER,0,6,\
+                "SAVE & RETURN",DISP_CENTER,0,10,\
                 "",DISP_CENTER,0,7,\
                 "",DISP_CENTER,0,7,\
                 "",DISP_CENTER,0,7,\
@@ -10723,39 +10858,69 @@ class App:
                 "",DISP_CENTER,0,7,\
                 
                 43,68,   0,0,  8*8,3*8,   2,1, 1,1,   0,0,    0,0)
-            self.window.append(new_window)                    #「TITLE RETURN」選択メニューを育成する
+            self.window.append(new_window)                    #「RETURN TITLE?」の選択メニューを育成する
             self.cursor_show = True                           #選択カーソル表示をonにする
-            self.cursor_x = 64                                #セレクトカーソルの座標を設定します
+            self.cursor_x = 46                                #セレクトカーソルの座標を設定します
             self.cursor_y = 80
-            self.cursor_item = 0                              #いま指示しているアイテムナンバーは0の「YES」
+            self.cursor_item = 0                              #いま指示しているアイテムナンバーは0の「RETURN」
             self.cursor_decision_item = -1                    #まだボタンも押されておらず未決定状態なのでdecision_itemは-1
-            self.cursor_max_item = 1                          #最大項目数は「YES」「NO」の2項目なので 2-1=1を代入
+            self.cursor_max_item = 1                          #最大項目数は「RETURN」「SAVE & RETURN」の2項目なので 2-1=1を代入
             self.game_status = SCENE_RETURN_TITLE             #ゲームステータスを「RETURN_TITLE」にする
         
         if self.game_status == SCENE_RETURN_TITLE:           #「RETURN_TITLE」の時は            
-            if pyxel.btnp(pyxel.KEY_ENTER):                #リターンキーが押されたら
+            # if pyxel.btnp(pyxel.KEY_ENTER):                #リターンキーが押されたら
+                # self.game_status = SCENE_TITLE_INIT        #ゲームステータスを「SCENE_TITLE_INIT」にしてタイトルの初期化工程にする
+                # self.game_playing_flag = 0                 #ゲームプレイ中のフラグを降ろす
+                # self.save_system_data()                    #システムデータをセーブする関数の呼び出し
+                # self.update_replay_data_file_save()        #リプレイデータファイルのセーブ
+                
+                # self.update_replay_data_list()             #録画したリプレイデータを登録します
+                # self.replay_recording_data = []            #録画したリプレイデータは登録したので元のデータは消去します
+                # self.replay_mode_stage_data_backup = self.replay_mode_stage_data #各ステージ開始時のデータ履歴をバックアップ
+            
+            if   self.cursor_decision_item == 0:           #メニューでアイテムナンバー0の「RETURN」が押されたら
                 self.game_status = SCENE_TITLE_INIT        #ゲームステータスを「SCENE_TITLE_INIT」にしてタイトルの初期化工程にする
                 self.game_playing_flag = 0                 #ゲームプレイ中のフラグを降ろす
                 self.save_system_data()                    #システムデータをセーブする関数の呼び出し
-                self.update_replay_data_list()             #録画したリプレイデータを登録します
-                self.replay_recording_data = []            #録画したリプレイデータは登録したので元のデータは消去します
-                self.replay_mode_stage_data_backup = self.replay_mode_stage_data #各ステージ開始時のデータ履歴をバックアップ
+                
+            elif self.cursor_decision_item == 1:           #メニューでアイテムナンバー1の「SAVE & RETURN」が押されたら
+                self.game_status = SCENE_SELECT_SAVE_SLOT  #ゲームステータスを「SCENE_SELECT_SAVE_SLOT」にしてセーブスロット選択にする
+                self.window_replay_data_slot_select()      #セーブファイルスロット選択ウィンドウの表示
+        
+        if self.game_status == SCENE_SELECT_SAVE_SLOT:       #「SCENE_SELECT_SAVE_SLOT」の時は
+            if   self.cursor_decision_item == 0:             #メニューでアイテムナンバー0の「1」が押されたら
+                self.replay_slot_num = 0                     #スロット番号は0   (以下はほぼ同じ処理です)
+            elif self.cursor_decision_item == 1:
+                self.replay_slot_num = 1
+            elif self.cursor_decision_item == 2:
+                self.replay_slot_num = 2
+            elif self.cursor_decision_item == 3:
+                self.replay_slot_num = 3
+            elif self.cursor_decision_item == 4:
+                self.replay_slot_num = 4
+            elif self.cursor_decision_item == 5:
+                self.replay_slot_num = 5
+            elif self.cursor_decision_item == 6:
+                self.replay_slot_num = 6
+            elif self.cursor_decision_item == 7:
+                self.replay_slot_num = 7
             
-            
-            if self.cursor_decision_item == 0:             #メニューでアイテムナンバー0の「YES」が押されたら
-                self.game_status = SCENE_TITLE_INIT        #ゲームステータスを「SCENE_TITLE_INIT」にしてタイトルの初期化工程にする
-                self.game_playing_flag = 0                 #ゲームプレイ中のフラグを降ろす
+            if self.cursor_decision_item != -1: #決定ボタンが押されてアイテムが決まったのなら
+                self.game_playing_flag = 0                   #ゲームプレイ中のフラグを降ろす
+                
                 self.save_system_data()                    #システムデータをセーブする関数の呼び出し
-                
-                print("\nreplay_recording_data   ######### CONTROL ########")
-                print(self.replay_recording_data)          #ターミナルにリプレイ録画データの中身を表示(デバッグ用)
-                
-                print("\nreplay_mode_stage_data  ###### STAGE DATA ######")
-                print(self.replay_mode_stage_data)          #ターミナルにリプレイ録画データ(毎ステージのデータ群)の中身を表示(デバッグ用)
-                
                 self.update_replay_data_list()             #録画したリプレイデータを登録します
+                
+                self.update_replay_data_file_save()          #リプレイデータファイルのセーブ
+                
+                #print("\nreplay_recording_data   ######### CONTROL ########")
+                #print(self.replay_recording_data)          #ターミナルにリプレイ録画データの中身を表示(デバッグ用)
+                #print("\nreplay_mode_stage_data  ###### STAGE DATA ######")
+                #print(self.replay_mode_stage_data)          #ターミナルにリプレイ録画データ(毎ステージのデータ群)の中身を表示(デバッグ用)
+                
                 self.replay_recording_data = []            #録画したリプレイデータは登録したので元のデータは消去します
                 self.replay_mode_stage_data_backup = self.replay_mode_stage_data #各ステージ開始時のデータ履歴をバックアップ
+                self.game_status = SCENE_TITLE_INIT        #ゲームステータスを「SCENE_TITLE_INIT」にしてタイトルの初期化工程にする
         
         #########ステージクリア後の処理#############################################################
         if self.game_status == SCENE_STAGE_CLEAR_FADE_OUT:   #「SCENE_STAGE_CLEAR_FADE_OUT」の時は
