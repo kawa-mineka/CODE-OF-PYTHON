@@ -1874,12 +1874,12 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         self.window_id = 0
         self.window_id_sub = 0
         self.window_type = 0  #ウィンドウの種類(主に背景) 0=シースルー 1=完全な青地 2=ちょっとシースルー
-        self.window_status = 0
+        self.window_status = 0 #WINDOW_OPEN = 0 WINDOW_CLOSE = 10
         self.window_title = ""
         self.window_title_flag = 0
         
         self.mes1 = ""
-        self.mes1_flag = 0
+        self.mes1_flag = 0 #DISP_CENTER = 2 中央表示
         self.mes1_ox = 0
         self.mes1_color = 0
         
@@ -2134,7 +2134,7 @@ class System_data: #ゲーム関連のシステムデータ関連のクラス設
                                                                         #例 J_PYTHONはIDナンバー0なので リスト先頭の1番目の数値となる  (0始まりなので)
                                                                         #   FIRST_BASICはIDナンバー8なのでリスト先頭の9番目の数値となる(0始まりなので)
     
-    
+
 class App:
     ##########################################################################################################################################
     #関数を定義沢山定義するところだよ############################################################################################################
