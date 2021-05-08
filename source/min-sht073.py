@@ -90,7 +90,8 @@
 #todo93c ステージごとにリプレイデータを分割しステージ開始時の自機装備関連のステータスも記録するようにした 2021 05/06
 #todo93d だめだ。。上手くいかないGWは全てリプレイ再生の実装で潰れそう 2021 05/06
 #todo93e 最後までリプレイファイルが正常に再生されたらトロフィー(実績解除)取得！とかそんな事を考えている 2021 05/06
-
+#todo93f 一応リプレイファイルのセーブロード実装、スロットは実質10個確保し最初は7個までセーブロード可能とした　2021 05/08
+#todo93g なか卯のかき揚げ丼が旨いと思う今日この頃です
 
 # from random import randint   #random.randint(n,m) と呼ぶと、nからm(m自身を含む)までの間の整数が 等しい確率で、ランダムに返される
 from random import random    #random.random() と呼ぶと、0から1の範囲(1は含まない)のランダムな実数が返される(主にパーティクル系で使用します)
@@ -2152,7 +2153,8 @@ class App:
         
         self.rnd_seed = 0              #線形合同法で使用する乱数の種を初期化します(r_randintが呼ばれるごとにrnd_seedの中身が変化するので注意！)
         self.master_rnd_seed = 0       #線形合同法で使用する乱数の種(ゲームスタート時のrnd_seedを保存してリプレイファイル再生時の最初の乱数の種として使用します初期化します
-        
+        self.start_stage_number = STAGE_MOUNTAIN_REGION    #スタート時のステージ数を保存する変数をまず初期化
+        self.start_stage_loop   = 1                        #スタート時のループ数を保存する変数をまず初期化
         self.replay_slot_num = 0       #リプレイファイルをセーブしたりロードするスロットナンバーが入ります(0~9)
         
         #ゲーム中で絶対に変化することのないリスト群はここで作成します#######################################
@@ -2726,7 +2728,7 @@ class App:
         # print("\nreplay_recording_data(STAGE BACKUP)")
         # print(self.replay_mode_stage_data_backup) #ターミナルにリプレイ録画データ(毎ステージ用バックアップ)の中身を表示
         
-        
+        self.replay_control_data_size = []      #リプレイファイルのステージ毎のコントロールデータのファイルサイズリストです
         
         self.replay_stage_num = 0               #リプレイ再生、録画時のステージ数を0で初期化します(1ステージ目=0→2ステージ目=1→3ステージ目=2って感じ)
         self.move_mode = MOVE_MANUAL            #移動モードの状態です
@@ -4540,7 +4542,7 @@ class App:
         self.missile_rapid_of_fire = 1     #自機ミサイルの連射数  初期値は1連射
         
         self.select_sub_weapon_id = 0      #現在使用しているサブウェポンのIDナンバー -1だと何も所有していない状態
-        self.sub_weapon_list = [10,10,10,10,10] #どのサブウェポンを所持しているかのリスト(インデックスオフセット値)
+        self.sub_weapon_list = [5,10,10,3,10] #どのサブウェポンを所持しているかのリスト(インデックスオフセット値)
                                         #0=テイルショット 1=ペネトレートロケット 2=サーチレーザー 3=ホーミングミサイル 4=ショックバンバー
         self.star_scroll_speed = 1          #背景の流れる星のスクロールスピード 1=通常スピード 0.5なら半分のスピードとなります
         #self.pow_item_bounce_num = 6       #パワーアップアイテムが画面の左端で跳ね返って戻ってくる回数
@@ -9325,7 +9327,9 @@ class App:
 
     #リプレイデータ・ファイルロード
     def update_replay_data_file_load(self):
-        slot_num = "slot_" + str(self.replay_slot_num)
+        self.replay_data          = [[] for i in range(50)] #リプレイデータが入るリスト(50ステージ分)を初期化
+        self.replay_control_data_size = []                  #ステージ毎のコントロールデータのサイズが入るリストを初期化
+        slot_num = "slot_" + str(self.replay_slot_num)      #これからアクセスするスロットナンバーを取得
         pyxel.load("assets/replay/" + slot_num + "/replay_status.pyxres") #リプレイステータスファイルにアクセスするためにローディングだけしてやります(グラフイック関連のアセットをローディングしている時がほとんどなので)
         
         #各種設定値読み込み 数字の[0]はアスキーコード16番なので16引いて文字から数字としての0にしてやります
@@ -9334,11 +9338,11 @@ class App:
         self.stage_number     = pyxel.tilemap(0).get(0,2) - 16  #ステージ数読み込み
         self.stage_loop       = pyxel.tilemap(0).get(0,3) - 16  #ループ数読み込み
         self.replay_stage_num = pyxel.tilemap(0).get(0,4) - 16  #リプレイファイルとして記録する総ステージ数を読み込み
+        self.boss_test_mode   = pyxel.tilemap(0).get(0,5) - 16  ##ボステストモードのフラグを読み込み
+        # print("乱数の種(ゲームスタート時)= " + str(self.master_rnd_seed) + "の値をロードしました")
+        # print("総ステージ数は" + str(self.replay_stage_num + 1) + "ステージです")
         
-        print("乱数の種(ゲームスタート時)= " + str(self.master_rnd_seed) + "の値をロードしました")
-        print("総ステージ数は" + str(self.replay_stage_num) + "ステージです")
-        
-        #ステージ毎ごとの自機関連パラメーターのread---------------------------------------------------------------------------
+        #ステージ毎ごとの自機関連パラメーターのロード---------------------------------------------------------------------------
         for i in range(self.replay_stage_num + 1):
             self.replay_mode_stage_data[i][ST_SCORE]           = self.read_system_data_num(5   -1+10,10+i, 10)        #座標(5,10+i)から10ケタのスコア(整数)を読み込みます
             self.replay_mode_stage_data[i][ST_MY_SHIELD]       = self.read_system_data_num(16  -1 +5,10+i,  5)        #座標(16,10+i)から5ケタのシールド値を読み込みます
@@ -9372,36 +9376,73 @@ class App:
             
             self.replay_mode_stage_data[i][ST_CLAW_SHOT_SPEED]         = self.read_system_data_num(109 -1 +5,10+i,  5) // 1000  #座標(109,10+i)から5ケタのクローショットのスピードを読み込みます(小数点第3位まで行くので1000で割った値を読み込みます)
             self.replay_mode_stage_data[i][ST_LS_SHIELD_HP]            = self.read_system_data_num(115 -1 +4,10+i,  4)          #座標(115,10+i)から4ケタのL'sシールドの耐久力を読み込みます
+            pad_data_size = self.read_system_data_num(128 -1 +8,10+i,  8) #座標(128,10+i)からの8ケタのコントロールパッド入力データが記録されたファイルのデータサイズを読み込みます
+            self.replay_control_data_size.append(pad_data_size)           #コントロールデータのファイルサイズリストにサイズを追加していきます
+        
+        # print(self.replay_control_data_size) #キチンと全てのステージのpyxresファイルのサイズがリストに登録されたかコンソール出力
         
         #各ステージのパッド入力データのロード---------------------------------------------------------------------------------------
         for st in range(self.replay_stage_num + 1): #st(ステージ指定用に作った変数は0始まりなので注意)
             file_number = "{:>03}".format(st + 1)
             file_name = "assets/replay/" + slot_num + "/" + file_number + ".pyxres"
             pyxel.load(file_name) #リプレイパッド入力データファイルにアクセスするためにローディングだけしてやります(グラフイック関連のアセットをローディングしている時がほとんどなので)
-            replay_control_data_count = len(self.replay_data[st]) #stステージ目のreplay_dataのリスト長(要素数)を代入
-            print (str(st + 1) + "ステージ目のコントロールデータの長さは " + str(replay_control_data_count) + " バイトです")
+            replay_control_data_count = self.replay_control_data_size[st] #stステージ目のreplay_dataのリスト長(要素数)を代入
+            # print (str(st + 1) + "ステージ目のコントロールデータの長さは " + str(replay_control_data_count) + " バイトです")
             
             for i in range (replay_control_data_count):
                 x = int(i % 256)                      #x座標は現在のカウント値iを256で割った余り
                 y = int(i // 256) % 256               #y座標は現在のカウント値iを256で割った数(切り捨て)を更に256で割った余り
                 z = int(i // 65536)                   #z座標(この場合はタイルマップナンバーになります)は65536で割った数(切り捨て)
                 num = pyxel.tilemap(z).get(x,y)       #numにタイルマップ(z),座標(x,y)から読み取ったコントロールパッド入力データを代入
-                self.replay_data[st][i] = int(num)    #リストにパッド入力データ記録！getで読み取ったのは文字(str)なので数値(int)に変換してやります
+                self.replay_data[st].append(int(num))    #リストにパッド入力データ記録！getで読み取ったのは文字(str)なので数値(int)に変換してリストにアペンドします
             
-            print (str(st + 1) + "ステージ目のコントロールデータ ロード完了！" + file_name)
+            # print (str(st + 1) + "ステージ目のコントロールデータ ロード完了！" + file_name)
 
     #リプレイデータ・ファイルセーブ
     def update_replay_data_file_save(self):
-        slot_num = "slot_" + str(self.replay_slot_num)
+        self.replay_control_data_size = [] #まず最初にステージ毎のコントロールデータのサイズが入るリストを初期化
+        slot_num = "slot_" + str(self.replay_slot_num) #これからアクセスするスロットナンバーを取得
+        
+        #各ステージのパッド入力データのセーブ---------------------------------------------------------------------------------------
+        for st in range(self.replay_stage_num + 1): #st(ステージ指定用に作った変数は0始まりなので注意)
+            file_number = "{:>03}".format(st + 1)
+            file_name = "assets/replay/" + slot_num + "/" + file_number + ".pyxres"
+            pyxel.load(file_name) #リプレイパッド入力データファイルにアクセスするためにローディングだけしてやります(グラフイック関連のアセットをローディングしている時がほとんどなので)
+            replay_control_data_count = len(self.replay_data[st])        #stステージ目のreplay_dataのリスト長(要素数)を代入
+            self.replay_control_data_size.append(replay_control_data_count) #ステージ毎のコントロールデータのサイズをリストに追加していきます
+            # print (str(st + 1) + "ステージ目のコントロールデータの長さは " + str(replay_control_data_count) + " バイトです")
+            for z in range(8): #データクリア処理-------------------------------------
+                for y in range(256):
+                    for x in range(256):
+                        # pyxel.tilemap(z).set(x,y,128-16+6-16)
+                        pyxel.tilemap(z).set(x,y,0)
+            
+            #カウント65536でタイルマップを1枚埋め尽くす事になります
+            #カウント65537だとタイルマップ1枚と次のタイルマップ1マス分必要となります
+            #タイルマップ1ページ分はカウントが0~65536間の場合書き込み開始 65537だとエラーになります(なんか書き込む(SET)時は座標が256越えてもエラーが出ないみたい)
+            #う～ん上手く行ってるのか謎・・・・
+            for i in range (replay_control_data_count):
+                num = int(self.replay_data[st][i])    #リストからパッド入力データ取得
+                x = int(i % 256)                   #x座標は現在のカウント値iを256で割った余り
+                y = int(i // 256) % 256            #y座標は現在のカウント値iを256で割った数(切り捨て)を更に256で割った余り
+                z = int(i // 65536)                #z座標(この場合はタイルマップナンバーになります)は65536で割った数(切り捨て)
+                pyxel.tilemap(z).set(x,y,num) #numをタイルマップ(z),座標(x,y)に書き込む
+            
+            pyxel.save(file_name) #リプレイパッド入力データファイルをセーブ！
+            # print (str(st + 1) + "ステージ目のコントロールデータ セーブ完了！" + file_name)
+        
+        #リプレイファイル本体のデータをセーブする---------------------------------------------------------------------------------------
         pyxel.load("assets/replay/" + slot_num + "/replay_status.pyxres") #リプレイステータスファイルにアクセスするためにローディングだけしてやります(グラフイック関連のアセットをローディングしている時がほとんどなので)
         #各種設定値書き込み 数字の[0]はアスキーコード16番なので16足してアスキーコードとしての0にしてやります
-        print("乱数の種(ゲームスタート時)= " + str(self.master_rnd_seed) + "の値をセーブしました")
+        # print("乱数の種(ゲームスタート時)= " + str(self.master_rnd_seed) + "の値をセーブしました")
         pyxel.tilemap(0).set(0,0,self.master_rnd_seed)          #乱数の種(ゲームスタート時)を書き込み(数文字には変換しない)
         pyxel.tilemap(0).set(0,1,self.game_difficulty + 16)     #難易度書き込み
         pyxel.tilemap(0).set(0,2,self.start_stage_number + 16)  #ゲーム開始時のステージ数書き込み
         pyxel.tilemap(0).set(0,3,self.start_stage_loop + 16)    #ゲーム開始時のループ数書き込み
         pyxel.tilemap(0).set(0,4,self.replay_stage_num + 16)    #リプレイファイルとして記録する総ステージ数を書き込み
-        print("総ステージ数は" + str(self.replay_stage_num) + "ステージです")
+        pyxel.tilemap(0).set(0,5,self.boss_test_mode   + 16)    #ボステストモードのフラグを書き込み
+        
+        # print("総ステージ数は" + str(self.replay_stage_num + 1) + "ステージです")
         
         #ステージ毎ごとの自機関連パラメーターのセーブ--------------------------------------------------------------------------------
         for i in range(self.replay_stage_num + 1):
@@ -9437,35 +9478,8 @@ class App:
             
             self.write_system_data_num(109 -1 +5,10+i,  5,int(self.replay_mode_stage_data[i][ST_CLAW_SHOT_SPEED] * 1000))        #座標(109,10+i)に5ケタのクローショットのスピードを書き込みます(小数点第3位まで行くので1000倍した値を書き込みます)
             self.write_system_data_num(115 -1 +4,10+i,  4,int(self.replay_mode_stage_data[i][ST_LS_SHIELD_HP]))           #座標(115,10+i)に4ケタのL'sシールドの耐久力を書き込みます
-        pyxel.save("assets/replay/" + slot_num + "/replay_status.pyxres")#プレイステータスファイルをセーブ！
-        # print(self.replay_data)
-        
-        #各ステージのパッド入力データのセーブ---------------------------------------------------------------------------------------
-        for st in range(self.replay_stage_num + 1): #st(ステージ指定用に作った変数は0始まりなので注意)
-            file_number = "{:>03}".format(st + 1)
-            file_name = "assets/replay/" + slot_num + "/" + file_number + ".pyxres"
-            pyxel.load(file_name) #リプレイパッド入力データファイルにアクセスするためにローディングだけしてやります(グラフイック関連のアセットをローディングしている時がほとんどなので)
-            replay_control_data_count = len(self.replay_data[st]) #stステージ目のreplay_dataのリスト長(要素数)を代入
-            print (str(st + 1) + "ステージ目のコントロールデータの長さは " + str(replay_control_data_count) + " バイトです")
-            for z in range(8): #データクリア処理-------------------------------------
-                for y in range(256):
-                    for x in range(256):
-                        # pyxel.tilemap(z).set(x,y,128-16+6-16)
-                        pyxel.tilemap(z).set(x,y,0)
-            
-            #カウント65536でタイルマップを1枚埋め尽くす事になります
-            #カウント65537だとタイルマップ1枚と次のタイルマップ1マス分必要となります
-            #タイルマップ1ページ分はカウントが0~65536間の場合書き込み開始 65537だとエラーになります(なんか書き込む(SET)時は座標が256越えてもエラーが出ないみたい)
-            #う～ん上手く行ってるのか謎・・・・
-            for i in range (replay_control_data_count):
-                num = int(self.replay_data[st][i])    #リストからパッド入力データ取得
-                x = int(i % 256)                   #x座標は現在のカウント値iを256で割った余り
-                y = int(i // 256) % 256            #y座標は現在のカウント値iを256で割った数(切り捨て)を更に256で割った余り
-                z = int(i // 65536)                #z座標(この場合はタイルマップナンバーになります)は65536で割った数(切り捨て)
-                pyxel.tilemap(z).set(x,y,num) #numをタイルマップ(z),座標(x,y)に書き込む
-            
-            pyxel.save(file_name) #リプレイパッド入力データファイルをセーブ！
-            print (str(st + 1) + "ステージ目のコントロールデータ セーブ完了！" + file_name)
+            self.write_system_data_num(128 -1 +8,10+i,  8,int(self.replay_control_data_size[i])) #座標(128,10+i)に8ケタのコントロールパッド入力データが記録されたファイルのデータサイズを書き込みます
+        pyxel.save("assets/replay/" + slot_num + "/replay_status.pyxres") #プレイステータスファイルをセーブ！
 
     #!###############################################################################################################################
     #!################################################################################################################################
@@ -10197,12 +10211,28 @@ class App:
         elif self.my_speed == 1.75:
             pyxel.blt(126,-1,IMG2, 120,72, 8,8, 0)
         #pyxel.text(32, 1, "SPEED " + str(self.my_speed), 7)
+        
         #自機シールドパワー表示
         pyxel.blt(137,0,IMG2, 72,72, 8,8, 0)
-        pyxel.text(148,1,str(self.my_shield), 1)
-        pyxel.text(147,1,str(self.my_shield), 7)
+        shi = "{:>2}".format(int(self.my_shield))
+        pyxel.text(148+4,1,shi,1)
+        pyxel.text(147+4,1,shi,7)
+        #ショット経験値表示
+        sho = "{:>2}".format(int(self.shot_exp))
+        pyxel.text(148+4,7,sho,1)
+        pyxel.text(147+4,7,sho,8)
+        #ミサイル経験値表示
+        mis = "{:>2}".format(int(self.missile_exp))
+        pyxel.text(148+4,13,mis,1)
+        pyxel.text(147+4,13,mis,3)    
         
         if self.replay_status == REPLAY_PLAY: #リプレイ再生時に表示します
+            #リプレイ再生時はreplay_dataのリスト長と現在のリプレイフレームインデックス値を表示する
+            num1 = "{:>8}".format(self.replay_frame_index)
+            pyxel.text(128,120-28+10,num1,9)
+            num2 = "{:>8}".format(int(len(self.replay_data[self.replay_stage_num])))
+            pyxel.text(128,120-22+10,num2,10)
+            #リプレイ分の点滅表示
             pyxel.text(160-4*6,120 - 6,"REPLAY", self.rainbow_flash_color[pyxel.frame_count // 8 % 10])
 
     #デバッグ用ステータスの表示
@@ -10235,13 +10265,6 @@ class App:
         pyxel.text(37,1,str(self.stage_count),1)
         pyxel.text(36,1,str(self.stage_count),11)
         
-        #ショット経験値表示
-        pyxel.text(148,7,str(self.shot_exp), 1)
-        pyxel.text(147,7,str(self.shot_exp), 8)
-        #ミサイル経験値表示
-        pyxel.text(148,13,str(self.missile_exp), 1)
-        pyxel.text(147,13,str(self.missile_exp), 3)    
-        
         #自機が存在するＭＡＰ位置のＸ、Ｙ座標の表示
         #MAPの外に存在するときは強制的にＸ座標を0にしちゃう
         self.bgy = ((self.my_y + 4 ) // 8)
@@ -10266,10 +10289,10 @@ class App:
         #ミサイルタイプチェッカーのカウント数の表示 デバッグ用
         #通常ミサイルの総数
         self.count_missile_type(0,1,2,3)
-        pyxel.text(WINDOW_W - 8, WINDOW_H - 14,str(self.type_check_quantity),7)
+        pyxel.text(WINDOW_W - 5, WINDOW_H - 28,str(self.type_check_quantity),7)
         #前方高速トマホークミサイルの総数
         self.count_missile_type(5,5,5,5)
-        pyxel.text(WINDOW_W - 15,WINDOW_H - 14,str(self.type_check_quantity),3)
+        pyxel.text(WINDOW_W - 12,WINDOW_H - 28,str(self.type_check_quantity),3)
         
         #ゲームステータス（ゲームの状態）の表示
         pyxel.text(0,8,str(self.game_status),6)
@@ -10367,9 +10390,9 @@ class App:
                 pyxel.text(0,WINDOW_H - 13,str(self.claw[0].posx),6)
                 pyxel.text(0,WINDOW_H - 20,str(self.claw[0].posy),6)
             #2番目のクローの座標の表示
-            if self.claw_number >= 2:
-                pyxel.text(72,WINDOW_H - 13,str(self.claw[1].posx),5)
-                pyxel.text(72,WINDOW_H - 20,str(self.claw[1].posy),5)
+            # if self.claw_number >= 2:
+                # pyxel.text(72,WINDOW_H - 13,str(self.claw[1].posx),5)
+                # pyxel.text(72,WINDOW_H - 20,str(self.claw[1].posy),5)
         
         if self.debug_menu_status == 2 and self.replay_status == REPLAY_RECORD: #デバッグメニュー表示ステータスが2尚且つリプレイ記録中の時だけ表示する
             #コントロールパッド操作データの表示
@@ -10439,12 +10462,7 @@ class App:
         #リプレイデータのサイズ表示
         if self.replay_status == REPLAY_RECORD:  #録画時はreplay_recording_dataのリスト長を表示する
             num = "{:>8}".format(int(len(self.replay_recording_data[self.replay_stage_num])))
-            pyxel.text(128,120-22,num,8)
-        elif self.replay_status == REPLAY_PLAY:  #再生時はreplay_dataのリスト長と現在のリプレイフレームインデックス値を表示する
-            num1 = "{:>8}".format(self.replay_frame_index)
-            pyxel.text(128,120-29,num1,9)
-            num2 = "{:>8}".format(int(len(self.replay_data[self.replay_stage_num])))
-            pyxel.text(128,120-22,num2,10)
+            pyxel.text(128,120-22+8,num,8)
 
     #BGチップデータ書き換えアニメーション実装のために作ったダミーテスト関数 画面左から2列目の縦1列を取得し、そのＢＧデータを画面左端1列目に表示する
     def draw_dummy_put_bg_xy(self):
@@ -10788,10 +10806,10 @@ class App:
                 self.update_replay_data_file_load()      #リプレイデータファイルのロードを行います
                 self.game_status = SCENE_GAME_START_INIT #ゲームステータスを「SCENE_GAME_START_INIT」にしてゲームスタート時の初期化にする
                 
-                print("\nロード完了  replay----STAGE-DATA----------------------------")
-                print(self.replay_mode_stage_data)               #(デバッグ用)ターミナルにロードされたリプレイデータデータ(毎ステージ)の中身をプリント 
-                print("\nロード完了 replay----CONTROL-DATA--------------------------")
-                print(self.replay_data)                          #(デバッグ用)ターミナルにロードされたリプレイデータデータ(コントロール)の中身をプリント
+                # print("\nロード完了  replay----STAGE-DATA----------------------------")
+                # print(self.replay_mode_stage_data)               #(デバッグ用)ターミナルにロードされたリプレイデータデータ(毎ステージ)の中身をプリント 
+                # print("\nロード完了 replay----CONTROL-DATA--------------------------")
+                # print(self.replay_data)                          #(デバッグ用)ターミナルにロードされたリプレイデータデータ(コントロール)の中身をプリント
         
         ################################ ゲームスタート時の初期化 #################################################################
         if self.game_status == SCENE_GAME_START_INIT: #ゲームステータスが「GAME_START_INIT」の場合（ゲームスタート時の状態遷移）は以下を実行する
@@ -10949,46 +10967,58 @@ class App:
                 self.game_status = SCENE_GAME_OVER_STOP      #「GAME_OVER_STOP」状態にする
         
         if self.game_status == SCENE_GAME_OVER_STOP:         #「GAME_OVER_STOP」の時は
-            new_window = Window()
-            new_window.update(0,0,2,WINDOW_OPEN,\
-                "RETURN TITLE?",DISP_CENTER,\
-                "RETURN",DISP_CENTER,0,6,\
-                "SAVE & RETURN",DISP_CENTER,0,10,\
-                "",DISP_CENTER,0,7,\
-                "",DISP_CENTER,0,7,\
-                "",DISP_CENTER,0,7,\
-                "",DISP_CENTER,0,7,\
-                "",DISP_CENTER,0,7,\
-                
-                43,68,   0,0,  8*8,3*8,   2,1, 1,1,   0,0,    0,0)
-            self.window.append(new_window)                    #「RETURN TITLE?」の選択メニューを育成する
-            self.cursor_show = True                           #選択カーソル表示をonにする
-            self.cursor_x = 46                                #セレクトカーソルの座標を設定します
-            self.cursor_y = 80
-            self.cursor_item = 0                              #いま指示しているアイテムナンバーは0の「RETURN」
-            self.cursor_decision_item = -1                    #まだボタンも押されておらず未決定状態なのでdecision_itemは-1
-            self.cursor_max_item = 1                          #最大項目数は「RETURN」「SAVE & RETURN」の2項目なので 2-1=1を代入
-            self.game_status = SCENE_RETURN_TITLE             #ゲームステータスを「RETURN_TITLE」にする
+            if self.replay_status == REPLAY_RECORD: #リプレイ録画中の時のリターンタイトルウィンドウ表示
+                new_window = Window()
+                new_window.update(0,0,2,WINDOW_OPEN,\
+                    "RETURN TITLE?",DISP_CENTER,\
+                    "RETURN",DISP_CENTER,0,6,\
+                    "SAVE & RETURN",DISP_CENTER,0,10,\
+                    "",DISP_CENTER,0,7,\
+                    "",DISP_CENTER,0,7,\
+                    "",DISP_CENTER,0,7,\
+                    "",DISP_CENTER,0,7,\
+                    "",DISP_CENTER,0,7,\
+                    
+                    43,68,   0,0,  8*8,3*8,   2,1, 1,1,   0,0,    0,0)
+                self.window.append(new_window)                    #「RETURN TITLE?」の選択メニューを育成する
+                self.cursor_show = True                           #選択カーソル表示をonにする
+                self.cursor_x = 46                                #セレクトカーソルの座標を設定します
+                self.cursor_y = 80
+                self.cursor_item = 0                              #いま指示しているアイテムナンバーは0の「RETURN」
+                self.cursor_decision_item = -1                    #まだボタンも押されておらず未決定状態なのでdecision_itemは-1
+                self.cursor_max_item = 1                          #最大項目数は「RETURN」「SAVE & RETURN」の2項目なので 2-1=1を代入
+                self.game_status = SCENE_RETURN_TITLE             #ゲームステータスを「RETURN_TITLE」にする
+            elif self.replay_status == REPLAY_PLAY: #リプレイ再生中の時のリターンタイトルウィンドウ表示(SAVE&RETURN項目は表示しない)  
+                new_window = Window()
+                new_window.update(0,0,2,WINDOW_OPEN,\
+                    "RETURN TITLE?",DISP_CENTER,\
+                    "RETURN",DISP_CENTER,0,6,\
+                    "",DISP_CENTER,0,10,\
+                    "",DISP_CENTER,0,7,\
+                    "",DISP_CENTER,0,7,\
+                    "",DISP_CENTER,0,7,\
+                    "",DISP_CENTER,0,7,\
+                    "",DISP_CENTER,0,7,\
+                    
+                    43,68,   0,0,  8*8,2*8,   2,1, 1,1,   0,0,    0,0)
+                self.window.append(new_window)                    #「RETURN TITLE?」の選択メニューを育成する
+                self.cursor_show = True                           #選択カーソル表示をonにする
+                self.cursor_x = 46                                #セレクトカーソルの座標を設定します
+                self.cursor_y = 80
+                self.cursor_item = 0                              #いま指示しているアイテムナンバーは0の「RETURN」
+                self.cursor_decision_item = -1                    #まだボタンも押されておらず未決定状態なのでdecision_itemは-1
+                self.cursor_max_item = 0                          #最大項目数は「RETURN」の1項目なので 1-1=0を代入
+                self.game_status = SCENE_RETURN_TITLE             #ゲームステータスを「RETURN_TITLE」にする
         
         if self.game_status == SCENE_RETURN_TITLE:           #「RETURN_TITLE」の時は            
-            # if pyxel.btnp(pyxel.KEY_ENTER):                #リターンキーが押されたら
-                # self.game_status = SCENE_TITLE_INIT        #ゲームステータスを「SCENE_TITLE_INIT」にしてタイトルの初期化工程にする
-                # self.game_playing_flag = 0                 #ゲームプレイ中のフラグを降ろす
-                # self.save_system_data()                    #システムデータをセーブする関数の呼び出し
-                # self.update_replay_data_file_save()        #リプレイデータファイルのセーブ
+            if   self.cursor_decision_item == 0:             #メニューでアイテムナンバー0の「RETURN」が押されたら
+                self.game_status = SCENE_TITLE_INIT          #ゲームステータスを「SCENE_TITLE_INIT」にしてタイトルの初期化工程にする
+                self.game_playing_flag = 0                   #ゲームプレイ中のフラグを降ろす
+                self.save_system_data()                      #システムデータをセーブする関数の呼び出し
                 
-                # self.update_replay_data_list()             #録画したリプレイデータを登録します
-                # self.replay_recording_data = []            #録画したリプレイデータは登録したので元のデータは消去します
-                # self.replay_mode_stage_data_backup = self.replay_mode_stage_data #各ステージ開始時のデータ履歴をバックアップ
-            
-            if   self.cursor_decision_item == 0:           #メニューでアイテムナンバー0の「RETURN」が押されたら
-                self.game_status = SCENE_TITLE_INIT        #ゲームステータスを「SCENE_TITLE_INIT」にしてタイトルの初期化工程にする
-                self.game_playing_flag = 0                 #ゲームプレイ中のフラグを降ろす
-                self.save_system_data()                    #システムデータをセーブする関数の呼び出し
-                
-            elif self.cursor_decision_item == 1:           #メニューでアイテムナンバー1の「SAVE & RETURN」が押されたら
-                self.game_status = SCENE_SELECT_SAVE_SLOT  #ゲームステータスを「SCENE_SELECT_SAVE_SLOT」にしてセーブスロット選択にする
-                self.window_replay_data_slot_select()      #リプレイデータファイルスロット選択ウィンドウの表示
+            elif self.cursor_decision_item == 1:             #メニューでアイテムナンバー1の「SAVE & RETURN」が押されたら
+                self.game_status = SCENE_SELECT_SAVE_SLOT    #ゲームステータスを「SCENE_SELECT_SAVE_SLOT」にしてセーブスロット選択にする
+                self.window_replay_data_slot_select()        #リプレイデータファイルスロット選択ウィンドウの表示
         
         if self.game_status == SCENE_SELECT_SAVE_SLOT:       #「SCENE_SELECT_SAVE_SLOT」の時は
             if   self.cursor_decision_item == 0:             #メニューでアイテムナンバー0の「1」が押されたら
@@ -11016,10 +11046,10 @@ class App:
                 
                 self.update_replay_data_file_save()          #リプレイデータファイルのセーブ
                 
-                print("\nセーブ完了 replay----STAGE-DATA =============================")
-                print(self.replay_mode_stage_data)               #(デバッグ用)ターミナルにセーブされたリプレイデータデータ(毎ステージ)の中身をプリント 
-                print("\nセーブ完了 replay----CONTROL-DATA ===========================")
-                print(self.replay_data)                          #(デバッグ用)ターミナルにセーブされたリプレイデータデータ(コントロール)の中身をプリント
+                # print("\nセーブ完了 replay----STAGE-DATA =============================")
+                # print(self.replay_mode_stage_data)               #(デバッグ用)ターミナルにセーブされたリプレイデータデータ(毎ステージ)の中身をプリント 
+                # print("\nセーブ完了 replay----CONTROL-DATA ===========================")
+                # print(self.replay_data)                          #(デバッグ用)ターミナルにセーブされたリプレイデータデータ(コントロール)の中身をプリント
                 
                 self.replay_recording_data = []            #録画したリプレイデータは登録したので元のデータは消去します
                 self.replay_mode_stage_data_backup = self.replay_mode_stage_data #各ステージ開始時のデータ履歴をバックアップ
