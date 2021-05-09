@@ -77,21 +77,8 @@
 
 #todo900 BGMの作成(無理そう.........)
 #実装完了済み！
-#todo91a 美咲フォントを使用した日本語テキスト表示関数の実装→コード変換表の作成とフォント画像ファイルの作成終了 2021 04/25→表示関数の実装に入ります
-#todo91b 美咲フォントを使用した日本語テキスト表示関数の実装→実装完了と言いたいけど半角文字や特定の文字で文字化けする模様・・・orz 2021 04/25
-#todo    難易度によるアイテム引き寄せ範囲の変化、アイテムのバウンド回数の変化の実装 2021 04/27
-
-#todo92  線形合同法による乱数関数の実装 2021 05/01
-#todo92a 自前の乱数育成関数を作製しリプレイ時で決まった数値を返すような乱数を育成できるようにする(古典的な乱数表を作ってパッド入力データとフレームすうでバラけるようにしてもいいかも？わかんないけど・・)→標準ライブラリのrandint関数に置き換える感じでs_rndint関数を実装 2021 05/01
-#todo92b デバッグステータスの表示項目をトグル切り替え表示できるようにした 2021 05/01
-#todo93  インデントが全てスペース5個だったのでpython標準のスペース4個に修正 2021 05/03
-#todo93a リプレイデータの再生実装で地獄を見る・・・リプレイ再生ズレまくりぃいい！ 2021 05/04
-#todo93b ステージごとにリプレイデータを分割する案を検討(余裕をもって50ステージ分確保) 2021 05/04
-#todo93c ステージごとにリプレイデータを分割しステージ開始時の自機装備関連のステータスも記録するようにした 2021 05/06
-#todo93d だめだ。。上手くいかないGWは全てリプレイ再生の実装で潰れそう 2021 05/06
-#todo93e 最後までリプレイファイルが正常に再生されたらトロフィー(実績解除)取得！とかそんな事を考えている 2021 05/06
-#todo93f 一応リプレイファイルのセーブロード実装、スロットは実質10個確保し最初は7個までセーブロード可能とした　2021 05/08
-#todo93g なか卯のかき揚げ丼が旨いと思う今日この頃です
+#todo980  スコアランキング表示工程のスコア表示関数だけまず実装 2021 05/09
+#todo980a 結構めんどう～～だよね・・・スコア表示関連の処理・・ 2021 05/09
 
 # from random import randint   #random.randint(n,m) と呼ぶと、nからm(m自身を含む)までの間の整数が 等しい確率で、ランダムに返される
 from random import random    #random.random() と呼ぶと、0から1の範囲(1は含まない)のランダムな実数が返される(主にパーティクル系で使用します)
@@ -166,7 +153,7 @@ SCENE_ENDING      = 90   #エンディング表示中
 
 SCENE_STAFF_ROLL  = 99   #スタッフロール表示中
 
-#自機のIDナンバー定義
+#!自機のIDナンバー定義 ##########################################################################
 J_PYTHON          =  0   #Justice Python
 PYTHON_FORCE      =  1   #Python4.0(4th.force)
 E_PERL            =  2   #Elegant Perl(practical extraction and report language)
@@ -192,7 +179,7 @@ SHIP_EXTRA           = 3 #特殊機体
 SHIP_NEXT_GENERATION = 4 #次世代機体
 
 
-#キーアイテムの定数定義
+#!キーアイテムの定数定義 ########################################################
 KEY_ITEM_PUNCHED_CARD               =  0 #パンチカード
 KEY_ITEM_MAGNETIC_CORE_MEMORY       =  1 #磁気コアメモリ
 KEY_ITEM_MAGNETIC_BUBBLE_MEMORY     =  2 #磁気バブルメモリ
@@ -209,23 +196,23 @@ KEY_ITEM_MD                         = 12 #Micro Drive
 KEY_ITEM_KANJI_ROM_CARTRIDGE        = 13 #漢字ROMカートリッジ HBI-K21
 
 #称号
-NOVICE        = 0 #ノービス 入門者
-ASPIRANT      = 1 #アスパイラント 志を持つ者
-BATTLER       = 2 #バトラー 兵士
-FIGHTER       = 3 #ファイター 闘士
-ADEPT         = 4 #アデプト 熟練者
-CHEVALIER     = 5 #シェバリアー 騎士
-VETERAN       = 6 #ベテラン 軍人
-WARRIOR       = 7 #ウォーリア 勇士
-SWORDMAN      = 8 #ソードマン 剣士
-HERO          = 9 #ヒーロー 英雄
+NOVICE        = 0 #ノービス        入門者
+ASPIRANT      = 1 #アスパイラント   志を持つ者
+BATTLER       = 2 #バトラー        兵士
+FIGHTER       = 3 #ファイター      闘士
+ADEPT         = 4 #アデプト        熟練者
+CHEVALIER     = 5 #シェバリアー    騎士
+VETERAN       = 6 #ベテラン        軍人
+WARRIOR       = 7 #ウォーリア      勇士
+SWORDMAN      = 8 #ソードマン      剣士
+HERO          = 9 #ヒーロー        英雄
 SWASHBUCKLER  =10 #スワッシュバックラー 暴れ者
-CHAMPION      =12 #チャンピオン 勝者
-MYRMIDON      =11 #マーミダン 忠臣
+CHAMPION      =12 #チャンピオン    勝者
+MYRMIDON      =11 #マーミダン      忠臣
 SUPERHERO     =13 #スーパーヒーロー 勇者
-PALADIN       =14 #パラディン 親衛隊騎士
-LOAD          =15 #ロード 君主
-MASTER_LOAD   =16 #マスターロード 大君主
+PALADIN       =14 #パラディン      親衛隊騎士
+LOAD          =15 #ロード          君主
+MASTER_LOAD   =16 #マスターロード   大君主
 
 #勲章(メダル)自機のオプションスロットにはめ込むことが出来るメダル 色々な効果を付加することが出来る
 MEDAL_BEFOREHAND_1SHOT_ITEM     = 0 #ゲームスタート時点で事前にショットアイテムを1個入手した状態から始まる 1個目のショットアイテムは得点アイテムに変化する　それ以降は通常となる
@@ -253,7 +240,7 @@ MISSILE_LV0_NORMAL_MISSILE = 0 #初期装備右下ミサイル
 MISSILE_LV1_TWIN_MISSILE   = 1 #ツインミサイル(右下と右上方向)
 MISSILE_LV2_MULTI_MISSILE  = 2 #マルチミサイル(右下右上左下左上4方向)
 
-#サブウェポン関連のIDナンバー定数定義
+#!サブウェポン関連のIDナンバー定数定義 #############################################
 TAIL_SHOT        = 0 #テイルショットＩＤナンバー
 PENETRATE_ROCKET = 1 #ペネトレートロケットＩＤナンバー
 SEARCH_LASER     = 2 #サーチレーザーＩＤナンバー
@@ -300,6 +287,12 @@ LIST_RANK_E_BULLET_APPEND           = 5  #弾追加数
 LIST_RANK_E_BULLET_INTERVAL         = 6  #弾発射間隔減少パーセント
 LIST_RANK_NWAY_LEVEL                = 7  #nWAY弾のレベル(レベルが上がると扇状の幅が広がる)
 
+#スコアリストを参照するときに使用するインデックスナンバー定数定義
+LIST_SCORE_DIFFICULTY               =  0 #難易度
+LIST_SCORE_RANKING                  =  1 #順位
+LIST_SCORE_NAME                     =  2 #名前
+LIST_SCORE_CLEAR_STAGE              =  3 #クリアしたステージ数
+LIST_SCORE_SHIP_USED                =  4 #使用した機体
 #ゲーム開始時に追加されるクロー数の定数定義
 NO_CLAW      = 0
 ONE_CLAW     = 1
@@ -324,26 +317,26 @@ LOOP_MAIN_WEAPON_MISSILE_TYPE_RESET = 90   #メインウェポンとミサイル
 LOOP_ALL_RESET                 = 100  #メインウェポンもミサイルもゲーム開始時と同じ初期状態に戻ります
 
 #!ステージの名称関連の定数定義################################################################
-STAGE_MOUNTAIN_REGION         = 1 #ステージ1 山岳地帯          Mountain Region
-STAGE_ADVANCE_BASE            = 2 #ステージ2 前線基地          Advance Base
-STAGE_VOLCANIC_BELT           = 3 #ステージ3 火山地帯          Volcanic Belt
-STAGE_NIGHT_SKYSCRAPER        = 4 #ステージ4 夜間超高層ビル地帯 Night Skyscraper
-STAGE_AMPHIBIOUS_ASSAULT_SHIP = 5 #ステージ5 強襲揚陸艦襲撃     Amphibious Assault Ship
-STAGE_DEEP_SEA_TRENCH         = 6 #ステージ6 深海海溝          Deep Sea Trench
-STAGE_INTERMEDIATE_FORTRESS   = 7 #ステージ7 中間要塞          Intermediate Fortress
-STAGE_ESCAPE_FORTRESS         = 8 #ステージ8 要塞脱出          Escape Fortress
-SATGE_BOSS_RUSH               = 9 #ステージ9 連続強敵襲来       Boss Rush
+STAGE_MOUNTAIN_REGION         =  1 #ステージ1 山岳地帯          Mountain Region
+STAGE_ADVANCE_BASE            =  2 #ステージ2 前線基地          Advance Base
+STAGE_VOLCANIC_BELT           =  3 #ステージ3 火山地帯          Volcanic Belt
+STAGE_NIGHT_SKYSCRAPER        =  4 #ステージ4 夜間超高層ビル地帯 Night Skyscraper
+STAGE_AMPHIBIOUS_ASSAULT_SHIP =  5 #ステージ5 強襲揚陸艦襲撃     Amphibious Assault Ship
+STAGE_DEEP_SEA_TRENCH         =  6 #ステージ6 深海海溝          Deep Sea Trench
+STAGE_INTERMEDIATE_FORTRESS   =  7 #ステージ7 中間要塞          Intermediate Fortress
+STAGE_ESCAPE_FORTRESS         =  8 #ステージ8 要塞脱出          Escape Fortress
+SATGE_BOSS_RUSH               =  9 #ステージ9 連続強敵襲来       Boss Rush
 
 #クロー関連の定数定義（主にトレースクロー）
-TRACE_CLAW_COUNT       = 4  #トレースクローの数
+TRACE_CLAW_COUNT       =  4 #トレースクローの数
 TRACE_CLAW_INTERVAL    = 60 #トレースクローの間隔
 TRACE_CLAW_BUFFER_SIZE = 60 #トレースクローのバッファーサイズ   1フレームは60分の1秒 60フレームで1秒分となります
-CLAW_RAPID_FIRE_NUMBER = 2  #クローの最大連射数
+CLAW_RAPID_FIRE_NUMBER =  2 #クローの最大連射数
 
 SHIP_EXPLOSION_TIMER_LIMIT = 180 #自機が爆発した後、まだどれだけゲームが進行し続けるかのタイマー限界数
 GAME_OVER_TIMER_LIMIT      = 180 #ゲームオーバーダイアログを表示した後まだどれだけゲームが進行し続けるのかのタイマー限界数
 
-FADE_IN = 0               #フェードインアウト用エフェクトスクリーン用の定数定義 0=in 1=out
+FADE_IN  = 0               #フェードインアウト用エフェクトスクリーン用の定数定義 0=in 1=out
 FADE_OUT = 1
 
 #イメージバンクの定数定義
@@ -376,16 +369,16 @@ PAD_LEFT_S  =    4 #0b 0000 0100
 PAD_RIGHT_S =    8 #0b 0000 1000 
 
 #リプレイモードでの毎ステージ開始時の自機データの記録用で使用する定数
-ST_SCORE                       = 0   #毎ステージごとのスコア
-ST_MY_SHIELD                   = 1   #自機のシールド耐久値
-ST_MY_SPEED                    = 2   #自機のスピード
-ST_SELECT_SHOT_ID              = 3   #現在使用しているショットのIDナンバー
-ST_SHOT_EXP                    = 4   #自機ショットの経験値
-ST_SHOT_LEVEL                  = 5   #自機ショットのレベル
-ST_SHOT_SPEED_MAGNIFICATION    = 6   #自機ショットのスピードに掛ける倍率
-ST_SHOT_RAPID_OF_FIRE          = 7   #自機ショットの連射数
-ST_MISSILE_EXP                 = 8   #自機ミサイルの経験値
-ST_MISSILE_LEVEL               = 9   #自機ミサイルのレベル
+ST_SCORE                       =  0   #毎ステージごとのスコア
+ST_MY_SHIELD                   =  1   #自機のシールド耐久値
+ST_MY_SPEED                    =  2   #自機のスピード
+ST_SELECT_SHOT_ID              =  3   #現在使用しているショットのIDナンバー
+ST_SHOT_EXP                    =  4   #自機ショットの経験値
+ST_SHOT_LEVEL                  =  5   #自機ショットのレベル
+ST_SHOT_SPEED_MAGNIFICATION    =  6   #自機ショットのスピードに掛ける倍率
+ST_SHOT_RAPID_OF_FIRE          =  7   #自機ショットの連射数
+ST_MISSILE_EXP                 =  8   #自機ミサイルの経験値
+ST_MISSILE_LEVEL               =  9   #自機ミサイルのレベル
 ST_MISSILE_SPEED_MAGNIFICATION = 10   #自機ミサイルのスピードに掛ける倍率
 ST_MISSILE_RAPID_OF_FIRE       = 11   #自機ミサイルの連射数
 ST_SELECT_SUB_WEAPON_ID        = 12   #現在使用しているサブウェポンのIDナンバー
@@ -401,20 +394,20 @@ ST_CLAW_SHOT_SPEED             = 21   #クローショットのスピード
 ST_LS_SHIELD_HP                = 22   #L'sシールドの耐久力
 
 #パーティクルの種類
-PARTICLE_DOT    = 0           #パーティクルタイプ 1~2ドット描画タイプ(破壊後のエフェクト)
-PARTICLE_CIRCLE = 1           #パーティクルタイプ 円形パーティクル   (破壊後のエフェクト)
-PARTICLE_LINE   = 2           #パーティクルタイプ ラインパーティクル (跳ね返りエフェクト)
-PARTICLE_FIRE_SPARK = 3       #パーティクルタイプ 大気圏突入時の火花 (火花が飛び散るエフェクト)
+PARTICLE_DOT            =  0 #パーティクルタイプ 1~2ドット描画タイプ(破壊後のエフェクト)
+PARTICLE_CIRCLE         =  1 #パーティクルタイプ 円形パーティクル   (破壊後のエフェクト)
+PARTICLE_LINE           =  2 #パーティクルタイプ ラインパーティクル (跳ね返りエフェクト)
+PARTICLE_FIRE_SPARK     =  3 #パーティクルタイプ 大気圏突入時の火花 (火花が飛び散るエフェクト)
 
-PARTICLE_SHOT_DEBRIS  = 4       #パーティクルタイプ 自機ショットの破片(デブリ)(障害物に当たったエフェクト)
-PARTICLE_MISSILE_DEBRIS  = 5    #パーティクルタイプ 自機ミサイルの破片(デブリ)(障害物に当たったエフェクト)
+PARTICLE_SHOT_DEBRIS    =  4 #パーティクルタイプ 自機ショットの破片(デブリ)(障害物に当たったエフェクト)
+PARTICLE_MISSILE_DEBRIS =  5 #パーティクルタイプ 自機ミサイルの破片(デブリ)(障害物に当たったエフェクト)
 
-PARTICLE_BOSS_DEBRIS1  = 6     #パーティクルタイプ ボスの破片1(破壊後のエフェクト)かなり大きい金属プレート
-PARTICLE_BOSS_DEBRIS2  = 7     #パーティクルタイプ ボスの破片2(破壊後のエフェクト)回転するブロック状な物
-PARTICLE_BOSS_DEBRIS3  = 8     #パーティクルタイプ ボスの破片3(破壊後のエフェクト)ホワイト系のスパーク 
-PARTICLE_BOSS_DEBRIS4  = 9     #パーティクルタイプ ボスの破片4(破壊後のエフェクト)橙色系の落下する火花
-PARTICLE_BOSS_DEBRIS5  = 10    #パーティクルタイプ ボスの破片5(破壊後のエフェクト)
-PARTICLE_BOSS_DEBRIS6  = 11    #パーティクルタイプ ボスの破片6(破壊後のエフェクト)
+PARTICLE_BOSS_DEBRIS1   =  6 #パーティクルタイプ ボスの破片1(破壊後のエフェクト)かなり大きい金属プレート
+PARTICLE_BOSS_DEBRIS2   =  7 #パーティクルタイプ ボスの破片2(破壊後のエフェクト)回転するブロック状な物
+PARTICLE_BOSS_DEBRIS3   =  8 #パーティクルタイプ ボスの破片3(破壊後のエフェクト)ホワイト系のスパーク 
+PARTICLE_BOSS_DEBRIS4   =  9 #パーティクルタイプ ボスの破片4(破壊後のエフェクト)橙色系の落下する火花
+PARTICLE_BOSS_DEBRIS5   = 10 #パーティクルタイプ ボスの破片5(破壊後のエフェクト)
+PARTICLE_BOSS_DEBRIS6   = 11 #パーティクルタイプ ボスの破片6(破壊後のエフェクト)
 
 #背景オブジェクトの種類
 BG_OBJ_CLOUD1,BG_OBJ_CLOUD2,BG_OBJ_CLOUD3,BG_OBJ_CLOUD4,BG_OBJ_CLOUD5      = 0,1,2,3,4     #雲小1~5
@@ -432,26 +425,30 @@ EXPLOSION_NORMAL =   0  #標準サイズ(8x8サイズ)の敵を倒したとき�
 EXPLOSION_MIDDLE =   1  #スクランブルハッチや重爆撃機系の敵を倒したときの中くらいの爆発パターン 
 EXPLOSION_MY_SHIP = 10  #自機の爆発パターン
 
+#ウィンドウのidの定数定義 windowクラスの window_idに入ります
+WINDOW_ID_NO_MENU          = 0 #ダミー用 ノーメニュー
+WINDOW_ID_MAIN_MENU        = 1 #タイトル画面からのメインメニュー
+
 #ウィンドウのタイプの定数定義 windowクラスの window_typeに入ります
 WINDOW_TRANSLUCENT     = 0 #半透明
 WINDOW_BLUE_BACK       = 1 #青地
 WINDOW_LOW_TRANSLUCENT = 2 #ちょっと半透明
 
 #メッセージウィンドウ関連の定数定義 windowクラスの window_statusに入ります
-WINDOW_OPEN            = 0     #テキストウィンドウ開き進行中
-WINDOW_WRITE_TITLE_BAR = 4     #テキストウィンドウのタイトルバー表示中
-WINDOW_WRITE_MESSAGE   = 5     #テキストメッセージの表示中
-WINDOW_SELECT_YES_NO   = 8     #「はい」「いいえ」の2択表示中
-WINDOW_OPEN_COMPLETED  = 9     #テキストウィンドウ開き完了！
+WINDOW_OPEN            =  0    #テキストウィンドウ開き進行中
+WINDOW_WRITE_TITLE_BAR =  4    #テキストウィンドウのタイトルバー表示中
+WINDOW_WRITE_MESSAGE   =  5    #テキストメッセージの表示中
+WINDOW_SELECT_YES_NO   =  8    #「はい」「いいえ」の2択表示中
+WINDOW_OPEN_COMPLETED  =  9    #テキストウィンドウ開き完了！
 WINDOW_CLOSE           = 10    #テキストウィンドウ閉め進行中
 WINDOW_CLOSE_COMPLETED = 11    #テキストウィンドウ閉め完了！ 
 
 #メッセージの表示の仕方 windowクラスの (mes1~mes7)_flagに入ります
-DISP_OFF = 0               #0=表示しない
-DISP_ON = 1                #1=表示する 
-DISP_CENTER = 2            #2=中央表示
-DISP_LEFT_ALIGN = 3        #3=左揃え
-DISP_RIGHT_ALIGN = 4       #4=右揃え
+DISP_OFF           = 0 #0=表示しない
+DISP_ON            = 1 #1=表示する 
+DISP_CENTER        = 2 #2=中央表示
+DISP_LEFT_ALIGN    = 3 #3=左揃え
+DISP_RIGHT_ALIGN   = 4 #4=右揃え
 
 #火花エフェクトの表示の仕方(大気圏突入シーンなどのエフェクトで使用)
 SPARK_OFF = 0              #火花表示なし
@@ -725,7 +722,7 @@ E_HOMING_MISSILE_POW   = 13     #敵が持っているホーミングミサイ�
 E_SHOCK_BUMPER_POW     = 14     #敵が持っているショックバンパーアイテム定数定義 
 
 #!bossクラスのstatusに入る定数定義   (状態遷移フラグとして使用します)
-BOSS_STATUS_MOVE_COORDINATE_INIT  = 0   #ボス用のステータス定数定義 移動用座標初期化
+BOSS_STATUS_MOVE_COORDINATE_INIT  =  0  #ボス用のステータス定数定義 移動用座標初期化
 BOSS_STATUS_MOVE_BEZIER_CURVE     = 10  #ボス用のステータス定数定義 ベジェ曲線で移動
 BOSS_STATUS_MOVE_LEMNISCATE_CURVE = 11  #ボス用のステータス定数定義 レムニスケート曲線で移動
 
@@ -736,11 +733,11 @@ BOSS_STATUS_BLAST_SPLIT        = 83  #ボス爆破分裂中
 BOSS_STATUS_DISAPPEARANCE      = 89  #ボス消滅・・・・・
 
 #bossクラスのattack_methodに入る定数定義 (ボスの攻撃方法)
-BOSS_ATTACK_NO_FIRE = 0               #なにも攻撃しないよ
-BOSS_ATTACK_FRONT_5WAY = 1            #前方に5way弾を撃ってきます
-BOSS_ATTACK_RIGHT_GREEN_LASER = 2     #後方に細いグリーンレーザーを撃ってきます
+BOSS_ATTACK_NO_FIRE               = 0 #なにも攻撃しないよ
+BOSS_ATTACK_FRONT_5WAY            = 1 #前方に5way弾を撃ってきます
+BOSS_ATTACK_RIGHT_GREEN_LASER     = 2 #後方に細いグリーンレーザーを撃ってきます
 BOSS_ATTACK_FRONT_5WAY_AIM_BULLET = 3 #前方5way+狙い撃ち弾
-BOSS_ATTACK_FRONT_5WAY_HOMING = 4     #前方5way+ホーミング弾
+BOSS_ATTACK_FRONT_5WAY_HOMING     = 4 #前方5way+ホーミング弾
 
 BOSS_HP_BAR_DISPLAY_TIME = 32         #ボスの耐久力バーを表示する時間(弾が当たるたびにこの数値がカウンターに入る)
 
@@ -1915,6 +1912,21 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         self.mes7_ox = 0
         self.mes7_color = 0
         
+        self.mes8 = ""
+        self.mes8_flag = 0
+        self.mes8_ox = 0
+        self.mes8_color = 0
+        
+        self.mes9 = ""
+        self.mes9_flag = 0
+        self.mes9_ox = 0
+        self.mes9_color = 0
+        
+        self.mes10 = ""
+        self.mes10_flag = 0
+        self.mes10_ox = 0
+        self.mes10_color = 0
+        
         self.posx = 0
         self.posy = 0
         self.width = 0
@@ -1937,6 +1949,9 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         mes5,mes5_flag,mes5_ox,mes5_color,\
         mes6,mes6_flag,mes6_ox,mes6_color,\
         mes7,mes7_flag,mes7_ox,mes7_color,\
+        mes8,mes8_flag,mes8_ox,mes8_color,\
+        mes9,mes9_flag,mes9_ox,mes9_color,\
+        mes10,mes10_flag,mes10_ox,mes10_color,\
         x,y,width,height,open_width,open_height,vx,vy,open_speed,close_speed,open_delay,close_delay,marker,color):
         self.window_id = window_id
         self.window_id_sub = window_id_sub
@@ -1979,6 +1994,21 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         self.mes7_flag = mes7_flag
         self.mes7_ox = mes7_ox
         self.mes7_color = mes7_color
+        
+        self.mes8 = mes8
+        self.mes8_flag = mes8_flag
+        self.mes8_ox = mes8_ox
+        self.mes8_color = mes8_color
+        
+        self.mes9 = mes9
+        self.mes9_flag = mes9_flag
+        self.mes9_ox = mes9_ox
+        self.mes9_color = mes9_color
+        
+        self.mes10 = mes10
+        self.mes10_flag = mes10_flag
+        self.mes10_ox = mes10_ox
+        self.mes10_color = mes10_color
         
         
         self.posx = x
@@ -2593,79 +2623,82 @@ class App:
             [2,3.0,3, 1],[2,3.1,3, 1],[2,3.2,4, 1],
             [2,3.3,4, 1],[2,3.4,4, 1],[2,3.5,4, 1],
             [99999],]
+        
         #スコアランキングの初期データ [順位,名前,得点,クリアステージ,選択機体]
-        self.score_ranking_very_easy_init = [
-            [ 1,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 2,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 3,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 4,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 5,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 6,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 7,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 8,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 9,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [10,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-        ]
-        self.score_ranking_easy_init = [
-            [ 1,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 2,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 3,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 4,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 5,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 6,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 7,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 8,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 9,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [10,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-        ]
-        self.score_ranking_normal_init = [
-            [ 1,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 2,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 3,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 4,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 5,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 6,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 7,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 8,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 9,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [10,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-        ]
-        self.score_ranking_hard_init = [
-            [ 1,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 2,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 3,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 4,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 5,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 6,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 7,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 8,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 9,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [10,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-        ]
-        self.score_ranking_very_hard_init = [
-            [ 1,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 2,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 3,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 4,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 5,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 6,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 7,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 8,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 9,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [10,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-        ]
-        self.score_ranking_insame_init = [
-            [ 1,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 2,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 3,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 4,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 5,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 6,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 7,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 8,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [ 9,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [10,"mineka",76500,SATGE_BOSS_RUSH,J_PYTHON],
-        ]      
+        self.score_ranking = [
+            [
+            [GAME_VERY_EASY, 1,"MINEKA",127650,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 2,"AAAAAA",6500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 3,"BBBBBB",6000,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 4,"CCCCCC",1000,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 5,"DDDDDD",500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 6,"EEEEEE",500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 7,"MINEKA",500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 8,"MINEKA",400,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 9,"MINEKA",50,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY,10,"MINEKA",12,SATGE_BOSS_RUSH,J_PYTHON]],
+            
+            [
+            [GAME_EASY, 1,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY, 2,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY, 3,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY, 4,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY, 5,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY, 6,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY, 7,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY, 8,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY, 9,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY,10,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON]],
+            
+            [
+            [GAME_NORMAL, 1,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL, 2,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL, 3,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL, 4,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL, 5,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL, 6,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL, 7,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL, 8,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL, 9,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL,10,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON]],
+            
+            [
+            [GAME_HARD, 1,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD, 2,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD, 3,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD, 4,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD, 5,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD, 6,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD, 7,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD, 8,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD, 9,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD,10,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON]],
+            
+            [
+            [GAME_VERY_HARD ,1,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD ,2,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD ,3,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD ,4,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD ,5,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD ,6,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD ,7,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD ,8,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD ,9,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD,10,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON]],
+            
+            [
+            [GAME_INSAME, 1,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME, 2,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME, 3,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME, 4,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME, 5,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME, 6,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME, 7,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME, 8,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME, 9,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME,10,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON]]
+            ]
+        
         #IPLメッセージデータその1
         self.ipl_mes1 = [
             ["INITIAL PROGRAM LOADING",7],
@@ -2753,6 +2786,8 @@ class App:
         self.reference_tilemap  = 0            #BGタイルマップを調べたり書き換えたりする時、どのタイルマップナンバーを使用するのかの変数の初期化です
         
         self.load_kanji_font_data()            #漢字フォントデータのローディング
+        
+        # print(self.score_ranking_very_easy_init)
         
         #毎フレームごとにupdateとdrawを呼び出す
         pyxel.run(self.update,self.draw)#この命令でこれ以降は１フレームごとに自動でupdate関数とdraw関数が交互に実行されることとなります
@@ -2999,7 +3034,7 @@ class App:
         dx = x - self.my_x
         dy = y - self.my_y
         distance = math.sqrt(dx * dx + dy * dy)
-        return(distance)   #最初この行を return(self,distance)って記述しててエラーが出て、どうやったら良いのかわかんなかった・・・この場合はタプルになるらしい！？(良く判るって無いｗ)
+        return(distance)   #最初この行を return(self,distance)って記述しててエラーが出て、どうやったら良いのかわかんなかった・・・この場合はタプルになるらしい！？(良く判って無いｗ)
 
     #狙い撃ち弾を射出する関数定義 
     def enemy_aim_bullet(self,ex,ey,div_type,div_count,div_num,stop_count,accel):
@@ -3968,7 +4003,7 @@ class App:
     #リプレイファイルスロット選択ウィンドウの表示
     def window_replay_data_slot_select(self):
         new_window = Window()
-        new_window.update(0,0,1,WINDOW_OPEN,\
+        new_window.update(0,0,WINDOW_BLUE_BACK,WINDOW_OPEN,\
         "SLOT",DISP_CENTER,\
         "1",DISP_CENTER,0,7,\
         "2",DISP_CENTER,0,7,\
@@ -3977,6 +4012,9 @@ class App:
         "5",DISP_CENTER,0,7,\
         "6",DISP_CENTER,0,7,\
         "7",DISP_CENTER,0,7,\
+        "",DISP_CENTER,0,7,\
+        "",DISP_CENTER,0,7,\
+        "",DISP_CENTER,0,7,\
         62,52-8,   0,0,  8*3-4,7*9+4,   2,1, 2,1,   0,0,    0,0)
         self.window.append(new_window)                      #「SELECT SLOT」を育成する
         self.cursor_show = True                             #選択カーソル表示をonにする
@@ -4090,6 +4128,8 @@ class App:
         self.cursor_pre_decision_item = 0   #前の階層で選択したアイテムのナンバーを入れます
                                             #選択してcursor_decision_itemに入ったアイテムナンバーをcursor_pre_decision_itemに入れて次の階層に潜るって手法かな？
         
+        self.display_ranking_board = DISP_OFF #スコアランキングボードの表示フラグの初期化
+
         #system-data.pyxresリソースファイルからこれらの設定値を読み込むようにしたのでコメントアウトしています
         # self.game_difficulty = GAME_NORMAL         #難易度                  タイトルメニューで難易度を選択して変化させるのでここで初期化します
         
@@ -4127,7 +4167,7 @@ class App:
         #全てのカウンター類が0になったらゲームメニューウィンドウを育成する
         if self.title_oscillation_count == 0 and self.title_slash_in_count == 0 and self.display_title_time == 0:
             new_window = Window()
-            new_window.update(0,0,2,WINDOW_OPEN,\
+            new_window.update(0,0,WINDOW_LOW_TRANSLUCENT,WINDOW_OPEN,\
             "MENU",DISP_CENTER,\
             "GAME START",DISP_CENTER,0,7,\
             "SELECT STAGE",DISP_CENTER,0,3,\
@@ -4136,12 +4176,15 @@ class App:
             "HITBOX",DISP_CENTER,0,7,\
             "DIFFICULTY",DISP_CENTER,0,7,\
             "REPLAY",DISP_CENTER,0,7,\
-            44,52,   0,0,  8*8,7*8,   2,1, 1,1,   0,0,    0,0)
+            "",DISP_CENTER,0,7,\
+            "",DISP_CENTER,0,7,\
+            "",DISP_CENTER,0,7,\
+            44,52-4,   0,0,  8*8,8*8,   2,1, 1,1,   0,0,    0,0)
             self.window.append(new_window)                      #「SELECT MENU」を育成する
             
             self.cursor_show = True                             #選択カーソル表示をonにする
-            self.cursor_x = 46                                  #セレクトカーソルの座標を設定します
-            self.cursor_y = 64
+            self.cursor_x = 48                                  #セレクトカーソルの座標を設定します
+            self.cursor_y = 59
             self.cursor_item = 0                                #いま指示しているアイテムナンバーは0の「YES」
             self.cursor_decision_item = -1                      #まだボタンも押されておらず未決定状態なのでdecision_itemは-1
             self.cursor_max_item = 6                            #最大項目数は「GAME START」「SELECT STAGE」「SELECT LOOP NUMBER」「BOSS MODE」「HITBOX」「DIFFICULTY」「REPLAY」の7項目なので 7-1=6を代入
@@ -4167,7 +4210,7 @@ class App:
                 self.cursor_pre_max_item = self.cursor_max_item 
                 
                 new_window = Window()
-                new_window.update(0,0,1,WINDOW_OPEN,\
+                new_window.update(0,0,WINDOW_BLUE_BACK,WINDOW_OPEN,\
                 "",DISP_CENTER,\
                 "1",DISP_CENTER,0,7,\
                 "2",DISP_CENTER,0,7,\
@@ -4176,11 +4219,14 @@ class App:
                 "",DISP_CENTER,0,7,\
                 "",DISP_CENTER,0,7,\
                 "",DISP_CENTER,0,7,\
+                "",DISP_CENTER,0,7,\
+                "",DISP_CENTER,0,7,\
+                "",DISP_CENTER,0,7,\
                 90,60,   0,0,  2*8,5*8,   2,2, 1,1,   0,0,    0,0)
                 self.window.append(new_window)                   #「STAGE」を育成する
                 self.cursor_show = True                          #選択カーソル表示をonにする
-                self.cursor_x = 90                               #セレクトカーソルの座標を設定します
-                self.cursor_y = 72
+                self.cursor_x = 92                               #セレクトカーソルの座標を設定します
+                self.cursor_y = 71
                 self.cursor_item = 0                             #いま指示しているアイテムナンバーは0の「1」
                 self.cursor_decision_item = -1                   #まだボタンも押されておらず未決定状態なのでdecision_itemは-1
                 self.cursor_max_item = 2                         #最大項目数は3項目なので 3-1=2を代入
@@ -4195,7 +4241,7 @@ class App:
                 self.cursor_pre_max_item = self.cursor_max_item 
                 
                 new_window = Window()
-                new_window.update(0,0,0,WINDOW_OPEN,\
+                new_window.update(0,0,WINDOW_TRANSLUCENT,WINDOW_OPEN,\
                 "",DISP_CENTER,\
                 "1",DISP_CENTER,0,7,\
                 "2",DISP_CENTER,0,7,\
@@ -4204,11 +4250,14 @@ class App:
                 "",DISP_CENTER,0,7,\
                 "",DISP_CENTER,0,7,\
                 "",DISP_CENTER,0,7,\
+                "",DISP_CENTER,0,7,\
+                "",DISP_CENTER,0,7,\
+                "",DISP_CENTER,0,7,\
                 90+22,60+6,   0,0,  2*8,5*8,   2,2, 1,1,   0,0,    0,0)
                 self.window.append(new_window)                      #「LOOP NUMBER」を育成する
                 self.cursor_show = True                             #選択カーソル表示をonにする
-                self.cursor_x = 90+22                               #セレクトカーソルの座標を設定します
-                self.cursor_y = 72+6
+                self.cursor_x = 90+24                               #セレクトカーソルの座標を設定します
+                self.cursor_y = 72+5
                 self.cursor_item = 0                                #いま指示しているアイテムナンバーは0の「1」
                 self.cursor_decision_item = -1                      #まだボタンも押されておらず未決定状態なのでdecision_itemは-1
                 self.cursor_max_item = 2                            #最大項目数は3項目なので 3-1=2を代入
@@ -4223,7 +4272,7 @@ class App:
                 self.cursor_pre_max_item = self.cursor_max_item 
                 
                 new_window = Window()
-                new_window.update(0,0,0,WINDOW_OPEN,\
+                new_window.update(0,0,WINDOW_TRANSLUCENT,WINDOW_OPEN,\
                 "ON",DISP_CENTER,\
                 "OFF",DISP_CENTER,0,7,\
                 "",DISP_CENTER,0,7,\
@@ -4232,11 +4281,14 @@ class App:
                 "",DISP_CENTER,0,7,\
                 "",DISP_CENTER,0,7,\
                 "",DISP_CENTER,0,7,\
-                96+2,60,   0,0,  2*8+6,2*8,   2,1, 1,1,   0,0,    0,0)
+                "",DISP_CENTER,0,7,\
+                "",DISP_CENTER,0,7,\
+                "",DISP_CENTER,0,7,\
+                96+3,60-1,   0,0,  2*8+7,2*8,   2,1, 1,1,   0,0,    0,0)
                 self.window.append(new_window)                      #「BOSS MODE ON/OFF」を育成する
                 self.cursor_show = True                             #選択カーソル表示をonにする
-                self.cursor_x = 96+2                                #セレクトカーソルの座標を設定します
-                self.cursor_y = 72-8
+                self.cursor_x = 96+5                                #セレクトカーソルの座標を設定します
+                self.cursor_y = 72-9
                 self.cursor_item = 0                                #いま指示しているアイテムナンバーは0の「1」
                 self.cursor_decision_item = -1                      #まだボタンも押されておらず未決定状態なのでdecision_itemは-1
                 self.cursor_max_item = 1                            #最大項目数は2項目なので 2-1=1を代入
@@ -4251,7 +4303,7 @@ class App:
                 self.cursor_pre_max_item = self.cursor_max_item 
                 
                 new_window = Window()
-                new_window.update(0,0,0,WINDOW_OPEN,\
+                new_window.update(0,0,WINDOW_TRANSLUCENT,WINDOW_OPEN,\
                 "ON",DISP_CENTER,\
                 "OFF",DISP_CENTER,0,7,\
                 "",DISP_CENTER,0,7,\
@@ -4260,11 +4312,14 @@ class App:
                 "",DISP_CENTER,0,7,\
                 "",DISP_CENTER,0,7,\
                 "",DISP_CENTER,0,7,\
-                96+2,60,   0,0,  2*8+6,2*8,   2,1, 1,1,   0,0,    0,0)
+                "",DISP_CENTER,0,7,\
+                "",DISP_CENTER,0,7,\
+                "",DISP_CENTER,0,7,\
+                96+3,60-1,   0,0,  2*8+7,2*8,   2,1, 1,1,   0,0,    0,0)
                 self.window.append(new_window)                      #「HITBOX ON/OFF」を育成する
                 self.cursor_show = True                             #選択カーソル表示をonにする
-                self.cursor_x = 96+2                                #セレクトカーソルの座標を設定します
-                self.cursor_y = 72-8
+                self.cursor_x = 96+5                                #セレクトカーソルの座標を設定します
+                self.cursor_y = 72-9
                 self.cursor_item = 0                                #いま指示しているアイテムナンバーは0の「1」
                 self.cursor_decision_item = -1                      #まだボタンも押されておらず未決定状態なのでdecision_itemは-1
                 self.cursor_max_item = 1                            #最大項目数は2項目なので 2-1=1を代入
@@ -4279,7 +4334,7 @@ class App:
                 self.cursor_pre_max_item = self.cursor_max_item 
                 
                 new_window = Window()
-                new_window.update(0,0,1,WINDOW_OPEN,\
+                new_window.update(0,0,WINDOW_BLUE_BACK,WINDOW_OPEN,\
                 "VERY EASY",DISP_LEFT_ALIGN,\
                 "EASY",DISP_LEFT_ALIGN,0,7,\
                 "NORMAL",DISP_LEFT_ALIGN,0,7,\
@@ -4288,11 +4343,14 @@ class App:
                 "INSAME",DISP_LEFT_ALIGN,0,7,\
                 "",DISP_LEFT_ALIGN,0,7,\
                 "",DISP_LEFT_ALIGN,0,7,\
-                93,52,   0,0,  6*8,6*8,   3,3, 1,1,   0,0,    0,0)
+                "",DISP_CENTER,0,7,\
+                "",DISP_CENTER,0,7,\
+                "",DISP_CENTER,0,7,\
+                93,52,   0,0,  6*8,6*8-5,   3,3, 1,1,   0,0,    0,0)
                 self.window.append(new_window)                      #「DIFFICULTY」を育成する
                 self.cursor_show = True                             #選択カーソル表示をonにする
                 self.cursor_x = 96                                  #セレクトカーソルの座標を設定します
-                self.cursor_y = 72
+                self.cursor_y = 71
                 self.cursor_item = 2                                #いま指示しているアイテムナンバーは2の「NORMAL」
                 self.cursor_decision_item = -1                      #まだボタンも押されておらず未決定状態なのでdecision_itemは-1
                 self.cursor_max_item = 5                            #最大項目数は6項目なので 6-1=5を代入
@@ -4512,6 +4570,34 @@ class App:
                 self.cursor_max_item = self.cursor_pre_max_item      #
                 self.cursor_decision_item = -1
                 self.cursor_pre_decision_item = -1
+        
+        if pyxel.btnp(pyxel.KEY_S):
+            if self.display_ranking_board == DISP_OFF:
+                new_window = Window()
+                new_window.update(0,0,WINDOW_BLUE_BACK,WINDOW_OPEN,\
+                "RANKING",DISP_CENTER,\
+                " 1 " + str(self.score_ranking[0][0][2]) + " " + str("{:>8}".format(self.score_ranking[0][0][3])),DISP_LEFT_ALIGN,0,10,\
+                " 2 " + str(self.score_ranking[0][1][2]) + " " + str("{:>8}".format(self.score_ranking[0][1][3])),DISP_LEFT_ALIGN,0,7,\
+                " 3 " + str(self.score_ranking[0][2][2]) + " " + str("{:>8}".format(self.score_ranking[0][2][3])),DISP_LEFT_ALIGN,0,4,\
+                " 4 " + str(self.score_ranking[0][3][2]) + " " + str("{:>8}".format(self.score_ranking[0][3][3])),DISP_LEFT_ALIGN,0,13,\
+                " 5 " + str(self.score_ranking[0][4][2]) + " " + str("{:>8}".format(self.score_ranking[0][4][3])),DISP_LEFT_ALIGN,0,13,\
+                " 6 " + str(self.score_ranking[0][5][2]) + " " + str("{:>8}".format(self.score_ranking[0][5][3])),DISP_LEFT_ALIGN,0,13,\
+                " 7 " + str(self.score_ranking[0][6][2]) + " " + str("{:>8}".format(self.score_ranking[0][6][3])),DISP_LEFT_ALIGN,0,13,\
+                " 8 " + str(self.score_ranking[0][7][2]) + " " + str("{:>8}".format(self.score_ranking[0][7][3])),DISP_LEFT_ALIGN,0,13,\
+                " 9 " + str(self.score_ranking[0][8][2]) + " " + str("{:>8}".format(self.score_ranking[0][8][3])),DISP_LEFT_ALIGN,0,13,\
+                "10 " + str(self.score_ranking[0][9][2]) + " " + str("{:>8}".format(self.score_ranking[0][9][3])),DISP_LEFT_ALIGN,0,2,\
+                26,17,   0,0,  74,79,   2,2, 2,2,   0,0,    0,0)
+                self.window.append(new_window)                   #「RANKING」を育成する
+                
+                self.display_ranking_board = DISP_ON
+                self.cursor_show = False                    #セレクトカーソルの表示をoffにする
+            else:
+                window_count = len(self.window)
+                del self.window[window_count - 1]              #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
+                self.display_ranking_board = DISP_OFF
+                self.cursor_show = True                             #選択カーソル表示をonにする
+
+
 
     #!ゲームスタート時の初期化#########################################
     def update_game_start_init(self):
@@ -7253,20 +7339,19 @@ class App:
                 new_window = Window()
                 x = self.s_rndint(0,100)
                 y = self.s_rndint(0,100)
-                new_window.update(ID00,ID00,2,WINDOW_OPEN,\
-                            "RETURN TITLE??",DISP_CENTER,\
-                            
-                            "YES",DISP_CENTER,0,7,\
-                            "NO",DISP_CENTER,10,3,\
-                            "KOKONI",DISP_CENTER,0,2,\
-                            "TEKISUTOGA",DISP_CENTER,0,11,\
-                            "HAIRI",DISP_CENTER,0,10,\
-                            "MASU",DISP_CENTER,0,15,\
-                            "!",DISP_CENTER,10,8,\
-                            
-                            43,68   -32,   0,0,  8*8,3*8  +40,   2,1, 1,1,   0,0,    0,0)
-                
-                #new_window.update(0,1,  24,24,  0,0, 64,64, 0,0,0)
+                new_window.update(ID00,ID00,WINDOW_LOW_TRANSLUCENT,WINDOW_OPEN,\
+                    "RETURN TITLE??",DISP_CENTER,\
+                    "YES",DISP_CENTER,0,7,\
+                    "NO",DISP_CENTER,10,3,\
+                    "KOKONI",DISP_CENTER,0,2,\
+                    "TEKISUTOGA",DISP_CENTER,0,11,\
+                    "HAIRI",DISP_CENTER,0,10,\
+                    "MASU",DISP_CENTER,0,15,\
+                    "!",DISP_CENTER,10,8,\
+                    "",DISP_CENTER,0,7,\
+                    "",DISP_CENTER,0,7,\
+                    "",DISP_CENTER,0,7,\
+                    43,68   -32,   0,0,  8*8,3*8  +40,   2,1, 1,1,   0,0,    0,0)
                 self.window.append(new_window)
         
         #パーティクルを発生させる                              KEY P
@@ -9194,16 +9279,16 @@ class App:
 
     #セレクトカーソルの更新
     def update_select_cursor(self):
-        # 上入力されたら  y座標を  -8する(1キャラ分)
+        # 上入力されたら  y座標を  -7する(1キャラ分)
         if pyxel.btnp(pyxel.KEY_UP) or pyxel.btnp(pyxel.GAMEPAD_1_UP) or pyxel.btnp(pyxel.GAMEPAD_2_UP):
             if self.cursor_item != 0: #指し示しているアイテムナンバーが一番上の項目の0以外なら上方向にカーソルは移動できるので・・・
-                self.cursor_y -= 8 #y座標を8ドット（1キャラ分）上に
+                self.cursor_y -= 7 #y座標を7ドット（1キャラ分）上に
                 self.cursor_item -= 1 #現在指し示しているアイテムナンバーを1減らす
                 
-        # 下入力されたら  y座標を  +8する(1キャラ分)
+        # 下入力されたら  y座標を  +7する(1キャラ分)
         if pyxel.btnp(pyxel.KEY_DOWN) or pyxel.btnp(pyxel.GAMEPAD_1_DOWN) or pyxel.btnp(pyxel.GAMEPAD_2_DOWN):
             if self.cursor_item != self.cursor_max_item: #指し示しているアイテムナンバーが最大項目数でないのなら下方向にカーソルは移動できるので・・
-                self.cursor_y += 8
+                self.cursor_y += 7
                 self.cursor_item += 1
                 
         if pyxel.btnp(pyxel.KEY_SPACE) or pyxel.btnp(pyxel.GAMEPAD_1_A) or pyxel.btnp(pyxel.GAMEPAD_2_A) or pyxel.btnp(pyxel.GAMEPAD_1_B) or pyxel.btnp(pyxel.GAMEPAD_2_B):
@@ -9503,9 +9588,9 @@ class App:
     #タイトルの表示#######################################
     def draw_title(self):
         for i in range(160):
-            pyxel.blt(0,16 + i  * self.title_oscillation_count % 200 - self.title_slash_in_count,    IMG2,  0,192,  i*1.09,32,   0)
+            pyxel.blt(0,14 + i  * self.title_oscillation_count % 200 - self.title_slash_in_count,    IMG2,  0,192,  i*1.09,32,   0)
         for i in range(160+1000):
-            pyxel.blt(0,16 + i % 1000 * self.title_oscillation_count - self.title_oscillation_count, IMG2,  0,192,  i    ,32,   0)
+            pyxel.blt(0,14 + i % 1000 * self.title_oscillation_count - self.title_oscillation_count, IMG2,  0,192,  i    ,32,   0)
             
         #デバッグ用に現在のステージ数とループ数とその他いろいろ表示する
         #ステージ数の表示
@@ -10655,47 +10740,95 @@ class App:
             if     self.window[i].window_status == WINDOW_WRITE_MESSAGE \
                 or self.window[i].window_status == WINDOW_OPEN_COMPLETED: #ステータスがテキストメッセージの表示中もしくはオープン完了ならば
                 if self.window[i].mes1 != "":#メッセージ1行目の描画 ループで処理したいけどどうやったら良いのかわからぬ・・・クラスの横方向（？）に補正値を入れるのどうやったらいいのん？？？
-                    pyxel.text(self.window[i].posx + self.window[i].mes1_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes1) * 2,self.window[i].posy + 5 +8 ,str(self.window[i].mes1),0)
-                    pyxel.text(self.window[i].posx + self.window[i].mes1_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes1) * 2,self.window[i].posy + 6 +8 ,str(self.window[i].mes1),0)
-                    
-                    pyxel.text(self.window[i].posx + self.window[i].mes1_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes1) * 2,self.window[i].posy + 5 +8 ,str(self.window[i].mes1),self.window[i].mes1_color)
-                
+                    if self.window[i].mes1_flag == DISP_CENTER:
+                        pyxel.text(self.window[i].posx + self.window[i].mes1_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes1) * 2,self.window[i].posy + 5 +7 ,str(self.window[i].mes1),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes1_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes1) * 2,self.window[i].posy + 6 +7 ,str(self.window[i].mes1),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes1_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes1) * 2,self.window[i].posy + 5 +7 ,str(self.window[i].mes1),self.window[i].mes1_color)
+                    else:
+                        pyxel.text(self.window[i].posx + self.window[i].mes1_ox + 6  ,self.window[i].posy + 5 +7 ,str(self.window[i].mes1),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes1_ox + 6  ,self.window[i].posy + 6 +7 ,str(self.window[i].mes1),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes1_ox + 5  ,self.window[i].posy + 5 +7 ,str(self.window[i].mes1),self.window[i].mes1_color)
                 if self.window[i].mes2 != "":#メッセージ2行目の描画
-                    pyxel.text(self.window[i].posx + self.window[i].mes2_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes2) * 2,self.window[i].posy + 5 +16,str(self.window[i].mes2),0)
-                    pyxel.text(self.window[i].posx + self.window[i].mes2_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes2) * 2,self.window[i].posy + 6 +16,str(self.window[i].mes2),0)
-                    
-                    pyxel.text(self.window[i].posx + self.window[i].mes2_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes2) * 2,self.window[i].posy + 5 +16,str(self.window[i].mes2),self.window[i].mes2_color)
-                
+                    if self.window[i].mes2_flag == DISP_CENTER:
+                        pyxel.text(self.window[i].posx + self.window[i].mes2_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes2) * 2,self.window[i].posy + 5 +14,str(self.window[i].mes2),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes2_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes2) * 2,self.window[i].posy + 6 +14,str(self.window[i].mes2),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes2_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes2) * 2,self.window[i].posy + 5 +14,str(self.window[i].mes2),self.window[i].mes2_color)
+                    else:
+                        pyxel.text(self.window[i].posx + self.window[i].mes2_ox + 6  ,self.window[i].posy + 5 +14,str(self.window[i].mes2),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes2_ox + 6  ,self.window[i].posy + 6 +14,str(self.window[i].mes2),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes2_ox + 5  ,self.window[i].posy + 5 +14,str(self.window[i].mes2),self.window[i].mes2_color)
                 if self.window[i].mes3 != "":#メッセージ3行目の描画
-                    pyxel.text(self.window[i].posx + self.window[i].mes3_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes3) * 2,self.window[i].posy + 5 +24,str(self.window[i].mes3),0)
-                    pyxel.text(self.window[i].posx + self.window[i].mes3_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes3) * 2,self.window[i].posy + 6 +24,str(self.window[i].mes3),0)
-                    
-                    pyxel.text(self.window[i].posx + self.window[i].mes3_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes3) * 2,self.window[i].posy + 5 +24,str(self.window[i].mes3),self.window[i].mes3_color)
-                
+                    if self.window[i].mes3_flag == DISP_CENTER:
+                        pyxel.text(self.window[i].posx + self.window[i].mes3_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes3) * 2,self.window[i].posy + 5 +21,str(self.window[i].mes3),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes3_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes3) * 2,self.window[i].posy + 6 +21,str(self.window[i].mes3),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes3_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes3) * 2,self.window[i].posy + 5 +21,str(self.window[i].mes3),self.window[i].mes3_color)
+                    else:
+                        pyxel.text(self.window[i].posx + self.window[i].mes3_ox + 6  ,self.window[i].posy + 5 +21,str(self.window[i].mes3),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes3_ox + 6  ,self.window[i].posy + 6 +21,str(self.window[i].mes3),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes3_ox + 5  ,self.window[i].posy + 5 +21,str(self.window[i].mes3),self.window[i].mes3_color)
                 if self.window[i].mes4 != "":#メッセージ4行目の描画
-                    pyxel.text(self.window[i].posx + self.window[i].mes4_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes4) * 2,self.window[i].posy + 5 +32,str(self.window[i].mes4),0)
-                    pyxel.text(self.window[i].posx + self.window[i].mes4_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes4) * 2,self.window[i].posy + 6 +32,str(self.window[i].mes4),0)
-                    
-                    pyxel.text(self.window[i].posx + self.window[i].mes4_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes4) * 2,self.window[i].posy + 5 +32,str(self.window[i].mes4),self.window[i].mes4_color)
-                
+                    if self.window[i].mes4_flag == DISP_CENTER:
+                        pyxel.text(self.window[i].posx + self.window[i].mes4_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes4) * 2,self.window[i].posy + 5 +28,str(self.window[i].mes4),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes4_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes4) * 2,self.window[i].posy + 6 +28,str(self.window[i].mes4),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes4_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes4) * 2,self.window[i].posy + 5 +28,str(self.window[i].mes4),self.window[i].mes4_color)
+                    else:
+                        pyxel.text(self.window[i].posx + self.window[i].mes4_ox + 6  ,self.window[i].posy + 5 +28,str(self.window[i].mes4),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes4_ox + 6  ,self.window[i].posy + 6 +28,str(self.window[i].mes4),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes4_ox + 5  ,self.window[i].posy + 5 +28,str(self.window[i].mes4),self.window[i].mes4_color)
                 if self.window[i].mes5 != "":#メッセージ5行目の描画
-                    pyxel.text(self.window[i].posx + self.window[i].mes5_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes5) * 2,self.window[i].posy + 5 +40,str(self.window[i].mes5),0)
-                    pyxel.text(self.window[i].posx + self.window[i].mes5_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes5) * 2,self.window[i].posy + 6 +40,str(self.window[i].mes5),0)
-                    
-                    pyxel.text(self.window[i].posx + self.window[i].mes5_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes5) * 2,self.window[i].posy + 5 +40,str(self.window[i].mes5),self.window[i].mes5_color)
-                
+                    if self.window[i].mes5_flag == DISP_CENTER:
+                        pyxel.text(self.window[i].posx + self.window[i].mes5_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes5) * 2,self.window[i].posy + 5 +35,str(self.window[i].mes5),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes5_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes5) * 2,self.window[i].posy + 6 +35,str(self.window[i].mes5),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes5_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes5) * 2,self.window[i].posy + 5 +35,str(self.window[i].mes5),self.window[i].mes5_color)
+                    else:
+                        pyxel.text(self.window[i].posx + self.window[i].mes5_ox + 6  ,self.window[i].posy + 5 +35,str(self.window[i].mes5),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes5_ox + 6  ,self.window[i].posy + 6 +35,str(self.window[i].mes5),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes5_ox + 5  ,self.window[i].posy + 5 +35,str(self.window[i].mes5),self.window[i].mes5_color)
                 if self.window[i].mes6 != "":#メッセージ6行目の描画
-                    pyxel.text(self.window[i].posx + self.window[i].mes6_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes6) * 2,self.window[i].posy + 5 +48,str(self.window[i].mes6),0)
-                    pyxel.text(self.window[i].posx + self.window[i].mes6_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes6) * 2,self.window[i].posy + 6 +48,str(self.window[i].mes6),0)
-                    
-                    pyxel.text(self.window[i].posx + self.window[i].mes6_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes6) * 2,self.window[i].posy + 5 +48,str(self.window[i].mes6),self.window[i].mes6_color)
-                
+                    if self.window[i].mes6_flag == DISP_CENTER:
+                        pyxel.text(self.window[i].posx + self.window[i].mes6_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes6) * 2,self.window[i].posy + 5 +42,str(self.window[i].mes6),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes6_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes6) * 2,self.window[i].posy + 6 +42,str(self.window[i].mes6),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes6_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes6) * 2,self.window[i].posy + 5 +42,str(self.window[i].mes6),self.window[i].mes6_color)
+                    else:
+                        pyxel.text(self.window[i].posx + self.window[i].mes6_ox + 6  ,self.window[i].posy + 5 +42,str(self.window[i].mes6),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes6_ox + 6  ,self.window[i].posy + 6 +42,str(self.window[i].mes6),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes6_ox + 5  ,self.window[i].posy + 5 +42,str(self.window[i].mes6),self.window[i].mes6_color)
                 if self.window[i].mes7 != "":#メッセージ7行目の描画
-                    pyxel.text(self.window[i].posx + self.window[i].mes7_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes7) * 2,self.window[i].posy + 5 +56,str(self.window[i].mes7),0)
-                    pyxel.text(self.window[i].posx + self.window[i].mes7_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes7) * 2,self.window[i].posy + 6 +56,str(self.window[i].mes7),0)
-                    
-                    pyxel.text(self.window[i].posx + self.window[i].mes7_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes7) * 2,self.window[i].posy + 5 +56,str(self.window[i].mes7),self.window[i].mes7_color)
-                
+                    if self.window[i].mes7_flag == DISP_CENTER:
+                        pyxel.text(self.window[i].posx + self.window[i].mes7_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes7) * 2,self.window[i].posy + 5 +49,str(self.window[i].mes7),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes7_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes7) * 2,self.window[i].posy + 6 +49,str(self.window[i].mes7),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes7_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes7) * 2,self.window[i].posy + 5 +49,str(self.window[i].mes7),self.window[i].mes7_color)
+                    else:
+                        pyxel.text(self.window[i].posx + self.window[i].mes7_ox + 6  ,self.window[i].posy + 5 +49,str(self.window[i].mes7),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes7_ox + 6  ,self.window[i].posy + 6 +49,str(self.window[i].mes7),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes7_ox + 5  ,self.window[i].posy + 5 +49,str(self.window[i].mes7),self.window[i].mes7_color)
+                if self.window[i].mes8 != "":#メッセージ8行目の描画
+                    if self.window[i].mes8_flag == DISP_CENTER:
+                        pyxel.text(self.window[i].posx + self.window[i].mes8_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes8) * 2,self.window[i].posy + 5 +56,str(self.window[i].mes8),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes8_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes8) * 2,self.window[i].posy + 6 +56,str(self.window[i].mes8),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes8_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes8) * 2,self.window[i].posy + 5 +56,str(self.window[i].mes8),self.window[i].mes8_color)
+                    else:
+                        pyxel.text(self.window[i].posx + self.window[i].mes8_ox + 6  ,self.window[i].posy + 5 +56,str(self.window[i].mes8),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes8_ox + 6  ,self.window[i].posy + 6 +56,str(self.window[i].mes8),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes8_ox + 5  ,self.window[i].posy + 5 +56,str(self.window[i].mes8),self.window[i].mes8_color)
+                if self.window[i].mes9 != "":#メッセージ9行目の描画
+                    if self.window[i].mes9_flag == DISP_CENTER:
+                        pyxel.text(self.window[i].posx + self.window[i].mes9_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes9) * 2,self.window[i].posy + 5 +63,str(self.window[i].mes9),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes9_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes9) * 2,self.window[i].posy + 6 +63,str(self.window[i].mes9),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes9_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes9) * 2,self.window[i].posy + 5 +63,str(self.window[i].mes9),self.window[i].mes9_color)
+                    else:
+                        pyxel.text(self.window[i].posx + self.window[i].mes9_ox + 6  ,self.window[i].posy + 5 +63,str(self.window[i].mes9),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes9_ox + 6  ,self.window[i].posy + 6 +63,str(self.window[i].mes9),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes9_ox + 5  ,self.window[i].posy + 5 +63,str(self.window[i].mes9),self.window[i].mes9_color)
+                if self.window[i].mes10 != "":#メッセージ10行目の描画
+                    if self.window[i].mes10_flag == DISP_CENTER:
+                        pyxel.text(self.window[i].posx + self.window[i].mes10_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes10) * 2,self.window[i].posy + 5 +70,str(self.window[i].mes10),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes10_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes10) * 2,self.window[i].posy + 6 +70,str(self.window[i].mes10),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes10_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes10) * 2,self.window[i].posy + 5 +70,str(self.window[i].mes10),self.window[i].mes10_color)
+                    else:
+                        pyxel.text(self.window[i].posx + self.window[i].mes10_ox + 6  ,self.window[i].posy + 5 +70,str(self.window[i].mes10),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes10_ox + 6  ,self.window[i].posy + 6 +70,str(self.window[i].mes10),0)
+                        pyxel.text(self.window[i].posx + self.window[i].mes10_ox + 5  ,self.window[i].posy + 5 +70,str(self.window[i].mes10),self.window[i].mes10_color)
                 self.window[i].window_status == WINDOW_OPEN_COMPLETED #ウィンドウオープン完了！
 
     #セレクトカーソルの表示
@@ -10969,10 +11102,13 @@ class App:
         if self.game_status == SCENE_GAME_OVER_STOP:         #「GAME_OVER_STOP」の時は
             if self.replay_status == REPLAY_RECORD: #リプレイ録画中の時のリターンタイトルウィンドウ表示
                 new_window = Window()
-                new_window.update(0,0,2,WINDOW_OPEN,\
+                new_window.update(0,0,WINDOW_LOW_TRANSLUCENT,WINDOW_OPEN,\
                     "RETURN TITLE?",DISP_CENTER,\
                     "RETURN",DISP_CENTER,0,6,\
                     "SAVE & RETURN",DISP_CENTER,0,10,\
+                    "",DISP_CENTER,0,7,\
+                    "",DISP_CENTER,0,7,\
+                    "",DISP_CENTER,0,7,\
                     "",DISP_CENTER,0,7,\
                     "",DISP_CENTER,0,7,\
                     "",DISP_CENTER,0,7,\
@@ -10990,10 +11126,13 @@ class App:
                 self.game_status = SCENE_RETURN_TITLE             #ゲームステータスを「RETURN_TITLE」にする
             elif self.replay_status == REPLAY_PLAY: #リプレイ再生中の時のリターンタイトルウィンドウ表示(SAVE&RETURN項目は表示しない)  
                 new_window = Window()
-                new_window.update(0,0,2,WINDOW_OPEN,\
+                new_window.update(0,0,WINDOW_LOW_TRANSLUCENT,WINDOW_OPEN,\
                     "RETURN TITLE?",DISP_CENTER,\
                     "RETURN",DISP_CENTER,0,6,\
                     "",DISP_CENTER,0,10,\
+                    "",DISP_CENTER,0,7,\
+                    "",DISP_CENTER,0,7,\
+                    "",DISP_CENTER,0,7,\
                     "",DISP_CENTER,0,7,\
                     "",DISP_CENTER,0,7,\
                     "",DISP_CENTER,0,7,\
