@@ -426,8 +426,27 @@ EXPLOSION_MIDDLE =   1  #スクランブルハッチや重爆撃機系の敵を�
 EXPLOSION_MY_SHIP = 10  #自機の爆発パターン
 
 #ウィンドウのidの定数定義 windowクラスの window_idに入ります
-WINDOW_ID_NO_MENU          = 0 #ダミー用 ノーメニュー
-WINDOW_ID_MAIN_MENU        = 1 #タイトル画面からのメインメニュー
+WINDOW_ID_NO_MENU                  =  0 #ダミー用 ノーメニュー
+WINDOW_ID_MAIN_MENU                =  1 #タイトル画面からのメインメニュー
+WINDOW_ID_SELECT_STAGE_MENU        =  2 #ステージ選択メニュー
+WINDOW_ID_SELECT_LOOP_MENU         =  3 #ループ数選択メニュー
+WINDOW_ID_BOSS_MODE_MENU           =  4 #ボスモードオンオフメニュー
+WINDOW_ID_HITBOX_MENU              =  5 #ヒットボックス(当たり判定)表示オンオフメニュー(ボスのみ)
+WINDOW_ID_SELECT_DIFFICULTY        =  6 #難易度選択メニュー
+WINDOW_ID_SELECT_REPLAY_SLOT       =  7 #どのスロットのリプレイデータをロードするのかのメニュー
+WINDOW_ID_GAME_OVER_RETURN         =  8 #ゲームオーバーから戻る時のメニュー
+WINDOW_ID_GAME_OVER_RETURN_NO_SAVE =  8 #ゲームオーバーから戻る時のメニュー(リプレイデータのセーブは無し)
+WINDOW_ID_SELECT_FILE_SLOT         =  9 #リプレイデータをセーブするスロットを選択するメニュー
+WINDOW_ID_SCORE_BOARD              = 10 #スコアボードウィンドウ
+
+#ウィンドウのid_subの定数定義 windowクラスの window_id_subに入ります
+WINDOW_ID_SUB_NORMAL_MENU            = 0 #通常の選択メニュー
+WINDOW_ID_SUB_YES_NO_MENU            = 1 #「はい」「いいえ」の2択メニュー
+WINDOW_ID_SUB_SELECT_NUM_MENU        = 2 #数値を横方向の操作で増減させて決めるメニュー
+WINDOW_ID_SUB_TOGGLE_MENU            = 3 #押すことでオンオフを切り替えることが出来るトグルスイッチメニュー
+WINDOW_ID_SUB_FULL_4WAY_MENU         = 4 #4方向入力による自由なデザインでのメニュー
+WINDOW_ID_SUB_RIGHT_LEFT_PAGE_MENU   = 5 #左右の頁送りで切り替えるメニュー
+
 
 #ウィンドウのタイプの定数定義 windowクラスの window_typeに入ります
 WINDOW_TRANSLUCENT     = 0 #半透明
@@ -1870,60 +1889,61 @@ class Background_object:#背景の物体(背景オブジェクト）クラスの
         self.animation_number1,self.animation_number2,self.animation_number3 = animation_number1,animation_number2,animation_number3
 class Window: #メッセージ表示ウィンドウのクラスの設定
     def __init__(self):
-        self.window_id = 0
-        self.window_id_sub = 0
-        self.window_type = 0  #ウィンドウの種類(主に背景) 0=シースルー 1=完全な青地 2=ちょっとシースルー
-        self.window_status = 0 #WINDOW_OPEN = 0 WINDOW_CLOSE = 10
-        self.window_title = ""
-        self.window_title_flag = 0
+        self.window_id = 0          #それぞれのウィンドウに与えられるIDです
+        self.window_id_sub = 0      #ウィンドウidに対しての補助的なIDです(はい」「いいえ」などの2択メニューとかで使用)
+        self.window_type = 0        #ウィンドウの種類(主に背景) 0=シースルー 1=完全な青地 2=ちょっとシースルー
+        self.window_status = 0      #ウィンドウの現在の状態を表しますステータスです WINDOW_OPEN=ウィンドウ開き中 WINDOW_CLOSE=ウィンドウ閉じ中
+                                    #                                           WINDOW_WRITE_MESSAGE=メッセージテキスト表示中
+        self.window_title = ""      #テキストが入ります
+        self.window_title_align = 0 #DISP_CENTER=中央表示 DISP_LEFT_ALIGN=左揃え DISP_OFF=表示しない
         
-        self.mes1 = ""
-        self.mes1_flag = 0 #DISP_CENTER = 2 中央表示
-        self.mes1_ox = 0
-        self.mes1_color = 0
+        self.mes1 = ""      #テキストが入ります
+        self.mes1_align = 0 #DISP_CENTER=中央表示 DISP_LEFT_ALIGN=左揃え DISP_OFF=表示しない
+        self.mes1_ox = 0    #テキストのx軸の描画オフセット値,育成時は0だがカーソルy軸位置がメッセージ位置と同じになった時oxを変化させてテキストをちょっと振動させるｗ
+        self.mes1_color = 0 #テキストの描画色
         
         self.mes2 = ""
-        self.mes2_flag = 0
+        self.mes2_align = 0
         self.mes2_ox = 0
         self.mes2_color = 0
         
         self.mes3 = ""
-        self.mes3_flag = 0
+        self.mes3_align = 0
         self.mes3_ox = 0
         self.mes3_color = 0
         
         self.mes4 = ""
-        self.mes4_flag = 0
+        self.mes4_align = 0
         self.mes4_ox = 0
         self.mes4_color = 0
         
         self.mes5 = ""
-        self.mes5_flag = 0
+        self.mes5_align = 0
         self.mes5_ox = 0
         self.mes5_color = 0
         
         self.mes6 = ""
-        self.mes6_flag = 0
+        self.mes6_align = 0
         self.mes6_ox = 0
         self.mes6_color = 0
         
         self.mes7 = ""
-        self.mes7_flag = 0
+        self.mes7_align = 0
         self.mes7_ox = 0
         self.mes7_color = 0
         
         self.mes8 = ""
-        self.mes8_flag = 0
+        self.mes8_align = 0
         self.mes8_ox = 0
         self.mes8_color = 0
         
         self.mes9 = ""
-        self.mes9_flag = 0
+        self.mes9_align = 0
         self.mes9_ox = 0
         self.mes9_color = 0
         
         self.mes10 = ""
-        self.mes10_flag = 0
+        self.mes10_align = 0
         self.mes10_ox = 0
         self.mes10_color = 0
         
@@ -1941,72 +1961,72 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         self.close_delay = 0
         self.marker = 0
         self.color = 0
-    def update(self,window_id,window_id_sub,window_type,window_status,window_title,window_title_flag,\
-        mes1,mes1_flag,mes1_ox,mes1_color,\
-        mes2,mes2_flag,mes2_ox,mes2_color,\
-        mes3,mes3_flag,mes3_ox,mes3_color,\
-        mes4,mes4_flag,mes4_ox,mes4_color,\
-        mes5,mes5_flag,mes5_ox,mes5_color,\
-        mes6,mes6_flag,mes6_ox,mes6_color,\
-        mes7,mes7_flag,mes7_ox,mes7_color,\
-        mes8,mes8_flag,mes8_ox,mes8_color,\
-        mes9,mes9_flag,mes9_ox,mes9_color,\
-        mes10,mes10_flag,mes10_ox,mes10_color,\
+    def update(self,window_id,window_id_sub,window_type,window_status,window_title,window_title_align,\
+        mes1,mes1_align,mes1_ox,mes1_color,\
+        mes2,mes2_align,mes2_ox,mes2_color,\
+        mes3,mes3_align,mes3_ox,mes3_color,\
+        mes4,mes4_align,mes4_ox,mes4_color,\
+        mes5,mes5_align,mes5_ox,mes5_color,\
+        mes6,mes6_align,mes6_ox,mes6_color,\
+        mes7,mes7_align,mes7_ox,mes7_color,\
+        mes8,mes8_align,mes8_ox,mes8_color,\
+        mes9,mes9_align,mes9_ox,mes9_color,\
+        mes10,mes10_align,mes10_ox,mes10_color,\
         x,y,width,height,open_width,open_height,vx,vy,open_speed,close_speed,open_delay,close_delay,marker,color):
         self.window_id = window_id
         self.window_id_sub = window_id_sub
         self.window_type = window_type
         self.window_status = window_status
         self.window_title = window_title
-        self.window_title_flag = window_title_flag
+        self.window_title_align = window_title_align
         
         self.mes1 = mes1
-        self.mes1_flag = mes1_flag
+        self.mes1_align = mes1_align
         self.mes1_ox = mes1_ox
         self.mes1_color = mes1_color
         
         self.mes2 = mes2
-        self.mes2_flag = mes2_flag
+        self.mes2_align = mes2_align
         self.mes2_ox = mes2_ox
         self.mes2_color = mes2_color
         
         self.mes3 = mes3
-        self.mes3_flag = mes3_flag
+        self.mes3_align = mes3_align
         self.mes3_ox = mes3_ox
         self.mes3_color = mes3_color
         
         self.mes4 = mes4
-        self.mes4_flag = mes4_flag
+        self.mes4_align = mes4_align
         self.mes4_ox = mes4_ox
         self.mes4_color = mes4_color
         
         self.mes5 = mes5
-        self.mes5_flag = mes5_flag
+        self.mes5_align = mes5_align
         self.mes5_ox = mes5_ox
         self.mes5_color = mes5_color
         
         self.mes6 = mes6
-        self.mes6_flag = mes6_flag
+        self.mes6_align = mes6_align
         self.mes6_ox = mes6_ox
         self.mes6_color = mes6_color
         
         self.mes7 = mes7
-        self.mes7_flag = mes7_flag
+        self.mes7_align = mes7_align
         self.mes7_ox = mes7_ox
         self.mes7_color = mes7_color
         
         self.mes8 = mes8
-        self.mes8_flag = mes8_flag
+        self.mes8_align = mes8_align
         self.mes8_ox = mes8_ox
         self.mes8_color = mes8_color
         
         self.mes9 = mes9
-        self.mes9_flag = mes9_flag
+        self.mes9_align = mes9_align
         self.mes9_ox = mes9_ox
         self.mes9_color = mes9_color
         
         self.mes10 = mes10
-        self.mes10_flag = mes10_flag
+        self.mes10_align = mes10_align
         self.mes10_ox = mes10_ox
         self.mes10_color = mes10_color
         
@@ -4003,7 +4023,11 @@ class App:
     #リプレイファイルスロット選択ウィンドウの表示
     def window_replay_data_slot_select(self):
         new_window = Window()
-        new_window.update(0,0,WINDOW_BLUE_BACK,WINDOW_OPEN,\
+        new_window.update(\
+        WINDOW_ID_SELECT_FILE_SLOT,\
+        WINDOW_ID_SUB_NORMAL_MENU,\
+        WINDOW_BLUE_BACK,\
+        WINDOW_OPEN,\
         "SLOT",DISP_CENTER,\
         "1",DISP_CENTER,0,7,\
         "2",DISP_CENTER,0,7,\
@@ -4167,27 +4191,31 @@ class App:
         #全てのカウンター類が0になったらゲームメニューウィンドウを育成する
         if self.title_oscillation_count == 0 and self.title_slash_in_count == 0 and self.display_title_time == 0:
             new_window = Window()
-            new_window.update(0,0,WINDOW_LOW_TRANSLUCENT,WINDOW_OPEN,\
+            new_window.update(\
+            WINDOW_ID_MAIN_MENU,\
+            WINDOW_ID_SUB_NORMAL_MENU,\
+            WINDOW_LOW_TRANSLUCENT,\
+            WINDOW_OPEN,\
             "MENU",DISP_CENTER,\
             "GAME START",DISP_CENTER,0,7,\
             "SELECT STAGE",DISP_CENTER,0,3,\
-            "LOOP NUMBER",DISP_CENTER,0,3,\
+            "SELECT LOOP",DISP_CENTER,0,3,\
             "BOSS MODE",DISP_CENTER,0,7,\
-            "HITBOX",DISP_CENTER,0,7,\
+            "HIT BOX",DISP_CENTER,0,7,\
             "DIFFICULTY",DISP_CENTER,0,7,\
+            "SCORE BOARD",DISP_CENTER,0,7,\
+            "STATUS",DISP_CENTER,0,7,\
+            "CONFIG",DISP_CENTER,0,7,\
             "REPLAY",DISP_CENTER,0,7,\
-            "",DISP_CENTER,0,7,\
-            "",DISP_CENTER,0,7,\
-            "",DISP_CENTER,0,7,\
-            44,52-4,   0,0,  8*8,8*8,   2,1, 1,1,   0,0,    0,0)
+            44,34,   0,0,  8*8,9*8+5,   2,1, 1,1,   0,0,    0,0)
             self.window.append(new_window)                      #「SELECT MENU」を育成する
             
             self.cursor_show = True                             #選択カーソル表示をonにする
-            self.cursor_x = 48                                  #セレクトカーソルの座標を設定します
-            self.cursor_y = 59
+            self.cursor_x = 49                                  #セレクトカーソルの座標を設定します
+            self.cursor_y = 44
             self.cursor_item = 0                                #いま指示しているアイテムナンバーは0の「YES」
             self.cursor_decision_item = -1                      #まだボタンも押されておらず未決定状態なのでdecision_itemは-1
-            self.cursor_max_item = 6                            #最大項目数は「GAME START」「SELECT STAGE」「SELECT LOOP NUMBER」「BOSS MODE」「HITBOX」「DIFFICULTY」「REPLAY」の7項目なので 7-1=6を代入
+            self.cursor_max_item = 9                            #選択できる項目数は10項目なので 10-1=9を代入
             self.cursor_menu_layer = 0                          #メニューの階層は最初は0にします
             self.game_status = SCENE_TITLE_MENU_SELECT #ゲームステータスを「TITLE_MENU_SELECT」(タイトルでメニューを選択中)」にする
 
@@ -4210,7 +4238,11 @@ class App:
                 self.cursor_pre_max_item = self.cursor_max_item 
                 
                 new_window = Window()
-                new_window.update(0,0,WINDOW_BLUE_BACK,WINDOW_OPEN,\
+                new_window.update(\
+                WINDOW_ID_SELECT_STAGE_MENU,\
+                WINDOW_ID_SUB_NORMAL_MENU,\
+                WINDOW_BLUE_BACK,\
+                WINDOW_OPEN,\
                 "",DISP_CENTER,\
                 "1",DISP_CENTER,0,7,\
                 "2",DISP_CENTER,0,7,\
@@ -4233,7 +4265,7 @@ class App:
                 
                 self.cursor_menu_layer = 1                       #メニューの階層が増えたので0から1にします
                 
-            elif self.cursor_decision_item == 2:            #SELECT LOOP NUMBERが押されたら
+            elif self.cursor_decision_item == 2:            #SELECT LOOPが押されたら
                 self.cursor_pre_x = self.cursor_x                    #新しいウィンドウを開く前に現在のカーソル関連の変数を記憶しておきます
                 self.cursor_pre_y = self.cursor_y
                 self.cursor_pre_item = self.cursor_item
@@ -4241,7 +4273,11 @@ class App:
                 self.cursor_pre_max_item = self.cursor_max_item 
                 
                 new_window = Window()
-                new_window.update(0,0,WINDOW_TRANSLUCENT,WINDOW_OPEN,\
+                new_window.update(\
+                WINDOW_ID_SELECT_LOOP_MENU,\
+                WINDOW_ID_SUB_NORMAL_MENU,\
+                WINDOW_TRANSLUCENT,\
+                WINDOW_OPEN,\
                 "",DISP_CENTER,\
                 "1",DISP_CENTER,0,7,\
                 "2",DISP_CENTER,0,7,\
@@ -4254,7 +4290,7 @@ class App:
                 "",DISP_CENTER,0,7,\
                 "",DISP_CENTER,0,7,\
                 90+22,60+6,   0,0,  2*8,5*8,   2,2, 1,1,   0,0,    0,0)
-                self.window.append(new_window)                      #「LOOP NUMBER」を育成する
+                self.window.append(new_window)                      #「SELECT LOOP」を育成する
                 self.cursor_show = True                             #選択カーソル表示をonにする
                 self.cursor_x = 90+24                               #セレクトカーソルの座標を設定します
                 self.cursor_y = 72+5
@@ -4272,7 +4308,11 @@ class App:
                 self.cursor_pre_max_item = self.cursor_max_item 
                 
                 new_window = Window()
-                new_window.update(0,0,WINDOW_TRANSLUCENT,WINDOW_OPEN,\
+                new_window.update(\
+                WINDOW_ID_BOSS_MODE_MENU,\
+                WINDOW_ID_SUB_YES_NO_MENU,\
+                WINDOW_TRANSLUCENT,\
+                WINDOW_OPEN,\
                 "ON",DISP_CENTER,\
                 "OFF",DISP_CENTER,0,7,\
                 "",DISP_CENTER,0,7,\
@@ -4303,7 +4343,11 @@ class App:
                 self.cursor_pre_max_item = self.cursor_max_item 
                 
                 new_window = Window()
-                new_window.update(0,0,WINDOW_TRANSLUCENT,WINDOW_OPEN,\
+                new_window.update(\
+                WINDOW_ID_HITBOX_MENU,\
+                WINDOW_ID_SUB_YES_NO_MENU,\
+                WINDOW_TRANSLUCENT,\
+                WINDOW_OPEN,\
                 "ON",DISP_CENTER,\
                 "OFF",DISP_CENTER,0,7,\
                 "",DISP_CENTER,0,7,\
@@ -4334,15 +4378,19 @@ class App:
                 self.cursor_pre_max_item = self.cursor_max_item 
                 
                 new_window = Window()
-                new_window.update(0,0,WINDOW_BLUE_BACK,WINDOW_OPEN,\
-                "VERY EASY",DISP_LEFT_ALIGN,\
-                "EASY",DISP_LEFT_ALIGN,0,7,\
-                "NORMAL",DISP_LEFT_ALIGN,0,7,\
-                "HARD",DISP_LEFT_ALIGN,0,7,\
-                "VERY HARD",DISP_LEFT_ALIGN,0,7,\
-                "INSAME",DISP_LEFT_ALIGN,0,7,\
-                "",DISP_LEFT_ALIGN,0,7,\
-                "",DISP_LEFT_ALIGN,0,7,\
+                new_window.update(\
+                WINDOW_ID_SELECT_DIFFICULTY,\
+                WINDOW_ID_SUB_NORMAL_MENU,\
+                WINDOW_BLUE_BACK,\
+                WINDOW_OPEN,\
+                "VERY EASY",DISP_CENTER,\
+                "EASY",DISP_CENTER,0,7,\
+                "NORMAL",DISP_CENTER,0,7,\
+                "HARD",DISP_CENTER,0,7,\
+                "VERY HARD",DISP_CENTER,0,7,\
+                "INSAME",DISP_CENTER,0,7,\
+                "",DISP_CENTER,0,7,\
+                "",DISP_CENTER,0,7,\
                 "",DISP_CENTER,0,7,\
                 "",DISP_CENTER,0,7,\
                 "",DISP_CENTER,0,7,\
@@ -4357,7 +4405,7 @@ class App:
                 
                 self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
                 
-            elif self.cursor_decision_item == 6:            #REPLAYが押されたら
+            elif self.cursor_decision_item == 9:            #REPLAYが押されたら
                 # self.cursor_show = False                         #セレクトカーソルの表示をoffにする
                 # self.move_mode = MOVE_MANUAL                     #移動モードを「手動移動」にします
                 # self.replay_status = REPLAY_PLAY                 #リプレイ機能の状態を「再生中」にします
@@ -4574,7 +4622,11 @@ class App:
         if pyxel.btnp(pyxel.KEY_S):
             if self.display_ranking_board == DISP_OFF:
                 new_window = Window()
-                new_window.update(0,0,WINDOW_BLUE_BACK,WINDOW_OPEN,\
+                new_window.update(\
+                WINDOW_ID_SCORE_BOARD,\
+                WINDOW_ID_SUB_RIGHT_LEFT_PAGE_MENU,\
+                WINDOW_BLUE_BACK,\
+                WINDOW_OPEN,\
                 "RANKING",DISP_CENTER,\
                 " 1 " + str(self.score_ranking[0][0][2]) + " " + str("{:>8}".format(self.score_ranking[0][0][3])),DISP_LEFT_ALIGN,0,10,\
                 " 2 " + str(self.score_ranking[0][1][2]) + " " + str("{:>8}".format(self.score_ranking[0][1][3])),DISP_LEFT_ALIGN,0,7,\
@@ -4596,8 +4648,6 @@ class App:
                 del self.window[window_count - 1]              #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
                 self.display_ranking_board = DISP_OFF
                 self.cursor_show = True                             #選択カーソル表示をonにする
-
-
 
     #!ゲームスタート時の初期化#########################################
     def update_game_start_init(self):
@@ -7339,7 +7389,11 @@ class App:
                 new_window = Window()
                 x = self.s_rndint(0,100)
                 y = self.s_rndint(0,100)
-                new_window.update(ID00,ID00,WINDOW_LOW_TRANSLUCENT,WINDOW_OPEN,\
+                new_window.update(\
+                    WINDOW_ID_NO_MENU,\
+                    WINDOW_ID_SUB_NORMAL_MENU,\
+                    WINDOW_LOW_TRANSLUCENT,\
+                    WINDOW_OPEN,\
                     "RETURN TITLE??",DISP_CENTER,\
                     "YES",DISP_CENTER,0,7,\
                     "NO",DISP_CENTER,10,3,\
@@ -9277,6 +9331,25 @@ class App:
         if self.score > self.hi_score: #スコアがハイスコアより大きければ
             self.hi_score = self.score #ハイスコアにスコアを代入する
 
+    #ウィンドウの更新
+    def update_window(self):
+        window_count = len(self.window)
+        for i in range(window_count):
+            if self.window[i].window_status == WINDOW_OPEN: #ステータスが「オープン」の時は・・・・・・・・・・・・
+                if self.window[i].width < self.window[i].open_width:#widthをopen_widthの数値になるまで増加させていく
+                    self.window[i].width += int(self.window[i].vx * self.window[i].open_speed)
+                
+                if self.window[i].height < self.window[i].open_height:#heightをopen_heightの数値になるまで増加させていく
+                    self.window[i].height += int(self.window[i].vy * self.window[i].open_speed)
+                
+                #ウィンドウが開ききったのか判断する
+                if  -2 <= self.window[i].open_width  - self.window[i].width  <= 2 and\
+                    -2 <= self.window[i].open_height - self.window[i].height <= 2:#もしwidthとheightの値がopenした時の数値と+-2以内になったのなら
+                    self.window[i].window_status = WINDOW_WRITE_MESSAGE#ウィンドウは完全に開ききったとみなしてステータスをWINDOW_WRITE_MESSAGEにしてメッセージを表示開始する
+                    
+                    self.window[i].width  = self.window[i].open_width #小数点以下の座標の誤差を修正するために強制的にopen時の座標数値を現在座標数値に代入してやる
+                    self.window[i].height = self.window[i].open_height
+
     #セレクトカーソルの更新
     def update_select_cursor(self):
         # 上入力されたら  y座標を  -7する(1キャラ分)
@@ -10718,118 +10791,116 @@ class App:
             #タイトルバーの表示######################################
             pyxel.text(self.window[i].posx + 6 + self.window[i].width // 2 - len(self.window[i].window_title) * 2,self.window[i].posy + 5,str(self.window[i].window_title),0)
             pyxel.text(self.window[i].posx + 6 + self.window[i].width // 2 - len(self.window[i].window_title) * 2,self.window[i].posy + 6,str(self.window[i].window_title),0)
-            
-            
             pyxel.text(self.window[i].posx + 5 + self.window[i].width // 2 - len(self.window[i].window_title) * 2,self.window[i].posy + 5,str(self.window[i].window_title),7)
             
-            if self.window[i].window_status == WINDOW_OPEN: #ステータスがウィンドウ開き中ならば
-                if self.window[i].width < self.window[i].open_width:#widthをopen_widthの数値になるまで増加させていく
-                    self.window[i].width += int(self.window[i].vx * self.window[i].open_speed)
+            # if self.window[i].window_status == WINDOW_OPEN: #ステータスがウィンドウ開き中ならば
+                # if self.window[i].width < self.window[i].open_width:#widthをopen_widthの数値になるまで増加させていく
+                    # self.window[i].width += int(self.window[i].vx * self.window[i].open_speed)
                 
-                if self.window[i].height < self.window[i].open_height:#heightをopen_heightの数値になるまで増加させていく
-                    self.window[i].height += int(self.window[i].vy * self.window[i].open_speed)
+                # if self.window[i].height < self.window[i].open_height:#heightをopen_heightの数値になるまで増加させていく
+                    # self.window[i].height += int(self.window[i].vy * self.window[i].open_speed)
                 
                 #ウィンドウが開ききったのか判断する
-                if  -2 <= self.window[i].open_width  - self.window[i].width  <= 2 and\
-                    -2 <= self.window[i].open_height - self.window[i].height <= 2:#もしwidthとheightの値がopenした時の数値と+-2以内になったのなら
-                    self.window[i].window_status = WINDOW_WRITE_MESSAGE#ウィンドウは完全に開ききったとみなしてステータスをWINDOW_WRITE_MESSAGEにしてメッセージを表示開始する
+                # if  -2 <= self.window[i].open_width  - self.window[i].width  <= 2 and\
+                    # -2 <= self.window[i].open_height - self.window[i].height <= 2:#もしwidthとheightの値がopenした時の数値と+-2以内になったのなら
+                    # self.window[i].window_status = WINDOW_WRITE_MESSAGE#ウィンドウは完全に開ききったとみなしてステータスをWINDOW_WRITE_MESSAGEにしてメッセージを表示開始する
                     
-                    self.window[i].width  = self.window[i].open_width #小数点以下の座標の誤差を修正するために強制的にopen時の座標数値を現在座標数値に代入してやる
-                    self.window[i].height = self.window[i].open_height
+                    # self.window[i].width  = self.window[i].open_width #小数点以下の座標の誤差を修正するために強制的にopen時の座標数値を現在座標数値に代入してやる
+                    # self.window[i].height = self.window[i].open_height
             
+            #ステータスがテキストメッセージの表示中もしくはウィンドウオープン完了の時はメッセージテキストを表示する
             if     self.window[i].window_status == WINDOW_WRITE_MESSAGE \
-                or self.window[i].window_status == WINDOW_OPEN_COMPLETED: #ステータスがテキストメッセージの表示中もしくはオープン完了ならば
-                if self.window[i].mes1 != "":#メッセージ1行目の描画 ループで処理したいけどどうやったら良いのかわからぬ・・・クラスの横方向（？）に補正値を入れるのどうやったらいいのん？？？
-                    if self.window[i].mes1_flag == DISP_CENTER:
+                or self.window[i].window_status == WINDOW_OPEN_COMPLETED:
+                if self.window[i].mes1  != "":#メッセージ 1行目の描画 ループで処理したいけどどうやったら良いのかわからぬ・・・クラスの横方向（？）に補正値を入れるのどうやったらいいのん？？？
+                    if self.window[i].mes1_align == DISP_CENTER:
                         pyxel.text(self.window[i].posx + self.window[i].mes1_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes1) * 2,self.window[i].posy + 5 +7 ,str(self.window[i].mes1),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes1_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes1) * 2,self.window[i].posy + 6 +7 ,str(self.window[i].mes1),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes1_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes1) * 2,self.window[i].posy + 5 +7 ,str(self.window[i].mes1),self.window[i].mes1_color)
-                    else:
+                    elif self.window[i].mes1_align == DISP_LEFT_ALIGN:
                         pyxel.text(self.window[i].posx + self.window[i].mes1_ox + 6  ,self.window[i].posy + 5 +7 ,str(self.window[i].mes1),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes1_ox + 6  ,self.window[i].posy + 6 +7 ,str(self.window[i].mes1),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes1_ox + 5  ,self.window[i].posy + 5 +7 ,str(self.window[i].mes1),self.window[i].mes1_color)
-                if self.window[i].mes2 != "":#メッセージ2行目の描画
-                    if self.window[i].mes2_flag == DISP_CENTER:
+                if self.window[i].mes2  != "":#メッセージ 2行目の描画
+                    if self.window[i].mes2_align == DISP_CENTER:
                         pyxel.text(self.window[i].posx + self.window[i].mes2_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes2) * 2,self.window[i].posy + 5 +14,str(self.window[i].mes2),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes2_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes2) * 2,self.window[i].posy + 6 +14,str(self.window[i].mes2),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes2_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes2) * 2,self.window[i].posy + 5 +14,str(self.window[i].mes2),self.window[i].mes2_color)
-                    else:
+                    elif self.window[i].mes2_align == DISP_LEFT_ALIGN:
                         pyxel.text(self.window[i].posx + self.window[i].mes2_ox + 6  ,self.window[i].posy + 5 +14,str(self.window[i].mes2),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes2_ox + 6  ,self.window[i].posy + 6 +14,str(self.window[i].mes2),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes2_ox + 5  ,self.window[i].posy + 5 +14,str(self.window[i].mes2),self.window[i].mes2_color)
-                if self.window[i].mes3 != "":#メッセージ3行目の描画
-                    if self.window[i].mes3_flag == DISP_CENTER:
+                if self.window[i].mes3  != "":#メッセージ 3行目の描画
+                    if self.window[i].mes3_align == DISP_CENTER:
                         pyxel.text(self.window[i].posx + self.window[i].mes3_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes3) * 2,self.window[i].posy + 5 +21,str(self.window[i].mes3),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes3_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes3) * 2,self.window[i].posy + 6 +21,str(self.window[i].mes3),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes3_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes3) * 2,self.window[i].posy + 5 +21,str(self.window[i].mes3),self.window[i].mes3_color)
-                    else:
+                    elif self.window[i].mes3_align == DISP_LEFT_ALIGN:
                         pyxel.text(self.window[i].posx + self.window[i].mes3_ox + 6  ,self.window[i].posy + 5 +21,str(self.window[i].mes3),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes3_ox + 6  ,self.window[i].posy + 6 +21,str(self.window[i].mes3),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes3_ox + 5  ,self.window[i].posy + 5 +21,str(self.window[i].mes3),self.window[i].mes3_color)
-                if self.window[i].mes4 != "":#メッセージ4行目の描画
-                    if self.window[i].mes4_flag == DISP_CENTER:
+                if self.window[i].mes4  != "":#メッセージ 4行目の描画
+                    if self.window[i].mes4_align == DISP_CENTER:
                         pyxel.text(self.window[i].posx + self.window[i].mes4_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes4) * 2,self.window[i].posy + 5 +28,str(self.window[i].mes4),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes4_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes4) * 2,self.window[i].posy + 6 +28,str(self.window[i].mes4),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes4_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes4) * 2,self.window[i].posy + 5 +28,str(self.window[i].mes4),self.window[i].mes4_color)
-                    else:
+                    elif self.window[i].mes4_align == DISP_LEFT_ALIGN:
                         pyxel.text(self.window[i].posx + self.window[i].mes4_ox + 6  ,self.window[i].posy + 5 +28,str(self.window[i].mes4),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes4_ox + 6  ,self.window[i].posy + 6 +28,str(self.window[i].mes4),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes4_ox + 5  ,self.window[i].posy + 5 +28,str(self.window[i].mes4),self.window[i].mes4_color)
-                if self.window[i].mes5 != "":#メッセージ5行目の描画
-                    if self.window[i].mes5_flag == DISP_CENTER:
+                if self.window[i].mes5  != "":#メッセージ 5行目の描画
+                    if self.window[i].mes5_align == DISP_CENTER:
                         pyxel.text(self.window[i].posx + self.window[i].mes5_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes5) * 2,self.window[i].posy + 5 +35,str(self.window[i].mes5),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes5_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes5) * 2,self.window[i].posy + 6 +35,str(self.window[i].mes5),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes5_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes5) * 2,self.window[i].posy + 5 +35,str(self.window[i].mes5),self.window[i].mes5_color)
-                    else:
+                    elif self.window[i].mes5_align == DISP_LEFT_ALIGN:
                         pyxel.text(self.window[i].posx + self.window[i].mes5_ox + 6  ,self.window[i].posy + 5 +35,str(self.window[i].mes5),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes5_ox + 6  ,self.window[i].posy + 6 +35,str(self.window[i].mes5),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes5_ox + 5  ,self.window[i].posy + 5 +35,str(self.window[i].mes5),self.window[i].mes5_color)
-                if self.window[i].mes6 != "":#メッセージ6行目の描画
-                    if self.window[i].mes6_flag == DISP_CENTER:
+                if self.window[i].mes6  != "":#メッセージ 6行目の描画
+                    if self.window[i].mes6_align == DISP_CENTER:
                         pyxel.text(self.window[i].posx + self.window[i].mes6_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes6) * 2,self.window[i].posy + 5 +42,str(self.window[i].mes6),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes6_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes6) * 2,self.window[i].posy + 6 +42,str(self.window[i].mes6),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes6_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes6) * 2,self.window[i].posy + 5 +42,str(self.window[i].mes6),self.window[i].mes6_color)
-                    else:
+                    elif self.window[i].mes6_align == DISP_LEFT_ALIGN:
                         pyxel.text(self.window[i].posx + self.window[i].mes6_ox + 6  ,self.window[i].posy + 5 +42,str(self.window[i].mes6),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes6_ox + 6  ,self.window[i].posy + 6 +42,str(self.window[i].mes6),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes6_ox + 5  ,self.window[i].posy + 5 +42,str(self.window[i].mes6),self.window[i].mes6_color)
-                if self.window[i].mes7 != "":#メッセージ7行目の描画
-                    if self.window[i].mes7_flag == DISP_CENTER:
+                if self.window[i].mes7  != "":#メッセージ 7行目の描画
+                    if self.window[i].mes7_align == DISP_CENTER:
                         pyxel.text(self.window[i].posx + self.window[i].mes7_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes7) * 2,self.window[i].posy + 5 +49,str(self.window[i].mes7),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes7_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes7) * 2,self.window[i].posy + 6 +49,str(self.window[i].mes7),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes7_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes7) * 2,self.window[i].posy + 5 +49,str(self.window[i].mes7),self.window[i].mes7_color)
-                    else:
+                    elif self.window[i].mes7_align == DISP_LEFT_ALIGN:
                         pyxel.text(self.window[i].posx + self.window[i].mes7_ox + 6  ,self.window[i].posy + 5 +49,str(self.window[i].mes7),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes7_ox + 6  ,self.window[i].posy + 6 +49,str(self.window[i].mes7),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes7_ox + 5  ,self.window[i].posy + 5 +49,str(self.window[i].mes7),self.window[i].mes7_color)
-                if self.window[i].mes8 != "":#メッセージ8行目の描画
-                    if self.window[i].mes8_flag == DISP_CENTER:
+                if self.window[i].mes8  != "":#メッセージ 8行目の描画
+                    if self.window[i].mes8_align == DISP_CENTER:
                         pyxel.text(self.window[i].posx + self.window[i].mes8_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes8) * 2,self.window[i].posy + 5 +56,str(self.window[i].mes8),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes8_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes8) * 2,self.window[i].posy + 6 +56,str(self.window[i].mes8),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes8_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes8) * 2,self.window[i].posy + 5 +56,str(self.window[i].mes8),self.window[i].mes8_color)
-                    else:
+                    elif self.window[i].mes8_align == DISP_LEFT_ALIGN:
                         pyxel.text(self.window[i].posx + self.window[i].mes8_ox + 6  ,self.window[i].posy + 5 +56,str(self.window[i].mes8),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes8_ox + 6  ,self.window[i].posy + 6 +56,str(self.window[i].mes8),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes8_ox + 5  ,self.window[i].posy + 5 +56,str(self.window[i].mes8),self.window[i].mes8_color)
-                if self.window[i].mes9 != "":#メッセージ9行目の描画
-                    if self.window[i].mes9_flag == DISP_CENTER:
+                if self.window[i].mes9  != "":#メッセージ 9行目の描画
+                    if self.window[i].mes9_align == DISP_CENTER:
                         pyxel.text(self.window[i].posx + self.window[i].mes9_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes9) * 2,self.window[i].posy + 5 +63,str(self.window[i].mes9),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes9_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes9) * 2,self.window[i].posy + 6 +63,str(self.window[i].mes9),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes9_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes9) * 2,self.window[i].posy + 5 +63,str(self.window[i].mes9),self.window[i].mes9_color)
-                    else:
+                    elif self.window[i].mes9_align == DISP_LEFT_ALIGN:
                         pyxel.text(self.window[i].posx + self.window[i].mes9_ox + 6  ,self.window[i].posy + 5 +63,str(self.window[i].mes9),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes9_ox + 6  ,self.window[i].posy + 6 +63,str(self.window[i].mes9),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes9_ox + 5  ,self.window[i].posy + 5 +63,str(self.window[i].mes9),self.window[i].mes9_color)
                 if self.window[i].mes10 != "":#メッセージ10行目の描画
-                    if self.window[i].mes10_flag == DISP_CENTER:
+                    if self.window[i].mes10_align == DISP_CENTER:
                         pyxel.text(self.window[i].posx + self.window[i].mes10_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes10) * 2,self.window[i].posy + 5 +70,str(self.window[i].mes10),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes10_ox + 6 + self.window[i].width // 2 - len(self.window[i].mes10) * 2,self.window[i].posy + 6 +70,str(self.window[i].mes10),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes10_ox + 5 + self.window[i].width // 2 - len(self.window[i].mes10) * 2,self.window[i].posy + 5 +70,str(self.window[i].mes10),self.window[i].mes10_color)
-                    else:
+                    elif self.window[i].mes10_align == DISP_LEFT_ALIGN:
                         pyxel.text(self.window[i].posx + self.window[i].mes10_ox + 6  ,self.window[i].posy + 5 +70,str(self.window[i].mes10),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes10_ox + 6  ,self.window[i].posy + 6 +70,str(self.window[i].mes10),0)
                         pyxel.text(self.window[i].posx + self.window[i].mes10_ox + 5  ,self.window[i].posy + 5 +70,str(self.window[i].mes10),self.window[i].mes10_color)
-                self.window[i].window_status == WINDOW_OPEN_COMPLETED #ウィンドウオープン完了！
 
     #セレクトカーソルの表示
     def draw_select_cursor(self):
@@ -10908,14 +10979,16 @@ class App:
             self.update_title_menu_select()       #タイトルでのメニュー選択処理をする関数の呼び出し
             self.update_append_star()             #背景の星の追加＆発生育成関数呼び出し
             self.update_star()                    #背景の星の更新（移動）関数呼び出し
+            self.update_window()                  #ウィンドウの更新（ウィンドウの開き閉じ画面外に消え去っていくとか）関数を呼び出し
             self.update_select_cursor()           #セレクトカーソルでメニューを選択する関数を呼び出す
+        
         ############################### ロード用リプレイデータスロットの選択中 #######################################################
         if self.game_status == SCENE_SELECT_LOAD_SLOT:#「SCENE_SELECT_LOAD_SLOT」の時は
             self.update_append_star()                 #背景の星の追加＆発生育成関数呼び出し
             self.update_star()                        #背景の星の更新（移動）関数呼び出し
             self.update_select_cursor()               #セレクトカーソルでメニューを選択する関数を呼び出す
-            if   self.cursor_decision_item == 0:             #メニューでアイテムナンバー0の「1」が押されたら
-                self.replay_slot_num = 0                     #スロット番号は0   (以下はほぼ同じ処理です)
+            if   self.cursor_decision_item == 0:      #メニューでアイテムナンバー0の「1」が押されたら
+                self.replay_slot_num = 0              #スロット番号は0   (以下はほぼ同じ処理です)
             elif self.cursor_decision_item == 1:
                 self.replay_slot_num = 1
             elif self.cursor_decision_item == 2:
@@ -11102,7 +11175,11 @@ class App:
         if self.game_status == SCENE_GAME_OVER_STOP:         #「GAME_OVER_STOP」の時は
             if self.replay_status == REPLAY_RECORD: #リプレイ録画中の時のリターンタイトルウィンドウ表示
                 new_window = Window()
-                new_window.update(0,0,WINDOW_LOW_TRANSLUCENT,WINDOW_OPEN,\
+                new_window.update(\
+                    WINDOW_ID_GAME_OVER_RETURN,\
+                    WINDOW_ID_SUB_NORMAL_MENU,\
+                    WINDOW_LOW_TRANSLUCENT,\
+                    WINDOW_OPEN,\
                     "RETURN TITLE?",DISP_CENTER,\
                     "RETURN",DISP_CENTER,0,6,\
                     "SAVE & RETURN",DISP_CENTER,0,10,\
@@ -11126,7 +11203,11 @@ class App:
                 self.game_status = SCENE_RETURN_TITLE             #ゲームステータスを「RETURN_TITLE」にする
             elif self.replay_status == REPLAY_PLAY: #リプレイ再生中の時のリターンタイトルウィンドウ表示(SAVE&RETURN項目は表示しない)  
                 new_window = Window()
-                new_window.update(0,0,WINDOW_LOW_TRANSLUCENT,WINDOW_OPEN,\
+                new_window.update(\
+                    WINDOW_ID_GAME_OVER_RETURN_NO_SAVE,\
+                    WINDOW_ID_SUB_NORMAL_MENU,\
+                    WINDOW_LOW_TRANSLUCENT,\
+                    WINDOW_OPEN,\
                     "RETURN TITLE?",DISP_CENTER,\
                     "RETURN",DISP_CENTER,0,6,\
                     "",DISP_CENTER,0,10,\
@@ -11211,8 +11292,8 @@ class App:
                 
                 self.game_status = SCENE_STAGE_START_INIT    #ゲームステータスを「STAGE_START_INIT」にして次のステージへ・・・・
         
-        if self.game_playing_flag == 1: #ゲームプレイ中のフラグが立っていたのなら以下の処理を行う
-            self.update_debug_status()  #デバッグステータス表示＆非表示の切り替え
+        if self.game_playing_flag == 1: #ゲームプレイ中のフラグが立っていたのなら以下の処理を行う(主にゲーム進行に関与しない映像処理関連)
+            self.update_debug_status()      #デバッグステータス表示＆非表示の切り替え
             #映像オブジェクト関連の処理################################################################################################
             self.update_append_star()       #背景の星の追加＆発生育成関数呼び出し
             self.update_append_cloud()      #背景の雲の追加＆発生育成関数呼び出し
@@ -11222,7 +11303,8 @@ class App:
             self.update_explosion()         #爆発パターンの更新関数呼び出し 
             #一時停止(pause)の処理###################################################################################################
             self.update_game_pause()        #ボタンが押されたらポーズをかける関数を呼び出し
-            #メニューカーソル関連の処理###############################################################################################
+            #ウィンドウ＆メニューカーソル関連の処理###############################################################################################
+            self.update_window()            #ウィンドウの更新（ウィンドウの開き閉じ画面外に消え去っていくとか）関数を呼び出し
             self.update_select_cursor()     #メニューカーソルの更新（移動とか）関数を呼び出し
     
     ###########################################################
