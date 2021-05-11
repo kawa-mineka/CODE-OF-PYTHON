@@ -79,6 +79,8 @@
 #実装完了済み！
 #todo980  スコアランキング表示工程のスコア表示関数だけまず実装 2021 05/09
 #todo980a 結構めんどう～～だよね・・・スコア表示関連の処理・・ 2021 05/09
+#todo980b メインメニューからスコアランキングの表示、難易度ごとに左右入力のページ捲り表示の実装 2021 05/10
+#todo980c スコアのクイックソートの自作関数で嵌る・・・新しいリストを作成して組み込み関数のsort()で行くべきか・・・う～～～ん 2021 05/11
 
 # from random import randint   #random.randint(n,m) と呼ぶと、nからm(m自身を含む)までの間の整数が 等しい確率で、ランダムに返される
 from random import random    #random.random() と呼ぶと、0から1の範囲(1は含まない)のランダムな実数が返される(主にパーティクル系で使用します)
@@ -2198,20 +2200,6 @@ class Raster_scroll: #背景でラスタースクロールするときに使用�
         self.wave_timer = wave_timer
         self.wave_speed = wave_speed
         self.wave_intensity = wave_intensity
-class System_data: #ゲーム関連のシステムデータ関連のクラス設定
-    def __init__(self):
-        self.header                          = "code-of-python system-data ver 1.00"
-        self.my_name                         = "" #プレイヤーの名前
-        
-        self.development_testtime            = 0  #ゲーム開発時の総テスト時間
-        
-        self.total_game_playtime             = 0  #初めてこのゲームをプレイしてからの合計プレイ時間
-        self.number_of_play                  = 0  #遊んだ回数
-        self.number_of_times_destroyed       = 0  #自機が破壊された回数
-        
-        self.get_my_ship                    = [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0] #手に入れた機体0=未入手 1=入手 機体のIDナンバーがリストのインデックス値となります
-                                                                        #例 J_PYTHONはIDナンバー0なので リスト先頭の1番目の数値となる  (0始まりなので)
-                                                                        #   FIRST_BASICはIDナンバー8なのでリスト先頭の9番目の数値となる(0始まりなので)
     
 class App:
     ##########################################################################################################################################
@@ -2234,6 +2222,18 @@ class App:
         self.start_stage_loop   = 1                        #スタート時のループ数を保存する変数をまず初期化
         self.replay_slot_num = 0       #リプレイファイルをセーブしたりロードするスロットナンバーが入ります(0~9)
         
+        self.header                          = "code-of-python system-data ver 1.00"   #システムファイルに書き込むヘッダ文字列
+        self.my_name                         = "TESTER" #プレイヤーの名前(ネームエントリーの関係上半角6文字でお願いします)
+        
+        self.development_testtime            = 0  #ゲーム開発時の総テスト時間
+        
+        self.total_game_playtime             = 0  #初めてこのゲームをプレイしてからの合計プレイ時間
+        self.number_of_play                  = 0  #遊んだ回数
+        self.number_of_times_destroyed       = 0  #自機が破壊された回数
+        
+        self.get_my_ship                    = [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0]  #手に入れた機体0=未入手 1=入手 機体のIDナンバーがリストのインデックス値となります
+                                                                                    #例 J_PYTHONはIDナンバー0なので リスト先頭の1番目の数値となる  (0始まりなので)
+                                                                                    #   FIRST_BASICはIDナンバー8なのでリスト先頭の9番目の数値となる(0始まりなので)
         #ゲーム中で絶対に変化することのないリスト群はここで作成します#######################################
         #サブウェポンセレクターカーソルなどで使用する点滅用カラーリスト群(pyxelのカラーナンバーだよ)
         self.blinking_color         = [0,1,5,12, 6,7,6,12,5,1]
@@ -2670,80 +2670,99 @@ class App:
             [2,3.0,3, 1],[2,3.1,3, 1],[2,3.2,4, 1],
             [2,3.3,4, 1],[2,3.4,4, 1],[2,3.5,4, 1],
             [99999],]
+        #バブルソートテスト用リスト
+        self.score_test_list = [
+            [GAME_VERY_EASY, 1,"MINEKA",765,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 2,"......",90,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 3,"......",80,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 4,"......",70,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 5,"......",60,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 6,"......",50,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 7,"......",40,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 8,"......",30,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 9,"......",20,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY,10,"......",10,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY,11,"......",1,SATGE_BOSS_RUSH,J_PYTHON]]
         
         #スコアランキングの初期データ [順位,名前,得点,クリアステージ,選択機体]
         self.score_ranking = [
             [
-            [GAME_VERY_EASY, 1,"MINEKA",127650,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_EASY, 2,"AAAAAA",6500,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_EASY, 3,"BBBBBB",6000,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_EASY, 4,"CCCCCC",1000,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_EASY, 5,"DDDDDD",500,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_EASY, 6,"EEEEEE",500,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_EASY, 7,"MINEKA",500,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_EASY, 8,"MINEKA",400,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_EASY, 9,"MINEKA",50,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_EASY,10,"MINEKA",12,SATGE_BOSS_RUSH,J_PYTHON]],
+            [GAME_VERY_EASY, 1,"MINEKA",765,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 2,"......",90,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 3,"......",80,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 4,"......",70,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 5,"......",60,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 6,"......",50,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 7,"......",40,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 8,"......",30,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 9,"......",20,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY,10,"......",10,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY,11,"......",1,SATGE_BOSS_RUSH,J_PYTHON]],
             
             [
-            [GAME_EASY, 1,"MINEKA",  500,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_EASY, 2,"MINEKA",300,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_EASY, 3,"MINEKA",200,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_EASY, 4,"MINEKA",200,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_EASY, 5,"MINEKA",200,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_EASY, 6,"MINEKA",200,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_EASY, 7,"MINEKA",100,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_EASY, 8,"MINEKA",10,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_EASY, 9,"MINEKA",10,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_EASY,10,"MINEKA",2,SATGE_BOSS_RUSH,J_PYTHON]],
+            [GAME_EASY, 1,"MINEKA",573,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY, 2,"......",90,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY, 3,"......",80,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY, 4,"......",70,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY, 5,"......",60,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY, 6,"......",50,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY, 7,"......",40,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY, 8,"......",30,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY, 9,"......",20,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY,10,"......",10,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY,11,"......",1,SATGE_BOSS_RUSH,J_PYTHON]],
             
             [
-            [GAME_NORMAL, 1,"MINEKA", 1000,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_NORMAL, 2,"MINEKA",573,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_NORMAL, 3,"MINEKA",600,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_NORMAL, 4,"MINEKA",550,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_NORMAL, 5,"MINEKA",500,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_NORMAL, 6,"MINEKA",400,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_NORMAL, 7,"MINEKA",300,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_NORMAL, 8,"MINEKA",220,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_NORMAL, 9,"MINEKA",200,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_NORMAL,10,"MINEKA",100,SATGE_BOSS_RUSH,J_PYTHON]],
+            [GAME_NORMAL, 1,"MINEKA",50,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL, 2,"......",10,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL, 3,"......",9,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL, 4,"......",8,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL, 5,"......",7,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL, 6,"......",6,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL, 7,"......",5,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL, 8,"......",4,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL, 9,"......",3,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL,10,"......",2,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL,11,"......",1,SATGE_BOSS_RUSH,J_PYTHON]],
             
             [
             [GAME_HARD, 1,"MINEKA",765,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_HARD, 2,"111111",86,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_HARD, 3,"222222",67,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_HARD, 4,"ZZZZZZ",70,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_HARD, 5,"DDDDDD",65,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_HARD, 6,"555555",65,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_HARD, 7,"888888",5,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_HARD, 8,"777777",4,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_HARD, 9,"999999",3,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_HARD,10,"012345",2,SATGE_BOSS_RUSH,J_PYTHON]],
+            [GAME_HARD, 2,"......",90,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD, 3,"......",80,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD, 4,"......",70,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD, 5,"......",60,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD, 6,"......",50,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD, 7,"......",40,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD, 8,"......",30,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD, 9,"......",20,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD,10,"......",10,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD,11,"......",1,SATGE_BOSS_RUSH,J_PYTHON]],
             
             [
-            [GAME_VERY_HARD ,1,"MINEKA",76600,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_HARD ,2,"MINEKA",76500,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_HARD ,3,"MINEKA",6500,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_HARD ,4,"MINEKA",700,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_HARD ,5,"MINEKA",520,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_HARD ,6,"MINEKA",510,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_HARD ,7,"MINEKA",500,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_HARD ,8,"MINEKA",400,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_HARD ,9,"MINEKA",400,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_HARD,10,"MINEKA",300,SATGE_BOSS_RUSH,J_PYTHON]],
+            [GAME_VERY_HARD ,1,"MINEKA",2021,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD ,2,"......",900,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD ,3,"......",800,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD ,4,"......",700,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD ,5,"......",600,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD ,6,"......",500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD ,7,"......",400,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD ,8,"......",300,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD ,9,"......",200,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD,10,"......",100,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD,11,"......",1,SATGE_BOSS_RUSH,J_PYTHON]],
             
             [
-            [GAME_INSAME, 1,"MINEKA",7650,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_INSAME, 2,"MINEKA",6500,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_INSAME, 3,"MINEKA",5550,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_INSAME, 4,"MINEKA",5050,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_INSAME, 5,"MINEKA",5000,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_INSAME, 6,"MINEKA",4500,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_INSAME, 7,"MINEKA",4400,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_INSAME, 8,"MINEKA",400,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_INSAME, 9,"MINEKA",300,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_INSAME,10,"MINEKA",200,SATGE_BOSS_RUSH,J_PYTHON]]
+            [GAME_INSAME, 1,"MINEKA",2021,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME, 2,"NIHONK",1946,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME, 3,"DAINIH",1889,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME, 4,"SEKIGA",1600,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME, 5,"HONNOU",1582,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME, 6,"KAMAKU",1192,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME, 7,"KENTOU",894,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME, 8,"HEIAN!",794,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME, 9,"HEIZYO",710,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME,10," TAIKA",645,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME,11,"......",1,SATGE_BOSS_RUSH,J_PYTHON]]
             ]
         
         #IPLメッセージデータその1
@@ -2794,19 +2813,11 @@ class App:
         #なんか上の方法だと要素のリストがすべて同じオブジェクトになるらしい・・・聞いてないよそんなの・・・
         #内包表記って言うのを使えば良いらしい！？
         self.replay_data          = [[] for i in range(50)] #これでいいのかな？？？
-        # print("replay_data")
-        # print(self.replay_data)
         
         self.replay_stage_my_data = [[] for i in range(50)] #リプレイ録画時、ステージスタート時に記録される自機関連のデータが入るリスト横無限大,縦50ステージ分
-        # print("replay_stage_my_data")
-        # print(self.replay_stage_my_data)
         
         self.replay_mode_stage_data        =[[0] * 30 for i in range(50)] #リプレイモードでの毎ステージスタート時の自機データ収納リストを初期化します                 (横30,縦50ステージ分の空リスト)
         self.replay_mode_stage_data_backup =[[0] * 30 for i in range(50)] #リプレイモードでの毎ステージスタート時の自機データ収納リスト(バックアップ用)を初期化します  (横30,縦50ステージ分の空リスト)
-        # print("\nreplay_recording_data(STAGE)")
-        # print(self.replay_mode_stage_data) #ターミナルにリプレイ録画データ(毎ステージ用)の中身を表示
-        # print("\nreplay_recording_data(STAGE BACKUP)")
-        # print(self.replay_mode_stage_data_backup) #ターミナルにリプレイ録画データ(毎ステージ用バックアップ)の中身を表示
         
         self.replay_control_data_size = []      #リプレイファイルのステージ毎のコントロールデータのファイルサイズリストです
         
@@ -2834,7 +2845,42 @@ class App:
         
         self.load_kanji_font_data()            #漢字フォントデータのローディング
         
-        # print(self.score_ranking_very_easy_init)
+        print("===ソート前のランキング===before====")
+        print(self.score_ranking[0])
+        print(len(self.score_ranking[0]))
+        
+        print(self.score_ranking[0][0][3])
+        print(self.score_ranking[0][1][3])
+        print(self.score_ranking[0][2][3])
+        print(self.score_ranking[0][3][3])
+        print(self.score_ranking[0][4][3])
+        print(self.score_ranking[0][5][3])
+        print(self.score_ranking[0][6][3])
+        print(self.score_ranking[0][7][3])
+        print(self.score_ranking[0][8][3])
+        print(self.score_ranking[0][9][3])
+        print(self.score_ranking[0][10][3])
+        diff = 0
+        for i in range(len(self.score_ranking[diff])):
+            for j in range(len(self.score_ranking[diff])-1,i,-1):
+                if self.score_ranking[diff][j][3] > self.score_ranking[diff][j-1][3]:
+                    for k in range(5):
+                        self.score_ranking[diff][j][k],self.score_ranking[diff][j-1][k] = self.score_ranking[diff][j-1][k],self.score_ranking[diff][j][k]
+        
+        print("===ソート後のランキング===after====")
+        print(self.score_ranking[0])
+        
+        print(self.score_ranking[0][0][3])
+        print(self.score_ranking[0][1][3])
+        print(self.score_ranking[0][2][3])
+        print(self.score_ranking[0][3][3])
+        print(self.score_ranking[0][4][3])
+        print(self.score_ranking[0][5][3])
+        print(self.score_ranking[0][6][3])
+        print(self.score_ranking[0][7][3])
+        print(self.score_ranking[0][8][3])
+        print(self.score_ranking[0][9][3])
+        print(self.score_ranking[0][10][3])        
         
         #毎フレームごとにupdateとdrawを呼び出す
         pyxel.run(self.update,self.draw)#この命令でこれ以降は１フレームごとに自動でupdate関数とdraw関数が交互に実行されることとなります
@@ -4098,6 +4144,22 @@ class App:
         self.cursor_max_item = 6                            #最大項目数は「1」「2」「3」「4」「5」「6」「7」の7項目なので 7-1=6を代入
         self.cursor_menu_layer = 0                          #メニューの階層は最初は0にします
 
+    #スコアボードへの書き込み ランク外である11位にスコアを書き込む関数(スコアボードは10位までしか表示されないのでこの状態では表示されませんバブルソートしてね)
+    def recoard_score_board(self):
+        self.score_ranking[self.game_difficulty][11-1][2] = self.my_name
+        self.score_ranking[self.game_difficulty][11-1][3] = self.score
+
+
+    #スコアボードの点数によるバブルソート 11位に今プレイしたゲームの得点を書き込みその後この関数を呼び出し→順位の11がどの位置に移動したかチェック→その位置にカーソル移動させてネームエントリー→そしてリストに書き込む
+    def score_board_bubble_sort(self,diff): #diffは難易度です
+        for i in range(len(self.score_ranking[diff])): #ランキングデータは11位までなのでiは0~11まで変化する
+            for j in range(len(self.score_ranking[diff])-1,i,-1):
+                if self.score_ranking[diff][j][3] > self.score_ranking[diff][j-1][3]: #位置jの得点より前の位置j-1の得点が大きいのなら要素を入れ替える
+                    for k in range(5): #難易度、順位、名前、得点、到達ステージ、使用機体の6種類のでループ数は(0~5)で5にする
+                        self.score_ranking[diff][j][k],self.score_ranking[diff][j-1][k] = self.score_ranking[diff][j-1][k],self.score_ranking[diff][j][k]
+
+
+
     ################################################################ボツ関数群・・・・・・(涙)##########################################################
     #外積を計算する関数 self.cpに結果が入る(バグありなので使えないっぽい・・・この関数)
     def cross_product_calc_function(self,ax,ay,bx,by,cx,cy):
@@ -4725,8 +4787,6 @@ class App:
                 self.cursor_max_item = self.cursor_pre_max_item      #
                 self.cursor_decision_item = -1                       #今から選択するアイテムは未決定に
                 self.cursor_pre_decision_item = -1                   #前回選択したアイテムも未決定に
-
-            
 
     #!ゲームスタート時の初期化#########################################
     def update_game_start_init(self):
@@ -11471,6 +11531,8 @@ class App:
                 self.game_status = SCENE_TITLE_INIT          #ゲームステータスを「SCENE_TITLE_INIT」にしてタイトルの初期化工程にする
                 self.game_playing_flag = 0                   #ゲームプレイ中のフラグを降ろす
                 self.save_system_data()                      #システムデータをセーブする関数の呼び出し
+                self.recoard_score_board()                   #スコアボードに点数書き込み
+                self.score_board_bubble_sort(self.game_difficulty) #現在選択している難易度を引数として書き込んだスコアデータをソートする関数の呼び出し
                 
             elif self.cursor_decision_item == 1:             #メニューでアイテムナンバー1の「SAVE & RETURN」が押されたら
                 self.game_status = SCENE_SELECT_SAVE_SLOT    #ゲームステータスを「SCENE_SELECT_SAVE_SLOT」にしてセーブスロット選択にする
@@ -11498,6 +11560,8 @@ class App:
                 self.game_playing_flag = 0                   #ゲームプレイ中のフラグを降ろす
                 
                 self.save_system_data()                    #システムデータをセーブする関数の呼び出し
+                self.recoard_score_board()                   #スコアボードに点数書き込み
+                self.score_board_bubble_sort(self.game_difficulty) #現在選択している難易度を引数として書き込んだスコアデータをソートする関数の呼び出し
                 self.update_replay_data_list()             #録画したリプレイデータを登録します
                 
                 self.update_replay_data_file_save()          #リプレイデータファイルのセーブ
