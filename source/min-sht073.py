@@ -81,6 +81,10 @@
 #todo980a 結構めんどう～～だよね・・・スコア表示関連の処理・・ 2021 05/09
 #todo980b メインメニューからスコアランキングの表示、難易度ごとに左右入力のページ捲り表示の実装 2021 05/10
 #todo980c スコアのクイックソートの自作関数で嵌る・・・新しいリストを作成して組み込み関数のsort()で行くべきか・・・う～～～ん 2021 05/11
+#todo980d 結局クイックソートではなく単純なバブルソートでスコアのソートを実装、たったの11要素のソートなので別にいよネ、遅くても 2021 05/13
+#todo980e 一応スコアランキング表示実装完了 2021 05/14
+#todo     windowクラス内のテキスト表示をそれそれの行ごとに各変数を作ってそこに代入して表示していたが、for文でどうやってもループで処理できなかったので展開していたのをリストを採用してそこに入れ込んで表示するようにした250行ぐらい削減出来てすっきり～～♪（最初からやれよ！って感じですがｗ) 2021 05/15
+
 
 # from random import randint   #random.randint(n,m) と呼ぶと、nからm(m自身を含む)までの間の整数が 等しい確率で、ランダムに返される
 from random import random    #random.random() と呼ぶと、0から1の範囲(1は含まない)のランダムな実数が返される(主にパーティクル系で使用します)
@@ -440,6 +444,7 @@ WINDOW_ID_GAME_OVER_RETURN         =  8 #ゲームオーバーから戻る時の
 WINDOW_ID_GAME_OVER_RETURN_NO_SAVE =  8 #ゲームオーバーから戻る時のメニュー(リプレイデータのセーブは無し)
 WINDOW_ID_SELECT_FILE_SLOT         =  9 #リプレイデータをセーブするスロットを選択するメニュー
 WINDOW_ID_SCORE_BOARD              = 10 #スコアボードウィンドウ
+WINDOW_ID_INPUT_YOUR_NAME          = 11 #名前入力ウィンドウ
 
 #ウィンドウのid_subの定数定義 windowクラスの window_id_subに入ります
 WINDOW_ID_SUB_NORMAL_MENU            = 0 #通常の選択メニュー
@@ -451,12 +456,13 @@ WINDOW_ID_SUB_RIGHT_LEFT_PAGE_MENU   = 5 #左右の頁送りで切り替える�
 
 #ウィンドウの種類の定数定義 windowクラスのwindow_typeに入ります
 WINDOW_TYPE_NORMAL                   = 0 #メッセージを表示するだけのタイプ
+WINDOW_TYPE_EDIT_TEXT                = 1 #メッセージを表示しさらにテキスト編集の入力待ちするタイプ
 
 
 #ウィンドウの下地の定数定義 windowクラスの window_bgに入ります
-WINDOW_TRANSLUCENT     = 0 #半透明
-WINDOW_BLUE_BACK       = 1 #青地
-WINDOW_LOW_TRANSLUCENT = 2 #ちょっと半透明
+WINDOW_BG_TRANSLUCENT     = 0 #半透明
+WINDOW_BG_BLUE_BACK       = 1 #青地
+WINDOW_BG_LOW_TRANSLUCENT = 2 #ちょっと半透明
 
 #メッセージウィンドウ関連の定数定義 windowクラスの window_statusに入ります
 WINDOW_OPEN            =  0    #テキストウィンドウ開き進行中
@@ -465,24 +471,42 @@ WINDOW_WRITE_MESSAGE   =  5    #テキストメッセージの表示中
 WINDOW_SELECT_YES_NO   =  8    #「はい」「いいえ」の2択表示中
 WINDOW_OPEN_COMPLETED  =  9    #テキストウィンドウ開き完了！
 WINDOW_CLOSE           = 10    #テキストウィンドウ閉め進行中
-WINDOW_CLOSE_COMPLETED = 11    #テキストウィンドウ閉め完了！ 
+WINDOW_CLOSE_COMPLETED = 11    #テキストウィンドウ閉め完了！
 
-#メッセージの表示の仕方 windowクラスの (mes1~mes10)_alignに入ります
+#ウィンドウで表示されるボタンのサイズ
+WINDOW_BUTTON_SIZE_1x1    = 0      #1x1キャラ分(8x8ドット)
+WINDOW_BUTTON_SIZE_1TEXT  = 1      #半角文字サイズ4*6ドット
+WINDOW_BUTTON_SIZE_1x2    = 2      #1x2キャラ分(8x16ドット)
+
+#メッセージ,ボタンの表示の仕方 windowクラスの (text~text0)_alignに入ります
+BUTTON_DISP_OFF    = 0 #0=表示しない
 DISP_OFF           = 0 #0=表示しない
+
+BUTTON_DISP_ON     = 1 #1=表示する
 DISP_ON            = 1 #1=表示する 
+
 DISP_CENTER        = 2 #2=中央表示
 DISP_LEFT_ALIGN    = 3 #3=左揃え
 DISP_RIGHT_ALIGN   = 4 #4=右揃え
 
-#ウィンドウテキストのリストの2次元配列のインデックスナンバーとして使用する定数定義 windowクラスのmes1[i][ここで定義した定数]に入ります
-LIST_WINDOW_TEXT       = 0 #ウィンドウテキスト
-LIST_WINDOW_TEXT_ALIGN = 1 #ウィンドウテキストの揃え方
-LIST_WINDOW_TEXT_OX    = 2 #ウィンドウテキスト表示x軸のオフセット値
-LIST_WINDOW_TEXT_OY    = 3 #ウィンドウテキスト表示y軸のオフセット値
-LIST_WINDOW_TEXT_COLOR = 4 #ウィンドウテキストの表示色
-LIST_WINDOW_TEXT_FLASH = 5 #ウィンドウテキストの点滅のしかた
+#ウィンドウテキストのリストの2次元配列のインデックスナンバーとして使用する定数定義 windowクラスのtext[i][ここで定義した定数]に入ります
+LIST_WINDOW_TEXT                   =  0 #ウィンドウテキスト
+LIST_WINDOW_TEXT_ALIGN             =  1 #ウィンドウテキストの揃え方(アライメント)(整列の仕方)
+LIST_WINDOW_TEXT_OX                =  2 #ウィンドウテキスト表示x軸のオフセット値
+LIST_WINDOW_TEXT_OY                =  3 #ウィンドウテキスト表示y軸のオフセット値
+LIST_WINDOW_TEXT_COLOR             =  4 #ウィンドウテキストの表示色
+LIST_WINDOW_TEXT_FLASH             =  5 #ウィンドウテキストの点滅のしかた
+LIST_WINDOW_TEXT_TYPE              =  6 #ウィンドウテキストのタイプ
+LIST_WINDOW_TEXT_STATUS            =  7 #ウィンドウテキストのステータス(状態)
+LIST_WINDOW_TEXT_LENGTH            =  8 #ウィンドウテキストの長さ
+LIST_WINDOW_TEXT_LINEFEED_WIDTH    =  9 #ウィンドウテキストの折り返し改行幅
+LIST_WINDOW_TEXT_LINEFEED_HEIGHT   = 10 #ウィンドウテキストの折り返し改行幅(縦書きモードの時)
+LIST_WINDOW_TEXT_DISP_TYPE         = 11 #ウィンドウテキストの文字の表示のしかた
+LIST_WINDOW_TEXT_DISP_SPEED        = 12 #ウィンドウテキストの文字の表示スピード(一文字ずつ表示する場合のみ)
+LIST_WINDOW_TEXT_SCROLL_SPEED      = 13 #ウィンドウテキストの上下スクロールスピード
 
-#メッセージを点滅させるかのフラグ windowクラスの(mes1~mes10)_flashに入ります
+
+#メッセージを点滅させるかのフラグ windowクラスの(text~text0)_flashに入ります
 MES_NO_FLASH         = 0 #点滅しない
 MES_BLINKING_FLASH   = 1 #点滅
 MES_RED_FLASH        = 2 #赤い点滅
@@ -1934,16 +1958,8 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         self.window_title = ""      #テキストが入ります
         self.window_title_align = 0 #DISP_CENTER=中央表示 DISP_LEFT_ALIGN=左揃え DISP_OFF=表示しない
         
-        self.mes1 = [[] for i in range(128)] #テキストが入ります
-        
-        self.edit_text1 = ""        #編集できるテキスト1 テキスト文字列
-        self.edit_text1_type = 0    #種類
-        self.edit_text1_status = 0  #ステータス
-        self.edit_text1_len    = 0  #文字列の長さ
-        self.edit_text1_color = 0   #文字列の色
-        self.edit_text1_align = 0   #アライメント(整列の仕方)
-        self.edit_text1_x = 0       #テキストの座標(x,y)
-        self.edit_text1_y = 0
+        self.text       = [[] for i in range(10)] #テキストが入ります 
+        self.edit_text  = []                      #編集できるテキストが入ります
         
         self.posx = 0          #ウィンドウ左上の座標(posx,posy)
         self.posy = 0
@@ -1963,19 +1979,31 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         self.vy = 0
         self.vx_accel = 0      #速度に掛け合わせる加速度(accel)
         self.vy_accel = 0
+        
+        self.ok_button_disp_flag = 0  #OKボタン(決定ボタン)を表示するかどうかのフラグ DISP_OFF=0=表示しない DISP_ON=1=表示する
+        self.ok_button_x = 0          #OKボタンを表示する座標(オフセット値)
+        self.ok_button_y = 0
+        self.ok_button_size = 0       #OKボタンのサイズ
+        
+        self.no_button_disp_flag = 0  #NOボタン(決定ボタン)を表示するかどうかのフラグ DISP_OFF=0=表示しない DISP_ON=1=表示する
+        self.no_button_x = 0          #NOボタンを表示する座標(オフセット値)
+        self.no_button_y = 0
+        self.no_button_size = 0       #NOボタンのサイズ
+        
         self.ship_list =[]
         self.weapon_list = []
         self.sub_weapon_list = []
         self.missile_list = []
         self.medal_list = []
         self.item_list = [[] for i in range(128)]
-
     def update(self,window_id,window_id_sub,window_type,window_bg,window_status,window_title,window_title_align,\
-        mes1,\
+        text,\
+        edit_text,\
         
-        edit_text1,edit_text1_type,edit_text1_status,edit_text1_len,edit_text1_color,edit_text1_align,edit_text1_x,edit_text1_y,\
         x,y,width,height,open_width,open_height,change_x,change_y,open_speed,close_speed,open_accel,close_accel,marker,color,\
         vx,vy,vx_accel,vy_accel,\
+        ok_button_disp_flag,ok_button_x,ok_button_y,ok_button_size,\
+        no_button_disp_flag,no_button_x,no_button_y,no_button_size,\
         ship_list,weapon_list,sub_weapon_list,missile_list,medal_list,item_list):
         self.window_id = window_id
         self.window_id_sub = window_id_sub
@@ -1985,16 +2013,8 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         self.window_title = window_title
         self.window_title_align = window_title_align
         
-        self.mes1 = mes1
-        
-        self.edit_text1 = edit_text1
-        edit_text1_type = edit_text1_type
-        edit_text1_status = edit_text1_status
-        edit_text1_len = edit_text1_len
-        edit_text1_color = edit_text1_color
-        edit_text1_align = edit_text1_align
-        edit_text1_x = edit_text1_x
-        edit_text1_y = edit_text1_y
+        self.text = text
+        self.edit_text = edit_text
         
         self.posx = x
         self.posy = y
@@ -2015,13 +2035,22 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         self.vx_accel = vx_accel
         self.vy_accel = vy_accel
         
+        self.ok_button_disp_flag = ok_button_disp_flag   
+        self.ok_button_x = ok_button_x      
+        self.ok_button_y = ok_button_y
+        self.ok_button_size = ok_button_size       
+        
+        self.no_button_disp_flag = no_button_disp_flag  
+        self.no_button_x = no_button_x 
+        self.no_button_y = no_button_y
+        self.no_button_size = no_button_size       
+        
         self.ship_list       = ship_list
         self.weapon_list     = weapon_list
         self.sub_weapon_list = sub_weapon_list
         self.missile_list    = missile_list
         self.medal_list      = medal_list
         self.item_list       = item_list
-
 class Obtain_item:#手に入れるアイテム類（パワーアップ勲章とかコインアイテムとか）のクラス設定
     def __init__(self):
         self.item_type = 0                  #アイテムのタイプ 1=ショットパワーアップ 2=ミサイルパワーアップ 3=シールドパワーアップ
@@ -2170,7 +2199,7 @@ class App:
         self.replay_slot_num = 0       #リプレイファイルをセーブしたりロードするスロットナンバーが入ります(0~9)
         
         self.header                          = "code-of-python system-data ver 1.00"   #システムファイルに書き込むヘッダ文字列
-        self.my_name                         = "TESTER" #プレイヤーの名前(ネームエントリーの関係上半角6文字でお願いします)
+        self.my_name                         = "TESTER01" #プレイヤーの名前(ネームエントリーの関係上半角8文字でお願いします)
         
         self.development_testtime            = 0  #ゲーム開発時の総テスト時間
         
@@ -2280,7 +2309,6 @@ class App:
             "髻鬆鬘鬚鬟鬢鬣鬥鬧鬨鬩鬪鬮鬯鬲魄魃魏魍魎魑魘魴鮓鮃鮑鮖鮗鮟鮠鮨鮴鯀鯊鮹鯆鯏鯑鯒鯣鯢鯤鯔鯡鰺鯲鯱鯰鰕鰔鰉鰓鰌鰆鰈鰒鰊鰄鰮鰛鰥鰤鰡鰰鱇鰲鱆鰾鱚鱠鱧鱶鱸鳧鳬鳰鴉鴈鳫鴃鴆鴪鴦鶯鴣鴟鵄鴕鴒鵁鴿鴾鵆鵈\n"
             "鵝鵞鵤鵑鵐鵙鵲鶉鶇鶫鵯鵺鶚鶤鶩鶲鷄鷁鶻鶸鶺鷆鷏鷂鷙鷓鷸鷦鷭鷯鷽鸚鸛鸞鹵鹹鹽麁麈麋麌麒麕麑麝麥麩麸麪麭靡黌黎黏黐黔黜點黝黠黥黨黯黴黶黷黹黻黼黽鼇鼈皷鼕鼡鼬鼾齊齒齔齣齟齠齡齦齧齬齪齷齲齶龕龜龠\n"
             "堯槇遙瑤凜熙\n")
-        # print(self.font_code_table) #ターミナルにフォントコード変換テーブルを表示
         
         #敵１のアニメーションパターンのキャラチップ番号定義
         self.anime_enemy001 = [0,0,   8,8,   16,16,    24,   16,16,   8,8,   0,0,  0,0]
@@ -2621,82 +2649,82 @@ class App:
         #スコアランキングの初期データ [順位,名前,得点,クリアステージ,選択機体]
         self.score_ranking = [
             [
-            [GAME_VERY_EASY, 1,"MINEKA",765,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_EASY, 2,"......",90,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_EASY, 3,"......",80,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_EASY, 4,"......",70,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_EASY, 5,"......",60,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_EASY, 6,"......",50,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_EASY, 7,"......",40,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_EASY, 8,"......",30,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_EASY, 9,"......",20,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_EASY,10,"......",10,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_EASY,11,"......",1,SATGE_BOSS_RUSH,J_PYTHON]],
+            [GAME_VERY_EASY, 1,"..MINEKA",765,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 2,"........",90,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 3,"........",80,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 4,"........",70,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 5,"........",60,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 6,"........",50,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 7,"........",40,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 8,"........",30,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY, 9,"........",20,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY,10,"........",10,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_EASY,11,"........",1,SATGE_BOSS_RUSH,J_PYTHON]],
             
             [
-            [GAME_EASY, 1,"MINEKA",573,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_EASY, 2,"......",90,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_EASY, 3,"......",80,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_EASY, 4,"......",70,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_EASY, 5,"......",60,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_EASY, 6,"......",50,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_EASY, 7,"......",40,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_EASY, 8,"......",30,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_EASY, 9,"......",20,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_EASY,10,"......",10,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_EASY,11,"......",1,SATGE_BOSS_RUSH,J_PYTHON]],
+            [GAME_EASY, 1,"..MINEKA",573,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY, 2,"........",90,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY, 3,"........",80,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY, 4,"........",70,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY, 5,"........",60,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY, 6,"........",50,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY, 7,"........",40,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY, 8,"........",30,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY, 9,"........",20,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY,10,"........",10,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_EASY,11,"........",1,SATGE_BOSS_RUSH,J_PYTHON]],
             
             [
-            [GAME_NORMAL, 1,"MINEKA",50,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_NORMAL, 2,"......",10,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_NORMAL, 3,"......",9,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_NORMAL, 4,"......",8,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_NORMAL, 5,"......",7,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_NORMAL, 6,"......",6,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_NORMAL, 7,"......",5,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_NORMAL, 8,"......",4,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_NORMAL, 9,"......",3,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_NORMAL,10,"......",2,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_NORMAL,11,"......",1,SATGE_BOSS_RUSH,J_PYTHON]],
+            [GAME_NORMAL, 1,"..MINEKA",50,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL, 2,"........",10,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL, 3,"........",9,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL, 4,"........",8,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL, 5,"........",7,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL, 6,"........",6,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL, 7,"........",5,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL, 8,"........",4,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL, 9,"........",3,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL,10,"........",2,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_NORMAL,11,"........",1,SATGE_BOSS_RUSH,J_PYTHON]],
             
             [
-            [GAME_HARD, 1,"MINEKA",765,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_HARD, 2,"......",90,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_HARD, 3,"......",80,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_HARD, 4,"......",70,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_HARD, 5,"......",60,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_HARD, 6,"......",50,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_HARD, 7,"......",40,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_HARD, 8,"......",30,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_HARD, 9,"......",20,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_HARD,10,"......",10,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_HARD,11,"......",1,SATGE_BOSS_RUSH,J_PYTHON]],
+            [GAME_HARD, 1,"..MINEKA",765,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD, 2,"........",90,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD, 3,"........",80,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD, 4,"........",70,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD, 5,"........",60,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD, 6,"........",50,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD, 7,"........",40,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD, 8,"........",30,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD, 9,"........",20,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD,10,"........",10,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_HARD,11,"........",1,SATGE_BOSS_RUSH,J_PYTHON]],
             
             [
-            [GAME_VERY_HARD ,1,"MINEKA",2021,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_HARD ,2,"......",900,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_HARD ,3,"......",800,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_HARD ,4,"......",700,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_HARD ,5,"......",600,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_HARD ,6,"......",500,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_HARD ,7,"......",400,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_HARD ,8,"......",300,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_HARD ,9,"......",200,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_HARD,10,"......",100,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_VERY_HARD,11,"......",1,SATGE_BOSS_RUSH,J_PYTHON]],
+            [GAME_VERY_HARD ,1,"..MINEKA",2021,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD ,2,"........",900,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD ,3,"........",800,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD ,4,"........",700,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD ,5,"........",600,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD ,6,"........",500,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD ,7,"........",400,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD ,8,"........",300,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD ,9,"........",200,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD,10,"........",100,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_VERY_HARD,11,"........",1,SATGE_BOSS_RUSH,J_PYTHON]],
             
             [
-            [GAME_INSAME, 1,"MINEKA",2021,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_INSAME, 2,"NIHONK",1946,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_INSAME, 3,"DAINIH",1889,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_INSAME, 4,"SEKIGA",1600,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_INSAME, 5,"HONNOU",1582,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_INSAME, 6,"KAMAKU",1192,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_INSAME, 7,"KENTOU",894,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_INSAME, 8,"HEIAN!",794,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_INSAME, 9,"HEIZYO",710,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_INSAME,10," TAIKA",645,SATGE_BOSS_RUSH,J_PYTHON],
-            [GAME_INSAME,11,"......",1,SATGE_BOSS_RUSH,J_PYTHON]]
+            [GAME_INSAME, 1,"MINE2021",2021,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME, 2,"NIHONKOK",1946,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME, 3,"DAINIHON",1889,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME, 4,"SEKIGAHA",1600,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME, 5,"HONNOUZI",1582,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME, 6,"KAMAKURA",1192,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME, 7,"KENTOUSH",894,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME, 8,"HEIANKYO",794,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME, 9,"HEIZYOKY",710,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME,10,"TAIKANOK",645,SATGE_BOSS_RUSH,J_PYTHON],
+            [GAME_INSAME,11,"........",1,SATGE_BOSS_RUSH,J_PYTHON]]
             ]
         
         #IPLメッセージデータその1
@@ -2788,7 +2816,7 @@ class App:
         # self.kanji_fonts = [] #漢字フォントリストデータをまずは初期化して使えるようにします この方法だとダメだわ
         self.kanji_fonts = [[None for col in range(752)] for row in range(1128)] #横752,縦1128の空っぽの漢字フォントデータリストを作成します(Pythonクックブックで奨められている書き方ですのんって、判りにくいよなぁ・・これ)
         
-        for y in range(256): #左端A列のk8x12s_jisx0208___001a.pngを読みだしてフォントデータリストに書き込んでいきます 書き込みオフセット値は(0,0)
+        for y in range(256):  #左端A列のk8x12s_jisx0208___001a.pngを読みだしてフォントデータリストに書き込んでいきます 書き込みオフセット値は(0,0)
             for x in range(256):
                 col = pyxel.image(0).get(x,y)
                 self.kanji_fonts[y+0][x+0] = col #ぐへぇ最初, self.kanji_fonts[x][y] = colってやってた・・リストの最初の[]はy軸になるんだよね・考えてみればそうだったｗ 嵌りどころだわ～～～～
@@ -2802,7 +2830,7 @@ class App:
                 self.kanji_fonts[y+512][x+0] = col
         
         pyxel.load("assets/fonts/misaki_font_k8x12s_002.pyxres") #漢字フォントデータ(その2)を読み込みます
-        for y in range(256):  #左端A列のk8x12s_jisx0208___004a.pngを読みだしてフォントデータリストに書き込んでいきます 書き込みオフセット値は(0,768)
+        for y in range(256):  #左端A列の  k8x12s_jisx0208___004a.pngを読みだしてフォントデータリストに書き込んでいきます 書き込みオフセット値は(0,768)
             for x in range(256):
                 col = pyxel.image(0).get(x,y)
                 self.kanji_fonts[y+768][x+0] = col
@@ -2824,7 +2852,7 @@ class App:
             for x in range(256):
                 col = pyxel.image(1).get(x,y)
                 self.kanji_fonts[y+768][x+256] = col
-        for y in range(256):  #右端C列のk8x12s_jisx0208___001c.pngを読みだしてフォントデータリストに書き込んでいきます 書き込みオフセット値は(512,0)
+        for y in range(256):  #右端C列の  k8x12s_jisx0208___001c.pngを読みだしてフォントデータリストに書き込んでいきます 書き込みオフセット値は(512,0)
             for x in range(752-512):
                 col = pyxel.image(2).get(x,y)
                 self.kanji_fonts[y+0][x+512] = col
@@ -2838,12 +2866,10 @@ class App:
             for x in range(752-512):
                 col = pyxel.image(1).get(x,y)
                 self.kanji_fonts[y+512][x+512] = col
-        for y in range(256):  #右端C列のk8x12s_jisx0208___004c.pngを読みだしてフォントデータリストに書き込んでいきます 書き込みオフセット値は(512,768)
+        for y in range(256):  #右端C列の  k8x12s_jisx0208___004c.pngを読みだしてフォントデータリストに書き込んでいきます 書き込みオフセット値は(512,768)
             for x in range(752-512):
                 col = pyxel.image(2).get(x,y)
                 self.kanji_fonts[y+768][x+512] = col
-        
-        # print(self.kanji_fonts) #ターミナルにフォントデータの中身をプリント
 
     #漢字テキストの表示
     def kanji_text(self,x,y,text,col):
@@ -3988,6 +4014,39 @@ class App:
         num = num_0_1 + num_0_01 + num_0_001 + num_0_0001 + num_0_00001 #全ての桁数を足し合わせると小数点5桁までの乱数となる(0.00000~0.99999)
         return (num)
 
+
+    #矩形Aと矩形Bの当たり判定
+    #collision rectangle to rectangle
+    #矩形A(rect_ax,rect_ay,rect_aw,rect_ah)(xはx座標,yはy座標,wは横幅width,hは縦幅heightを意味します)
+    #矩形B(rect_bx,rect_by,rect_bw,rect_bh)
+    #1...矩形の中心座標を計算する
+    #2...x軸,y軸の距離を計算する
+    #3...2つの矩形のx軸,y軸のサイズの和を計算する
+    #4...サイズの和と距離を比較する
+    #衝突していたらTrueをしていなかったらFalseを返します
+    def collision_rect_rect(self,rect_ax,rect_ay,rect_aw,rect_ah,rect_bx,rect_by,rect_bw,rect_bh):
+        #1..矩形の中心座標を計算する
+        #矩形Aの中心座標(center_ax,center_ay)
+        #矩形Bの中心座標(center_bx,center_by)
+        center_ax = rect_ax + rect_aw // 2
+        center_ay = rect_ay + rect_ah // 2
+        center_bx = rect_bx + rect_bw // 2
+        center_by = rect_by + rect_bh // 2
+        #2..x軸,y軸の距離を計算する「座標間の距離」ではなく「X座標間の距離」と「Y座標間の距離」を計算する
+        distance_x = abs(center_ax - center_bx)
+        distance_y = abs(center_ay - center_by)
+        #3...2つの矩形のx軸,y軸のサイズの和を計算する
+        size_sum_x = rect_aw + rect_bw // 2
+        size_sum_y = rect_ah + rect_bh // 2
+        #4...サイズの和と距離を比較する
+        #    矩形どうしが衝突している条件は
+        #        「x軸の距離がx軸のサイズの和よりも小さい」
+        #        「y軸の距離がy軸のサイズの和よりも小さい」の2つの条件を満たしている時に衝突していると判断します
+        if distance_x < size_sum_x and distance_y < size_sum_y:
+            return True
+        else:
+            return False
+
     #スコアボードウィンドウの表示
     def window_score_board(self,d): #引数dは難易度 difficulty
         new_window = Window()
@@ -3995,10 +4054,9 @@ class App:
         WINDOW_ID_SCORE_BOARD,\
         WINDOW_ID_SUB_RIGHT_LEFT_PAGE_MENU,\
         WINDOW_TYPE_NORMAL,\
-        WINDOW_BLUE_BACK,\
+        WINDOW_BG_BLUE_BACK,\
         WINDOW_OPEN,\
         "RANKING",DISP_CENTER,\
-        
         [[" 1 " + str(self.score_ranking[d][0][2]) + " " + str("{:>8}".format(self.score_ranking[d][0][3])),DISP_LEFT_ALIGN,0,0,10,MES_YELLOW_FLASH],\
         [ " 2 " + str(self.score_ranking[d][1][2]) + " " + str("{:>8}".format(self.score_ranking[d][1][3])),DISP_LEFT_ALIGN,0,0, 7,MES_NO_FLASH],\
         [ " 3 " + str(self.score_ranking[d][2][2]) + " " + str("{:>8}".format(self.score_ranking[d][2][3])),DISP_LEFT_ALIGN,0,0, 4,MES_NO_FLASH],\
@@ -4009,11 +4067,12 @@ class App:
         [ " 8 " + str(self.score_ranking[d][7][2]) + " " + str("{:>8}".format(self.score_ranking[d][7][3])),DISP_LEFT_ALIGN,0,0,13,MES_NO_FLASH],\
         [ " 9 " + str(self.score_ranking[d][8][2]) + " " + str("{:>8}".format(self.score_ranking[d][8][3])),DISP_LEFT_ALIGN,0,0,13,MES_NO_FLASH],\
         [ "10 " + str(self.score_ranking[d][9][2]) + " " + str("{:>8}".format(self.score_ranking[d][9][3])),DISP_LEFT_ALIGN,0,0, 2,MES_NO_FLASH]],\
-        
-        "",0,0,0,0,0,0,0,\
-        39,28,   20,79,  74,79,   4,1, 2,1,   0,0,    0,0,    0,0,0,0,\
+        [[""]],\
+        31,28,   20,79,  90,79,   4,1, 2,1,   0,0,    0,0,    0,0,0,0,\
+        BUTTON_DISP_OFF,0,0,0,\
+        BUTTON_DISP_OFF,0,0,0,\
         [],[],[],[],[],[])
-
+        
         self.window.append(new_window)                   #「RANKING」を育成する
 
     #リプレイファイルスロット選択ウィンドウの表示
@@ -4023,10 +4082,9 @@ class App:
         WINDOW_ID_SELECT_FILE_SLOT,\
         WINDOW_ID_SUB_NORMAL_MENU,\
         WINDOW_TYPE_NORMAL,\
-        WINDOW_BLUE_BACK,\
+        WINDOW_BG_BLUE_BACK,\
         WINDOW_OPEN,\
         "SLOT",DISP_CENTER,\
-        
         [["1",DISP_CENTER,0,0,7,MES_NO_FLASH],\
         [ "2",DISP_CENTER,0,0,7,MES_NO_FLASH],\
         [ "3",DISP_CENTER,0,0,7,MES_NO_FLASH],\
@@ -4034,11 +4092,12 @@ class App:
         [ "5",DISP_CENTER,0,0,7,MES_NO_FLASH],\
         [ "6",DISP_CENTER,0,0,7,MES_NO_FLASH],\
         [ "7",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
-        
-        "",0,0,0,0,0,0,0,\
+        [[""]],\
         63,44,   0,0,  22,67,      2,1, 2,1,   1,1,    0,0,    0,0,0,0,\
+        BUTTON_DISP_OFF,0,0,0,\
+        BUTTON_DISP_OFF,0,0,0,\
         [],[],[],[],[],[])
-
+        
         self.window.append(new_window)                      #「SELECT SLOT」を育成する
         self.cursor_type = CURSOR_TYPE_NORMAL               #選択カーソル表示をonにする
         self.cursor_move_direction = CURSOR_MOVE_UD         #カーソルは上下移動のみ
@@ -4147,8 +4206,6 @@ class App:
         
         #リプレイ記録用に使用する横無限大,縦50ステージ分の空っぽのリプレイデータリストを作成します
         self.replay_recording_data =[[] for i in range(50)]
-        # print("\nreplay_recording_data")
-        # print(self.replay_recording_data) #ターミナルにリプレイ録画データの中身を表示
         
         self.bg_cls_color = 0         #BGをCLS(クリアスクリーン)するときの色の指定(通常は0=黒色です)ゲーム時に初期値から変更されることがあるのでここで初期化する
         
@@ -4173,6 +4230,7 @@ class App:
                                             #選択してcursor_decision_item_yに入ったアイテムナンバーをcursor_pre_decision_item_yに入れて次の階層に潜るって手法かな？
         self.cursor_move_direction = 0         #セレクトカーソルがどう動かせることが出来るのか？の状態変数です
         
+        self.active_window_index = 0              #アクティブになっているウィンドウのインデックスナンバーが入ります(idナンバーではないので注意)
         #system-data.pyxresリソースファイルからこれらの設定値を読み込むようにしたのでコメントアウトしています
         # self.game_difficulty = GAME_NORMAL         #難易度                  タイトルメニューで難易度を選択して変化させるのでここで初期化します
         
@@ -4214,10 +4272,9 @@ class App:
             WINDOW_ID_MAIN_MENU,\
             WINDOW_ID_SUB_NORMAL_MENU,\
             WINDOW_TYPE_NORMAL,\
-            WINDOW_LOW_TRANSLUCENT,\
+            WINDOW_BG_LOW_TRANSLUCENT,\
             WINDOW_OPEN,\
             "MENU",DISP_CENTER,\
-            
             [["GAME START",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             ["SELECT STAGE",DISP_CENTER,0,0,3,MES_NO_FLASH],\
             ["SELECT LOOP",DISP_CENTER,0,0,3,MES_NO_FLASH],\
@@ -4228,13 +4285,12 @@ class App:
             ["STATUS",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             ["CONFIG",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             ["REPLAY",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
-            
-            "",0,0,0,0,0,0,0,\
+            [[""]],\
             44,34,   0,0,  8*8,9*8+5,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
+            BUTTON_DISP_OFF,0,0,0,\
+            BUTTON_DISP_OFF,0,0,0,\
             [],[],[],[],[],[])
             self.window.append(new_window)                      #「SELECT MENU」を育成する
-            
-            print(self.window[0].mes1)
             
             self.cursor_type = CURSOR_TYPE_NORMAL               #選択カーソル表示をonにする
             self.cursor_move_direction = CURSOR_MOVE_UD         #カーソルは上下移動のみ
@@ -4269,17 +4325,18 @@ class App:
                 WINDOW_ID_SELECT_STAGE_MENU,\
                 WINDOW_ID_SUB_NORMAL_MENU,\
                 WINDOW_TYPE_NORMAL,\
-                WINDOW_BLUE_BACK,\
+                WINDOW_BG_BLUE_BACK,\
                 WINDOW_OPEN,\
                 "",DISP_CENTER,\
-                
                 [["1",DISP_CENTER,0,0,7,MES_NO_FLASH],\
                 [ "2",DISP_CENTER,0,0,7,MES_NO_FLASH],\
                 [ "3",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
-                
-                "",0,0,0,0,0,0,0,\
+                [[""]],\
                 90,60,   0,0,  2*8,5*8,   2,2, 1,1,   0,0,    0,0,    0,0,0,0,\
+                BUTTON_DISP_OFF,0,0,0,\
+                BUTTON_DISP_OFF,0,0,0,\
                 [],[],[],[],[],[])
+                
                 self.window.append(new_window)                   #「STAGE」を育成する
                 self.cursor_type = CURSOR_TYPE_NORMAL            #選択カーソル表示をonにする
                 self.cursor_move_direction = CURSOR_MOVE_UD      #カーソルは上下移動のみ
@@ -4303,17 +4360,18 @@ class App:
                 WINDOW_ID_SELECT_LOOP_MENU,\
                 WINDOW_ID_SUB_NORMAL_MENU,\
                 WINDOW_TYPE_NORMAL,\
-                WINDOW_TRANSLUCENT,\
+                WINDOW_BG_TRANSLUCENT,\
                 WINDOW_OPEN,\
                 "",DISP_CENTER,\
-                
                 [["1",DISP_CENTER,0,0,7,MES_NO_FLASH],\
                 [ "2",DISP_CENTER,0,0,7,MES_NO_FLASH],\
                 [ "3",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
-                
-                "",0,0,0,0,0,0,0,\
+                [[""]],\
                 90+22,60+6,   0,0,  2*8,5*8,   2,2, 1,1,   0,0,    0,0,    0,0,0,0,\
+                BUTTON_DISP_OFF,0,0,0,\
+                BUTTON_DISP_OFF,0,0,0,\
                 [],[],[],[],[],[])
+                
                 self.window.append(new_window)                      #「SELECT LOOP」を育成する
                 self.cursor_type = CURSOR_TYPE_NORMAL               #選択カーソル表示をonにする
                 self.cursor_move_direction = CURSOR_MOVE_UD         #カーソルは上下移動のみ
@@ -4337,15 +4395,16 @@ class App:
                 WINDOW_ID_BOSS_MODE_MENU,\
                 WINDOW_ID_SUB_YES_NO_MENU,\
                 WINDOW_TYPE_NORMAL,\
-                WINDOW_TRANSLUCENT,\
+                WINDOW_BG_TRANSLUCENT,\
                 WINDOW_OPEN,\
                 "ON",DISP_CENTER,\
-                
                 [["OFF",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
-                
-                "",0,0,0,0,0,0,0,\
+                [[""]],\
                 96+3,60-1,   0,0,  2*8+7,2*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
+                BUTTON_DISP_OFF,0,0,0,\
+                BUTTON_DISP_OFF,0,0,0,\
                 [],[],[],[],[],[])
+                
                 self.window.append(new_window)                      #「BOSS MODE ON/OFF」を育成する
                 self.cursor_type = CURSOR_TYPE_NORMAL               #選択カーソル表示をonにする
                 self.cursor_move_direction = CURSOR_MOVE_UD         #カーソルは上下移動のみ
@@ -4369,15 +4428,16 @@ class App:
                 WINDOW_ID_HITBOX_MENU,\
                 WINDOW_ID_SUB_YES_NO_MENU,\
                 WINDOW_TYPE_NORMAL,\
-                WINDOW_TRANSLUCENT,\
+                WINDOW_BG_TRANSLUCENT,\
                 WINDOW_OPEN,\
                 "ON",DISP_CENTER,\
-                
                 [["OFF",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
-                
-                "",0,0,0,0,0,0,0,\
+                [[""]],\
                 96+3,60-1,   0,0,  2*8+7,2*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
+                BUTTON_DISP_OFF,0,0,0,\
+                BUTTON_DISP_OFF,0,0,0,\
                 [],[],[],[],[],[])
+                
                 self.window.append(new_window)                      #「HITBOX ON/OFF」を育成する
                 self.cursor_type = CURSOR_TYPE_NORMAL               #選択カーソル表示をonにする
                 self.cursor_move_direction = CURSOR_MOVE_UD         #カーソルは上下移動のみ
@@ -4401,18 +4461,18 @@ class App:
                 WINDOW_ID_SELECT_DIFFICULTY,\
                 WINDOW_ID_SUB_NORMAL_MENU,\
                 WINDOW_TYPE_NORMAL,\
-                WINDOW_BLUE_BACK,\
+                WINDOW_BG_BLUE_BACK,\
                 WINDOW_OPEN,\
                 "VERY EASY",DISP_CENTER,\
-                
                 [["EASY",DISP_CENTER,0,0,7,MES_NO_FLASH],\
                 ["NORMAL",DISP_CENTER,0,0,7,MES_NO_FLASH],\
                 ["HARD",DISP_CENTER,0,0,7,MES_NO_FLASH],\
                 ["VERY HARD",DISP_CENTER,0,0,7,MES_NO_FLASH],\
                 ["INSAME",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
-                
-                "",0,0,0,0,0,0,0,\
+                [[""]],\
                 93,52,   0,0,  6*8,6*8-5,   3,3, 1,1,   0,0,    0,0,    0,0,0,0,\
+                BUTTON_DISP_OFF,0,0,0,\
+                BUTTON_DISP_OFF,0,0,0,\
                 [],[],[],[],[],[])
                 
                 self.window.append(new_window)                      #「DIFFICULTY」を育成する
@@ -4442,39 +4502,47 @@ class App:
                 self.cursor_page = 0                                #いま指し示しているページナンバー 0=very easy
                 self.cursor_page_max = 5                            #最大ページ数 難易度は0~5の範囲 なのでMAX5
                 self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
+            
             elif self.cursor_decision_item_y == 7:            #STATUSが押されたら
                 self.cursor_pre_x = self.cursor_x               #新しいウィンドウを開く前に現在のカーソル関連の変数を記憶しておきます
                 self.cursor_pre_y = self.cursor_y
+                self.cursor_pre_item_x = self.cursor_item_x
+                self.cursor_pre_decision_item_x = self.cursor_decision_item_x
+                self.cursor_pre_max_item_x = self.cursor_max_item_x
                 self.cursor_pre_item_y = self.cursor_item_y
                 self.cursor_pre_decision_item_y = self.cursor_decision_item_y
                 self.cursor_pre_max_item_y = self.cursor_max_item_y
                 
                 new_window = Window()
                 new_window.update(\
-                WINDOW_ID_SELECT_DIFFICULTY,\
+                WINDOW_ID_INPUT_YOUR_NAME,\
                 WINDOW_ID_SUB_NORMAL_MENU,\
-                WINDOW_TYPE_NORMAL,\
-                WINDOW_BLUE_BACK,\
+                WINDOW_TYPE_EDIT_TEXT,\
+                WINDOW_BG_BLUE_BACK,\
                 WINDOW_OPEN,\
                 "ENTER YOUR NAME",DISP_CENTER,\
-                
                 [["",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
-                
-                "",0,0,0,0,0,0,0,\
+                [self.my_name,DISP_LEFT_ALIGN,20,12,10,MES_NO_FLASH],\
                 80,52,   0,0,  6*11+2,6*3,   3,3, 1,1,   0,0,    0,0,    0,0,0,0,\
+                BUTTON_DISP_ON,51,12,WINDOW_BUTTON_SIZE_1TEXT,\
+                BUTTON_DISP_OFF,0,0,0,\
                 [],[],[],[],[],[])
+                
                 self.window.append(new_window)                      #「ENTER YOUR NAME」を育成する
                 self.cursor_type = CURSOR_TYPE_UNDER_BAR            #選択カーソルのタイプはアンダーバーの点滅にします
                 self.cursor_move_direction = CURSOR_MOVE_LR_SLIDER  #カーソルは左右でスライダー入力
                 self.cursor_x = 100                                  #セレクトカーソルの座標を設定します
                 self.cursor_y = 66
-                self.cursor_item_y = 0                              #いま指示しているアイテムナンバーy軸は0(縦には動かないので常に0となります)
                 self.cursor_item_x = 0                              #いま指示しているアイテムナンバーx軸は0
+                self.cursor_item_y = 0                              #いま指示しているアイテムナンバーy軸は0(縦には動かないので常に0となります)
+                self.cursor_decision_item_x = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_xは-1
                 self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
-                self.cursor_max_item_x = 5                          #最大項目数x軸方向は6項目なので 6-1=5を代入
+                self.cursor_max_item_x = 8                          #最大項目数x軸方向は(8文字+OKボタンなので合計9項目 9-1=8を代入
                 self.cursor_max_item_y = 0                          #最大項目数y軸方向は1項目なので 1-1=0を代入
                 
                 self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
+                
+                self.active_window_index = self.update_search_window_id(WINDOW_ID_INPUT_YOUR_NAME) #このウィンドウを最前列でアクティブなものとしてインデックスナンバーを調べて登録
                 
             elif self.cursor_decision_item_y == 9:            #REPLAYが押されたら
                 self.game_status = SCENE_SELECT_LOAD_SLOT          #ゲームステータスを「SCENE_SELECT_LOAD_SLOT」にしてロードデータスロットの選択に移る
@@ -4485,7 +4553,8 @@ class App:
                 #「SELECT STAGE」→「1」
                 self.stage_number   = 1                          #ステージナンバー1
                 window_count = len(self.window)
-                del self.window[window_count - 1]                #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
+                self.window[window_count -1].vx = 0.3            #最後に開かれたウィンドウを右にフッ飛ばしていく(現在のウィンドウ消去）
+                self.window[window_count -1].vx_accel = 1.2
                 self.cursor_menu_layer =  0                      #階層を0にする
                 self.cursor_x = self.cursor_pre_x                #カーソルの変数を前回の物に戻してやります
                 self.cursor_y = self.cursor_pre_y
@@ -4497,7 +4566,8 @@ class App:
                 #「SELECT STAGE」→「2」
                 self.stage_number   = 2                         #ステージナンバー2
                 window_count = len(self.window)
-                del self.window[window_count - 1]               #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
+                self.window[window_count -1].vx = 0.3            #最後に開かれたウィンドウを右にフッ飛ばしていく(現在のウィンドウ消去）
+                self.window[window_count -1].vx_accel = 1.2
                 self.cursor_menu_layer =  0                     #階層を0にする
                 self.cursor_x = self.cursor_pre_x               #カーソルの変数を前回の物に戻してやります
                 self.cursor_y = self.cursor_pre_y
@@ -4509,7 +4579,8 @@ class App:
                 #「SELECT STAGE」→「3」
                 self.stage_number   = 3                        #ステージナンバー3
                 window_count = len(self.window)
-                del self.window[window_count - 1]              #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
+                self.window[window_count -1].vx = 0.3            #最後に開かれたウィンドウを右にフッ飛ばしていく(現在のウィンドウ消去）
+                self.window[window_count -1].vx_accel = 1.2
                 self.cursor_menu_layer =  0                    #階層を0にする
                 self.cursor_x = self.cursor_pre_x              #カーソルの変数を前回の物に戻してやります
                 self.cursor_y = self.cursor_pre_y
@@ -4719,6 +4790,29 @@ class App:
                 self.cursor_max_item_y = self.cursor_pre_max_item_y  #
                 self.cursor_decision_item_y = -1                     #今から選択するアイテムは未決定に
                 self.cursor_pre_decision_item_y = -1                 #前回選択したアイテムも未決定に
+                
+            elif self.cursor_pre_decision_item_y == 7 and self.cursor_decision_item_x == 8:
+                #「ENTER YOUR NAME」→「OK」ボタンを押した
+                text = self.window[self.active_window_index].edit_text[LIST_WINDOW_TEXT]
+                print(text)
+                self.my_name = text[:8] #文字列textの先頭から8文字までをmy_nameとします
+                window_count = len(self.window)
+                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
+                
+                self.cursor_type = CURSOR_TYPE_NORMAL             #選択カーソル表示をonにする
+                self.cursor_move_direction = CURSOR_MOVE_UD       #カーソルは上下移動のみ
+                
+                self.cursor_menu_layer =  0                          #階層を0にする
+                self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
+                self.cursor_y = self.cursor_pre_y                    #
+                self.cursor_item_x = self.cursor_pre_item_x          #
+                self.cursor_max_item_x = self.cursor_pre_max_item_x  #
+                self.cursor_decision_item_x = -1
+                self.cursor_pre_decision_item_x = -1
+                self.cursor_item_y = self.cursor_pre_item_y          #
+                self.cursor_max_item_y = self.cursor_pre_max_item_y  #
+                self.cursor_decision_item_y = -1
+                self.cursor_pre_decision_item_y = -1
 
     #!ゲームスタート時の初期化#########################################
     def update_game_start_init(self):
@@ -4823,20 +4917,10 @@ class App:
         
         if self.replay_status == REPLAY_RECORD:
             self.update_save_replay_stage_data()    #リプレイ保存時は,ステージスタート時のパラメーターをセーブする関数を呼び出します(リプレイ再生で使用)
-            #print("\nSAVE!!!!  replay_mode_stage_data")
-            #print("stage num = " + str(self.replay_stage_num))
-            #print(self.replay_mode_stage_data)
+            
         elif self.replay_status == REPLAY_PLAY:
-            #print("\nロード前の replay_mode_stage_data")
-            #print("stage num = " + str(self.replay_stage_num))
-            #print(self.replay_mode_stage_data)
+            
             self.update_load_replay_stage_data()    #リプレイ再生時は,ステージスタート時のパラメーターをロードする関数を呼び出します
-            #print("\nLOAD!!!!  replay_mode_stage_data")
-            #print("stage num = " + str(self.replay_stage_num))
-            #print(self.replay_mode_stage_data)
-        
-        #print("\nreplay_mode_stage_dataの長さ")
-        #print(len(self.replay_mode_stage_data))
         
         self.pad_data_h = 0b00000000#パッド入力用ビットパターンデータを初期化します
         self.pad_data_l = 0b00000000#各ビットの詳細
@@ -9394,9 +9478,31 @@ class App:
                     
                     self.window[i].width  = self.window[i].open_width #小数点以下の座標の誤差を修正するために強制的にopen時の座標数値を現在座標数値に代入してやる
                     self.window[i].height = self.window[i].open_height
-            
+            self.window[i].vx *= self.window[i].vx_accel #速度に加速度を掛け合わせて変化させていく
+            self.window[i].vy *= self.window[i].vy_accel
             self.window[i].posx += self.window[i].vx #ウィンドウ位置の更新
             self.window[i].posy += self.window[i].vy
+
+
+    #ウィンドウのはみだしチェック（表示座標が完全に画面外になったのなら消去する）
+    def update_clip_window(self):
+        window_count = len(self.window)#ウィンドウの数を数える
+        rect_ax,rect_ay = 0,0
+        rect_aw,rect_ah = WINDOW_W,WINDOW_H
+        for i in reversed(range(window_count)):
+            #ゲームの画面(0,0)-(160,120)とウィンドウ(wx1,wy1)-(wx2,wy2)の2つの矩形の衝突判定を行い
+            #衝突して一部が重なっている→ウィンドウのどこかの部分を表示しないといけないのでウィンドウは生存させる
+            #衝突していない→お互いに干渉していないので画面にウィンドウが表示されることは無い→ウィンドウを消去する
+            rect_bx,rect_by = self.window[i].posx,self.window[i].posy
+            rect_bw,rect_bh = self.window[i].open_width,self.window[i].open_height
+            
+            #矩形A(ゲーム画面)と矩形B(ウィンドウ)の衝突判定を行う関数の呼び出し
+            if self.collision_rect_rect(rect_ax,rect_ay,rect_aw,rect_ah,rect_bx,rect_by,rect_bw,rect_bh) == False:
+                del self.window[i] #ウィンドウが画面外に存在するとき(2つの矩形が衝突していないとき)はインスタンスを破棄する(ウィンドウ消滅)
+
+
+
+
 
     #セレクトカーソルの更新
     def update_select_cursor(self):
@@ -9406,6 +9512,15 @@ class App:
                 if self.cursor_item_y != 0: #指し示しているアイテムナンバーが一番上の項目の0以外なら上方向にカーソルは移動できるので・・・
                     self.cursor_y -= 7 #y座標を7ドット（1キャラ分）上に
                     self.cursor_item_y -= 1 #現在指し示しているアイテムナンバーを1減らす
+            elif self.cursor_move_direction == CURSOR_MOVE_LR_SLIDER:
+                if self.cursor_item_x != self.cursor_max_item_x: #指し示しているアイテムナンバーx軸方向が最大項目数の場合はOKアイコンなので何もしない(それ以外の時は処理をする)
+                    text = self.window[self.active_window_index].edit_text[LIST_WINDOW_TEXT]
+                    character = ord(text[self.cursor_item_x]) #カーソルの位置の文字を取得しアスキーコードを取得する
+                    character += 1 #文字のアスキーコードを1増やす（今カーソルのあるアルファベットのアスキーコードを１増やす AはBに BはCに CはDに DはEになる)
+                    left_text  = text[:self.cursor_item_x] #先頭からカーソルまでの文字列を切り出す(カーソルの左方向の文字列の切り出し)
+                    right_text = text[self.cursor_item_x+1:] #カーソル位置から文字列の最後まで切り出す(カーソルの右方向の文字列の切り出し)
+                    new_text = left_text + chr(character) + right_text #新しい文字列を作り出す(pythonの文字列はimmutable(変更不能)らしいので新しい文字列変数を作ってそれを代入するしかない？？のかな？よくわかんない)
+                    self.window[self.active_window_index].edit_text[LIST_WINDOW_TEXT] = new_text
         
         # 下入力されたら  y座標を  +7する(1キャラ分)
         if pyxel.btnp(pyxel.KEY_DOWN) or pyxel.btnp(pyxel.GAMEPAD_1_DOWN) or pyxel.btnp(pyxel.GAMEPAD_2_DOWN):
@@ -9413,6 +9528,15 @@ class App:
                 if self.cursor_item_y != self.cursor_max_item_y: #指し示しているアイテムナンバーが最大項目数でないのなら下方向にカーソルは移動できるので・・
                     self.cursor_y += 7
                     self.cursor_item_y += 1
+            elif self.cursor_move_direction == CURSOR_MOVE_LR_SLIDER:
+                if self.cursor_item_x != self.cursor_max_item_x: #指し示しているアイテムナンバーx軸方向が最大項目数の場合はOKアイコンなので何もしない(それ以外の時は処理をする)
+                    text = self.window[self.active_window_index].edit_text[LIST_WINDOW_TEXT]
+                    character = ord(text[self.cursor_item_x]) #カーソルの位置の文字を取得しアスキーコードを取得する
+                    character -= 1 #文字のアスキーコードを1減らす（今カーソルのあるアルファベットのアスキーコードを１増やす AはBに BはCに CはDに DはEになる)
+                    left_text  = text[:self.cursor_item_x] #先頭からカーソルまでの文字列を切り出す(カーソルの左方向の文字列の切り出し)
+                    right_text = text[self.cursor_item_x+1:] #カーソル位置から文字列の最後まで切り出す(カーソルの右方向の文字列の切り出し)
+                    new_text = left_text + chr(character) + right_text #新しい文字列を作り出す(pythonの文字列はimmutable(変更不能)らしいので新しい文字列変数を作ってそれを代入するしかない？？のかな？よくわかんない)
+                    self.window[self.active_window_index].edit_text[LIST_WINDOW_TEXT] = new_text
         
         #右入力されたらcursor_pageを +1する
         if pyxel.btnp(pyxel.KEY_RIGHT) or pyxel.btnp(pyxel.GAMEPAD_1_RIGHT) or pyxel.btnp(pyxel.GAMEPAD_2_RIGHT) or pyxel.btnp(pyxel.GAMEPAD_1_RIGHT_SHOULDER) or pyxel.btnp(pyxel.GAMEPAD_2_RIGHT_SHOULDER):
@@ -9439,7 +9563,18 @@ class App:
                     self.cursor_item_x -= 1
         
         if pyxel.btnp(pyxel.KEY_SPACE) or pyxel.btnp(pyxel.GAMEPAD_1_A) or pyxel.btnp(pyxel.GAMEPAD_2_A) or pyxel.btnp(pyxel.GAMEPAD_1_B) or pyxel.btnp(pyxel.GAMEPAD_2_B):
+            self.cursor_decision_item_x = self.cursor_item_x #ボタンが押されて決定されたら、いま指示しているアイテムナンバーをcursor_decision_item_xに代入！
             self.cursor_decision_item_y = self.cursor_item_y #ボタンが押されて決定されたら、いま指示しているアイテムナンバーをcursor_decision_item_yに代入！
+
+    #ウィンドウIDの検索(与えられたウィンドウIDを元にしてウィンドウ群を検索しインデックスナンバーを取得する)
+    def update_search_window_id(self,id): #id=windowクラスの window_idに入っている数値 発見できなかった時は-1を返します
+        window_count = len(self.window)
+        for i in range(window_count):
+            if self.window[i].window_id == id:
+                num = i
+                break
+            num = -1
+        return num
 
     #リプレイデータの記録   自動移動モードの時とステージクリアのブーストの時とリプレイ再生中の時はリプレイデータを記録しません
     def update_record_replay_data(self):
@@ -9571,8 +9706,6 @@ class App:
         self.stage_loop       = pyxel.tilemap(0).get(0,3) - 16  #ループ数読み込み
         self.replay_stage_num = pyxel.tilemap(0).get(0,4) - 16  #リプレイファイルとして記録する総ステージ数を読み込み
         self.boss_test_mode   = pyxel.tilemap(0).get(0,5) - 16  ##ボステストモードのフラグを読み込み
-        # print("乱数の種(ゲームスタート時)= " + str(self.master_rnd_seed) + "の値をロードしました")
-        # print("総ステージ数は" + str(self.replay_stage_num + 1) + "ステージです")
         
         #ステージ毎ごとの自機関連パラメーターのロード---------------------------------------------------------------------------
         for i in range(self.replay_stage_num + 1):
@@ -9611,15 +9744,12 @@ class App:
             pad_data_size = self.read_system_data_num(128 -1 +8,10+i,  8) #座標(128,10+i)からの8ケタのコントロールパッド入力データが記録されたファイルのデータサイズを読み込みます
             self.replay_control_data_size.append(pad_data_size)           #コントロールデータのファイルサイズリストにサイズを追加していきます
         
-        # print(self.replay_control_data_size) #キチンと全てのステージのpyxresファイルのサイズがリストに登録されたかコンソール出力
-        
         #各ステージのパッド入力データのロード---------------------------------------------------------------------------------------
         for st in range(self.replay_stage_num + 1): #st(ステージ指定用に作った変数は0始まりなので注意)
             file_number = "{:>03}".format(st + 1)
             file_name = "assets/replay/" + slot_num + "/" + file_number + ".pyxres"
             pyxel.load(file_name) #リプレイパッド入力データファイルにアクセスするためにローディングだけしてやります(グラフイック関連のアセットをローディングしている時がほとんどなので)
             replay_control_data_count = self.replay_control_data_size[st] #stステージ目のreplay_dataのリスト長(要素数)を代入
-            # print (str(st + 1) + "ステージ目のコントロールデータの長さは " + str(replay_control_data_count) + " バイトです")
             
             for i in range (replay_control_data_count):
                 x = int(i % 256)                      #x座標は現在のカウント値iを256で割った余り
@@ -9627,8 +9757,6 @@ class App:
                 z = int(i // 65536)                   #z座標(この場合はタイルマップナンバーになります)は65536で割った数(切り捨て)
                 num = pyxel.tilemap(z).get(x,y)       #numにタイルマップ(z),座標(x,y)から読み取ったコントロールパッド入力データを代入
                 self.replay_data[st].append(int(num))    #リストにパッド入力データ記録！getで読み取ったのは文字(str)なので数値(int)に変換してリストにアペンドします
-            
-            # print (str(st + 1) + "ステージ目のコントロールデータ ロード完了！" + file_name)
 
     #リプレイデータ・ファイルセーブ
     def update_replay_data_file_save(self):
@@ -9642,7 +9770,6 @@ class App:
             pyxel.load(file_name) #リプレイパッド入力データファイルにアクセスするためにローディングだけしてやります(グラフイック関連のアセットをローディングしている時がほとんどなので)
             replay_control_data_count = len(self.replay_data[st])        #stステージ目のreplay_dataのリスト長(要素数)を代入
             self.replay_control_data_size.append(replay_control_data_count) #ステージ毎のコントロールデータのサイズをリストに追加していきます
-            # print (str(st + 1) + "ステージ目のコントロールデータの長さは " + str(replay_control_data_count) + " バイトです")
             for z in range(8): #データクリア処理-------------------------------------
                 for y in range(256):
                     for x in range(256):
@@ -9661,20 +9788,16 @@ class App:
                 pyxel.tilemap(z).set(x,y,num) #numをタイルマップ(z),座標(x,y)に書き込む
             
             pyxel.save(file_name) #リプレイパッド入力データファイルをセーブ！
-            # print (str(st + 1) + "ステージ目のコントロールデータ セーブ完了！" + file_name)
         
         #リプレイファイル本体のデータをセーブする---------------------------------------------------------------------------------------
         pyxel.load("assets/replay/" + slot_num + "/replay_status.pyxres") #リプレイステータスファイルにアクセスするためにローディングだけしてやります(グラフイック関連のアセットをローディングしている時がほとんどなので)
         #各種設定値書き込み 数字の[0]はアスキーコード16番なので16足してアスキーコードとしての0にしてやります
-        # print("乱数の種(ゲームスタート時)= " + str(self.master_rnd_seed) + "の値をセーブしました")
         pyxel.tilemap(0).set(0,0,self.master_rnd_seed)          #乱数の種(ゲームスタート時)を書き込み(数文字には変換しない)
         pyxel.tilemap(0).set(0,1,self.game_difficulty + 16)     #難易度書き込み
         pyxel.tilemap(0).set(0,2,self.start_stage_number + 16)  #ゲーム開始時のステージ数書き込み
         pyxel.tilemap(0).set(0,3,self.start_stage_loop + 16)    #ゲーム開始時のループ数書き込み
         pyxel.tilemap(0).set(0,4,self.replay_stage_num + 16)    #リプレイファイルとして記録する総ステージ数を書き込み
         pyxel.tilemap(0).set(0,5,self.boss_test_mode   + 16)    #ボステストモードのフラグを書き込み
-        
-        # print("総ステージ数は" + str(self.replay_stage_num + 1) + "ステージです")
         
         #ステージ毎ごとの自機関連パラメーターのセーブ--------------------------------------------------------------------------------
         for i in range(self.replay_stage_num + 1):
@@ -10871,31 +10994,65 @@ class App:
             #ステータスがテキストメッセージの表示中もしくはウィンドウオープン完了の時はメッセージテキストを表示する
             if     self.window[i].window_status == WINDOW_WRITE_MESSAGE \
                 or self.window[i].window_status == WINDOW_OPEN_COMPLETED:
-                for ty in range(len(self.window[i].mes1)): #mes1の長さの分ループ処理する
-                    if self.window[i].mes1[ty][LIST_WINDOW_TEXT]  != "": #ウィンドウテキストの表示をする 文字列が存在しないのなら次の行へとスキップループする
-                        if   self.window[i].mes1[ty][LIST_WINDOW_TEXT_FLASH]  == MES_NO_FLASH:        #テキスト点滅無しの場合
-                            col = self.window[i].mes1[ty][LIST_WINDOW_TEXT_COLOR]
-                        elif self.window[i].mes1[ty][LIST_WINDOW_TEXT_FLASH] == MES_BLINKING_FLASH:   #テキスト点滅の場合
+                for ty in range(len(self.window[i].text)): #textの長さの分ループ処理する
+                    if self.window[i].text[ty][LIST_WINDOW_TEXT]  != "": #ウィンドウテキストの表示をする 文字列が存在しないのなら次の行へとスキップループする
+                        if   self.window[i].text[ty][LIST_WINDOW_TEXT_FLASH]  == MES_NO_FLASH:        #テキスト点滅無しの場合
+                            col = self.window[i].text[ty][LIST_WINDOW_TEXT_COLOR]
+                        elif self.window[i].text[ty][LIST_WINDOW_TEXT_FLASH] == MES_BLINKING_FLASH:   #テキスト点滅の場合
                             col = self.blinking_color[pyxel.frame_count // 4 % 10]
-                        elif self.window[i].mes1[ty][LIST_WINDOW_TEXT_FLASH] == MES_YELLOW_FLASH:     #テキスト黄色点滅の場合
+                        elif self.window[i].text[ty][LIST_WINDOW_TEXT_FLASH] == MES_YELLOW_FLASH:     #テキスト黄色点滅の場合
                             col = self.yellow_flash_color[pyxel.frame_count // 4 % 10]
-                        elif self.window[i].mes1[ty][LIST_WINDOW_TEXT_FLASH] == MES_RED_FLASH:        #テキスト赤い点滅の場合
+                        elif self.window[i].text[ty][LIST_WINDOW_TEXT_FLASH] == MES_RED_FLASH:        #テキスト赤い点滅の場合
                             col = self.red_flash_color[pyxel.frame_count // 4 % 10]
-                        elif self.window[i].mes1[ty][LIST_WINDOW_TEXT_FLASH] == MES_GREEN_FLASH:      #テキスト緑で点滅の場合
+                        elif self.window[i].text[ty][LIST_WINDOW_TEXT_FLASH] == MES_GREEN_FLASH:      #テキスト緑で点滅の場合
                             col = self.green_flash_color[pyxel.frame_count // 4 % 10]
-                        elif self.window[i].mes1[ty][LIST_WINDOW_TEXT_FLASH] == MES_MONOCHROME_FLASH: #テキスト白黒で点滅の場合
+                        elif self.window[i].text[ty][LIST_WINDOW_TEXT_FLASH] == MES_MONOCHROME_FLASH: #テキスト白黒で点滅の場合
                             col = self.monochrome_flash_color[pyxel.frame_count // 4 % 10]
-                        elif self.window[i].mes1[ty][LIST_WINDOW_TEXT_FLASH] == MES_RAINBOW_FLASH:    #テキスト虹色に点滅の場合
+                        elif self.window[i].text[ty][LIST_WINDOW_TEXT_FLASH] == MES_RAINBOW_FLASH:    #テキスト虹色に点滅の場合
                             col = self.rainbow_flash_color[pyxel.frame_count // 4 % 10]
                         
-                        if self.window[i].mes1[ty][LIST_WINDOW_TEXT_ALIGN] == DISP_CENTER:
-                            pyxel.text(self.window[i].posx + self.window[i].mes1[ty][LIST_WINDOW_TEXT_OX] + 6 + self.window[i].width // 2 - len(self.window[i].mes1[ty][LIST_WINDOW_TEXT]) * 2,self.window[i].posy + 5 + (ty+1)*7 ,str(self.window[i].mes1[ty][LIST_WINDOW_TEXT]),0)
-                            pyxel.text(self.window[i].posx + self.window[i].mes1[ty][LIST_WINDOW_TEXT_OX] + 6 + self.window[i].width // 2 - len(self.window[i].mes1[ty][LIST_WINDOW_TEXT]) * 2,self.window[i].posy + 6 + (ty+1)*7 ,str(self.window[i].mes1[ty][LIST_WINDOW_TEXT]),0)
-                            pyxel.text(self.window[i].posx + self.window[i].mes1[ty][LIST_WINDOW_TEXT_OX] + 5 + self.window[i].width // 2 - len(self.window[i].mes1[ty][LIST_WINDOW_TEXT]) * 2,self.window[i].posy + 5 + (ty+1)*7 ,str(self.window[i].mes1[ty][LIST_WINDOW_TEXT]),col)
-                        elif self.window[i].mes1[ty][LIST_WINDOW_TEXT_ALIGN] == DISP_LEFT_ALIGN:
-                            pyxel.text(self.window[i].posx + self.window[i].mes1[ty][LIST_WINDOW_TEXT_OX] + 6  ,self.window[i].posy + 5 + (ty+1)*7 ,str(self.window[i].mes1[ty][LIST_WINDOW_TEXT]),0)
-                            pyxel.text(self.window[i].posx + self.window[i].mes1[ty][LIST_WINDOW_TEXT_OX] + 6  ,self.window[i].posy + 6 + (ty+1)*7 ,str(self.window[i].mes1[ty][LIST_WINDOW_TEXT]),0)
-                            pyxel.text(self.window[i].posx + self.window[i].mes1[ty][LIST_WINDOW_TEXT_OX] + 5  ,self.window[i].posy + 5 + (ty+1)*7 ,str(self.window[i].mes1[ty][LIST_WINDOW_TEXT]),col)
+                        if self.window[i].text[ty][LIST_WINDOW_TEXT_ALIGN] == DISP_CENTER:
+                            pyxel.text(self.window[i].posx + self.window[i].text[ty][LIST_WINDOW_TEXT_OX] + 6 + self.window[i].width // 2 - len(self.window[i].text[ty][LIST_WINDOW_TEXT]) * 2,self.window[i].posy + 5 + (ty+1)*7 ,str(self.window[i].text[ty][LIST_WINDOW_TEXT]),0)
+                            pyxel.text(self.window[i].posx + self.window[i].text[ty][LIST_WINDOW_TEXT_OX] + 6 + self.window[i].width // 2 - len(self.window[i].text[ty][LIST_WINDOW_TEXT]) * 2,self.window[i].posy + 6 + (ty+1)*7 ,str(self.window[i].text[ty][LIST_WINDOW_TEXT]),0)
+                            pyxel.text(self.window[i].posx + self.window[i].text[ty][LIST_WINDOW_TEXT_OX] + 5 + self.window[i].width // 2 - len(self.window[i].text[ty][LIST_WINDOW_TEXT]) * 2,self.window[i].posy + 5 + (ty+1)*7 ,str(self.window[i].text[ty][LIST_WINDOW_TEXT]),col)
+                        elif self.window[i].text[ty][LIST_WINDOW_TEXT_ALIGN] == DISP_LEFT_ALIGN:
+                            pyxel.text(self.window[i].posx + self.window[i].text[ty][LIST_WINDOW_TEXT_OX] + 6  ,self.window[i].posy + 5 + (ty+1)*7 ,str(self.window[i].text[ty][LIST_WINDOW_TEXT]),0)
+                            pyxel.text(self.window[i].posx + self.window[i].text[ty][LIST_WINDOW_TEXT_OX] + 6  ,self.window[i].posy + 6 + (ty+1)*7 ,str(self.window[i].text[ty][LIST_WINDOW_TEXT]),0)
+                            pyxel.text(self.window[i].posx + self.window[i].text[ty][LIST_WINDOW_TEXT_OX] + 5  ,self.window[i].posy + 5 + (ty+1)*7 ,str(self.window[i].text[ty][LIST_WINDOW_TEXT]),col)
+            
+            #ウィンドウタイプがテキスト編集の入力待ちのタイプはさらに入力メッセージ(edit_text)の文字列を表示する
+            if     self.window[i].window_type   == WINDOW_TYPE_EDIT_TEXT:
+                if self.window[i].edit_text[LIST_WINDOW_TEXT]  != "": #ウィンドウテキストの表示をする 文字列が存在しないのなら次の行へとスキップループする
+                    if   self.window[i].edit_text[LIST_WINDOW_TEXT_FLASH]  == MES_NO_FLASH:        #テキスト点滅無しの場合
+                        col = self.window[i].edit_text[LIST_WINDOW_TEXT_COLOR]
+                    elif self.window[i].edit_text[LIST_WINDOW_TEXT_FLASH] == MES_BLINKING_FLASH:   #テキスト点滅の場合
+                        col = self.blinking_color[pyxel.frame_count // 4 % 10]
+                    elif self.window[i].edit_text[LIST_WINDOW_TEXT_FLASH] == MES_YELLOW_FLASH:     #テキスト黄色点滅の場合
+                        col = self.yellow_flash_color[pyxel.frame_count // 4 % 10]
+                    elif self.window[i].edit_text[LIST_WINDOW_TEXT_FLASH] == MES_RED_FLASH:        #テキスト赤い点滅の場合
+                        col = self.red_flash_color[pyxel.frame_count // 4 % 10]
+                    elif self.window[i].edit_text[LIST_WINDOW_TEXT_FLASH] == MES_GREEN_FLASH:      #テキスト緑で点滅の場合
+                        col = self.green_flash_color[pyxel.frame_count // 4 % 10]
+                    elif self.window[i].edit_text[LIST_WINDOW_TEXT_FLASH] == MES_MONOCHROME_FLASH: #テキスト白黒で点滅の場合
+                        col = self.monochrome_flash_color[pyxel.frame_count // 4 % 10]
+                    elif self.window[i].edit_text[LIST_WINDOW_TEXT_FLASH] == MES_RAINBOW_FLASH:    #テキスト虹色に点滅の場合
+                        col = self.rainbow_flash_color[pyxel.frame_count // 4 % 10]
+                    
+                    if self.window[i].edit_text[LIST_WINDOW_TEXT_ALIGN] == DISP_CENTER:
+                        pyxel.text(self.window[i].posx + self.window[i].edit_text[LIST_WINDOW_TEXT_OX] + 1 + self.window[i].width // 2 - len(self.window[i].edit_text[LIST_WINDOW_TEXT]) * 2,self.window[i].posy + self.window[i].edit_text[LIST_WINDOW_TEXT_OY]   ,str(self.window[i].edit_text[LIST_WINDOW_TEXT]),0)
+                        pyxel.text(self.window[i].posx + self.window[i].edit_text[LIST_WINDOW_TEXT_OX] + 1 + self.window[i].width // 2 - len(self.window[i].edit_text[LIST_WINDOW_TEXT]) * 2,self.window[i].posy + self.window[i].edit_text[LIST_WINDOW_TEXT_OY] + 1,str(self.window[i].edit_text[LIST_WINDOW_TEXT]),0)
+                        pyxel.text(self.window[i].posx + self.window[i].edit_text[LIST_WINDOW_TEXT_OX]     + self.window[i].width // 2 - len(self.window[i].edit_text[LIST_WINDOW_TEXT]) * 2,self.window[i].posy + self.window[i].edit_text[LIST_WINDOW_TEXT_OY]   ,str(self.window[i].edit_text[LIST_WINDOW_TEXT]),col)
+                    elif self.window[i].edit_text[LIST_WINDOW_TEXT_ALIGN] == DISP_LEFT_ALIGN:
+                        pyxel.text(self.window[i].posx + self.window[i].edit_text[LIST_WINDOW_TEXT_OX] + 1 ,self.window[i].posy + self.window[i].edit_text[LIST_WINDOW_TEXT_OY]    ,str(self.window[i].edit_text[LIST_WINDOW_TEXT]),0)
+                        pyxel.text(self.window[i].posx + self.window[i].edit_text[LIST_WINDOW_TEXT_OX] + 1 ,self.window[i].posy + self.window[i].edit_text[LIST_WINDOW_TEXT_OY] + 1,str(self.window[i].edit_text[LIST_WINDOW_TEXT]),0)
+                        pyxel.text(self.window[i].posx + self.window[i].edit_text[LIST_WINDOW_TEXT_OX]     ,self.window[i].posy + self.window[i].edit_text[LIST_WINDOW_TEXT_OY]    ,str(self.window[i].edit_text[LIST_WINDOW_TEXT]),col)
+            
+            #OKボタンの表示
+            if self.window[i].ok_button_disp_flag == BUTTON_DISP_ON: #OKボタン表示フラグが立っているのならば・・・
+                if self.window[i].ok_button_size == WINDOW_BUTTON_SIZE_1TEXT: #ボタンサイズが半角テキストの場合
+                    u,v = 224 + (pyxel.frame_count // 3 % 8) * 4,184
+                    w,h = 4,6
+                    pyxel.blt(self.window[i].posx + self.window[i].ok_button_x,self.window[i].posy + self.window[i].ok_button_y,IMG2,u,v,w,h,13)
 
     #セレクトカーソルの表示
     def draw_select_cursor(self):
@@ -10977,6 +11134,7 @@ class App:
             self.update_append_star()             #背景の星の追加＆発生育成関数呼び出し
             self.update_star()                    #背景の星の更新（移動）関数呼び出し
             self.update_window()                  #ウィンドウの更新（ウィンドウの開き閉じ画面外に消え去っていくとか）関数を呼び出し
+            self.update_clip_window()                 #画面外にはみ出たウィンドウを消去する関数の呼び出し
             self.update_select_cursor()           #セレクトカーソルでメニューを選択する関数を呼び出す
         
         ############################### ロード用リプレイデータスロットの選択中 #######################################################
@@ -10984,6 +11142,7 @@ class App:
             self.update_append_star()                 #背景の星の追加＆発生育成関数呼び出し
             self.update_star()                        #背景の星の更新（移動）関数呼び出し
             self.update_window()                      #ウィンドウの更新（ウィンドウの開き閉じ画面外に消え去っていくとか）関数を呼び出し
+            self.update_clip_window()                 #画面外にはみ出たウィンドウを消去する関数の呼び出し
             self.update_select_cursor()               #セレクトカーソルでメニューを選択する関数を呼び出す
             if   self.cursor_decision_item_y == 0:      #メニューでアイテムナンバー0の「1」が押されたら
                 self.replay_slot_num = 0              #スロット番号は0   (以下はほぼ同じ処理です)
@@ -11172,15 +11331,15 @@ class App:
                 WINDOW_ID_GAME_OVER_RETURN,\
                 WINDOW_ID_SUB_NORMAL_MENU,\
                 WINDOW_TYPE_NORMAL,\
-                WINDOW_LOW_TRANSLUCENT,\
+                WINDOW_BG_LOW_TRANSLUCENT,\
                 WINDOW_OPEN,\
                 "RETURN TITLE?",DISP_CENTER,\
-                
                 [["RETURN",DISP_CENTER,0,0,6,MES_NO_FLASH],\
                 ["SAVE & RETURN",DISP_CENTER,0,0,10,MES_NO_FLASH]],\
-                
-                "",0,0,0,0,0,0,0,\
+                [[""]],\
                 43,68,   0,0,  8*8,3*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
+                BUTTON_DISP_OFF,0,0,0,\
+                BUTTON_DISP_OFF,0,0,0,\
                 [],[],[],[],[],[])
                 
                 self.window.append(new_window)                    #「RETURN TITLE?」の選択メニューを育成する
@@ -11198,14 +11357,14 @@ class App:
                 WINDOW_ID_GAME_OVER_RETURN_NO_SAVE,\
                 WINDOW_ID_SUB_NORMAL_MENU,\
                 WINDOW_TYPE_NORMAL,\
-                WINDOW_LOW_TRANSLUCENT,\
+                WINDOW_BG_LOW_TRANSLUCENT,\
                 WINDOW_OPEN,\
                 "RETURN TITLE?",DISP_CENTER,\
-                
                 [["RETURN",DISP_CENTER,0,0,6,MES_NO_FLASH]],\
-                
-                "",0,0,0,0,0,0,0,\
+                [[""]],\
                 43,68,   0,0,  8*8,2*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
+                BUTTON_DISP_OFF,0,0,0,\
+                BUTTON_DISP_OFF,0,0,0,\
                 [],[],[],[],[],[])
                 
                 self.window.append(new_window)                    #「RETURN TITLE?」の選択メニューを育成する
@@ -11292,6 +11451,7 @@ class App:
             self.update_game_pause()        #ボタンが押されたらポーズをかける関数を呼び出し
             #ウィンドウ＆メニューカーソル関連の処理###############################################################################################
             self.update_window()            #ウィンドウの更新（ウィンドウの開き閉じ画面外に消え去っていくとか）関数を呼び出し
+            self.update_clip_window()                 #画面外にはみ出たウィンドウを消去する関数の呼び出し
             self.update_select_cursor()     #メニューカーソルの更新（移動とか）関数を呼び出し
     
     ###########################################################
