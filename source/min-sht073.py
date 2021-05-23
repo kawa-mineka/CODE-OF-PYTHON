@@ -77,14 +77,6 @@
 
 #todo900 BGMの作成(無理そう.........)
 #実装完了済み！
-#todo980  スコアランキング表示工程のスコア表示関数だけまず実装 2021 05/09
-#todo980a 結構めんどう～～だよね・・・スコア表示関連の処理・・ 2021 05/09
-#todo980b メインメニューからスコアランキングの表示、難易度ごとに左右入力のページ捲り表示の実装 2021 05/10
-#todo980c スコアのクイックソートの自作関数で嵌る・・・新しいリストを作成して組み込み関数のsort()で行くべきか・・・う～～～ん 2021 05/11
-#todo980d 結局クイックソートではなく単純なバブルソートでスコアのソートを実装、たったの11要素のソートなので別にいよネ、遅くても 2021 05/13
-#todo980e 一応スコアランキング表示実装完了 2021 05/14
-#todo     windowクラス内のテキスト表示をそれそれの行ごとに各変数を作ってそこに代入して表示していたが、for文でどうやってもループで処理できなかったので展開していたのをリストを採用してそこに入れ込んで表示するようにした250行ぐらい削減出来てすっきり～～♪（最初からやれよ！って感じですがｗ) 2021 05/15
-
 
 # from random import randint   #random.randint(n,m) と呼ぶと、nからm(m自身を含む)までの間の整数が 等しい確率で、ランダムに返される
 from random import random    #random.random() と呼ぶと、0から1の範囲(1は含まない)のランダムな実数が返される(主にパーティクル系で使用します)
@@ -2051,6 +2043,43 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         self.missile_list    = missile_list
         self.medal_list      = medal_list
         self.item_list       = item_list
+class Cursor: #メッセージ表示ウィンドウで使用するカーソルのデータ群のクラス設定
+    def __init__(self): #コンストラクタ
+        self.window_id = 0         #このウィンドウIDがアクティブになったらこのカーソルデータを使用してカーソルを表示開始します
+        self.cursor_type = 0       #セレクトカーソルの種類
+        self.posx = 0              #セレクトカーソルのx座標
+        self.posy = 0              #セレクトカーソルのy座標
+        self.step_x = 0            #横方向の移動ドット数
+        self.step_y = 0            #縦方向の移動ドット数
+        self.page = 0              #いま指し示しているページナンバー
+        self.page_max = 0          #セレクトカーソルで捲ることが出来る最多ページ数
+        self.item_x = 0            #いま指し示しているアイテムナンバーx軸方向
+        self.item_y = 0            #いま指し示しているアイテムナンバーy軸方向
+        self.max_item_x = 0        #x軸の最大項目数 5の場合(0~4)の5項目分カーソルが移動することになります 3だったら(0~2)って感じで
+        self.max_item_y = 0        #y軸の最大項目数 5の場合(0~4)の5項目分カーソルが移動することになります 3だったら(0~2)って感じで
+        self.decision_item_x = -1  #ボタンが押されて「決定」されたアイテムのナンバーx軸方向 -1は未決定 ここをチェックしてどのアイテムが選択されたのか判断する
+        self.decision_item_y = -1  #ボタンが押されて「決定」されたアイテムのナンバーy軸方向 -1は未決定 ここをチェックしてどのアイテムが選択されたのか判断する
+        self.color = 0             #セレクトカーソルの色
+        self.menu_layer = 0        #現在選択中のメニューの階層の数値が入ります
+        self.move_direction = 0    #セレクトカーソルがどう動かせることが出来るのか？の状態遷移変数です
+    def update(self,window_id,cursor_type,x,y,step_x,step_y,page,page_max,item_x,item_y,max_item_x,max_item_y,decision_item_x,decision_item_y,color,menu_layer,move_direction):
+        self.window_id = window_id
+        self.cursor_type = cursor_type
+        self.posx = x
+        self.posy = y
+        self.step_x = step_x
+        self.step_y = step_y
+        self.page = page
+        self.page_max = page_max
+        self.item_x = item_x
+        self.item_y = item_y
+        self.max_item_x = max_item_x
+        self.max_item_y = max_item_y
+        self.decision_item_x = decision_item_x
+        self.decision_item_y = decision_item_y
+        self.color = color
+        self.menu_layer = menu_layer
+        self.move_direction = move_direction
 class Obtain_item:#手に入れるアイテム類（パワーアップ勲章とかコインアイテムとか）のクラス設定
     def __init__(self):
         self.item_type = 0                  #アイテムのタイプ 1=ショットパワーアップ 2=ミサイルパワーアップ 3=シールドパワーアップ
@@ -4075,6 +4104,16 @@ class App:
         
         self.window.append(new_window)                   #「RANKING」を育成する
 
+    #ウィンドウIDの検索(与えられたウィンドウIDを元にしてウィンドウ群を検索しインデックスナンバーを取得する)
+    def search_window_id(self,id): #id=windowクラスの window_idに入っている数値 発見できなかった時は-1を返します
+        window_count = len(self.window)
+        for i in range(window_count):
+            if self.window[i].window_id == id:
+                num = i
+                break
+            num = -1
+        return num
+
     #リプレイファイルスロット選択ウィンドウの表示
     def window_replay_data_slot_select(self):
         new_window = Window()
@@ -4313,40 +4352,41 @@ class App:
                 self.start_stage_loop   = self.stage_loop
                 self.game_status = SCENE_GAME_START_INIT    #ゲームステータスを「GAME_START_INIT」にしてゲーム全体を初期化＆リスタートする
                 
-            elif self.cursor_decision_item_y == 1:            #SELECT STAGEが押されたら
-                self.cursor_pre_x = self.cursor_x           #新しいウィンドウを開く前に現在のカーソル関連の変数を記憶しておきます
-                self.cursor_pre_y = self.cursor_y             
-                self.cursor_pre_item_y = self.cursor_item_y
-                self.cursor_pre_decision_item_y = self.cursor_decision_item_y
-                self.cursor_pre_max_item_y = self.cursor_max_item_y 
-                
-                new_window = Window()
-                new_window.update(\
-                WINDOW_ID_SELECT_STAGE_MENU,\
-                WINDOW_ID_SUB_NORMAL_MENU,\
-                WINDOW_TYPE_NORMAL,\
-                WINDOW_BG_BLUE_BACK,\
-                WINDOW_OPEN,\
-                "",DISP_CENTER,\
-                [["1",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-                [ "2",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-                [ "3",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
-                [[""]],\
-                90,60,   0,0,  2*8,5*8,   2,2, 1,1,   0,0,    0,0,    0,0,0,0,\
-                BUTTON_DISP_OFF,0,0,0,\
-                BUTTON_DISP_OFF,0,0,0,\
-                [],[],[],[],[],[])
-                
-                self.window.append(new_window)                   #「STAGE」を育成する
-                self.cursor_type = CURSOR_TYPE_NORMAL            #選択カーソル表示をonにする
-                self.cursor_move_direction = CURSOR_MOVE_UD      #カーソルは上下移動のみ
-                self.cursor_x = 92                               #セレクトカーソルの座標を設定します
-                self.cursor_y = 71
-                self.cursor_item_y = 0                           #いま指示しているアイテムナンバーは0の「1」
-                self.cursor_decision_item_y = -1                 #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
-                self.cursor_max_item_y = 2                       #最大項目数は3項目なので 3-1=2を代入
-                
-                self.cursor_menu_layer = 1                       #メニューの階層が増えたので0から1にします
+            elif self.cursor_decision_item_y == 1:            #SELECT STAGEが押されて
+                if self.search_window_id(WINDOW_ID_SELECT_STAGE_MENU) == -1: #SELECT_STAGE_MENUウィンドウが存在しないのなら・・
+                    self.cursor_pre_x = self.cursor_x           #新しいウィンドウを開く前に現在のカーソル関連の変数を記憶しておきます
+                    self.cursor_pre_y = self.cursor_y             
+                    self.cursor_pre_item_y = self.cursor_item_y
+                    self.cursor_pre_decision_item_y = self.cursor_decision_item_y
+                    self.cursor_pre_max_item_y = self.cursor_max_item_y 
+                    
+                    new_window = Window()
+                    new_window.update(\
+                    WINDOW_ID_SELECT_STAGE_MENU,\
+                    WINDOW_ID_SUB_NORMAL_MENU,\
+                    WINDOW_TYPE_NORMAL,\
+                    WINDOW_BG_BLUE_BACK,\
+                    WINDOW_OPEN,\
+                    "",DISP_CENTER,\
+                    [["1",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+                    [ "2",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+                    [ "3",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
+                    [[""]],\
+                    90,60,   0,0,  2*8,5*8,   2,2, 1,1,   0,0,    0,0,    0,0,0,0,\
+                    BUTTON_DISP_OFF,0,0,0,\
+                    BUTTON_DISP_OFF,0,0,0,\
+                    [],[],[],[],[],[])
+                    self.window.append(new_window)                   #「STAGE」を育成する
+                    
+                    self.cursor_type = CURSOR_TYPE_NORMAL            #選択カーソル表示をonにする
+                    self.cursor_move_direction = CURSOR_MOVE_UD      #カーソルは上下移動のみ
+                    self.cursor_x = 92                               #セレクトカーソルの座標を設定します
+                    self.cursor_y = 71
+                    self.cursor_item_y = 0                           #いま指示しているアイテムナンバーは0の「1」
+                    self.cursor_decision_item_y = -1                 #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
+                    self.cursor_max_item_y = 2                       #最大項目数は3項目なので 3-1=2を代入
+                    
+                    self.cursor_menu_layer = 1                       #メニューの階層が増えたので0から1にします
                 
             elif self.cursor_decision_item_y == 2:            #SELECT LOOPが押されたら
                 self.cursor_pre_x = self.cursor_x                    #新しいウィンドウを開く前に現在のカーソル関連の変数を記憶しておきます
@@ -4542,7 +4582,7 @@ class App:
                 
                 self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
                 
-                self.active_window_index = self.update_search_window_id(WINDOW_ID_INPUT_YOUR_NAME) #このウィンドウを最前列でアクティブなものとしてインデックスナンバーを調べて登録
+                self.active_window_index = self.search_window_id(WINDOW_ID_INPUT_YOUR_NAME) #このウィンドウを最前列でアクティブなものとしてインデックスナンバーを調べて登録
                 
             elif self.cursor_decision_item_y == 9:            #REPLAYが押されたら
                 self.game_status = SCENE_SELECT_LOAD_SLOT          #ゲームステータスを「SCENE_SELECT_LOAD_SLOT」にしてロードデータスロットの選択に移る
@@ -4552,9 +4592,9 @@ class App:
             if   self.cursor_pre_decision_item_y == 1 and self.cursor_decision_item_y == 0:
                 #「SELECT STAGE」→「1」
                 self.stage_number   = 1                          #ステージナンバー1
-                window_count = len(self.window)
-                self.window[window_count -1].vx = 0.3            #最後に開かれたウィンドウを右にフッ飛ばしていく(現在のウィンドウ消去）
-                self.window[window_count -1].vx_accel = 1.2
+                i = self.search_window_id(WINDOW_ID_SELECT_STAGE_MENU)
+                self.window[i].vx = 0.3            #WINDOW_ID_SELECT_STAGE_MENUウィンドウを右にフッ飛ばしていく
+                self.window[i].vx_accel = 1.2
                 self.cursor_menu_layer =  0                      #階層を0にする
                 self.cursor_x = self.cursor_pre_x                #カーソルの変数を前回の物に戻してやります
                 self.cursor_y = self.cursor_pre_y
@@ -4565,9 +4605,9 @@ class App:
             elif self.cursor_pre_decision_item_y == 1 and self.cursor_decision_item_y == 1:
                 #「SELECT STAGE」→「2」
                 self.stage_number   = 2                         #ステージナンバー2
-                window_count = len(self.window)
-                self.window[window_count -1].vx = 0.3            #最後に開かれたウィンドウを右にフッ飛ばしていく(現在のウィンドウ消去）
-                self.window[window_count -1].vx_accel = 1.2
+                i = self.search_window_id(WINDOW_ID_SELECT_STAGE_MENU)
+                self.window[i].vx = 0.3            #WINDOW_ID_SELECT_STAGE_MENUウィンドウを右にフッ飛ばしていく
+                self.window[i].vx_accel = 1.2
                 self.cursor_menu_layer =  0                     #階層を0にする
                 self.cursor_x = self.cursor_pre_x               #カーソルの変数を前回の物に戻してやります
                 self.cursor_y = self.cursor_pre_y
@@ -4578,9 +4618,9 @@ class App:
             elif self.cursor_pre_decision_item_y == 1 and self.cursor_decision_item_y == 2:
                 #「SELECT STAGE」→「3」
                 self.stage_number   = 3                        #ステージナンバー3
-                window_count = len(self.window)
-                self.window[window_count -1].vx = 0.3            #最後に開かれたウィンドウを右にフッ飛ばしていく(現在のウィンドウ消去）
-                self.window[window_count -1].vx_accel = 1.2
+                i = self.search_window_id(WINDOW_ID_SELECT_STAGE_MENU)
+                self.window[i].vx = 0.3            #WINDOW_ID_SELECT_STAGE_MENUウィンドウを右にフッ飛ばしていく
+                self.window[i].vx_accel = 1.2
                 self.cursor_menu_layer =  0                    #階層を0にする
                 self.cursor_x = self.cursor_pre_x              #カーソルの変数を前回の物に戻してやります
                 self.cursor_y = self.cursor_pre_y
@@ -9500,10 +9540,6 @@ class App:
             if self.collision_rect_rect(rect_ax,rect_ay,rect_aw,rect_ah,rect_bx,rect_by,rect_bw,rect_bh) == False:
                 del self.window[i] #ウィンドウが画面外に存在するとき(2つの矩形が衝突していないとき)はインスタンスを破棄する(ウィンドウ消滅)
 
-
-
-
-
     #セレクトカーソルの更新
     def update_select_cursor(self):
         # 上入力されたら  y座標を  -7する(1キャラ分)
@@ -9565,16 +9601,6 @@ class App:
         if pyxel.btnp(pyxel.KEY_SPACE) or pyxel.btnp(pyxel.GAMEPAD_1_A) or pyxel.btnp(pyxel.GAMEPAD_2_A) or pyxel.btnp(pyxel.GAMEPAD_1_B) or pyxel.btnp(pyxel.GAMEPAD_2_B):
             self.cursor_decision_item_x = self.cursor_item_x #ボタンが押されて決定されたら、いま指示しているアイテムナンバーをcursor_decision_item_xに代入！
             self.cursor_decision_item_y = self.cursor_item_y #ボタンが押されて決定されたら、いま指示しているアイテムナンバーをcursor_decision_item_yに代入！
-
-    #ウィンドウIDの検索(与えられたウィンドウIDを元にしてウィンドウ群を検索しインデックスナンバーを取得する)
-    def update_search_window_id(self,id): #id=windowクラスの window_idに入っている数値 発見できなかった時は-1を返します
-        window_count = len(self.window)
-        for i in range(window_count):
-            if self.window[i].window_id == id:
-                num = i
-                break
-            num = -1
-        return num
 
     #リプレイデータの記録   自動移動モードの時とステージクリアのブーストの時とリプレイ再生中の時はリプレイデータを記録しません
     def update_record_replay_data(self):
