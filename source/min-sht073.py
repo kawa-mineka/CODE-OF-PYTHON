@@ -433,10 +433,10 @@ WINDOW_ID_HITBOX_MENU              =  5 #ヒットボックス(当たり判定)�
 WINDOW_ID_SELECT_DIFFICULTY        =  6 #難易度選択メニュー
 WINDOW_ID_SELECT_REPLAY_SLOT       =  7 #どのスロットのリプレイデータをロードするのかのメニュー
 WINDOW_ID_GAME_OVER_RETURN         =  8 #ゲームオーバーから戻る時のメニュー
-WINDOW_ID_GAME_OVER_RETURN_NO_SAVE =  8 #ゲームオーバーから戻る時のメニュー(リプレイデータのセーブは無し)
-WINDOW_ID_SELECT_FILE_SLOT         =  9 #リプレイデータをセーブするスロットを選択するメニュー
-WINDOW_ID_SCORE_BOARD              = 10 #スコアボードウィンドウ
-WINDOW_ID_INPUT_YOUR_NAME          = 11 #名前入力ウィンドウ
+WINDOW_ID_GAME_OVER_RETURN_NO_SAVE =  9 #ゲームオーバーから戻る時のメニュー(リプレイデータのセーブは無し)
+WINDOW_ID_SELECT_FILE_SLOT         = 10 #リプレイデータをセーブするスロットを選択するメニュー
+WINDOW_ID_SCORE_BOARD              = 11 #スコアボードウィンドウ
+WINDOW_ID_INPUT_YOUR_NAME          = 12 #名前入力ウィンドウ
 
 #ウィンドウのid_subの定数定義 windowクラスの window_id_subに入ります
 WINDOW_ID_SUB_NORMAL_MENU            = 0 #通常の選択メニュー
@@ -4043,7 +4043,6 @@ class App:
         num = num_0_1 + num_0_01 + num_0_001 + num_0_0001 + num_0_00001 #全ての桁数を足し合わせると小数点5桁までの乱数となる(0.00000~0.99999)
         return (num)
 
-
     #矩形Aと矩形Bの当たり判定
     #collision rectangle to rectangle
     #矩形A(rect_ax,rect_ay,rect_aw,rect_ah)(xはx座標,yはy座標,wは横幅width,hは縦幅heightを意味します)
@@ -4075,6 +4074,158 @@ class App:
             return True
         else:
             return False
+
+    #各種ウィンドウの育成       id=windowクラスの window_idに入っている数値
+    def create_window(self,id):
+        new_window = Window()
+        if   id == WINDOW_ID_MAIN_MENU:
+            new_window.update(\
+            WINDOW_ID_MAIN_MENU,\
+            WINDOW_ID_SUB_NORMAL_MENU,\
+            WINDOW_TYPE_NORMAL,\
+            WINDOW_BG_LOW_TRANSLUCENT,\
+            WINDOW_OPEN,\
+            "MENU",DISP_CENTER,\
+            [["GAME START",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            ["SELECT STAGE",DISP_CENTER,0,0,3,MES_NO_FLASH],\
+            ["SELECT LOOP",DISP_CENTER,0,0,3,MES_NO_FLASH],\
+            ["BOSS MODE",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            ["HIT BOX",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            ["DIFFICULTY",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            ["SCORE BOARD",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            ["NAME ENTRY",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            ["CONFIG",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            ["REPLAY",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
+            [[""]],\
+            44,34,   0,0,  8*8,9*8+5,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
+            BUTTON_DISP_OFF,0,0,0,\
+            BUTTON_DISP_OFF,0,0,0,\
+            [],[],[],[],[],[])
+        elif id == WINDOW_ID_SELECT_STAGE_MENU:
+            new_window.update(\
+            WINDOW_ID_SELECT_STAGE_MENU,\
+            WINDOW_ID_SUB_NORMAL_MENU,\
+            WINDOW_TYPE_NORMAL,\
+            WINDOW_BG_BLUE_BACK,\
+            WINDOW_OPEN,\
+            "",DISP_CENTER,\
+            [["1",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            [ "2",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            [ "3",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
+            [[""]],\
+            90,60,   0,0,  2*8,5*8,   2,2, 1,1,   0,0,    0,0,    0,0,0,0,\
+            BUTTON_DISP_OFF,0,0,0,\
+            BUTTON_DISP_OFF,0,0,0,\
+            [],[],[],[],[],[])
+        elif id == WINDOW_ID_SELECT_LOOP_MENU:
+            new_window.update(\
+            WINDOW_ID_SELECT_LOOP_MENU,\
+            WINDOW_ID_SUB_NORMAL_MENU,\
+            WINDOW_TYPE_NORMAL,\
+            WINDOW_BG_TRANSLUCENT,\
+            WINDOW_OPEN,\
+            "",DISP_CENTER,\
+            [["1",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            [ "2",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            [ "3",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
+            [[""]],\
+            90+22,60+6,   0,0,  2*8,5*8,   2,2, 1,1,   0,0,    0,0,    0,0,0,0,\
+            BUTTON_DISP_OFF,0,0,0,\
+            BUTTON_DISP_OFF,0,0,0,\
+            [],[],[],[],[],[])
+        elif id == WINDOW_ID_BOSS_MODE_MENU:
+            new_window.update(\
+            WINDOW_ID_BOSS_MODE_MENU,\
+            WINDOW_ID_SUB_YES_NO_MENU,\
+            WINDOW_TYPE_NORMAL,\
+            WINDOW_BG_TRANSLUCENT,\
+            WINDOW_OPEN,\
+            "ON",DISP_CENTER,\
+            [["OFF",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
+            [[""]],\
+            96+3,60-1,   0,0,  2*8+7,2*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
+            BUTTON_DISP_OFF,0,0,0,\
+            BUTTON_DISP_OFF,0,0,0,\
+            [],[],[],[],[],[])
+        elif id == WINDOW_ID_HITBOX_MENU:
+            new_window.update(\
+            WINDOW_ID_HITBOX_MENU,\
+            WINDOW_ID_SUB_YES_NO_MENU,\
+            WINDOW_TYPE_NORMAL,\
+            WINDOW_BG_TRANSLUCENT,\
+            WINDOW_OPEN,\
+            "ON",DISP_CENTER,\
+            [["OFF",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
+            [[""]],\
+            96+3,60-1,   0,0,  2*8+7,2*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
+            BUTTON_DISP_OFF,0,0,0,\
+            BUTTON_DISP_OFF,0,0,0,\
+            [],[],[],[],[],[])
+        elif id == WINDOW_ID_SELECT_DIFFICULTY:
+            new_window.update(\
+            WINDOW_ID_SELECT_DIFFICULTY,\
+            WINDOW_ID_SUB_NORMAL_MENU,\
+            WINDOW_TYPE_NORMAL,\
+            WINDOW_BG_BLUE_BACK,\
+            WINDOW_OPEN,\
+            "VERY EASY",DISP_CENTER,\
+            [["EASY",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            ["NORMAL",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            ["HARD",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            ["VERY HARD",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            ["INSAME",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
+            [[""]],\
+            93,52,   0,0,  6*8,6*8-5,   3,3, 1,1,   0,0,    0,0,    0,0,0,0,\
+            BUTTON_DISP_OFF,0,0,0,\
+            BUTTON_DISP_OFF,0,0,0,\
+            [],[],[],[],[],[])
+        elif id == WINDOW_ID_GAME_OVER_RETURN:
+            new_window.update(\
+            WINDOW_ID_GAME_OVER_RETURN,\
+            WINDOW_ID_SUB_NORMAL_MENU,\
+            WINDOW_TYPE_NORMAL,\
+            WINDOW_BG_LOW_TRANSLUCENT,\
+            WINDOW_OPEN,\
+            "RETURN TITLE?",DISP_CENTER,\
+            [["RETURN",DISP_CENTER,0,0,6,MES_NO_FLASH],\
+            ["SAVE & RETURN",DISP_CENTER,0,0,10,MES_NO_FLASH]],\
+            [[""]],\
+            43,68,   0,0,  8*8,3*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
+            BUTTON_DISP_OFF,0,0,0,\
+            BUTTON_DISP_OFF,0,0,0,\
+            [],[],[],[],[],[])
+        elif id == WINDOW_ID_GAME_OVER_RETURN_NO_SAVE:
+            new_window.update(\
+            WINDOW_ID_GAME_OVER_RETURN_NO_SAVE,\
+            WINDOW_ID_SUB_NORMAL_MENU,\
+            WINDOW_TYPE_NORMAL,\
+            WINDOW_BG_LOW_TRANSLUCENT,\
+            WINDOW_OPEN,\
+            "RETURN TITLE?",DISP_CENTER,\
+            [["RETURN",DISP_CENTER,0,0,6,MES_NO_FLASH]],\
+            [[""]],\
+            43,68,   0,0,  8*8,2*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
+            BUTTON_DISP_OFF,0,0,0,\
+            BUTTON_DISP_OFF,0,0,0,\
+            [],[],[],[],[],[])
+        elif id == WINDOW_ID_INPUT_YOUR_NAME:
+            new_window.update(\
+            WINDOW_ID_INPUT_YOUR_NAME,\
+            WINDOW_ID_SUB_NORMAL_MENU,\
+            WINDOW_TYPE_EDIT_TEXT,\
+            WINDOW_BG_BLUE_BACK,\
+            WINDOW_OPEN,\
+            "ENTER YOUR NAME",DISP_CENTER,\
+            [["",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
+            [self.my_name,DISP_LEFT_ALIGN,20,12,10,MES_NO_FLASH],\
+            80,52,   0,0,  6*11+2,6*3,   3,3, 1,1,   0,0,    0,0,    0,0,0,0,\
+            BUTTON_DISP_ON,51,12,WINDOW_BUTTON_SIZE_1TEXT,\
+            BUTTON_DISP_OFF,0,0,0,\
+            [],[],[],[],[],[])
+        else:
+            return
+        
+        self.window.append(new_window)                      #ウィンドウを育成する
 
     #スコアボードウィンドウの表示
     def window_score_board(self,d): #引数dは難易度 difficulty
@@ -4113,6 +4264,48 @@ class App:
                 break
             num = -1
         return num
+
+    #ウィンドウIDを調べて一致するウィンドウIDの速度、加速度を更新する(同タイプウィンドウ移動消去モード)
+    def all_move_window(self,id,vx,vy,vx_accel,vy_accel):
+        window_count = len(self.window)
+        for i in range(window_count):
+            if self.window[i].window_id == id:
+                self.window[i].vx,self.window[i].vy             = vx,vy
+                self.window[i].vx_accel,self.window[i].vy_accel = vx_accel,vy_accel
+
+    #現在のカーソルの状態データ群をcursorクラスのリストに記録する(PUSH)cursorクラスのリストはLastInFastOut形式となってます「後入先出（LIFO）」
+    #引数のidはウィンドウIDナンバーです
+    def push_cursor_data(self,id):
+        new_cursor = Cursor()
+        new_cursor.update(\
+        id,self.cursor_type,\
+        self.cursor_x,self.cursor_y,\
+        self.cursor_step_x,self.cursor_step_y,\
+        self.cursor_page,self.cursor_page_max,\
+        self.cursor_item_x,self.cursor_item_y,\
+        self.cursor_max_item_x,self.cursor_max_item_y,\
+        self.cursor_decision_item_x,self.cursor_decision_item_y,\
+        self.cursor_color,self.cursor_menu_layer,self.cursor_move_direction)
+        self.cursor.append(new_cursor)
+
+    #cursorクラスのリストに記録されたカーソルデータ群を現在のカーソルデータに代入して前のウィンドウでのカーソル位置に戻してやります(POP)
+    #引数のidはウィンドウIDナンバーです
+    def pop_cursor_data(self,id):
+        #ウィンドウidナンバーを元にそのウィンドウで使用していたカーソルデータのインデックス値を探し出す
+        i = self.search_window_id(id)
+        if i == -1:
+            return  #もしもカーソルデータが無かったのならどうしようもないのでリターンする(1対1でカーソルとウィンドウデータを反映してるのでそれは無いと思うですけれども）
+        
+        self.cursor_type = self.cursor[i].cursor_type
+        self.cursor_x,self.cursor_y = self.cursor[i].posx,self.cursor[i].posy
+        self.cursor_step_x,self.cursor_step_y = self.cursor[i].step_x,self.cursor[i].step_y
+        self.cursor_page,self.cursor_page_max = self.cursor[i].page,self.cursor[i].page_max
+        self.cursor_item_x,self.cursor_item_y = self.cursor[i].item_x,self.cursor[i].item_y
+        self.cursor_max_item_x,self.cursor_max_item_y = self.cursor[i].max_item_x,self.cursor[i].max_item_y
+        self.cursor_decision_item_x,self.cursor_decision_item_y = self.cursor[i].decision_item_x,self.cursor[i].decision_item_y
+        self.cursor_color,self.cursor_menu_layer,self.cursor_move_direction =  self.cursor[i].color,self.cursor[i].menu_layer,self.cursor[i].move_direction
+        del self.cursor[i] #カーソルデータをPOPし終わったのでインスタンスを削除する
+        self.cursor_decision_item_y = -1  #一番新しい層の選択アイテムを未選択にする
 
     #リプレイファイルスロット選択ウィンドウの表示
     def window_replay_data_slot_select(self):
@@ -4242,6 +4435,7 @@ class App:
         self.stars = []                        #タイトル表示時も背景の星を流したいのでリストをここで初期化してやります
         self.star_scroll_speed = 1             #背景の流れる星のスクロールスピード 1=通常スピード 0.5なら半分のスピードとなります
         self.window = []                       #タイトル表示時もメッセージウィンドウを使いたいのでリストをここで初期化してあげます
+        self.cursor = []                       #タイトル表示時もウィンドウカーソルを使いたいのでリストをここで初期化してあげます
         
         #リプレイ記録用に使用する横無限大,縦50ステージ分の空っぽのリプレイデータリストを作成します
         self.replay_recording_data =[[] for i in range(50)]
@@ -4268,6 +4462,7 @@ class App:
         self.cursor_pre_decision_item_y = 0    #前の階層で選択したアイテムのナンバーを入れます
                                             #選択してcursor_decision_item_yに入ったアイテムナンバーをcursor_pre_decision_item_yに入れて次の階層に潜るって手法かな？
         self.cursor_move_direction = 0         #セレクトカーソルがどう動かせることが出来るのか？の状態変数です
+        self.cursor_move_data = 0              #カーソルが実際に動いた方向のデータが入ります
         
         self.active_window_index = 0              #アクティブになっているウィンドウのインデックスナンバーが入ります(idナンバーではないので注意)
         #system-data.pyxresリソースファイルからこれらの設定値を読み込むようにしたのでコメントアウトしています
@@ -4306,31 +4501,7 @@ class App:
         
         #全てのカウンター類が0になったらゲームメニューウィンドウを育成する
         if self.title_oscillation_count == 0 and self.title_slash_in_count == 0 and self.display_title_time == 0:
-            new_window = Window()
-            new_window.update(\
-            WINDOW_ID_MAIN_MENU,\
-            WINDOW_ID_SUB_NORMAL_MENU,\
-            WINDOW_TYPE_NORMAL,\
-            WINDOW_BG_LOW_TRANSLUCENT,\
-            WINDOW_OPEN,\
-            "MENU",DISP_CENTER,\
-            [["GAME START",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-            ["SELECT STAGE",DISP_CENTER,0,0,3,MES_NO_FLASH],\
-            ["SELECT LOOP",DISP_CENTER,0,0,3,MES_NO_FLASH],\
-            ["BOSS MODE",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-            ["HIT BOX",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-            ["DIFFICULTY",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-            ["SCORE BOARD",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-            ["STATUS",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-            ["CONFIG",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-            ["REPLAY",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
-            [[""]],\
-            44,34,   0,0,  8*8,9*8+5,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
-            BUTTON_DISP_OFF,0,0,0,\
-            BUTTON_DISP_OFF,0,0,0,\
-            [],[],[],[],[],[])
-            self.window.append(new_window)                      #「SELECT MENU」を育成する
-            
+            self.create_window(WINDOW_ID_MAIN_MENU)             #メニューウィンドウを作製
             self.cursor_type = CURSOR_TYPE_NORMAL               #選択カーソル表示をonにする
             self.cursor_move_direction = CURSOR_MOVE_UD         #カーソルは上下移動のみ
             self.cursor_x = 49                                  #セレクトカーソルの座標を設定します
@@ -4354,30 +4525,9 @@ class App:
                 
             elif self.cursor_decision_item_y == 1:            #SELECT STAGEが押されて
                 if self.search_window_id(WINDOW_ID_SELECT_STAGE_MENU) == -1: #SELECT_STAGE_MENUウィンドウが存在しないのなら・・
-                    self.cursor_pre_x = self.cursor_x           #新しいウィンドウを開く前に現在のカーソル関連の変数を記憶しておきます
-                    self.cursor_pre_y = self.cursor_y             
-                    self.cursor_pre_item_y = self.cursor_item_y
-                    self.cursor_pre_decision_item_y = self.cursor_decision_item_y
-                    self.cursor_pre_max_item_y = self.cursor_max_item_y 
-                    
-                    new_window = Window()
-                    new_window.update(\
-                    WINDOW_ID_SELECT_STAGE_MENU,\
-                    WINDOW_ID_SUB_NORMAL_MENU,\
-                    WINDOW_TYPE_NORMAL,\
-                    WINDOW_BG_BLUE_BACK,\
-                    WINDOW_OPEN,\
-                    "",DISP_CENTER,\
-                    [["1",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-                    [ "2",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-                    [ "3",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
-                    [[""]],\
-                    90,60,   0,0,  2*8,5*8,   2,2, 1,1,   0,0,    0,0,    0,0,0,0,\
-                    BUTTON_DISP_OFF,0,0,0,\
-                    BUTTON_DISP_OFF,0,0,0,\
-                    [],[],[],[],[],[])
-                    self.window.append(new_window)                   #「STAGE」を育成する
-                    
+                    self.cursor_pre_decision_item_y = self.cursor_decision_item_y #現時点で選択されたアイテム「SELECT STAGE」を前のレイヤー選択アイテムとしてコピーする
+                    self.push_cursor_data(WINDOW_ID_MAIN_MENU)       #メインメニューのカーソルデータをPUSH
+                    self.create_window(WINDOW_ID_SELECT_STAGE_MENU)  #ステージセレクトウィンドウの作製
                     self.cursor_type = CURSOR_TYPE_NORMAL            #選択カーソル表示をonにする
                     self.cursor_move_direction = CURSOR_MOVE_UD      #カーソルは上下移動のみ
                     self.cursor_x = 92                               #セレクトカーソルの座標を設定します
@@ -4388,201 +4538,99 @@ class App:
                     
                     self.cursor_menu_layer = 1                       #メニューの階層が増えたので0から1にします
                 
-            elif self.cursor_decision_item_y == 2:            #SELECT LOOPが押されたら
-                self.cursor_pre_x = self.cursor_x                    #新しいウィンドウを開く前に現在のカーソル関連の変数を記憶しておきます
-                self.cursor_pre_y = self.cursor_y
-                self.cursor_pre_item_y = self.cursor_item_y
-                self.cursor_pre_decision_item_y = self.cursor_decision_item_y
-                self.cursor_pre_max_item_y = self.cursor_max_item_y 
+            elif self.cursor_decision_item_y == 2:            #SELECT LOOPが押されて
+                if self.search_window_id(WINDOW_ID_SELECT_LOOP_MENU) == -1: #SELECT_LOOP_MENUウィンドウが存在しないのなら・・
+                    self.cursor_pre_decision_item_y = self.cursor_decision_item_y #現時点で選択されたアイテム「SELECT LOOP」を前のレイヤー選択アイテムとしてコピーする
+                    self.push_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPUSH
+                    self.create_window(WINDOW_ID_SELECT_LOOP_MENU)      #ループセレクトウィンドウの作成
+                    self.cursor_type = CURSOR_TYPE_NORMAL               #選択カーソル表示をonにする
+                    self.cursor_move_direction = CURSOR_MOVE_UD         #カーソルは上下移動のみ
+                    self.cursor_x = 90+24                               #セレクトカーソルの座標を設定します
+                    self.cursor_y = 72+5
+                    self.cursor_item_y = 0                              #いま指示しているアイテムナンバーは0の「1」
+                    self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
+                    self.cursor_max_item_y = 2                          #最大項目数は3項目なので 3-1=2を代入
+                    
+                    self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
                 
-                new_window = Window()
-                new_window.update(\
-                WINDOW_ID_SELECT_LOOP_MENU,\
-                WINDOW_ID_SUB_NORMAL_MENU,\
-                WINDOW_TYPE_NORMAL,\
-                WINDOW_BG_TRANSLUCENT,\
-                WINDOW_OPEN,\
-                "",DISP_CENTER,\
-                [["1",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-                [ "2",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-                [ "3",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
-                [[""]],\
-                90+22,60+6,   0,0,  2*8,5*8,   2,2, 1,1,   0,0,    0,0,    0,0,0,0,\
-                BUTTON_DISP_OFF,0,0,0,\
-                BUTTON_DISP_OFF,0,0,0,\
-                [],[],[],[],[],[])
+            elif self.cursor_decision_item_y == 3:            #BOSS MODEが押されて
+                if self.search_window_id(WINDOW_ID_BOSS_MODE_MENU) == -1: #BOSS MODEウィンドウが存在しないのなら・・
+                    self.cursor_pre_decision_item_y = self.cursor_decision_item_y #現時点で選択されたアイテム「BOSS MODE」を前のレイヤー選択アイテムとしてコピーする
+                    self.push_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPUSH
+                    self.create_window(WINDOW_ID_BOSS_MODE_MENU)        #ボスモードon/offウィンドウの作製
+                    self.cursor_type = CURSOR_TYPE_NORMAL               #選択カーソル表示をonにする
+                    self.cursor_move_direction = CURSOR_MOVE_UD         #カーソルは上下移動のみ
+                    self.cursor_x = 96+5                                #セレクトカーソルの座標を設定します
+                    self.cursor_y = 72-9
+                    self.cursor_item_y = 0                              #いま指示しているアイテムナンバーは0の「1」
+                    self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
+                    self.cursor_max_item_y = 1                          #最大項目数は2項目なので 2-1=1を代入
+                    
+                    self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
                 
-                self.window.append(new_window)                      #「SELECT LOOP」を育成する
-                self.cursor_type = CURSOR_TYPE_NORMAL               #選択カーソル表示をonにする
-                self.cursor_move_direction = CURSOR_MOVE_UD         #カーソルは上下移動のみ
-                self.cursor_x = 90+24                               #セレクトカーソルの座標を設定します
-                self.cursor_y = 72+5
-                self.cursor_item_y = 0                              #いま指示しているアイテムナンバーは0の「1」
-                self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
-                self.cursor_max_item_y = 2                          #最大項目数は3項目なので 3-1=2を代入
+            elif self.cursor_decision_item_y == 4:            #HITBOXが押されて....
+                if self.search_window_id(WINDOW_ID_HITBOX_MENU) == -1: #HITBOXウィンドウが存在しないのなら・・
+                    self.cursor_pre_decision_item_y = self.cursor_decision_item_y #現時点で選択されたアイテム「HITBOX」を前のレイヤー選択アイテムとしてコピーする
+                    self.push_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPUSH
+                    self.create_window(WINDOW_ID_HITBOX_MENU)           #ヒットボックスon/offウィンドウの作製
+                    self.cursor_type = CURSOR_TYPE_NORMAL               #選択カーソル表示をonにする
+                    self.cursor_move_direction = CURSOR_MOVE_UD         #カーソルは上下移動のみ
+                    self.cursor_x = 96+5                                #セレクトカーソルの座標を設定します
+                    self.cursor_y = 72-9
+                    self.cursor_item_y = 0                              #いま指示しているアイテムナンバーは0の「1」
+                    self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
+                    self.cursor_max_item_y = 1                          #最大項目数は2項目なので 2-1=1を代入
+                    
+                    self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
                 
-                self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
+            elif self.cursor_decision_item_y == 5:            #DIFFICULTYが押されて
+                if self.search_window_id(WINDOW_ID_SELECT_DIFFICULTY) == -1: #SELECT_DIFFICULTYウィンドウが存在しないのなら・・
+                    self.cursor_pre_decision_item_y = self.cursor_decision_item_y #現時点で選択されたアイテム「DIFFICULTY」を前のレイヤー選択アイテムとしてコピーする
+                    self.push_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPUSH
+                    self.create_window(WINDOW_ID_SELECT_DIFFICULTY)     #「SELECT DIFFICULTY」ウィンドウの作製
+                    self.cursor_type = CURSOR_TYPE_NORMAL               #選択カーソル表示をonにする
+                    self.cursor_move_direction = CURSOR_MOVE_UD         #カーソルは上下移動のみ
+                    self.cursor_x = 96                                  #セレクトカーソルの座標を設定します
+                    self.cursor_y = 71
+                    self.cursor_item_y = 2                              #いま指示しているアイテムナンバーは2の「NORMAL」
+                    self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
+                    self.cursor_max_item_y = 5                          #最大項目数は6項目なので 6-1=5を代入
+                    
+                    self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
                 
-            elif self.cursor_decision_item_y == 3:            #BOSS MODEが押されたら
-                self.cursor_pre_x = self.cursor_x                   #新しいウィンドウを開く前に現在のカーソル関連の変数を記憶しておきます
-                self.cursor_pre_y = self.cursor_y
-                self.cursor_pre_item_y = self.cursor_item_y
-                self.cursor_pre_decision_item_y = self.cursor_decision_item_y
-                self.cursor_pre_max_item_y = self.cursor_max_item_y 
+            elif self.cursor_decision_item_y == 6:            #SCORE BOARDが押されて...
+                if self.search_window_id(WINDOW_ID_SCORE_BOARD) == -1: #SCORE_BOARDウィンドウが存在しないのなら・・
+                    self.cursor_pre_decision_item_y = self.cursor_decision_item_y #現時点で選択されたアイテム「SCORE BOARD」を前のレイヤー選択アイテムとしてコピーする
+                    self.push_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPUSH
+                    self.window_score_board(GAME_NORMAL)                #スコアボードウィンドウを育成=============
+                    self.cursor_type = CURSOR_TYPE_NO_DISP              #セレクトカーソルの表示をoffにする
+                    self.cursor_move_direction = CURSOR_MOVE_SHOW_PAGE  #セレクトカーソルは表示せずLRキーもしくはLショルダーRショルダーで左右に頁をめくる動作です
+                    self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
+                    self.cursor_max_item_y = 0                          #最大項目数は1項目なので 1-1=0を代入
+                    self.cursor_page = 0                                #いま指し示しているページナンバー 0=very easy
+                    self.cursor_page_max = 5                            #最大ページ数 難易度は0~5の範囲 なのでMAX5
+                    self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
                 
-                new_window = Window()
-                new_window.update(\
-                WINDOW_ID_BOSS_MODE_MENU,\
-                WINDOW_ID_SUB_YES_NO_MENU,\
-                WINDOW_TYPE_NORMAL,\
-                WINDOW_BG_TRANSLUCENT,\
-                WINDOW_OPEN,\
-                "ON",DISP_CENTER,\
-                [["OFF",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
-                [[""]],\
-                96+3,60-1,   0,0,  2*8+7,2*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
-                BUTTON_DISP_OFF,0,0,0,\
-                BUTTON_DISP_OFF,0,0,0,\
-                [],[],[],[],[],[])
-                
-                self.window.append(new_window)                      #「BOSS MODE ON/OFF」を育成する
-                self.cursor_type = CURSOR_TYPE_NORMAL               #選択カーソル表示をonにする
-                self.cursor_move_direction = CURSOR_MOVE_UD         #カーソルは上下移動のみ
-                self.cursor_x = 96+5                                #セレクトカーソルの座標を設定します
-                self.cursor_y = 72-9
-                self.cursor_item_y = 0                              #いま指示しているアイテムナンバーは0の「1」
-                self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
-                self.cursor_max_item_y = 1                          #最大項目数は2項目なので 2-1=1を代入
-                
-                self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
-                
-            elif self.cursor_decision_item_y == 4:            #HITBOXが押されたら
-                self.cursor_pre_x = self.cursor_x              #新しいウィンドウを開く前に現在のカーソル関連の変数を記憶しておきます
-                self.cursor_pre_y = self.cursor_y
-                self.cursor_pre_item_y = self.cursor_item_y
-                self.cursor_pre_decision_item_y = self.cursor_decision_item_y
-                self.cursor_pre_max_item_y = self.cursor_max_item_y 
-                
-                new_window = Window()
-                new_window.update(\
-                WINDOW_ID_HITBOX_MENU,\
-                WINDOW_ID_SUB_YES_NO_MENU,\
-                WINDOW_TYPE_NORMAL,\
-                WINDOW_BG_TRANSLUCENT,\
-                WINDOW_OPEN,\
-                "ON",DISP_CENTER,\
-                [["OFF",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
-                [[""]],\
-                96+3,60-1,   0,0,  2*8+7,2*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
-                BUTTON_DISP_OFF,0,0,0,\
-                BUTTON_DISP_OFF,0,0,0,\
-                [],[],[],[],[],[])
-                
-                self.window.append(new_window)                      #「HITBOX ON/OFF」を育成する
-                self.cursor_type = CURSOR_TYPE_NORMAL               #選択カーソル表示をonにする
-                self.cursor_move_direction = CURSOR_MOVE_UD         #カーソルは上下移動のみ
-                self.cursor_x = 96+5                                #セレクトカーソルの座標を設定します
-                self.cursor_y = 72-9
-                self.cursor_item_y = 0                              #いま指示しているアイテムナンバーは0の「1」
-                self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
-                self.cursor_max_item_y = 1                          #最大項目数は2項目なので 2-1=1を代入
-                
-                self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
-                
-            elif self.cursor_decision_item_y == 5:            #DIFFICULTYが押されたら
-                self.cursor_pre_x = self.cursor_x               #新しいウィンドウを開く前に現在のカーソル関連の変数を記憶しておきます
-                self.cursor_pre_y = self.cursor_y
-                self.cursor_pre_item_y = self.cursor_item_y
-                self.cursor_pre_decision_item_y = self.cursor_decision_item_y
-                self.cursor_pre_max_item_y = self.cursor_max_item_y 
-                
-                new_window = Window()
-                new_window.update(\
-                WINDOW_ID_SELECT_DIFFICULTY,\
-                WINDOW_ID_SUB_NORMAL_MENU,\
-                WINDOW_TYPE_NORMAL,\
-                WINDOW_BG_BLUE_BACK,\
-                WINDOW_OPEN,\
-                "VERY EASY",DISP_CENTER,\
-                [["EASY",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-                ["NORMAL",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-                ["HARD",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-                ["VERY HARD",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-                ["INSAME",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
-                [[""]],\
-                93,52,   0,0,  6*8,6*8-5,   3,3, 1,1,   0,0,    0,0,    0,0,0,0,\
-                BUTTON_DISP_OFF,0,0,0,\
-                BUTTON_DISP_OFF,0,0,0,\
-                [],[],[],[],[],[])
-                
-                self.window.append(new_window)                      #「DIFFICULTY」を育成する
-                self.cursor_type = CURSOR_TYPE_NORMAL               #選択カーソル表示をonにする
-                self.cursor_move_direction = CURSOR_MOVE_UD         #カーソルは上下移動のみ
-                self.cursor_x = 96                                  #セレクトカーソルの座標を設定します
-                self.cursor_y = 71
-                self.cursor_item_y = 2                              #いま指示しているアイテムナンバーは2の「NORMAL」
-                self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
-                self.cursor_max_item_y = 5                          #最大項目数は6項目なので 6-1=5を代入
-                
-                self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
-                
-            elif self.cursor_decision_item_y == 6:            #SCORE BOARDが押されたら
-                self.cursor_pre_x = self.cursor_x                      #新しいウィンドウを開く前に現在のカーソル関連の変数を記憶しておきます
-                self.cursor_pre_y = self.cursor_y
-                self.cursor_pre_item_y = self.cursor_item_y
-                self.cursor_pre_decision_item_y = self.cursor_decision_item_y
-                self.cursor_pre_max_item_y = self.cursor_max_item_y
-                
-                self.window_score_board(GAME_NORMAL)                   #スコアボードウィンドウを育成=============
-                
-                self.cursor_type = CURSOR_TYPE_NO_DISP              #セレクトカーソルの表示をoffにする
-                self.cursor_move_direction = CURSOR_MOVE_SHOW_PAGE  #セレクトカーソルは表示せずLRキーもしくはLショルダーRショルダーで左右に頁をめくる動作です
-                self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
-                self.cursor_max_item_y = 0                          #最大項目数は1項目なので 1-1=0を代入
-                self.cursor_page = 0                                #いま指し示しているページナンバー 0=very easy
-                self.cursor_page_max = 5                            #最大ページ数 難易度は0~5の範囲 なのでMAX5
-                self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
-            
-            elif self.cursor_decision_item_y == 7:            #STATUSが押されたら
-                self.cursor_pre_x = self.cursor_x               #新しいウィンドウを開く前に現在のカーソル関連の変数を記憶しておきます
-                self.cursor_pre_y = self.cursor_y
-                self.cursor_pre_item_x = self.cursor_item_x
-                self.cursor_pre_decision_item_x = self.cursor_decision_item_x
-                self.cursor_pre_max_item_x = self.cursor_max_item_x
-                self.cursor_pre_item_y = self.cursor_item_y
-                self.cursor_pre_decision_item_y = self.cursor_decision_item_y
-                self.cursor_pre_max_item_y = self.cursor_max_item_y
-                
-                new_window = Window()
-                new_window.update(\
-                WINDOW_ID_INPUT_YOUR_NAME,\
-                WINDOW_ID_SUB_NORMAL_MENU,\
-                WINDOW_TYPE_EDIT_TEXT,\
-                WINDOW_BG_BLUE_BACK,\
-                WINDOW_OPEN,\
-                "ENTER YOUR NAME",DISP_CENTER,\
-                [["",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
-                [self.my_name,DISP_LEFT_ALIGN,20,12,10,MES_NO_FLASH],\
-                80,52,   0,0,  6*11+2,6*3,   3,3, 1,1,   0,0,    0,0,    0,0,0,0,\
-                BUTTON_DISP_ON,51,12,WINDOW_BUTTON_SIZE_1TEXT,\
-                BUTTON_DISP_OFF,0,0,0,\
-                [],[],[],[],[],[])
-                
-                self.window.append(new_window)                      #「ENTER YOUR NAME」を育成する
-                self.cursor_type = CURSOR_TYPE_UNDER_BAR            #選択カーソルのタイプはアンダーバーの点滅にします
-                self.cursor_move_direction = CURSOR_MOVE_LR_SLIDER  #カーソルは左右でスライダー入力
-                self.cursor_x = 100                                  #セレクトカーソルの座標を設定します
-                self.cursor_y = 66
-                self.cursor_item_x = 0                              #いま指示しているアイテムナンバーx軸は0
-                self.cursor_item_y = 0                              #いま指示しているアイテムナンバーy軸は0(縦には動かないので常に0となります)
-                self.cursor_decision_item_x = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_xは-1
-                self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
-                self.cursor_max_item_x = 8                          #最大項目数x軸方向は(8文字+OKボタンなので合計9項目 9-1=8を代入
-                self.cursor_max_item_y = 0                          #最大項目数y軸方向は1項目なので 1-1=0を代入
-                
-                self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
-                
-                self.active_window_index = self.search_window_id(WINDOW_ID_INPUT_YOUR_NAME) #このウィンドウを最前列でアクティブなものとしてインデックスナンバーを調べて登録
+            elif self.cursor_decision_item_y == 7:            #NAME ENTRYが押されて...
+                if self.search_window_id(WINDOW_ID_INPUT_YOUR_NAME) == -1: #INPUT_YOUR_NAMEウィンドウが存在しないのなら・・
+                    self.cursor_pre_decision_item_x = self.cursor_decision_item_x #現時点で選択されたアイテム「NAME ENTRY」を前のレイヤー選択アイテムとしてコピーする
+                    self.cursor_pre_decision_item_y = self.cursor_decision_item_y #現時点で選択されたアイテム「NAME ENTRY」を前のレイヤー選択アイテムとしてコピーする
+                    self.push_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPUSH
+                    self.create_window(WINDOW_ID_INPUT_YOUR_NAME)       #「ENTER YOUR NAME」ウィンドウの作製
+                    self.cursor_type = CURSOR_TYPE_UNDER_BAR            #選択カーソルのタイプはアンダーバーの点滅にします
+                    self.cursor_move_direction = CURSOR_MOVE_LR_SLIDER  #カーソルは左右でスライダー入力
+                    self.cursor_x = 100                                 #セレクトカーソルの座標を設定します
+                    self.cursor_y = 66
+                    self.cursor_item_x = 0                              #いま指示しているアイテムナンバーx軸は0
+                    self.cursor_item_y = 0                              #いま指示しているアイテムナンバーy軸は0(縦には動かないので常に0となります)
+                    self.cursor_decision_item_x = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_xは-1
+                    self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
+                    self.cursor_max_item_x = 8                          #最大項目数x軸方向は(8文字+OKボタンなので合計9項目 9-1=8を代入
+                    self.cursor_max_item_y = 0                          #最大項目数y軸方向は1項目なので 1-1=0を代入
+                    
+                    self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
+                    
+                    self.active_window_index = self.search_window_id(WINDOW_ID_INPUT_YOUR_NAME) #このウィンドウを最前列でアクティブなものとしてインデックスナンバーを調べて登録
                 
             elif self.cursor_decision_item_y == 9:            #REPLAYが押されたら
                 self.game_status = SCENE_SELECT_LOAD_SLOT          #ゲームステータスを「SCENE_SELECT_LOAD_SLOT」にしてロードデータスロットの選択に移る
@@ -4595,12 +4643,7 @@ class App:
                 i = self.search_window_id(WINDOW_ID_SELECT_STAGE_MENU)
                 self.window[i].vx = 0.3            #WINDOW_ID_SELECT_STAGE_MENUウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
-                self.cursor_menu_layer =  0                      #階層を0にする
-                self.cursor_x = self.cursor_pre_x                #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y
-                self.cursor_item_y = self.cursor_pre_item_y
-                self.cursor_max_item_y = self.cursor_pre_max_item_y
-                self.cursor_decision_item_y = -1
+                self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
             elif self.cursor_pre_decision_item_y == 1 and self.cursor_decision_item_y == 1:
                 #「SELECT STAGE」→「2」
@@ -4608,12 +4651,7 @@ class App:
                 i = self.search_window_id(WINDOW_ID_SELECT_STAGE_MENU)
                 self.window[i].vx = 0.3            #WINDOW_ID_SELECT_STAGE_MENUウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
-                self.cursor_menu_layer =  0                     #階層を0にする
-                self.cursor_x = self.cursor_pre_x               #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y
-                self.cursor_item_y = self.cursor_pre_item_y
-                self.cursor_max_item_y = self.cursor_pre_max_item_y
-                self.cursor_decision_item_y = -1
+                self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
             elif self.cursor_pre_decision_item_y == 1 and self.cursor_decision_item_y == 2:
                 #「SELECT STAGE」→「3」
@@ -4621,237 +4659,178 @@ class App:
                 i = self.search_window_id(WINDOW_ID_SELECT_STAGE_MENU)
                 self.window[i].vx = 0.3            #WINDOW_ID_SELECT_STAGE_MENUウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
-                self.cursor_menu_layer =  0                    #階層を0にする
-                self.cursor_x = self.cursor_pre_x              #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y
-                self.cursor_item_y = self.cursor_pre_item_y
-                self.cursor_max_item_y = self.cursor_pre_max_item_y
-                self.cursor_decision_item_y = -1
+                self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 
             elif self.cursor_pre_decision_item_y == 2 and self.cursor_decision_item_y == 0:
                 #「SELECT LOOP NUMBER」→「1」
                 self.stage_loop = 1                           #ループ数に1週目を代入
-                window_count = len(self.window)
-                del self.window[window_count - 1]             #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0                   #階層を0にする
-                self.cursor_x = self.cursor_pre_x             #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y
-                self.cursor_item_y = self.cursor_pre_item_y
-                self.cursor_max_item_y = self.cursor_pre_max_item_y
-                self.cursor_decision_item_y = -1
+                i = self.search_window_id(WINDOW_ID_SELECT_LOOP_MENU)
+                self.window[i].vx = 0.3            #WINDOW_ID_SELECT_LOOP_MENUウィンドウを右にフッ飛ばしていく
+                self.window[i].vx_accel = 1.2
+                self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
             elif self.cursor_pre_decision_item_y == 2 and self.cursor_decision_item_y == 1:
                 #「SELECT LOOP NUMBER」→「2」
                 self.stage_loop = 2                           #ループ数に2週目を代入
-                window_count = len(self.window)
-                del self.window[window_count - 1]             #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0                   #階層を0にする
-                self.cursor_x = self.cursor_pre_x             #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y
-                self.cursor_item_y = self.cursor_pre_item_y
-                self.cursor_max_item_y = self.cursor_pre_max_item_y
-                self.cursor_decision_item_y = -1
+                i = self.search_window_id(WINDOW_ID_SELECT_LOOP_MENU)
+                self.window[i].vx = 0.3            #WINDOW_ID_SELECT_LOOP_MENUウィンドウを右にフッ飛ばしていく
+                self.window[i].vx_accel = 1.2
+                self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
             elif self.cursor_pre_decision_item_y == 2 and self.cursor_decision_item_y == 2:
                 #「SELECT LOOP NUMBER」→「3」
                 self.stage_loop = 3                          #ループ数に3週目を代入
-                window_count = len(self.window)
-                del self.window[window_count - 1]            #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0                  #階層を0にする
-                self.cursor_x = self.cursor_pre_x            #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y
-                self.cursor_item_y = self.cursor_pre_item_y
-                self.cursor_max_item_y = self.cursor_pre_max_item_y
-                self.cursor_decision_item_y = -1
+                i = self.search_window_id(WINDOW_ID_SELECT_LOOP_MENU)
+                self.window[i].vx = 0.3            #WINDOW_ID_SELECT_LOOP_MENUウィンドウを右にフッ飛ばしていく
+                self.window[i].vx_accel = 1.2
+                self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 
             elif self.cursor_pre_decision_item_y == 3 and self.cursor_decision_item_y == 0:
                 #「BOSS MODE」→「ON」
                 self.boss_test_mode = 1                              #ボステストモードをon
-                window_count = len(self.window)
-                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0                          #階層を0にする
-                self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y
-                self.cursor_item_y = self.cursor_pre_item_y
-                self.cursor_max_item_y = self.cursor_pre_max_item_y
-                self.cursor_decision_item_y = -1
+                i = self.search_window_id(WINDOW_ID_BOSS_MODE_MENU)
+                self.window[i].vx = 0.3            #WINDOW_ID_BOSS_MODE_MENUウィンドウを右にフッ飛ばしていく
+                self.window[i].vx_accel = 1.2
+                self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
             elif self.cursor_pre_decision_item_y == 3 and self.cursor_decision_item_y == 1:
                 #「BOSS MODE」→「OFF」
                 self.boss_test_mode = 0                              #ボステストモードをoff
-                window_count = len(self.window)
-                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0                          #階層を0にする
-                self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y
-                self.cursor_item_y = self.cursor_pre_item_y
-                self.cursor_max_item_y = self.cursor_pre_max_item_y
-                self.cursor_decision_item_y = -1
+                i = self.search_window_id(WINDOW_ID_BOSS_MODE_MENU)
+                self.window[i].vx = 0.3            #WINDOW_ID_BOSS_MODE_MENUウィンドウを右にフッ飛ばしていく
+                self.window[i].vx_accel = 1.2
+                self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
+                
             elif self.cursor_pre_decision_item_y == 4 and self.cursor_decision_item_y == 0:
                 #「HITBOX」→「ON」
                 self.boss_collision_rect_display_flag = 1            #ボス当たり判定表示をon
-                window_count = len(self.window)
-                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0                          #階層を0にする
-                self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y
-                self.cursor_item_y = self.cursor_pre_item_y
-                self.cursor_max_item_y = self.cursor_pre_max_item_y
-                self.cursor_decision_item_y = -1
+                i = self.search_window_id(WINDOW_ID_HITBOX_MENU)
+                self.window[i].vx = 0.3            #WINDOW_ID_HITBOX_MENUウィンドウを右にフッ飛ばしていく
+                self.window[i].vx_accel = 1.2
+                self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
             elif self.cursor_pre_decision_item_y == 4 and self.cursor_decision_item_y == 1:
                 #「HITBOX」→「OFF」
                 self.boss_collision_rect_display_flag = 0            #ボス当たり判定表示をoff
-                window_count = len(self.window)
-                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0                          #階層を0にする
-                self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y
-                self.cursor_item_y = self.cursor_pre_item_y
-                self.cursor_max_item_y = self.cursor_pre_max_item_y
-                self.cursor_decision_item_y = -1
+                i = self.search_window_id(WINDOW_ID_HITBOX_MENU)
+                self.window[i].vx = 0.3            #WINDOW_ID_HITBOX_MENUウィンドウを右にフッ飛ばしていく
+                self.window[i].vx_accel = 1.2
+                self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 
             elif self.cursor_pre_decision_item_y == 5 and self.cursor_decision_item_y == 0:
                 #「DIFFICULTY」→「VERY_EASY」
                 self.game_difficulty = GAME_VERY_EASY
-                window_count = len(self.window)
-                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0                          #階層を0にする
-                self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y                    #
-                self.cursor_item_y = self.cursor_pre_item_y          #
-                self.cursor_max_item_y = self.cursor_pre_max_item_y      #
-                self.cursor_decision_item_y = -1
+                i = self.search_window_id(WINDOW_ID_SELECT_DIFFICULTY)
+                self.window[i].vx = 0.3            #WINDOW_ID_SELECT_DIFFICULTYウィンドウを右にフッ飛ばしていく
+                self.window[i].vx_accel = 1.2
+                self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
             elif self.cursor_pre_decision_item_y == 5 and self.cursor_decision_item_y == 1:
                 #「DIFFICULTY」→「EASY」
                 self.game_difficulty = GAME_EASY
-                window_count = len(self.window)
-                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0                          #階層を0にする
-                self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y                    #
-                self.cursor_item_y = self.cursor_pre_item_y          #
-                self.cursor_max_item_y = self.cursor_pre_max_item_y      #
-                self.cursor_decision_item_y = -1
+                i = self.search_window_id(WINDOW_ID_SELECT_DIFFICULTY)
+                self.window[i].vx = 0.3            #WINDOW_ID_SELECT_DIFFICULTYウィンドウを右にフッ飛ばしていく
+                self.window[i].vx_accel = 1.2
+                self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
             elif self.cursor_pre_decision_item_y == 5 and self.cursor_decision_item_y == 2:
                 #「DIFFICULTY」→「NORMAL」
                 self.game_difficulty = GAME_NORMAL
-                window_count = len(self.window)
-                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0                          #階層を0にする
-                self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y                    #
-                self.cursor_item_y = self.cursor_pre_item_y          #
-                self.cursor_max_item_y = self.cursor_pre_max_item_y      #
-                self.cursor_decision_item_y = -1
+                i = self.search_window_id(WINDOW_ID_SELECT_DIFFICULTY)
+                self.window[i].vx = 0.3            #WINDOW_ID_SELECT_DIFFICULTYウィンドウを右にフッ飛ばしていく
+                self.window[i].vx_accel = 1.2
+                self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
             elif self.cursor_pre_decision_item_y == 5 and self.cursor_decision_item_y == 3:
                 #「DIFFICULTY」→「HARD」
                 self.game_difficulty = GAME_HARD
-                window_count = len(self.window)
-                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0                          #階層を0にする
-                self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y                    #
-                self.cursor_item_y = self.cursor_pre_item_y          #
-                self.cursor_max_item_y = self.cursor_pre_max_item_y      #
-                self.cursor_decision_item_y = -1
+                i = self.search_window_id(WINDOW_ID_SELECT_DIFFICULTY)
+                self.window[i].vx = 0.3            #WINDOW_ID_SELECT_DIFFICULTYウィンドウを右にフッ飛ばしていく
+                self.window[i].vx_accel = 1.2
+                self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
             elif self.cursor_pre_decision_item_y == 5 and self.cursor_decision_item_y == 4:
                 #「DIFFICULTY」→「VERY_HARD」
                 self.game_difficulty = GAME_VERY_HARD
-                window_count = len(self.window)
-                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0                          #階層を0にする
-                self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y                    #
-                self.cursor_item_y = self.cursor_pre_item_y          #
-                self.cursor_max_item_y = self.cursor_pre_max_item_y      #
-                self.cursor_decision_item_y = -1
+                i = self.search_window_id(WINDOW_ID_SELECT_DIFFICULTY)
+                self.window[i].vx = 0.3            #WINDOW_ID_SELECT_DIFFICULTYウィンドウを右にフッ飛ばしていく
+                self.window[i].vx_accel = 1.2
+                self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
             elif self.cursor_pre_decision_item_y == 5 and self.cursor_decision_item_y == 5:
                 #「DIFFICULTY」→「INSAME」
                 self.game_difficulty = GAME_INSAME
-                window_count = len(self.window)
-                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_menu_layer =  0                          #階層を0にする
-                self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y                    #
-                self.cursor_item_y = self.cursor_pre_item_y          #
-                self.cursor_max_item_y = self.cursor_pre_max_item_y      #
-                self.cursor_decision_item_y = -1
+                i = self.search_window_id(WINDOW_ID_SELECT_DIFFICULTY)
+                self.window[i].vx = 0.3            #WINDOW_ID_SELECT_DIFFICULTYウィンドウを右にフッ飛ばしていく
+                self.window[i].vx_accel = 1.2
+                self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 
             elif self.cursor_pre_decision_item_y == 6 and self.cursor_page == 0 and self.cursor_pre_page != self.cursor_page: #前に表示していたページ数と現在のページ数に変化があった時だけ
-                window_count = len(self.window)
-                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.window_score_board(0)                           #0=very easyのスコアボードウィンドウ育成
+                if self.cursor_move_data == PAD_RIGHT:
+                    self.all_move_window(WINDOW_ID_SCORE_BOARD, 0.3,0, 1.2,0) #すべてのSCORE_BOARDウィンドウを右方向にフッ飛ばしていく
+                else:
+                    self.all_move_window(WINDOW_ID_SCORE_BOARD,-0.3,0, 1.2,0) #すべてのSCORE_BOARDウィンドウを左方向にフッ飛ばしていく
+                
+                self.window_score_board(0)                           #スコアボードウィンドウ育成
                 self.cursor_pre_page = self.cursor_page              #前回のページ数を保存
             elif self.cursor_pre_decision_item_y == 6 and self.cursor_page == 1 and self.cursor_pre_page != self.cursor_page: #前に表示していたページ数と現在のページ数に変化があった時だけ
-                window_count = len(self.window)
-                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.window_score_board(1)                           #1=very easyのスコアボードウィンドウ育成
+                if self.cursor_move_data == PAD_RIGHT:
+                    self.all_move_window(WINDOW_ID_SCORE_BOARD, 0.3,0, 1.2,0) #すべてのSCORE_BOARDウィンドウを右方向にフッ飛ばしていく
+                else:
+                    self.all_move_window(WINDOW_ID_SCORE_BOARD,-0.3,0, 1.2,0) #すべてのSCORE_BOARDウィンドウを左方向にフッ飛ばしていく
+                
+                self.window_score_board(1)                           #スコアボードウィンドウ育成
                 self.cursor_pre_page = self.cursor_page              #前回のページ数を保存
             elif self.cursor_pre_decision_item_y == 6 and self.cursor_page == 2 and self.cursor_pre_page != self.cursor_page: #前に表示していたページ数と現在のページ数に変化があった時だけ
-                window_count = len(self.window)
-                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.window_score_board(2)                           #0=very easyのスコアボードウィンドウ育成
+                if self.cursor_move_data == PAD_RIGHT:
+                    self.all_move_window(WINDOW_ID_SCORE_BOARD, 0.3,0, 1.2,0) #すべてのSCORE_BOARDウィンドウを右方向にフッ飛ばしていく
+                else:
+                    self.all_move_window(WINDOW_ID_SCORE_BOARD,-0.3,0, 1.2,0) #すべてのSCORE_BOARDウィンドウを左方向にフッ飛ばしていく
+                
+                self.window_score_board(2)                           #スコアボードウィンドウ育成
                 self.cursor_pre_page = self.cursor_page              #前回のページ数を保存
             elif self.cursor_pre_decision_item_y == 6 and self.cursor_page == 3 and self.cursor_pre_page != self.cursor_page: #前に表示していたページ数と現在のページ数に変化があった時だけ
-                window_count = len(self.window)
-                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.window_score_board(3)                           #0=very easyのスコアボードウィンドウ育成
+                if self.cursor_move_data == PAD_RIGHT:
+                    self.all_move_window(WINDOW_ID_SCORE_BOARD, 0.3,0, 1.2,0) #すべてのSCORE_BOARDウィンドウを右方向にフッ飛ばしていく
+                else:
+                    self.all_move_window(WINDOW_ID_SCORE_BOARD,-0.3,0, 1.2,0) #すべてのSCORE_BOARDウィンドウを左方向にフッ飛ばしていく
+                
+                self.window_score_board(3)                           #スコアボードウィンドウ育成
                 self.cursor_pre_page = self.cursor_page              #前回のページ数を保存
             elif self.cursor_pre_decision_item_y == 6 and self.cursor_page == 4 and self.cursor_pre_page != self.cursor_page: #前に表示していたページ数と現在のページ数に変化があった時だけ
-                window_count = len(self.window)
-                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.window_score_board(4)                           #0=very easyのスコアボードウィンドウ育成
+                if self.cursor_move_data == PAD_RIGHT:
+                    self.all_move_window(WINDOW_ID_SCORE_BOARD, 0.3,0, 1.2,0) #すべてのSCORE_BOARDウィンドウを右方向にフッ飛ばしていく
+                else:
+                    self.all_move_window(WINDOW_ID_SCORE_BOARD,-0.3,0, 1.2,0) #すべてのSCORE_BOARDウィンドウを左方向にフッ飛ばしていく
+                
+                self.window_score_board(4)                           #スコアボードウィンドウ育成
                 self.cursor_pre_page = self.cursor_page              #前回のページ数を保存
             elif self.cursor_pre_decision_item_y == 6 and self.cursor_page == 5 and self.cursor_pre_page != self.cursor_page: #前に表示していたページ数と現在のページ数に変化があった時だけ
-                window_count = len(self.window)
-                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.window_score_board(5)                           #0=very easyのスコアボードウィンドウ育成
+                if self.cursor_move_data == PAD_RIGHT:
+                    self.all_move_window(WINDOW_ID_SCORE_BOARD, 0.3,0, 1.2,0) #すべてのSCORE_BOARDウィンドウを右方向にフッ飛ばしていく
+                else:
+                    self.all_move_window(WINDOW_ID_SCORE_BOARD,-0.3,0, 1.2,0) #すべてのSCORE_BOARDウィンドウを左方向にフッ飛ばしていく
+                
+                self.window_score_board(5)                           #スコアボードウィンドウ育成
                 self.cursor_pre_page = self.cursor_page              #前回のページ数を保存
             elif self.cursor_pre_decision_item_y == 6 and self.cursor_decision_item_y != -1: #何かしらのアイテムの所でボタンが押されたのなら
-                window_count = len(self.window)
-                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                self.cursor_type = CURSOR_TYPE_NORMAL                #セレクトカーソルの表示をオンにする
-                self.cursor_move_direction = CURSOR_MOVE_UD          #カーソルは上下移動のみ
-                self.cursor_menu_layer =  0                          #階層を0にする
-                self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y                    #
-                self.cursor_item_y = self.cursor_pre_item_y          #
-                self.cursor_max_item_y = self.cursor_pre_max_item_y  #
-                self.cursor_decision_item_y = -1                     #今から選択するアイテムは未決定に
-                self.cursor_pre_decision_item_y = -1                 #前回選択したアイテムも未決定に
+                #SCORE BOARDはキー入力のタイミングで同じウィンドウIDを持つウィンドウが複数存在してしまう可能性があるので
+                #ウィンドウIDナンバーを元にすべての同一IDウィンドウを調べ上げ画面外にフッ飛ばすようにする
+                self.all_move_window(WINDOW_ID_SCORE_BOARD,0,0.3,0,1.2) #すべてのSCORE_BOARDウィンドウを下方向にフッ飛ばしていく
+                self.pop_cursor_data(WINDOW_ID_MAIN_MENU)               #メインメニューのカーソルデータをPOP
+                self.cursor_pre_decision_item_y = -1                    #前回選択したアイテムも未決定に
                 
             elif self.cursor_pre_decision_item_y == 7 and self.cursor_decision_item_x == 8:
                 #「ENTER YOUR NAME」→「OK」ボタンを押した
                 text = self.window[self.active_window_index].edit_text[LIST_WINDOW_TEXT]
-                print(text)
                 self.my_name = text[:8] #文字列textの先頭から8文字までをmy_nameとします
-                window_count = len(self.window)
-                del self.window[window_count - 1]                    #最後に開かれたウィンドウを消去する(現在のウィンドウ消去）
-                
-                self.cursor_type = CURSOR_TYPE_NORMAL             #選択カーソル表示をonにする
-                self.cursor_move_direction = CURSOR_MOVE_UD       #カーソルは上下移動のみ
-                
-                self.cursor_menu_layer =  0                          #階層を0にする
-                self.cursor_x = self.cursor_pre_x                    #カーソルの変数を前回の物に戻してやります
-                self.cursor_y = self.cursor_pre_y                    #
-                self.cursor_item_x = self.cursor_pre_item_x          #
-                self.cursor_max_item_x = self.cursor_pre_max_item_x  #
-                self.cursor_decision_item_x = -1
-                self.cursor_pre_decision_item_x = -1
-                self.cursor_item_y = self.cursor_pre_item_y          #
-                self.cursor_max_item_y = self.cursor_pre_max_item_y  #
-                self.cursor_decision_item_y = -1
+                self.all_move_window(WINDOW_ID_INPUT_YOUR_NAME,0.2,0.3,1.2,1.2) #すべてのINPUT_YOUR_NAMEウィンドウを右下方向にフッ飛ばしていく
+                self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
 
     #!ゲームスタート時の初期化#########################################
@@ -9523,7 +9502,6 @@ class App:
             self.window[i].posx += self.window[i].vx #ウィンドウ位置の更新
             self.window[i].posy += self.window[i].vy
 
-
     #ウィンドウのはみだしチェック（表示座標が完全に画面外になったのなら消去する）
     def update_clip_window(self):
         window_count = len(self.window)#ウィンドウの数を数える
@@ -9544,6 +9522,7 @@ class App:
     def update_select_cursor(self):
         # 上入力されたら  y座標を  -7する(1キャラ分)
         if pyxel.btnp(pyxel.KEY_UP) or pyxel.btnp(pyxel.GAMEPAD_1_UP) or pyxel.btnp(pyxel.GAMEPAD_2_UP):
+            self.cursor_move_data = PAD_UP
             if self.cursor_move_direction == CURSOR_MOVE_UD:
                 if self.cursor_item_y != 0: #指し示しているアイテムナンバーが一番上の項目の0以外なら上方向にカーソルは移動できるので・・・
                     self.cursor_y -= 7 #y座標を7ドット（1キャラ分）上に
@@ -9560,6 +9539,7 @@ class App:
         
         # 下入力されたら  y座標を  +7する(1キャラ分)
         if pyxel.btnp(pyxel.KEY_DOWN) or pyxel.btnp(pyxel.GAMEPAD_1_DOWN) or pyxel.btnp(pyxel.GAMEPAD_2_DOWN):
+            self.cursor_move_data = PAD_DOWN
             if self.cursor_move_direction == CURSOR_MOVE_UD:
                 if self.cursor_item_y != self.cursor_max_item_y: #指し示しているアイテムナンバーが最大項目数でないのなら下方向にカーソルは移動できるので・・
                     self.cursor_y += 7
@@ -9576,6 +9556,7 @@ class App:
         
         #右入力されたらcursor_pageを +1する
         if pyxel.btnp(pyxel.KEY_RIGHT) or pyxel.btnp(pyxel.GAMEPAD_1_RIGHT) or pyxel.btnp(pyxel.GAMEPAD_2_RIGHT) or pyxel.btnp(pyxel.GAMEPAD_1_RIGHT_SHOULDER) or pyxel.btnp(pyxel.GAMEPAD_2_RIGHT_SHOULDER):
+            self.cursor_move_data = PAD_RIGHT
             if   self.cursor_move_direction == CURSOR_MOVE_SHOW_PAGE:
                 self.cursor_page += 1 #ページ数インクリメント
                 if self.cursor_page > self.cursor_page_max: #カーソルページ数が最大ページ数を超えたのなら
@@ -9589,6 +9570,7 @@ class App:
         
         #左入力されたらcursor_pageを -1する
         if pyxel.btnp(pyxel.KEY_LEFT) or pyxel.btnp(pyxel.GAMEPAD_1_LEFT) or pyxel.btnp(pyxel.GAMEPAD_2_LEFT) or pyxel.btnp(pyxel.GAMEPAD_2_LEFT) or pyxel.btnp(pyxel.GAMEPAD_1_LEFT_SHOULDER) or pyxel.btnp(pyxel.GAMEPAD_2_LEFT_SHOULDER):
+            self.cursor_move_data = PAD_LEFT
             if self.cursor_move_direction == CURSOR_MOVE_SHOW_PAGE:
                 self.cursor_page -= 1 #ページ数デクリメント
                 if self.cursor_page < 0:                    #カーソルページ数が0より小さくなったのなら
@@ -9599,6 +9581,7 @@ class App:
                     self.cursor_item_x -= 1
         
         if pyxel.btnp(pyxel.KEY_SPACE) or pyxel.btnp(pyxel.GAMEPAD_1_A) or pyxel.btnp(pyxel.GAMEPAD_2_A) or pyxel.btnp(pyxel.GAMEPAD_1_B) or pyxel.btnp(pyxel.GAMEPAD_2_B):
+            self.cursor_move_data = PAD_A
             self.cursor_decision_item_x = self.cursor_item_x #ボタンが押されて決定されたら、いま指示しているアイテムナンバーをcursor_decision_item_xに代入！
             self.cursor_decision_item_y = self.cursor_item_y #ボタンが押されて決定されたら、いま指示しているアイテムナンバーをcursor_decision_item_yに代入！
 
@@ -11160,7 +11143,7 @@ class App:
             self.update_append_star()             #背景の星の追加＆発生育成関数呼び出し
             self.update_star()                    #背景の星の更新（移動）関数呼び出し
             self.update_window()                  #ウィンドウの更新（ウィンドウの開き閉じ画面外に消え去っていくとか）関数を呼び出し
-            self.update_clip_window()                 #画面外にはみ出たウィンドウを消去する関数の呼び出し
+            self.update_clip_window()             #画面外にはみ出たウィンドウを消去する関数の呼び出し
             self.update_select_cursor()           #セレクトカーソルでメニューを選択する関数を呼び出す
         
         ############################### ロード用リプレイデータスロットの選択中 #######################################################
@@ -11352,23 +11335,7 @@ class App:
         
         if self.game_status == SCENE_GAME_OVER_STOP:         #「GAME_OVER_STOP」の時は
             if self.replay_status == REPLAY_RECORD: #リプレイ録画中の時のリターンタイトルウィンドウ表示
-                new_window = Window()
-                new_window.update(\
-                WINDOW_ID_GAME_OVER_RETURN,\
-                WINDOW_ID_SUB_NORMAL_MENU,\
-                WINDOW_TYPE_NORMAL,\
-                WINDOW_BG_LOW_TRANSLUCENT,\
-                WINDOW_OPEN,\
-                "RETURN TITLE?",DISP_CENTER,\
-                [["RETURN",DISP_CENTER,0,0,6,MES_NO_FLASH],\
-                ["SAVE & RETURN",DISP_CENTER,0,0,10,MES_NO_FLASH]],\
-                [[""]],\
-                43,68,   0,0,  8*8,3*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
-                BUTTON_DISP_OFF,0,0,0,\
-                BUTTON_DISP_OFF,0,0,0,\
-                [],[],[],[],[],[])
-                
-                self.window.append(new_window)                    #「RETURN TITLE?」の選択メニューを育成する
+                self.create_window(WINDOW_ID_GAME_OVER_RETURN)    #RETRN? SAVE&RETURNウィンドウの作成
                 self.cursor_type = CURSOR_TYPE_NORMAL             #選択カーソル表示をonにする
                 self.cursor_move_direction = CURSOR_MOVE_UD       #カーソルは上下移動のみ
                 self.cursor_x = 46                                #セレクトカーソルの座標を設定します
@@ -11378,30 +11345,15 @@ class App:
                 self.cursor_max_item_y = 1                        #最大項目数は「RETURN」「SAVE & RETURN」の2項目なので 2-1=1を代入
                 self.game_status = SCENE_RETURN_TITLE             #ゲームステータスを「RETURN_TITLE」にする
             elif self.replay_status == REPLAY_PLAY: #リプレイ再生中の時のリターンタイトルウィンドウ表示(SAVE&RETURN項目は表示しない)  
-                new_window = Window()
-                new_window.update(\
-                WINDOW_ID_GAME_OVER_RETURN_NO_SAVE,\
-                WINDOW_ID_SUB_NORMAL_MENU,\
-                WINDOW_TYPE_NORMAL,\
-                WINDOW_BG_LOW_TRANSLUCENT,\
-                WINDOW_OPEN,\
-                "RETURN TITLE?",DISP_CENTER,\
-                [["RETURN",DISP_CENTER,0,0,6,MES_NO_FLASH]],\
-                [[""]],\
-                43,68,   0,0,  8*8,2*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
-                BUTTON_DISP_OFF,0,0,0,\
-                BUTTON_DISP_OFF,0,0,0,\
-                [],[],[],[],[],[])
-                
-                self.window.append(new_window)                    #「RETURN TITLE?」の選択メニューを育成する
-                self.cursor_type = CURSOR_TYPE_NORMAL             #選択カーソル表示をonにする
-                self.cursor_move_direction = CURSOR_MOVE_UD       #カーソルは上下移動のみ
-                self.cursor_x = 46                                #セレクトカーソルの座標を設定します
+                self.create_window(WINDOW_ID_GAME_OVER_RETURN_NO_SAVE) #RETRN?ウィンドウの作成
+                self.cursor_type = CURSOR_TYPE_NORMAL                  #選択カーソル表示をonにする
+                self.cursor_move_direction = CURSOR_MOVE_UD            #カーソルは上下移動のみ
+                self.cursor_x = 46                                     #セレクトカーソルの座標を設定します
                 self.cursor_y = 80
-                self.cursor_item_y = 0                            #いま指示しているアイテムナンバーは0の「RETURN」
-                self.cursor_decision_item_y = -1                  #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
-                self.cursor_max_item_y = 0                        #最大項目数は「RETURN」の1項目なので 1-1=0を代入
-                self.game_status = SCENE_RETURN_TITLE             #ゲームステータスを「RETURN_TITLE」にする
+                self.cursor_item_y = 0                                 #いま指示しているアイテムナンバーは0の「RETURN」
+                self.cursor_decision_item_y = -1                       #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
+                self.cursor_max_item_y = 0                             #最大項目数は「RETURN」の1項目なので 1-1=0を代入
+                self.game_status = SCENE_RETURN_TITLE                  #ゲームステータスを「RETURN_TITLE」にする
         
         if self.game_status == SCENE_RETURN_TITLE:           #「RETURN_TITLE」の時は            
             if   self.cursor_decision_item_y == 0:             #メニューでアイテムナンバー0の「RETURN」が押されたら
