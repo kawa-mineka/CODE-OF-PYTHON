@@ -35,7 +35,7 @@ sourceフォルダ以降にあるファイルをフォルダ構成そのまま�
 コマンドプロンプトから以下の様に入力して実行します
 
 ```sh
-python min-sht073.py
+python code-of-python.py
 ```
              スペースキーでショットとミサイルの発射
              ゲームパッドのAボタンでショットの発射
@@ -47,7 +47,7 @@ python min-sht073.py
 
 TABキーまたはゲームパッドのSTARTで一時停止できます
 
-BGMに[PANICPUMPKIN](http://pansound.com/panicpumpkin/)さんの楽曲を使わさせてもらっています
+BGMに[PANICPUMPKIN](http://pansound.com/panicpumpkin/)さんの楽曲を使用させてもらっています
 
 
 
