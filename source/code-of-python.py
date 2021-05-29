@@ -48,7 +48,6 @@
 #todo51 NIGHT_SKYSCRAPER 中ボスの実装
 #todo52 NIGHT_SKYSCRAPER ボスの実装
 
-#todo80 ネームエントリー(別に必要ないかも？ストーリー重視だから・・)
 #todo81 第2の機体ElegantPerlの実装
 #todo82 ElegantPerl専用のPerlCrawの実装
 #todo83 機体選択シーンの実装
@@ -77,6 +76,9 @@
 
 #todo900 BGMの作成(無理そう.........)
 #実装完了済み！
+#todo メインプログラムのファイル名を遂に「code-of-python」に変更！ 2021 05/29
+#todo アクティブウィンドウのIDを元に最前面のインデックス値を求めていたんだけど途中のウィンドウを消去したらインデックス値がずれてアウトオブインデックスエラーが出るバグを潰した！（パッドをガチャガチャ滅茶苦茶な操作をして再現できるバグなので2週間かかった・・・）考えてみれば敵を倒したときDELしてindexが存在しません！ってエラー出て、同じようなミスしてたなぁ・・歴史は繰り返す 2021 05/29
+#todo80 ネームエントリー(別に必要ないかも？ストーリー重視だから・・)→一応暫定として完成・・・難易度の表示はどうしようと悩み中 2021 05/29
 
 # from random import randint   #random.randint(n,m) と呼ぶと、nからm(m自身を含む)までの間の整数が 等しい確率で、ランダムに返される
 from random import random    #random.random() と呼ぶと、0から1の範囲(1は含まない)のランダムな実数が返される(主にパーティクル系で使用します)
@@ -437,6 +439,11 @@ WINDOW_ID_GAME_OVER_RETURN_NO_SAVE =  9 #ゲームオーバーから戻る時の
 WINDOW_ID_SELECT_FILE_SLOT         = 10 #リプレイデータをセーブするスロットを選択するメニュー
 WINDOW_ID_SCORE_BOARD              = 11 #スコアボードウィンドウ
 WINDOW_ID_INPUT_YOUR_NAME          = 12 #名前入力ウィンドウ
+WINDOW_ID_CONFIG                   = 13 #各種設定ウィンドウ(CONFIGウィンドウ)
+WINDOW_ID_CONFIG_GRAPHICS          = 14 #グラフイック設定ウィンドウ
+WINDOW_ID_CONFIG_SOUND             = 15 #サウンド設定ウィンドウ
+WINDOW_ID_CONFIG_CONTROL           = 16 #コントロール設定ウィンドウ
+WINDOW_ID_CONFIG_SETTING           = 17 #ゲーム設定ウィンドウ
 
 #ウィンドウのid_subの定数定義 windowクラスの window_id_subに入ります
 WINDOW_ID_SUB_NORMAL_MENU            = 0 #通常の選択メニュー
@@ -4222,6 +4229,52 @@ class App:
             BUTTON_DISP_ON,51,12,WINDOW_BUTTON_SIZE_1TEXT,\
             BUTTON_DISP_OFF,0,0,0,\
             [],[],[],[],[],[])
+        elif id == WINDOW_ID_CONFIG:
+            new_window.update(\
+            WINDOW_ID_CONFIG,\
+            WINDOW_ID_SUB_NORMAL_MENU,\
+            WINDOW_TYPE_NORMAL,\
+            WINDOW_BG_LOW_TRANSLUCENT,\
+            WINDOW_OPEN,\
+            "CONFIGURATION",DISP_CENTER,\
+            [["GRAPHICS",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            ["SOUND",DISP_CENTER,0,0,3,MES_NO_FLASH],\
+            ["CONTROL",DISP_CENTER,0,0,3,MES_NO_FLASH],\
+            ["SETTING",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            ["",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            ["",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            ["",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            ["",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            ["",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            ["",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
+            [[""]],\
+            44,34,   0,0,  8*8,9*8+5,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
+            BUTTON_DISP_OFF,0,0,0,\
+            BUTTON_DISP_OFF,0,0,0,\
+            [],[],[],[],[],[])
+        elif id == WINDOW_ID_CONFIG_GRAPHICS:
+            new_window.update(\
+            WINDOW_ID_CONFIG_GRAPHICS,\
+            WINDOW_ID_SUB_NORMAL_MENU,\
+            WINDOW_TYPE_NORMAL,\
+            WINDOW_BG_LOW_TRANSLUCENT,\
+            WINDOW_OPEN,\
+            "GRAPHICS",DISP_CENTER,\
+            [["FULL SCREEN",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            ["PARTICL",DISP_CENTER,0,0,3,MES_NO_FLASH],\
+            ["",DISP_CENTER,0,0,3,MES_NO_FLASH],\
+            ["",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            ["",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            ["",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            ["",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            ["",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            ["",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            ["",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
+            [[""]],\
+            44,34,   0,0,  8*8,9*8+5,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
+            BUTTON_DISP_OFF,0,0,0,\
+            BUTTON_DISP_OFF,0,0,0,\
+            [],[],[],[],[],[])
         else:
             return
         
@@ -4265,6 +4318,11 @@ class App:
                 break
         
         return num
+
+    #現在どのウィンドウがもつインデックス値が最前面にあるのか調べあげアクティブウィンドウインデックス値に登録し更新する
+    def update_active_window(self):
+        i = self.search_window_id(self.active_window_id) #アクティブなウィンドウIDを元にインデックス値を求める関数の呼び出し
+        self.active_window_index = i           #アクティブになっているウィンドウのインデックスナンバー(i)を代入
 
     #ウィンドウIDを調べて一致するウィンドウIDの速度、加速度を更新する(同タイプウィンドウ移動消去モード)
     def all_move_window(self,id,vx,vy,vx_accel,vy_accel):
@@ -4464,8 +4522,8 @@ class App:
                                             #選択してcursor_decision_item_yに入ったアイテムナンバーをcursor_pre_decision_item_yに入れて次の階層に潜るって手法かな？
         self.cursor_move_direction = 0         #セレクトカーソルがどう動かせることが出来るのか？の状態変数です
         self.cursor_move_data = 0              #カーソルが実際に動いた方向のデータが入ります
-        
-        self.active_window_index = 0              #アクティブになっているウィンドウのインデックスナンバーが入ります(idナンバーではないので注意)
+        self.active_window_id = 0              #アクティブになっているウィンドウのIDが入ります
+        self.active_window_index = 0           #アクティブになっているウィンドウのインデックスナンバー(i)が入ります(ウィンドウIDを元にして全ウィンドウデータから検索しインデックス値を求めるのです！)
         #system-data.pyxresリソースファイルからこれらの設定値を読み込むようにしたのでコメントアウトしています
         # self.game_difficulty = GAME_NORMAL         #難易度                  タイトルメニューで難易度を選択して変化させるのでここで初期化します
         
@@ -4538,6 +4596,7 @@ class App:
                     self.cursor_max_item_y = 2                       #最大項目数は3項目なので 3-1=2を代入
                     
                     self.cursor_menu_layer = 1                       #メニューの階層が増えたので0から1にします
+                    self.active_window_id = WINDOW_ID_SELECT_STAGE_MENU #このウィンドウIDを最前列アクティブなものとする
                 
             elif self.cursor_decision_item_y == 2:            #SELECT LOOPが押されて
                 if self.search_window_id(WINDOW_ID_SELECT_LOOP_MENU) == -1: #SELECT_LOOP_MENUウィンドウが存在しないのなら・・
@@ -4553,6 +4612,7 @@ class App:
                     self.cursor_max_item_y = 2                          #最大項目数は3項目なので 3-1=2を代入
                     
                     self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
+                    self.active_window_id = WINDOW_ID_SELECT_LOOP_MENU  #このウィンドウIDを最前列でアクティブなものとする
                 
             elif self.cursor_decision_item_y == 3:            #BOSS MODEが押されて
                 if self.search_window_id(WINDOW_ID_BOSS_MODE_MENU) == -1: #BOSS MODEウィンドウが存在しないのなら・・
@@ -4568,6 +4628,7 @@ class App:
                     self.cursor_max_item_y = 1                          #最大項目数は2項目なので 2-1=1を代入
                     
                     self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
+                    self.active_window_id = WINDOW_ID_BOSS_MODE_MENU    #このウィンドウIDを最前列でアクティブなものとする
                 
             elif self.cursor_decision_item_y == 4:            #HITBOXが押されて....
                 if self.search_window_id(WINDOW_ID_HITBOX_MENU) == -1: #HITBOXウィンドウが存在しないのなら・・
@@ -4583,6 +4644,7 @@ class App:
                     self.cursor_max_item_y = 1                          #最大項目数は2項目なので 2-1=1を代入
                     
                     self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
+                    self.active_window_id = WINDOW_ID_HITBOX_MENU       #このウィンドウIDを最前列でアクティブなものとする
                 
             elif self.cursor_decision_item_y == 5:            #DIFFICULTYが押されて
                 if self.search_window_id(WINDOW_ID_SELECT_DIFFICULTY) == -1: #SELECT_DIFFICULTYウィンドウが存在しないのなら・・
@@ -4598,6 +4660,7 @@ class App:
                     self.cursor_max_item_y = 5                          #最大項目数は6項目なので 6-1=5を代入
                     
                     self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
+                    self.active_window_id = WINDOW_ID_SELECT_DIFFICULTY #このウィンドウIDを最前列でアクティブなものとする
                 
             elif self.cursor_decision_item_y == 6:            #SCORE BOARDが押されて...
                 if self.search_window_id(WINDOW_ID_SCORE_BOARD) == -1: #SCORE_BOARDウィンドウが存在しないのなら・・
@@ -4611,6 +4674,7 @@ class App:
                     self.cursor_page = 0                                #いま指し示しているページナンバー 0=very easy
                     self.cursor_page_max = 5                            #最大ページ数 難易度は0~5の範囲 なのでMAX5
                     self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
+                    self.active_window_id = WINDOW_ID_SCORE_BOARD       #このウィンドウIDを最前列でアクティブなものとする
                 
             elif self.cursor_decision_item_y == 7:            #NAME ENTRYが押されて...
                 if self.search_window_id(WINDOW_ID_INPUT_YOUR_NAME) == -1: #INPUT_YOUR_NAMEウィンドウが存在しないのなら・・
@@ -4631,11 +4695,12 @@ class App:
                     
                     self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
                     
-                    self.active_window_index = self.search_window_id(WINDOW_ID_INPUT_YOUR_NAME) #このウィンドウを最前列でアクティブなものとしてインデックスナンバーを調べて登録
+                    self.active_window_id = WINDOW_ID_INPUT_YOUR_NAME   #このウィンドウIDを最前列でアクティブなものとする
                 
             elif self.cursor_decision_item_y == 9:            #REPLAYが押されたら
                 self.game_status = SCENE_SELECT_LOAD_SLOT          #ゲームステータスを「SCENE_SELECT_LOAD_SLOT」にしてロードデータスロットの選択に移る
                 self.window_replay_data_slot_select()              #リプレイデータファイルスロット選択ウィンドウの表示
+                self.active_window_id = WINDOW_ID_SELECT_FILE_SLOT #このウィンドウIDを最前列でアクティブなものとする
             
         elif self.cursor_menu_layer == 1: #メニューが1階層目の選択分岐
             if   self.cursor_pre_decision_item_y == 1 and self.cursor_decision_item_y == 0:
@@ -9530,13 +9595,14 @@ class App:
                     self.cursor_item_y -= 1 #現在指し示しているアイテムナンバーを1減らす
             elif self.cursor_move_direction == CURSOR_MOVE_LR_SLIDER:
                 if self.cursor_item_x != self.cursor_max_item_x: #指し示しているアイテムナンバーx軸方向が最大項目数の場合はOKアイコンなので何もしない(それ以外の時は処理をする)
-                    text = self.window[self.active_window_index].edit_text[LIST_WINDOW_TEXT]
-                    character = ord(text[self.cursor_item_x]) #カーソルの位置の文字を取得しアスキーコードを取得する
-                    character += 1 #文字のアスキーコードを1増やす（今カーソルのあるアルファベットのアスキーコードを１増やす AはBに BはCに CはDに DはEになる)
-                    left_text  = text[:self.cursor_item_x] #先頭からカーソルまでの文字列を切り出す(カーソルの左方向の文字列の切り出し)
-                    right_text = text[self.cursor_item_x+1:] #カーソル位置から文字列の最後まで切り出す(カーソルの右方向の文字列の切り出し)
-                    new_text = left_text + chr(character) + right_text #新しい文字列を作り出す(pythonの文字列はimmutable(変更不能)らしいので新しい文字列変数を作ってそれを代入するしかない？？のかな？よくわかんない)
-                    self.window[self.active_window_index].edit_text[LIST_WINDOW_TEXT] = new_text
+                    if self.window[self.active_window_index].edit_text[LIST_WINDOW_TEXT] != "": #テキストリストに何かしらの文字列が入っている時のみ処理をする
+                        text = self.window[self.active_window_index].edit_text[LIST_WINDOW_TEXT]
+                        character = ord(text[self.cursor_item_x]) #カーソルの位置の文字を取得しアスキーコードを取得する
+                        character += 1 #文字のアスキーコードを1増やす（今カーソルのあるアルファベットのアスキーコードを１増やす AはBに BはCに CはDに DはEになる)
+                        left_text  = text[:self.cursor_item_x] #先頭からカーソルまでの文字列を切り出す(カーソルの左方向の文字列の切り出し)
+                        right_text = text[self.cursor_item_x+1:] #カーソル位置から文字列の最後まで切り出す(カーソルの右方向の文字列の切り出し)
+                        new_text = left_text + chr(character) + right_text #新しい文字列を作り出す(pythonの文字列はimmutable(変更不能)らしいので新しい文字列変数を作ってそれを代入するしかない？？のかな？よくわかんない)
+                        self.window[self.active_window_index].edit_text[LIST_WINDOW_TEXT] = new_text
         
         # 下入力されたら  y座標を  +7する(1キャラ分)
         if pyxel.btnp(pyxel.KEY_DOWN) or pyxel.btnp(pyxel.GAMEPAD_1_DOWN) or pyxel.btnp(pyxel.GAMEPAD_2_DOWN):
@@ -9547,13 +9613,14 @@ class App:
                     self.cursor_item_y += 1
             elif self.cursor_move_direction == CURSOR_MOVE_LR_SLIDER:
                 if self.cursor_item_x != self.cursor_max_item_x: #指し示しているアイテムナンバーx軸方向が最大項目数の場合はOKアイコンなので何もしない(それ以外の時は処理をする)
-                    text = self.window[self.active_window_index].edit_text[LIST_WINDOW_TEXT]
-                    character = ord(text[self.cursor_item_x]) #カーソルの位置の文字を取得しアスキーコードを取得する
-                    character -= 1 #文字のアスキーコードを1減らす（今カーソルのあるアルファベットのアスキーコードを１増やす AはBに BはCに CはDに DはEになる)
-                    left_text  = text[:self.cursor_item_x] #先頭からカーソルまでの文字列を切り出す(カーソルの左方向の文字列の切り出し)
-                    right_text = text[self.cursor_item_x+1:] #カーソル位置から文字列の最後まで切り出す(カーソルの右方向の文字列の切り出し)
-                    new_text = left_text + chr(character) + right_text #新しい文字列を作り出す(pythonの文字列はimmutable(変更不能)らしいので新しい文字列変数を作ってそれを代入するしかない？？のかな？よくわかんない)
-                    self.window[self.active_window_index].edit_text[LIST_WINDOW_TEXT] = new_text
+                    if self.window[self.active_window_index].edit_text[LIST_WINDOW_TEXT] != "": #テキストリストに何かしらの文字列が入っている時のみ処理をする
+                        text = self.window[self.active_window_index].edit_text[LIST_WINDOW_TEXT]
+                        character = ord(text[self.cursor_item_x]) #カーソルの位置の文字を取得しアスキーコードを取得する
+                        character -= 1 #文字のアスキーコードを1減らす（今カーソルのあるアルファベットのアスキーコードを１増やす AはBに BはCに CはDに DはEになる)
+                        left_text  = text[:self.cursor_item_x] #先頭からカーソルまでの文字列を切り出す(カーソルの左方向の文字列の切り出し)
+                        right_text = text[self.cursor_item_x+1:] #カーソル位置から文字列の最後まで切り出す(カーソルの右方向の文字列の切り出し)
+                        new_text = left_text + chr(character) + right_text #新しい文字列を作り出す(pythonの文字列はimmutable(変更不能)らしいので新しい文字列変数を作ってそれを代入するしかない？？のかな？よくわかんない)
+                        self.window[self.active_window_index].edit_text[LIST_WINDOW_TEXT] = new_text
         
         #右入力されたらcursor_pageを +1する
         if pyxel.btnp(pyxel.KEY_RIGHT) or pyxel.btnp(pyxel.GAMEPAD_1_RIGHT) or pyxel.btnp(pyxel.GAMEPAD_2_RIGHT) or pyxel.btnp(pyxel.GAMEPAD_1_RIGHT_SHOULDER) or pyxel.btnp(pyxel.GAMEPAD_2_RIGHT_SHOULDER):
@@ -11145,6 +11212,7 @@ class App:
             self.update_star()                    #背景の星の更新（移動）関数呼び出し
             self.update_window()                  #ウィンドウの更新（ウィンドウの開き閉じ画面外に消え去っていくとか）関数を呼び出し
             self.update_clip_window()             #画面外にはみ出たウィンドウを消去する関数の呼び出し
+            self.update_active_window()           #現在アクティブ(最前面)になっているウィンドウのインデックス値(i)を求める関数の呼び出し
             self.update_select_cursor()           #セレクトカーソルでメニューを選択する関数を呼び出す
         
         ############################### ロード用リプレイデータスロットの選択中 #######################################################
@@ -11153,6 +11221,7 @@ class App:
             self.update_star()                        #背景の星の更新（移動）関数呼び出し
             self.update_window()                      #ウィンドウの更新（ウィンドウの開き閉じ画面外に消え去っていくとか）関数を呼び出し
             self.update_clip_window()                 #画面外にはみ出たウィンドウを消去する関数の呼び出し
+            self.update_active_window()               #現在アクティブ(最前面)になっているウィンドウのインデックス値(i)を求める関数の呼び出し
             self.update_select_cursor()               #セレクトカーソルでメニューを選択する関数を呼び出す
             if   self.cursor_decision_item_y == 0:      #メニューでアイテムナンバー0の「1」が押されたら
                 self.replay_slot_num = 0              #スロット番号は0   (以下はほぼ同じ処理です)
@@ -11430,7 +11499,8 @@ class App:
             self.update_game_pause()        #ボタンが押されたらポーズをかける関数を呼び出し
             #ウィンドウ＆メニューカーソル関連の処理###############################################################################################
             self.update_window()            #ウィンドウの更新（ウィンドウの開き閉じ画面外に消え去っていくとか）関数を呼び出し
-            self.update_clip_window()                 #画面外にはみ出たウィンドウを消去する関数の呼び出し
+            self.update_clip_window()       #画面外にはみ出たウィンドウを消去する関数の呼び出し
+            self.update_active_window()     #現在アクティブ(最前面)になっているウィンドウのインデックス値(i)を求める関数の呼び出し
             self.update_select_cursor()     #メニューカーソルの更新（移動とか）関数を呼び出し
     
     ###########################################################
