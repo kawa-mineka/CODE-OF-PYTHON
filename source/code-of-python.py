@@ -72,12 +72,14 @@
 #todo803 ウィンドウシステムを改良する（滅茶苦茶難しそう・・・今は同じようなコードを羅列してるだけなのでシンプルに行きたいところですが・・）
 #todo804 難易度選択によるスタート時のクロー追加ボーナスでローリングクローだけ上手く複数追加されない(1個だけなら追加される)(おそらく2~4個追加時に全く同じ座標で回転し続けて1個だけで回っているように見える？のかも？)要バグ取り
 #todo805 ボスとの当たり判定関連の関数はショット、ミサイル、クローショットの3つの関数があるがほとんど同じようなコードの羅列なので共通化したい・・リファクタリングって奴なのかな？？
-
+#todo806 時々敵を倒したときパワーカプセルが出ない時があるっぽい？多分サブウェポンで敵(編隊群のみかな？？)を倒したときに出ない？？？多分？？？
 
 #todo900 BGMの作成(無理そう.........)
 #実装完了済み！
 #todo メインプログラムのファイル名を遂に「code-of-python」に変更！ 2021 05/29
-#todo アクティブウィンドウのIDを元に最前面のインデックス値を求めていたんだけど途中のウィンドウを消去したらインデックス値がずれてアウトオブインデックスエラーが出るバグを潰した！（パッドをガチャガチャ滅茶苦茶な操作をして再現できるバグなので2週間かかった・・・）考えてみれば敵を倒したときDELしてindexが存在しません！ってエラー出て、同じようなミスしてたなぁ・・歴史は繰り返す 2021 05/29
+#todo アクティブウィンドウのIDを元に最前面のインデックス値を求めていたんだけど
+#     途中のウィンドウを消去したらインデックス値がずれてアウトオブインデックスエラーが出るバグを潰した！（パッドをガチャガチャ滅茶苦茶な操作をして再現できるバグなので2週間かかった・・・）
+#     考えてみれば敵を倒したときDELしてindexが存在しません！ってエラー出て、同じようなミスしてたなぁ・・歴史は繰り返す 2021 05/29
 #todo80 ネームエントリー(別に必要ないかも？ストーリー重視だから・・)→一応暫定として完成・・・難易度の表示はどうしようと悩み中 2021 05/29
 
 # from random import randint   #random.randint(n,m) と呼ぶと、nからm(m自身を含む)までの間の整数が 等しい確率で、ランダムに返される
@@ -471,13 +473,17 @@ WINDOW_SELECT_YES_NO   =  8    #「はい」「いいえ」の2択表示中
 WINDOW_OPEN_COMPLETED  =  9    #テキストウィンドウ開き完了！
 WINDOW_CLOSE           = 10    #テキストウィンドウ閉め進行中
 WINDOW_CLOSE_COMPLETED = 11    #テキストウィンドウ閉め完了！
-
+#ウィンドウのテキスト行間ドット数 windowクラスのbetween_lineに入ります
+WINDOW_BETWEEN_LINE_7   =  7     #行間 7ドット
+WINDOW_BETWEEN_LINE_8   =  8     #行間 8ドット
+WINDOW_BETWEEN_LINE_9   =  9     #行間 9ドット
+WINDOW_BETWEEN_LINE_10  = 10     #行間10ドット
 #ウィンドウで表示されるボタンのサイズ
-WINDOW_BUTTON_SIZE_1x1    = 0      #1x1キャラ分(8x8ドット)
+WINDOW_BUTTON_SIZE_1X1    = 0      #1x1キャラ分(8x8ドット)
 WINDOW_BUTTON_SIZE_1TEXT  = 1      #半角文字サイズ4*6ドット
-WINDOW_BUTTON_SIZE_1x2    = 2      #1x2キャラ分(8x16ドット)
+WINDOW_BUTTON_SIZE_1X2    = 2      #1x2キャラ分(8x16ドット)
 
-#メッセージ,ボタンの表示の仕方 windowクラスの (text~text0)_alignに入ります
+#メッセージ,ボタンの表示の仕方 windowクラスのwindow_titleリスト内[LIST_WINDOW_TEXT_ALIGN],textリスト内[i][LIST_WINDOW_TEXT_ALIGN]に入ります
 BUTTON_DISP_OFF    = 0 #0=表示しない
 DISP_OFF           = 0 #0=表示しない
 
@@ -488,7 +494,7 @@ DISP_CENTER        = 2 #2=中央表示
 DISP_LEFT_ALIGN    = 3 #3=左揃え
 DISP_RIGHT_ALIGN   = 4 #4=右揃え
 
-#ウィンドウテキストのリストの2次元配列のインデックスナンバーとして使用する定数定義 windowクラスのtext[i][ここで定義した定数]に入ります
+#ウィンドウテキストのリストの2次元配列のインデックスナンバーとして使用する定数定義 windowクラスのtitle[i][ここで定義した定数],またはtext[i][ここで定義した定数]に入ります
 LIST_WINDOW_TEXT                   =  0 #ウィンドウテキスト
 LIST_WINDOW_TEXT_ALIGN             =  1 #ウィンドウテキストの揃え方(アライメント)(整列の仕方)
 LIST_WINDOW_TEXT_OX                =  2 #ウィンドウテキスト表示x軸のオフセット値
@@ -1954,14 +1960,15 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         self.window_bg = 0          #ウィンドウの下地(主に背景の事です) 0=シースルー 1=完全な青地 2=ちょっとシースルー
         self.window_status = 0      #ウィンドウの現在の状態を表しますステータスです WINDOW_OPEN=ウィンドウ開き中 WINDOW_CLOSE=ウィンドウ閉じ中
                                     #                                           WINDOW_WRITE_MESSAGE=メッセージテキスト表示中
-        self.window_title = ""      #テキストが入ります
-        self.window_title_align = 0 #DISP_CENTER=中央表示 DISP_LEFT_ALIGN=左揃え DISP_OFF=表示しない
+        self.between_line = 0       #テキスト表示時の行と行の間隔(通常は7ドット)
+        self.window_title = []                      #タイトルが入ります
+        self.text         = [[] for i in range(10)] #テキストが入ります 
+        self.edit_text    = []                      #編集できるテキストが入ります
         
-        self.text       = [[] for i in range(10)] #テキストが入ります 
-        self.edit_text  = []                      #編集できるテキストが入ります
-        
-        self.posx = 0          #ウィンドウ左上の座標(posx,posy)
+        self.posx = 0          #現在のウィンドウの座標(posx,posy)
         self.posy = 0
+        self.dx = 0            #移動先の座標(destination_x,y)
+        self.dy = 0
         self.width = 0         #現在のウィンドウの横幅と縦幅(width,height)最初は0でだんだんと(open_width,open_height)に近づいていきます
         self.height = 0
         self.open_width = 0    #ウィンドウが完全に開いた状態の横幅と縦幅(width,heighがこの値になったらウィンドウオープン完了)
@@ -1995,11 +2002,14 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         self.missile_list = []
         self.medal_list = []
         self.item_list = [[] for i in range(128)]
-    def update(self,window_id,window_id_sub,window_type,window_bg,window_status,window_title,window_title_align,\
+    def update(self,window_id,window_id_sub,window_type,window_bg,window_status,\
+        between_line,\
+        
+        window_title,\
         text,\
         edit_text,\
         
-        x,y,width,height,open_width,open_height,change_x,change_y,open_speed,close_speed,open_accel,close_accel,marker,color,\
+        x,y,dx,dy,width,height,open_width,open_height,change_x,change_y,open_speed,close_speed,open_accel,close_accel,marker,color,\
         vx,vy,vx_accel,vy_accel,\
         ok_button_disp_flag,ok_button_x,ok_button_y,ok_button_size,\
         no_button_disp_flag,no_button_x,no_button_y,no_button_size,\
@@ -2009,14 +2019,17 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         self.window_type = window_type
         self.window_bg = window_bg
         self.window_status = window_status
-        self.window_title = window_title
-        self.window_title_align = window_title_align
         
+        self.between_line = between_line
+        
+        self.window_title = window_title
         self.text = text
         self.edit_text = edit_text
         
         self.posx = x
         self.posy = y
+        self.dx = dx
+        self.dy = dy
         self.width  = width
         self.height = height
         self.open_width  = open_width
@@ -2221,7 +2234,7 @@ class App:
     
     def __init__(self):
         pygame.mixer.init()  #pygameミキサー関連の初期化 pyxel.initよりも先にpygameをinitしないと上手く動かないみたい・・・
-        pyxel.init(WINDOW_W,WINDOW_H,caption="mineka shooting game",fps=60) #ゲームウィンドウのタイトルバーの表示とfpsの設定(60fpsにした)
+        pyxel.init(WINDOW_W,WINDOW_H,caption="CODE OF PYTHON",fps = 60) #ゲームウィンドウのタイトルバーの表示とfpsの設定(60fpsにした)
         
         self.load_system_data()        #システムデータをロードする関数の呼び出し
         pyxel.mouse(False)             #マウスカーソルを非表示にする
@@ -4050,6 +4063,26 @@ class App:
         num = num_0_1 + num_0_01 + num_0_001 + num_0_0001 + num_0_00001 #全ての桁数を足し合わせると小数点5桁までの乱数となる(0.00000~0.99999)
         return (num)
 
+    #点滅系カラーコードの取得
+    def get_flashing_type_color_code(self,flash_type):
+        global col
+        if flash_type == MES_BLINKING_FLASH:                     #テキスト点滅の場合
+            col = self.blinking_color[pyxel.frame_count // 4 % 10]
+        elif flash_type == MES_YELLOW_FLASH:                     #テキスト黄色点滅の場合
+            col = self.yellow_flash_color[pyxel.frame_count // 4 % 10]
+        elif flash_type == MES_RED_FLASH:                        #テキスト赤い点滅の場合
+            col = self.red_flash_color[pyxel.frame_count // 4 % 10]
+        elif flash_type == MES_GREEN_FLASH:                      #テキスト緑で点滅の場合
+            col = self.green_flash_color[pyxel.frame_count // 4 % 10]
+        elif flash_type == MES_MONOCHROME_FLASH:                 #テキスト白黒で点滅の場合
+            col = self.monochrome_flash_color[pyxel.frame_count // 4 % 10]
+        elif flash_type == MES_RAINBOW_FLASH:                    #テキスト虹色に点滅の場合
+            col = self.rainbow_flash_color[pyxel.frame_count // 4 % 10]
+        else:                                                    #該当しない場合は白色(7)にする
+            col = 7
+        
+        return (col)
+
     #矩形Aと矩形Bの当たり判定
     #collision rectangle to rectangle
     #矩形A(rect_ax,rect_ay,rect_aw,rect_ah)(xはx座標,yはy座標,wは横幅width,hは縦幅heightを意味します)
@@ -4082,7 +4115,7 @@ class App:
         else:
             return False
 
-    #各種ウィンドウの育成       id=windowクラスの window_idに入っている数値
+    #各種ウィンドウの育成             id=windowクラスの window_idに入っている数値
     def create_window(self,id):
         new_window = Window()
         if   id == WINDOW_ID_MAIN_MENU:
@@ -4092,7 +4125,9 @@ class App:
             WINDOW_TYPE_NORMAL,\
             WINDOW_BG_LOW_TRANSLUCENT,\
             WINDOW_OPEN,\
-            "MENU",DISP_CENTER,\
+            WINDOW_BETWEEN_LINE_7,\
+            ["MENU",DISP_CENTER,0,0,7,MES_RAINBOW_FLASH],\
+            
             [["GAME START",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             ["SELECT STAGE",DISP_CENTER,0,0,3,MES_NO_FLASH],\
             ["SELECT LOOP",DISP_CENTER,0,0,3,MES_NO_FLASH],\
@@ -4103,8 +4138,9 @@ class App:
             ["NAME ENTRY",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             ["CONFIG",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             ["REPLAY",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
+            
             [[""]],\
-            44,34,   0,0,  8*8,9*8+5,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
+            44,34,44,34,   0,0,  8*8,9*8+5,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             [],[],[],[],[],[])
@@ -4115,12 +4151,15 @@ class App:
             WINDOW_TYPE_NORMAL,\
             WINDOW_BG_BLUE_BACK,\
             WINDOW_OPEN,\
-            "",DISP_CENTER,\
+            WINDOW_BETWEEN_LINE_7,\
+            ["",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            
             [["1",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             [ "2",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             [ "3",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
+            
             [[""]],\
-            90,60,   0,0,  2*8,5*8,   2,2, 1,1,   0,0,    0,0,    0,0,0,0,\
+            90,60,90,60,   0,0,  2*8,5*8,   2,2, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             [],[],[],[],[],[])
@@ -4131,12 +4170,15 @@ class App:
             WINDOW_TYPE_NORMAL,\
             WINDOW_BG_TRANSLUCENT,\
             WINDOW_OPEN,\
-            "",DISP_CENTER,\
+            WINDOW_BETWEEN_LINE_7,\
+            ["",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            
             [["1",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             [ "2",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             [ "3",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
+            
             [[""]],\
-            90+22,60+6,   0,0,  2*8,5*8,   2,2, 1,1,   0,0,    0,0,    0,0,0,0,\
+            90+22,60+6,90+22,60+6,   0,0,  2*8,5*8,   2,2, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             [],[],[],[],[],[])
@@ -4147,10 +4189,13 @@ class App:
             WINDOW_TYPE_NORMAL,\
             WINDOW_BG_TRANSLUCENT,\
             WINDOW_OPEN,\
-            "ON",DISP_CENTER,\
+            WINDOW_BETWEEN_LINE_7,\
+            ["ON",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            
             [["OFF",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
+            
             [[""]],\
-            96+3,60-1,   0,0,  2*8+7,2*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
+            96+3,60-1,96+3,60-1,   0,0,  2*8+7,2*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             [],[],[],[],[],[])
@@ -4161,10 +4206,13 @@ class App:
             WINDOW_TYPE_NORMAL,\
             WINDOW_BG_TRANSLUCENT,\
             WINDOW_OPEN,\
-            "ON",DISP_CENTER,\
+            WINDOW_BETWEEN_LINE_7,\
+            ["ON",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            
             [["OFF",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
+            
             [[""]],\
-            96+3,60-1,   0,0,  2*8+7,2*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
+            96+3,60-1,96+3,60-1,   0,0,  2*8+7,2*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             [],[],[],[],[],[])
@@ -4175,14 +4223,17 @@ class App:
             WINDOW_TYPE_NORMAL,\
             WINDOW_BG_BLUE_BACK,\
             WINDOW_OPEN,\
-            "VERY EASY",DISP_CENTER,\
+            WINDOW_BETWEEN_LINE_7,\
+            ["VERY EASY",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            
             [["EASY",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             ["NORMAL",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             ["HARD",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             ["VERY HARD",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             ["INSAME",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
+            
             [[""]],\
-            93,52,   0,0,  6*8,6*8-5,   3,3, 1,1,   0,0,    0,0,    0,0,0,0,\
+            93,52,93,52,   0,0,  6*8,6*8-5,   3,3, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             [],[],[],[],[],[])
@@ -4193,11 +4244,14 @@ class App:
             WINDOW_TYPE_NORMAL,\
             WINDOW_BG_LOW_TRANSLUCENT,\
             WINDOW_OPEN,\
-            "RETURN TITLE?",DISP_CENTER,\
+            WINDOW_BETWEEN_LINE_7,\
+            ["RETURN TITLE?",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            
             [["RETURN",DISP_CENTER,0,0,6,MES_NO_FLASH],\
             ["SAVE & RETURN",DISP_CENTER,0,0,10,MES_NO_FLASH]],\
+            
             [[""]],\
-            43,68,   0,0,  8*8,3*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
+            43,68,43,68,   0,0,  8*8,3*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             [],[],[],[],[],[])
@@ -4208,10 +4262,13 @@ class App:
             WINDOW_TYPE_NORMAL,\
             WINDOW_BG_LOW_TRANSLUCENT,\
             WINDOW_OPEN,\
-            "RETURN TITLE?",DISP_CENTER,\
+            WINDOW_BETWEEN_LINE_7,\
+            ["RETURN TITLE?",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            
             [["RETURN",DISP_CENTER,0,0,6,MES_NO_FLASH]],\
+            
             [[""]],\
-            43,68,   0,0,  8*8,2*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
+            43,68,43,68,   0,0,  8*8,2*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             [],[],[],[],[],[])
@@ -4222,10 +4279,13 @@ class App:
             WINDOW_TYPE_EDIT_TEXT,\
             WINDOW_BG_BLUE_BACK,\
             WINDOW_OPEN,\
-            "ENTER YOUR NAME",DISP_CENTER,\
+            WINDOW_BETWEEN_LINE_7,\
+            ["ENTER YOUR NAME",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            
             [["",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
+            
             [self.my_name,DISP_LEFT_ALIGN,20,12,10,MES_NO_FLASH],\
-            80,52,   0,0,  6*11+2,6*3,   3,3, 1,1,   0,0,    0,0,    0,0,0,0,\
+            80,52,80,52,   0,0,  6*11+2,6*3,   3,3, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_ON,51,12,WINDOW_BUTTON_SIZE_1TEXT,\
             BUTTON_DISP_OFF,0,0,0,\
             [],[],[],[],[],[])
@@ -4234,21 +4294,24 @@ class App:
             WINDOW_ID_CONFIG,\
             WINDOW_ID_SUB_NORMAL_MENU,\
             WINDOW_TYPE_NORMAL,\
-            WINDOW_BG_LOW_TRANSLUCENT,\
+            WINDOW_BG_BLUE_BACK,\
             WINDOW_OPEN,\
-            "CONFIGURATION",DISP_CENTER,\
-            [["GRAPHICS",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-            ["SOUND",DISP_CENTER,0,0,3,MES_NO_FLASH],\
-            ["CONTROL",DISP_CENTER,0,0,3,MES_NO_FLASH],\
-            ["SETTING",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            WINDOW_BETWEEN_LINE_9,\
+            ["CONFIGURATION",DISP_CENTER,0,0,7,MES_MONOCHROME_FLASH],\
+            
+            [["SCREEN MODE",DISP_LEFT_ALIGN,10,0,7,MES_NO_FLASH],\
+            ["BGM VOLUME",DISP_LEFT_ALIGN,10,0,7,MES_NO_FLASH],\
+            ["SE VOLUME",DISP_LEFT_ALIGN,10,0,7,MES_NO_FLASH],\
+            ["CONTROL TYPE",DISP_LEFT_ALIGN,10,0,7,MES_NO_FLASH],\
             ["",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             ["",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             ["",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             ["",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             ["",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             ["",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
+            
             [[""]],\
-            44,34,   0,0,  8*8,9*8+5,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
+            4,4,4,4,   0,0,  160-16,120-12,   2,2, 2,2,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             [],[],[],[],[],[])
@@ -4259,7 +4322,9 @@ class App:
             WINDOW_TYPE_NORMAL,\
             WINDOW_BG_LOW_TRANSLUCENT,\
             WINDOW_OPEN,\
-            "GRAPHICS",DISP_CENTER,\
+            WINDOW_BETWEEN_LINE_7,\
+            ["GRAPHICS",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            
             [["FULL SCREEN",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             ["PARTICL",DISP_CENTER,0,0,3,MES_NO_FLASH],\
             ["",DISP_CENTER,0,0,3,MES_NO_FLASH],\
@@ -4270,8 +4335,9 @@ class App:
             ["",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             ["",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             ["",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
+            
             [[""]],\
-            44,34,   0,0,  8*8,9*8+5,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
+            44,34,44,34,   0,0,  8*8,9*8+5,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             [],[],[],[],[],[])
@@ -4289,7 +4355,9 @@ class App:
         WINDOW_TYPE_NORMAL,\
         WINDOW_BG_BLUE_BACK,\
         WINDOW_OPEN,\
-        "RANKING",DISP_CENTER,\
+        WINDOW_BETWEEN_LINE_7,\
+        ["RANKING",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+        
         [[" 1 " + str(self.score_ranking[d][0][2]) + " " + str("{:>8}".format(self.score_ranking[d][0][3])),DISP_LEFT_ALIGN,0,0,10,MES_YELLOW_FLASH],\
         [ " 2 " + str(self.score_ranking[d][1][2]) + " " + str("{:>8}".format(self.score_ranking[d][1][3])),DISP_LEFT_ALIGN,0,0, 7,MES_NO_FLASH],\
         [ " 3 " + str(self.score_ranking[d][2][2]) + " " + str("{:>8}".format(self.score_ranking[d][2][3])),DISP_LEFT_ALIGN,0,0, 4,MES_NO_FLASH],\
@@ -4300,13 +4368,42 @@ class App:
         [ " 8 " + str(self.score_ranking[d][7][2]) + " " + str("{:>8}".format(self.score_ranking[d][7][3])),DISP_LEFT_ALIGN,0,0,13,MES_NO_FLASH],\
         [ " 9 " + str(self.score_ranking[d][8][2]) + " " + str("{:>8}".format(self.score_ranking[d][8][3])),DISP_LEFT_ALIGN,0,0,13,MES_NO_FLASH],\
         [ "10 " + str(self.score_ranking[d][9][2]) + " " + str("{:>8}".format(self.score_ranking[d][9][3])),DISP_LEFT_ALIGN,0,0, 2,MES_NO_FLASH]],\
+        
         [[""]],\
-        31,28,   20,79,  90,79,   4,1, 2,1,   0,0,    0,0,    0,0,0,0,\
+        31,28,31,28,   20,79,  90,79,   4,1, 2,1,   0,0,    0,0,    0,0,0,0,\
         BUTTON_DISP_OFF,0,0,0,\
         BUTTON_DISP_OFF,0,0,0,\
         [],[],[],[],[],[])
         
         self.window.append(new_window)                   #「RANKING」を育成する
+
+    #リプレイファイルスロット選択ウィンドウの表示
+    def window_replay_data_slot_select(self):
+        new_window = Window()
+        new_window.update(\
+        WINDOW_ID_SELECT_FILE_SLOT,\
+        WINDOW_ID_SUB_NORMAL_MENU,\
+        WINDOW_TYPE_NORMAL,\
+        WINDOW_BG_BLUE_BACK,\
+        WINDOW_OPEN,\
+        WINDOW_BETWEEN_LINE_7,\
+        ["SLOT",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+        
+        [["1",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+        [ "2",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+        [ "3",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+        [ "4",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+        [ "5",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+        [ "6",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+        [ "7",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
+        
+        [[""]],\
+        63,44,63,44,   0,0,  22,67,      2,1, 2,1,   1,1,    0,0,    0,0,0,0,\
+        BUTTON_DISP_OFF,0,0,0,\
+        BUTTON_DISP_OFF,0,0,0,\
+        [],[],[],[],[],[])
+        
+        self.window.append(new_window)                      #「SELECT SLOT」を育成する
 
     #ウィンドウIDの検索(与えられたウィンドウIDを元にしてウィンドウ群を検索しインデックスナンバーを取得する)
     def search_window_id(self,id): #id=windowクラスの window_idに入っている数値 発見できなかった時は-1を返します
@@ -4318,11 +4415,6 @@ class App:
                 break
         
         return num
-
-    #現在どのウィンドウがもつインデックス値が最前面にあるのか調べあげアクティブウィンドウインデックス値に登録し更新する
-    def update_active_window(self):
-        i = self.search_window_id(self.active_window_id) #アクティブなウィンドウIDを元にインデックス値を求める関数の呼び出し
-        self.active_window_index = i           #アクティブになっているウィンドウのインデックスナンバー(i)を代入
 
     #ウィンドウIDを調べて一致するウィンドウIDの速度、加速度を更新する(同タイプウィンドウ移動消去モード)
     def all_move_window(self,id,vx,vy,vx_accel,vy_accel):
@@ -4366,38 +4458,6 @@ class App:
         del self.cursor[i] #カーソルデータをPOPし終わったのでインスタンスを削除する
         self.cursor_decision_item_y = -1  #一番新しい層の選択アイテムを未選択にする
 
-    #リプレイファイルスロット選択ウィンドウの表示
-    def window_replay_data_slot_select(self):
-        new_window = Window()
-        new_window.update(\
-        WINDOW_ID_SELECT_FILE_SLOT,\
-        WINDOW_ID_SUB_NORMAL_MENU,\
-        WINDOW_TYPE_NORMAL,\
-        WINDOW_BG_BLUE_BACK,\
-        WINDOW_OPEN,\
-        "SLOT",DISP_CENTER,\
-        [["1",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-        [ "2",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-        [ "3",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-        [ "4",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-        [ "5",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-        [ "6",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-        [ "7",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
-        [[""]],\
-        63,44,   0,0,  22,67,      2,1, 2,1,   1,1,    0,0,    0,0,0,0,\
-        BUTTON_DISP_OFF,0,0,0,\
-        BUTTON_DISP_OFF,0,0,0,\
-        [],[],[],[],[],[])
-        
-        self.window.append(new_window)                      #「SELECT SLOT」を育成する
-        self.cursor_type = CURSOR_TYPE_NORMAL               #選択カーソル表示をonにする
-        self.cursor_move_direction = CURSOR_MOVE_UD         #カーソルは上下移動のみ
-        self.cursor_x = 67                                  #セレクトカーソルの座標を設定します
-        self.cursor_y = 55
-        self.cursor_item_y = 0                              #いま指示しているアイテムナンバーは0の「1」
-        self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
-        self.cursor_max_item_y = 6                          #最大項目数は「1」「2」「3」「4」「5」「6」「7」の7項目なので 7-1=6を代入
-        self.cursor_menu_layer = 0                          #メニューの階層は最初は0にします
 
     #スコアボードへの書き込み ランク外である11位にスコアを書き込む関数(スコアボードは10位までしか表示されないのでこの状態では表示されませんバブルソートしてね)
     def recoard_score_board(self):
@@ -4505,8 +4565,8 @@ class App:
         self.cursor_type = CURSOR_TYPE_NO_DISP #セレクトカーソルを表示するかしないかのフラグ用
         self.cursor_x = 0                      #セレクトカーソルのx座標
         self.cursor_y = 0                      #セレクトカーソルのy座標
-        self.cursor_step_x = 0                 #横方向の移動ドット数
-        self.cursor_step_y = 0                 #縦方向の移動ドット数
+        self.cursor_step_x = 4                 #横方向の移動ドット数(初期値は4ドット)
+        self.cursor_step_y = 7                 #縦方向の移動ドット数(初期値は7ドット)
         self.cursor_page = 0                   #いま指し示しているページナンバー
         self.cursor_pre_page = 0               #前フレームで表示していたページ数 pre_pageとpageが同じなら新規ウィンドウは育成しない
         self.cursor_page_max = 0               #セレクトカーソルで捲ることが出来る最多ページ数
@@ -4591,10 +4651,11 @@ class App:
                     self.cursor_move_direction = CURSOR_MOVE_UD      #カーソルは上下移動のみ
                     self.cursor_x = 92                               #セレクトカーソルの座標を設定します
                     self.cursor_y = 71
+                    self.cursor_step_x = 4                           #横方向の移動ドット数は4ドット
+                    self.cursor_step_y = 7                           #縦方向の移動ドット数は7ドット
                     self.cursor_item_y = 0                           #いま指示しているアイテムナンバーは0の「1」
                     self.cursor_decision_item_y = -1                 #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
                     self.cursor_max_item_y = 2                       #最大項目数は3項目なので 3-1=2を代入
-                    
                     self.cursor_menu_layer = 1                       #メニューの階層が増えたので0から1にします
                     self.active_window_id = WINDOW_ID_SELECT_STAGE_MENU #このウィンドウIDを最前列アクティブなものとする
                 
@@ -4607,10 +4668,11 @@ class App:
                     self.cursor_move_direction = CURSOR_MOVE_UD         #カーソルは上下移動のみ
                     self.cursor_x = 90+24                               #セレクトカーソルの座標を設定します
                     self.cursor_y = 72+5
+                    self.cursor_step_x = 4                              #横方向の移動ドット数は4ドット
+                    self.cursor_step_y = 7                              #縦方向の移動ドット数は7ドット
                     self.cursor_item_y = 0                              #いま指示しているアイテムナンバーは0の「1」
                     self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
                     self.cursor_max_item_y = 2                          #最大項目数は3項目なので 3-1=2を代入
-                    
                     self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
                     self.active_window_id = WINDOW_ID_SELECT_LOOP_MENU  #このウィンドウIDを最前列でアクティブなものとする
                 
@@ -4623,10 +4685,11 @@ class App:
                     self.cursor_move_direction = CURSOR_MOVE_UD         #カーソルは上下移動のみ
                     self.cursor_x = 96+5                                #セレクトカーソルの座標を設定します
                     self.cursor_y = 72-9
+                    self.cursor_step_x = 4                              #横方向の移動ドット数は4ドット
+                    self.cursor_step_y = 7                              #縦方向の移動ドット数は7ドット
                     self.cursor_item_y = 0                              #いま指示しているアイテムナンバーは0の「1」
                     self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
                     self.cursor_max_item_y = 1                          #最大項目数は2項目なので 2-1=1を代入
-                    
                     self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
                     self.active_window_id = WINDOW_ID_BOSS_MODE_MENU    #このウィンドウIDを最前列でアクティブなものとする
                 
@@ -4639,10 +4702,11 @@ class App:
                     self.cursor_move_direction = CURSOR_MOVE_UD         #カーソルは上下移動のみ
                     self.cursor_x = 96+5                                #セレクトカーソルの座標を設定します
                     self.cursor_y = 72-9
+                    self.cursor_step_x = 4                              #横方向の移動ドット数は4ドット
+                    self.cursor_step_y = 7                              #縦方向の移動ドット数は7ドット
                     self.cursor_item_y = 0                              #いま指示しているアイテムナンバーは0の「1」
                     self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
                     self.cursor_max_item_y = 1                          #最大項目数は2項目なので 2-1=1を代入
-                    
                     self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
                     self.active_window_id = WINDOW_ID_HITBOX_MENU       #このウィンドウIDを最前列でアクティブなものとする
                 
@@ -4655,10 +4719,11 @@ class App:
                     self.cursor_move_direction = CURSOR_MOVE_UD         #カーソルは上下移動のみ
                     self.cursor_x = 96                                  #セレクトカーソルの座標を設定します
                     self.cursor_y = 71
+                    self.cursor_step_x = 4                              #横方向の移動ドット数は4ドット
+                    self.cursor_step_y = 7                              #縦方向の移動ドット数は7ドット
                     self.cursor_item_y = 2                              #いま指示しているアイテムナンバーは2の「NORMAL」
                     self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
                     self.cursor_max_item_y = 5                          #最大項目数は6項目なので 6-1=5を代入
-                    
                     self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
                     self.active_window_id = WINDOW_ID_SELECT_DIFFICULTY #このウィンドウIDを最前列でアクティブなものとする
                 
@@ -4686,21 +4751,48 @@ class App:
                     self.cursor_move_direction = CURSOR_MOVE_LR_SLIDER  #カーソルは左右でスライダー入力
                     self.cursor_x = 100                                 #セレクトカーソルの座標を設定します
                     self.cursor_y = 66
+                    self.cursor_step_x = 4                              #横方向の移動ドット数は4ドット
+                    self.cursor_step_y = 7                              #縦方向の移動ドット数は7ドット
                     self.cursor_item_x = 0                              #いま指示しているアイテムナンバーx軸は0
                     self.cursor_item_y = 0                              #いま指示しているアイテムナンバーy軸は0(縦には動かないので常に0となります)
                     self.cursor_decision_item_x = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_xは-1
                     self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
                     self.cursor_max_item_x = 8                          #最大項目数x軸方向は(8文字+OKボタンなので合計9項目 9-1=8を代入
                     self.cursor_max_item_y = 0                          #最大項目数y軸方向は1項目なので 1-1=0を代入
-                    
                     self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
-                    
                     self.active_window_id = WINDOW_ID_INPUT_YOUR_NAME   #このウィンドウIDを最前列でアクティブなものとする
                 
+            elif self.cursor_decision_item_y == 8:            #CONFIGが押されて
+                if self.search_window_id(WINDOW_ID_CONFIG) == -1: #SELECT_CONFIGウィンドウが存在しないのなら・・
+                    self.cursor_pre_decision_item_y = self.cursor_decision_item_y #現時点で選択されたアイテム「CONFIG」を前のレイヤー選択アイテムとしてコピーする
+                    self.push_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPUSH
+                    self.create_window(WINDOW_ID_CONFIG)                #「CONFIG」ウィンドウの作製
+                    self.cursor_type = CURSOR_TYPE_NORMAL               #選択カーソル表示をonにする
+                    self.cursor_move_direction = CURSOR_MOVE_UD         #カーソルは上下移動のみ
+                    self.cursor_x = 9                                   #セレクトカーソルの座標を設定します
+                    self.cursor_y = 17
+                    self.cursor_step_x = 4                              #横方向の移動ドット数は4ドット
+                    self.cursor_step_y = 9                              #縦方向の移動ドット数は9ドット
+                    self.cursor_item_y = 0                              #いま指示しているアイテムナンバーは0の「?????」
+                    self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
+                    self.cursor_max_item_y = 10                         #最大項目数は11項目なので11-1=10を代入
+                    self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
+                    self.active_window_id = WINDOW_ID_CONFIG #このウィンドウIDを最前列でアクティブなものとする
+
             elif self.cursor_decision_item_y == 9:            #REPLAYが押されたら
-                self.game_status = SCENE_SELECT_LOAD_SLOT          #ゲームステータスを「SCENE_SELECT_LOAD_SLOT」にしてロードデータスロットの選択に移る
-                self.window_replay_data_slot_select()              #リプレイデータファイルスロット選択ウィンドウの表示
-                self.active_window_id = WINDOW_ID_SELECT_FILE_SLOT #このウィンドウIDを最前列でアクティブなものとする
+                self.game_status = SCENE_SELECT_LOAD_SLOT           #ゲームステータスを「SCENE_SELECT_LOAD_SLOT」にしてロードデータスロットの選択に移る
+                self.window_replay_data_slot_select()               #リプレイデータファイルスロット選択ウィンドウの表示
+                self.cursor_type = CURSOR_TYPE_NORMAL               #選択カーソル表示をonにする
+                self.cursor_move_direction = CURSOR_MOVE_UD         #カーソルは上下移動のみ
+                self.cursor_x = 67                                  #セレクトカーソルの座標を設定します
+                self.cursor_y = 55
+                self.cursor_step_x = 4                              #横方向の移動ドット数は4ドット
+                self.cursor_step_y = 7                              #縦方向の移動ドット数は7ドット
+                self.cursor_item_y = 0                              #いま指示しているアイテムナンバーは0の「1」
+                self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
+                self.cursor_max_item_y = 6                          #最大項目数は「1」「2」「3」「4」「5」「6」「7」の7項目なので 7-1=6を代入
+                self.cursor_menu_layer = 0                          #メニューの階層は最初は0にします
+                self.active_window_id = WINDOW_ID_SELECT_FILE_SLOT  #このウィンドウIDを最前列でアクティブなものとする
             
         elif self.cursor_menu_layer == 1: #メニューが1階層目の選択分岐
             if   self.cursor_pre_decision_item_y == 1 and self.cursor_decision_item_y == 0:
@@ -9584,6 +9676,11 @@ class App:
             if self.collision_rect_rect(rect_ax,rect_ay,rect_aw,rect_ah,rect_bx,rect_by,rect_bw,rect_bh) == False:
                 del self.window[i] #ウィンドウが画面外に存在するとき(2つの矩形が衝突していないとき)はインスタンスを破棄する(ウィンドウ消滅)
 
+    #現在どのウィンドウがもつインデックス値が最前面にあるのか調べあげアクティブウィンドウインデックス値に登録し更新する
+    def update_active_window(self):
+        i = self.search_window_id(self.active_window_id) #アクティブなウィンドウIDを元にインデックス値を求める関数の呼び出し
+        self.active_window_index = i           #アクティブになっているウィンドウのインデックスナンバー(i)を代入
+
     #セレクトカーソルの更新
     def update_select_cursor(self):
         # 上入力されたら  y座標を  -7する(1キャラ分)
@@ -9591,7 +9688,7 @@ class App:
             self.cursor_move_data = PAD_UP
             if self.cursor_move_direction == CURSOR_MOVE_UD:
                 if self.cursor_item_y != 0: #指し示しているアイテムナンバーが一番上の項目の0以外なら上方向にカーソルは移動できるので・・・
-                    self.cursor_y -= 7 #y座標を7ドット（1キャラ分）上に
+                    self.cursor_y -= self.cursor_step_y #y座標をcursor_step_y（初期値は1キャラ7ドット）減算して上に移動させる
                     self.cursor_item_y -= 1 #現在指し示しているアイテムナンバーを1減らす
             elif self.cursor_move_direction == CURSOR_MOVE_LR_SLIDER:
                 if self.cursor_item_x != self.cursor_max_item_x: #指し示しているアイテムナンバーx軸方向が最大項目数の場合はOKアイコンなので何もしない(それ以外の時は処理をする)
@@ -9609,7 +9706,7 @@ class App:
             self.cursor_move_data = PAD_DOWN
             if self.cursor_move_direction == CURSOR_MOVE_UD:
                 if self.cursor_item_y != self.cursor_max_item_y: #指し示しているアイテムナンバーが最大項目数でないのなら下方向にカーソルは移動できるので・・
-                    self.cursor_y += 7
+                    self.cursor_y += self.cursor_step_y #y座標をcursor_step_y（初期値は1キャラ7ドット）加算して下に移動させる
                     self.cursor_item_y += 1
             elif self.cursor_move_direction == CURSOR_MOVE_LR_SLIDER:
                 if self.cursor_item_x != self.cursor_max_item_x: #指し示しているアイテムナンバーx軸方向が最大項目数の場合はOKアイコンなので何もしない(それ以外の時は処理をする)
@@ -9631,7 +9728,7 @@ class App:
                     self.cursor_page = 0                    #ページ数は0にする
             elif self.cursor_move_direction == CURSOR_MOVE_LR_SLIDER:
                 if self.cursor_item_x != self.cursor_max_item_x: #指し示しているアイテムナンバーx軸方向が最大項目数でないのなら右方向にカーソルは移動できるので・・
-                    self.cursor_x += 4
+                    self.cursor_x += self.cursor_step_x #x座標をcursor_step_x（初期値は1文字分4ドット）加算してカーソルを右に移動させる
                     self.cursor_item_x += 1
         
         
@@ -9645,7 +9742,7 @@ class App:
                     self.cursor_page = self.cursor_page_max                    #ページ数はmaxにする
             elif self.cursor_move_direction == CURSOR_MOVE_LR_SLIDER:
                 if self.cursor_item_x != 0: #指し示しているアイテムナンバーx軸方向が0以外ならでないのなら左方向にカーソルは移動できるので・・
-                    self.cursor_x -= 4
+                    self.cursor_x -= self.cursor_step_x #x座標をcursor_step_x（初期値は1文字分4ドット）加算してカーソルを左に移動させる
                     self.cursor_item_x -= 1
         
         if pyxel.btnp(pyxel.KEY_SPACE) or pyxel.btnp(pyxel.GAMEPAD_1_A) or pyxel.btnp(pyxel.GAMEPAD_2_A) or pyxel.btnp(pyxel.GAMEPAD_1_B) or pyxel.btnp(pyxel.GAMEPAD_2_B):
@@ -11064,9 +11161,15 @@ class App:
                 8,8,  13)
             
             #タイトルバーの表示######################################
-            pyxel.text(self.window[i].posx + 6 + self.window[i].width // 2 - len(self.window[i].window_title) * 2,self.window[i].posy + 5,str(self.window[i].window_title),0)
-            pyxel.text(self.window[i].posx + 6 + self.window[i].width // 2 - len(self.window[i].window_title) * 2,self.window[i].posy + 6,str(self.window[i].window_title),0)
-            pyxel.text(self.window[i].posx + 5 + self.window[i].width // 2 - len(self.window[i].window_title) * 2,self.window[i].posy + 5,str(self.window[i].window_title),7)
+            if   self.window[i].window_title[LIST_WINDOW_TEXT_FLASH]  == MES_NO_FLASH:        #テキスト点滅無しの場合
+                col = self.window[i].window_title[LIST_WINDOW_TEXT_COLOR]
+            else:                                                                             #テキスト点滅系の場合
+                flash_type = self.window[i].window_title[LIST_WINDOW_TEXT_FLASH]              #flash_typeを元にカラーコードを取得
+                col = self.get_flashing_type_color_code(flash_type)
+            
+            pyxel.text(self.window[i].posx + self.window[i].window_title[LIST_WINDOW_TEXT_OX] + 6 + self.window[i].width // 2 - len(self.window[i].window_title[LIST_WINDOW_TEXT]) * 2,self.window[i].posy + 5,str(self.window[i].window_title[LIST_WINDOW_TEXT]),0)
+            pyxel.text(self.window[i].posx + self.window[i].window_title[LIST_WINDOW_TEXT_OX] + 6 + self.window[i].width // 2 - len(self.window[i].window_title[LIST_WINDOW_TEXT]) * 2,self.window[i].posy + 6,str(self.window[i].window_title[LIST_WINDOW_TEXT]),0)
+            pyxel.text(self.window[i].posx + self.window[i].window_title[LIST_WINDOW_TEXT_OX] + 5 + self.window[i].width // 2 - len(self.window[i].window_title[LIST_WINDOW_TEXT]) * 2,self.window[i].posy + 5,str(self.window[i].window_title[LIST_WINDOW_TEXT]),col)
             
             #ステータスがテキストメッセージの表示中もしくはウィンドウオープン完了の時はメッセージテキストを表示する
             if     self.window[i].window_status == WINDOW_WRITE_MESSAGE \
@@ -11075,45 +11178,27 @@ class App:
                     if self.window[i].text[ty][LIST_WINDOW_TEXT]  != "": #ウィンドウテキストの表示をする 文字列が存在しないのなら次の行へとスキップループする
                         if   self.window[i].text[ty][LIST_WINDOW_TEXT_FLASH]  == MES_NO_FLASH:        #テキスト点滅無しの場合
                             col = self.window[i].text[ty][LIST_WINDOW_TEXT_COLOR]
-                        elif self.window[i].text[ty][LIST_WINDOW_TEXT_FLASH] == MES_BLINKING_FLASH:   #テキスト点滅の場合
-                            col = self.blinking_color[pyxel.frame_count // 4 % 10]
-                        elif self.window[i].text[ty][LIST_WINDOW_TEXT_FLASH] == MES_YELLOW_FLASH:     #テキスト黄色点滅の場合
-                            col = self.yellow_flash_color[pyxel.frame_count // 4 % 10]
-                        elif self.window[i].text[ty][LIST_WINDOW_TEXT_FLASH] == MES_RED_FLASH:        #テキスト赤い点滅の場合
-                            col = self.red_flash_color[pyxel.frame_count // 4 % 10]
-                        elif self.window[i].text[ty][LIST_WINDOW_TEXT_FLASH] == MES_GREEN_FLASH:      #テキスト緑で点滅の場合
-                            col = self.green_flash_color[pyxel.frame_count // 4 % 10]
-                        elif self.window[i].text[ty][LIST_WINDOW_TEXT_FLASH] == MES_MONOCHROME_FLASH: #テキスト白黒で点滅の場合
-                            col = self.monochrome_flash_color[pyxel.frame_count // 4 % 10]
-                        elif self.window[i].text[ty][LIST_WINDOW_TEXT_FLASH] == MES_RAINBOW_FLASH:    #テキスト虹色に点滅の場合
-                            col = self.rainbow_flash_color[pyxel.frame_count // 4 % 10]
+                        else:                                                                         #テキスト点滅系の場合
+                            flash_type = self.window[i].text[ty][LIST_WINDOW_TEXT_FLASH]              #flash_typeを元にカラーコードを取得
+                            col = self.get_flashing_type_color_code(flash_type)
                         
                         if self.window[i].text[ty][LIST_WINDOW_TEXT_ALIGN] == DISP_CENTER:
-                            pyxel.text(self.window[i].posx + self.window[i].text[ty][LIST_WINDOW_TEXT_OX] + 6 + self.window[i].width // 2 - len(self.window[i].text[ty][LIST_WINDOW_TEXT]) * 2,self.window[i].posy + 5 + (ty+1)*7 ,str(self.window[i].text[ty][LIST_WINDOW_TEXT]),0)
-                            pyxel.text(self.window[i].posx + self.window[i].text[ty][LIST_WINDOW_TEXT_OX] + 6 + self.window[i].width // 2 - len(self.window[i].text[ty][LIST_WINDOW_TEXT]) * 2,self.window[i].posy + 6 + (ty+1)*7 ,str(self.window[i].text[ty][LIST_WINDOW_TEXT]),0)
-                            pyxel.text(self.window[i].posx + self.window[i].text[ty][LIST_WINDOW_TEXT_OX] + 5 + self.window[i].width // 2 - len(self.window[i].text[ty][LIST_WINDOW_TEXT]) * 2,self.window[i].posy + 5 + (ty+1)*7 ,str(self.window[i].text[ty][LIST_WINDOW_TEXT]),col)
+                            pyxel.text(self.window[i].posx + self.window[i].text[ty][LIST_WINDOW_TEXT_OX] + 6 + self.window[i].width // 2 - len(self.window[i].text[ty][LIST_WINDOW_TEXT]) * 2,self.window[i].posy + 5 + (ty+1) * self.window[i].between_line,str(self.window[i].text[ty][LIST_WINDOW_TEXT]),0)
+                            pyxel.text(self.window[i].posx + self.window[i].text[ty][LIST_WINDOW_TEXT_OX] + 6 + self.window[i].width // 2 - len(self.window[i].text[ty][LIST_WINDOW_TEXT]) * 2,self.window[i].posy + 6 + (ty+1) * self.window[i].between_line,str(self.window[i].text[ty][LIST_WINDOW_TEXT]),0)
+                            pyxel.text(self.window[i].posx + self.window[i].text[ty][LIST_WINDOW_TEXT_OX] + 5 + self.window[i].width // 2 - len(self.window[i].text[ty][LIST_WINDOW_TEXT]) * 2,self.window[i].posy + 5 + (ty+1) * self.window[i].between_line,str(self.window[i].text[ty][LIST_WINDOW_TEXT]),col)
                         elif self.window[i].text[ty][LIST_WINDOW_TEXT_ALIGN] == DISP_LEFT_ALIGN:
-                            pyxel.text(self.window[i].posx + self.window[i].text[ty][LIST_WINDOW_TEXT_OX] + 6  ,self.window[i].posy + 5 + (ty+1)*7 ,str(self.window[i].text[ty][LIST_WINDOW_TEXT]),0)
-                            pyxel.text(self.window[i].posx + self.window[i].text[ty][LIST_WINDOW_TEXT_OX] + 6  ,self.window[i].posy + 6 + (ty+1)*7 ,str(self.window[i].text[ty][LIST_WINDOW_TEXT]),0)
-                            pyxel.text(self.window[i].posx + self.window[i].text[ty][LIST_WINDOW_TEXT_OX] + 5  ,self.window[i].posy + 5 + (ty+1)*7 ,str(self.window[i].text[ty][LIST_WINDOW_TEXT]),col)
+                            pyxel.text(self.window[i].posx + self.window[i].text[ty][LIST_WINDOW_TEXT_OX] + 6  ,self.window[i].posy + 5 + (ty+1) * self.window[i].between_line,str(self.window[i].text[ty][LIST_WINDOW_TEXT]),0)
+                            pyxel.text(self.window[i].posx + self.window[i].text[ty][LIST_WINDOW_TEXT_OX] + 6  ,self.window[i].posy + 6 + (ty+1) * self.window[i].between_line,str(self.window[i].text[ty][LIST_WINDOW_TEXT]),0)
+                            pyxel.text(self.window[i].posx + self.window[i].text[ty][LIST_WINDOW_TEXT_OX] + 5  ,self.window[i].posy + 5 + (ty+1) * self.window[i].between_line,str(self.window[i].text[ty][LIST_WINDOW_TEXT]),col)
             
             #ウィンドウタイプがテキスト編集の入力待ちのタイプはさらに入力メッセージ(edit_text)の文字列を表示する
             if     self.window[i].window_type   == WINDOW_TYPE_EDIT_TEXT:
                 if self.window[i].edit_text[LIST_WINDOW_TEXT]  != "": #ウィンドウテキストの表示をする 文字列が存在しないのなら次の行へとスキップループする
                     if   self.window[i].edit_text[LIST_WINDOW_TEXT_FLASH]  == MES_NO_FLASH:        #テキスト点滅無しの場合
                         col = self.window[i].edit_text[LIST_WINDOW_TEXT_COLOR]
-                    elif self.window[i].edit_text[LIST_WINDOW_TEXT_FLASH] == MES_BLINKING_FLASH:   #テキスト点滅の場合
-                        col = self.blinking_color[pyxel.frame_count // 4 % 10]
-                    elif self.window[i].edit_text[LIST_WINDOW_TEXT_FLASH] == MES_YELLOW_FLASH:     #テキスト黄色点滅の場合
-                        col = self.yellow_flash_color[pyxel.frame_count // 4 % 10]
-                    elif self.window[i].edit_text[LIST_WINDOW_TEXT_FLASH] == MES_RED_FLASH:        #テキスト赤い点滅の場合
-                        col = self.red_flash_color[pyxel.frame_count // 4 % 10]
-                    elif self.window[i].edit_text[LIST_WINDOW_TEXT_FLASH] == MES_GREEN_FLASH:      #テキスト緑で点滅の場合
-                        col = self.green_flash_color[pyxel.frame_count // 4 % 10]
-                    elif self.window[i].edit_text[LIST_WINDOW_TEXT_FLASH] == MES_MONOCHROME_FLASH: #テキスト白黒で点滅の場合
-                        col = self.monochrome_flash_color[pyxel.frame_count // 4 % 10]
-                    elif self.window[i].edit_text[LIST_WINDOW_TEXT_FLASH] == MES_RAINBOW_FLASH:    #テキスト虹色に点滅の場合
-                        col = self.rainbow_flash_color[pyxel.frame_count // 4 % 10]
+                    else:                                                                          #テキスト点滅系の場合
+                        flash_type = self.window[i].edit_text[LIST_WINDOW_TEXT_FLASH]              #flash_typeを元にカラーコードを取得
+                        col = self.get_flashing_type_color_code(flash_type)
                     
                     if self.window[i].edit_text[LIST_WINDOW_TEXT_ALIGN] == DISP_CENTER:
                         pyxel.text(self.window[i].posx + self.window[i].edit_text[LIST_WINDOW_TEXT_OX] + 1 + self.window[i].width // 2 - len(self.window[i].edit_text[LIST_WINDOW_TEXT]) * 2,self.window[i].posy + self.window[i].edit_text[LIST_WINDOW_TEXT_OY]   ,str(self.window[i].edit_text[LIST_WINDOW_TEXT]),0)
