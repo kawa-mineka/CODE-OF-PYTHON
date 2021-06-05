@@ -427,7 +427,7 @@ EXPLOSION_NORMAL =   0  #標準サイズ(8x8サイズ)の敵を倒したとき�
 EXPLOSION_MIDDLE =   1  #スクランブルハッチや重爆撃機系の敵を倒したときの中くらいの爆発パターン 
 EXPLOSION_MY_SHIP = 10  #自機の爆発パターン
 
-#ウィンドウのidの定数定義 windowクラスの window_idに入ります
+#ウィンドウのidの定数定義 windowクラスの window[i].window_idに入ります
 WINDOW_ID_NO_MENU                  =  0 #ダミー用 ノーメニュー
 WINDOW_ID_MAIN_MENU                =  1 #タイトル画面からのメインメニュー
 WINDOW_ID_SELECT_STAGE_MENU        =  2 #ステージ選択メニュー
@@ -447,25 +447,27 @@ WINDOW_ID_CONFIG_SOUND             = 15 #サウンド設定ウィンドウ
 WINDOW_ID_CONFIG_CONTROL           = 16 #コントロール設定ウィンドウ
 WINDOW_ID_CONFIG_SETTING           = 17 #ゲーム設定ウィンドウ
 
-#ウィンドウのid_subの定数定義 windowクラスの window_id_subに入ります
+#ウィンドウのid_subの定数定義 windowクラスの window[i].window_id_subに入ります
 WINDOW_ID_SUB_NORMAL_MENU            = 0 #通常の選択メニュー
-WINDOW_ID_SUB_YES_NO_MENU            = 1 #「はい」「いいえ」の2択メニュー
-WINDOW_ID_SUB_SELECT_NUM_MENU        = 2 #数値を横方向の操作で増減させて決めるメニュー
-WINDOW_ID_SUB_TOGGLE_MENU            = 3 #押すことでオンオフを切り替えることが出来るトグルスイッチメニュー
-WINDOW_ID_SUB_FULL_4WAY_MENU         = 4 #4方向入力による自由なデザインでのメニュー
-WINDOW_ID_SUB_RIGHT_LEFT_PAGE_MENU   = 5 #左右の頁送りで切り替えるメニュー
+WINDOW_ID_SUB_YES_NO_MENU            = 1 #「はい」「いいえ」の2択式メニュー
+WINDOW_ID_SUB_ON_OFF_MENU            = 2 #「ON」「OFF」の2択式メニュー        (フラグオン時は選択されている物がハイライトされた色となります)
+WINDOW_ID_SUB_SELECT_NUM_MENU        = 3 #数値を横方向の操作で増減させて決めるメニュー
+WINDOW_ID_SUB_TOGGLE_MENU            = 4 #押すことでオンオフを切り替えることが出来るトグルスイッチメニュー
+WINDOW_ID_SUB_FULL_4WAY_MENU         = 5 #4方向入力による自由なデザインでのメニュー
+WINDOW_ID_SUB_RIGHT_LEFT_PAGE_MENU   = 6 #左右の頁送りで切り替えるメニュー
+WINDOW_ID_SUB_MULTI_SELECT_MENU      = 7 #通常の選択メニューと基本は同じだがあらかじめ選択された物がハイライトされた色で表示される
 
-#ウィンドウの種類の定数定義 windowクラスのwindow_typeに入ります
+#ウィンドウの種類の定数定義 windowクラスのwindow[i].window_typeに入ります
 WINDOW_TYPE_NORMAL                   = 0 #メッセージを表示するだけのタイプ
 WINDOW_TYPE_EDIT_TEXT                = 1 #メッセージを表示しさらにテキスト編集の入力待ちするタイプ
 
 
-#ウィンドウの下地の定数定義 windowクラスの window_bgに入ります
+#ウィンドウの下地の定数定義 windowクラスの window[i].window_bgに入ります
 WINDOW_BG_TRANSLUCENT     = 0 #半透明
 WINDOW_BG_BLUE_BACK       = 1 #青地
 WINDOW_BG_LOW_TRANSLUCENT = 2 #ちょっと半透明
 
-#メッセージウィンドウ関連の定数定義 windowクラスの window_statusに入ります
+#メッセージウィンドウ関連の定数定義 windowクラスの window[i].window_statusに入ります
 WINDOW_OPEN            =  0    #テキストウィンドウ開き進行中
 WINDOW_WRITE_TITLE_BAR =  4    #テキストウィンドウのタイトルバー表示中
 WINDOW_WRITE_MESSAGE   =  5    #テキストメッセージの表示中
@@ -483,7 +485,7 @@ WINDOW_BUTTON_SIZE_1X1    = 0      #1x1キャラ分(8x8ドット)
 WINDOW_BUTTON_SIZE_1TEXT  = 1      #半角文字サイズ4*6ドット
 WINDOW_BUTTON_SIZE_1X2    = 2      #1x2キャラ分(8x16ドット)
 
-#メッセージ,ボタンの表示の仕方 windowクラスのwindow_titleリスト内[LIST_WINDOW_TEXT_ALIGN],textリスト内[i][LIST_WINDOW_TEXT_ALIGN]に入ります
+#メッセージ,ボタンの表示の仕方 windowクラスのwindow[i].window_title[LIST_WINDOW_TEXT_ALIGN],window[i].text[j][LIST_WINDOW_TEXT_ALIGN]に入ります
 BUTTON_DISP_OFF    = 0 #0=表示しない
 DISP_OFF           = 0 #0=表示しない
 
@@ -494,24 +496,70 @@ DISP_CENTER        = 2 #2=中央表示
 DISP_LEFT_ALIGN    = 3 #3=左揃え
 DISP_RIGHT_ALIGN   = 4 #4=右揃え
 
-#ウィンドウテキストのリストの2次元配列のインデックスナンバーとして使用する定数定義 windowクラスのtitle[i][ここで定義した定数],またはtext[i][ここで定義した定数]に入ります
-LIST_WINDOW_TEXT                   =  0 #ウィンドウテキスト
-LIST_WINDOW_TEXT_ALIGN             =  1 #ウィンドウテキストの揃え方(アライメント)(整列の仕方)
-LIST_WINDOW_TEXT_OX                =  2 #ウィンドウテキスト表示x軸のオフセット値
-LIST_WINDOW_TEXT_OY                =  3 #ウィンドウテキスト表示y軸のオフセット値
-LIST_WINDOW_TEXT_COLOR             =  4 #ウィンドウテキストの表示色
-LIST_WINDOW_TEXT_FLASH             =  5 #ウィンドウテキストの点滅のしかた
-LIST_WINDOW_TEXT_TYPE              =  6 #ウィンドウテキストのタイプ
-LIST_WINDOW_TEXT_STATUS            =  7 #ウィンドウテキストのステータス(状態)
-LIST_WINDOW_TEXT_LENGTH            =  8 #ウィンドウテキストの長さ
-LIST_WINDOW_TEXT_LINEFEED_WIDTH    =  9 #ウィンドウテキストの折り返し改行幅
-LIST_WINDOW_TEXT_LINEFEED_HEIGHT   = 10 #ウィンドウテキストの折り返し改行幅(縦書きモードの時)
-LIST_WINDOW_TEXT_DISP_TYPE         = 11 #ウィンドウテキストの文字の表示のしかた
-LIST_WINDOW_TEXT_DISP_SPEED        = 12 #ウィンドウテキストの文字の表示スピード(一文字ずつ表示する場合のみ)
-LIST_WINDOW_TEXT_SCROLL_SPEED      = 13 #ウィンドウテキストの上下スクロールスピード
+#ウィンドウテキストのリストの2次元配列のインデックスナンバーとして使用する定数定義 windowクラスのwindow[i].window_title[ここで定義した定数],またはwindow[i].text[j][ここで定義した定数]に入ります
+LIST_WINDOW_TEXT                    =  0 #ウィンドウテキスト
+LIST_WINDOW_TEXT_ALIGN              =  1 #ウィンドウテキストの揃え方(アライメント)(整列の仕方)
+LIST_WINDOW_TEXT_OX                 =  2 #ウィンドウテキスト表示x軸のオフセット値
+LIST_WINDOW_TEXT_OY                 =  3 #ウィンドウテキスト表示y軸のオフセット値
+LIST_WINDOW_TEXT_COLOR              =  4 #ウィンドウテキストの表示色
+LIST_WINDOW_TEXT_FLASH              =  5 #ウィンドウテキストの点滅のしかた
+LIST_WINDOW_TEXT_TYPE               =  6 #ウィンドウテキストのタイプ
+LIST_WINDOW_TEXT_STATUS             =  7 #ウィンドウテキストのステータス(状態)
+LIST_WINDOW_TEXT_LENGTH             =  8 #ウィンドウテキストの長さ
+LIST_WINDOW_TEXT_LINEFEED_WIDTH     =  9 #ウィンドウテキストの折り返し改行幅
 
+LIST_WINDOW_TEXT_LINEFEED_HEIGHT    = 10 #ウィンドウテキストの折り返し改行幅(縦書きモードの時)
+LIST_WINDOW_TEXT_DISP_TYPE          = 11 #ウィンドウテキストの文字の表示のしかた
+LIST_WINDOW_TEXT_DISP_SPEED         = 12 #ウィンドウテキストの文字の表示スピード(一文字ずつ表示する場合のみ)
+LIST_WINDOW_TEXT_SCROLL_SPEED       = 13 #ウィンドウテキストの上下スクロールスピード値
+LIST_WINDOW_TEXT_SLIDE_IN_WAY       = 14 #ウィンドウテキストがスライドインしてくる方向
+LIST_WINDOW_TEXT_SLIDE_OUT_WAY      = 15 #ウィンドウテキストをスライドアウトさせる方向
+LIST_WINDOW_TEXT_SLIDE_NOW_SPEED    = 16 #ウィンドウテキストをスライドインアウトさせる時の現在のスピード値
+LIST_WINDOW_TEXT_SLIDE_START_SPEED  = 17 #ウィンドウテキストをスライドインアウトさせる時の初期スピード値
+LIST_WINDOW_TEXT_SLIDE_END_SPEED    = 18 #ウィンドウテキストをスライドインアウトさせる時の最後のスピード値(目標となるスピード値ですの)
+LIST_WINDOW_TEXT_SLIDE_MAG_SPEED    = 19 #ウィンドウテキストをスライドインアウトさせる時のスピード値に掛ける加速度
 
-#メッセージを点滅させるかのフラグ windowクラスの(text~text0)_flashに入ります
+LIST_WINDOW_TEXT_OPE_OBJ            = 20 #ウィンドウテキストで編集対象となるオブジェクトを指示します(windowクラスのflag_list[i][対象オブジェクト]の対象オブジェクトとなります)
+LIST_WINDOW_TEXT_OPE_OBJ_TYPE       = 21 #ウィンドウテキストで編集対象となるオブジェクトの種類分類
+LIST_WINDOW_TEXT_OPE_OBJ_TEXT       = 22 #ウィンドウテキストで編集対象となるオブジェクトのタイトルテキスト「ON」とか「OFF」とか
+LIST_WINDOW_TEXT_OPE_OBJ_TEXT_ALIGN = 23 #ウィンドウテキストで編集対象となるオブジェクトのタイトルテキストの揃え方(アライメント)(整列の仕方)
+LIST_WINDOW_TEXT_OPE_OBJ_COMPARE    = 24 #対象オブジェクトと比較するパラメータ数値(この数値とOPE_OBJの数値を比較してTrueかFalseか判定します)
+LIST_WINDOW_TEXT_OPE_OBJ_TEXT_OX    = 25 #ウィンドウテキストで編集対象となるオブジェクトのタイトルテキスト x軸のオフセット値
+LIST_WINDOW_TEXT_OPE_OBJ_TEXT_OY    = 26 #ウィンドウテキストで編集対象となるオブジェクトのタイトルテキスト y軸のオフセット値
+LIST_WINDOW_TEXT_OPE_OBJ_OFF_COLOR  = 27 #対象オブジェクトがFalse(OFF)になった時の文字色
+LIST_WINDOW_TEXT_OPE_OBJ_ON_COLOR   = 28 #対象オブジェクトがTrue(ON)になった時の文字色
+LIST_WINDOW_TEXT_OPE_OBJ_MIN_NUM    = 29 #ウィンドウテキストで編集対象となるオブジェクトの最小値(数値の場合)
+
+LIST_WINDOW_TEXT_OPE_OBJ_MAX_NUM    = 30 #ウィンドウテキストで編集対象となるオブジェクトの最大値(数値の場合)
+
+#ウィンドウフラグリストの２次元配列のインデックスナンバーとして使用する定数定義 windowクラスのflag_list[i][ここで定義した定数]に入ります
+LIST_WINDOW_FLAG_DEBUG_MODE        =  0 #デバッグモードのon/offフラグ
+LIST_WINDOW_FLAG_GOD_MODE          =  1 #
+LIST_WINDOW_FLAG_HIT_BOX           =  2 #
+LIST_WINDOW_FLAG_BOSS_MODE         =  3 #
+LIST_WINDOW_FLAG_START_STAGE       =  4 #
+LIST_WINDOW_FLAG_START_LOOP        =  5 #
+LIST_WINDOW_FLAG_START_AGE         =  6 #
+LIST_WINDOW_FLAG_DIFFICULTY        =  7 #
+LIST_WINDOW_FLAG_                  =  8 #
+LIST_WINDOW_FLAG_                  =  9 #
+LIST_WINDOW_FLAG_                  = 10 #
+LIST_WINDOW_FLAG_                  = 11 #
+LIST_WINDOW_FLAG_                  = 12 #
+LIST_WINDOW_FLAG_                  = 13 #
+LIST_WINDOW_FLAG_                  = 14 #
+LIST_WINDOW_FLAG_                  = 15 #
+LIST_WINDOW_FLAG_                  = 16 #
+LIST_WINDOW_FLAG_                  = 17 #
+LIST_WINDOW_FLAG_                  = 18 #
+LIST_WINDOW_FLAG_                  = 19 #
+LIST_WINDOW_FLAG_                  = 20 #
+LIST_WINDOW_FLAG_                  = 21 #
+LIST_WINDOW_FLAG_                  = 22 #
+LIST_WINDOW_FLAG_                  = 23 #
+LIST_WINDOW_FLAG_                  = 23 #
+
+#メッセージを点滅させるかのフラグ windowクラスのwindow[i].text[j][LIST_WINDOW_TEXT_FLASH]に入ります
 MES_NO_FLASH         = 0 #点滅しない
 MES_BLINKING_FLASH   = 1 #点滅
 MES_RED_FLASH        = 2 #赤い点滅
@@ -2247,6 +2295,7 @@ class App:
         self.master_rnd_seed = 0       #線形合同法で使用する乱数の種(ゲームスタート時のrnd_seedを保存してリプレイファイル再生時の最初の乱数の種として使用します初期化します
         self.start_stage_number = STAGE_MOUNTAIN_REGION    #スタート時のステージ数を保存する変数をまず初期化
         self.start_stage_loop   = 1                        #スタート時のループ数を保存する変数をまず初期化
+        self.start_stage_age    = 0                        #スタート時の年代数を保存する変数をまず初期化
         self.replay_slot_num = 0       #リプレイファイルをセーブしたりロードするスロットナンバーが入ります(0~9)
         
         self.header                          = "code-of-python system-data ver 1.00"   #システムファイルに書き込むヘッダ文字列
@@ -2831,7 +2880,7 @@ class App:
         self.replay_mode_stage_data_backup =[[0] * 30 for i in range(50)] #リプレイモードでの毎ステージスタート時の自機データ収納リスト(バックアップ用)を初期化します  (横30,縦50ステージ分の空リスト)
         
         self.replay_control_data_size = []      #リプレイファイルのステージ毎のコントロールデータのファイルサイズリストです
-        
+        self.master_flag_list = [[] for i in range(128)] #ウィンドウ表示時に使用するフラグ＆データ関連の元リストを初期化
         self.replay_stage_num = 0               #リプレイ再生、録画時のステージ数を0で初期化します(1ステージ目=0→2ステージ目=1→3ステージ目=2って感じ)
         self.move_mode = MOVE_MANUAL            #移動モードの状態です
                                                 #MOVE_MANUAL = パッドやキーボード入力によって移動
@@ -2978,6 +3027,7 @@ class App:
         self.game_difficulty = pyxel.tilemap(0).get(0,120) - 16 #数字の[0]はアスキーコード16番なので16引いて数値としての0にしてやります
         self.stage_number    = pyxel.tilemap(0).get(0,121) - 16
         self.stage_loop     = pyxel.tilemap(0).get(0,122) - 16
+        self.stage_age      = 0
         #総ゲームプレイ時間(秒)を計算する
         sec_1  = pyxel.tilemap(0).get(9,5) - 16 #秒の  1の位取得
         sec_10 = pyxel.tilemap(0).get(8,5) - 16 #秒の  10の位取得
@@ -3011,6 +3061,10 @@ class App:
         #debug_menu_status                  #デバッグパラメータの表示ステータス
                                             #0=表示しない 1=フル表示タイプ 2=簡易表示タイプ
         self.debug_menu_status             = (pyxel.tilemap(0).get(0,126)) - 16 #数字の[0]はアスキーコード16番なので16引いて数値としての0にしてやります
+        #god_mode_status                    #ゴッドモードのステータス
+                                            #0=ゴッドモードオフ 1=ゴッドモードオン
+        self.god_mode_status               = 0
+        
         #boss_collision_rect_display_flag        ボス用の当たり判定確認の為の矩形表示フラグ(デバッグ時に1にします)
         self.boss_collision_rect_display_flag = (pyxel.tilemap(0).get(0,127)) - 16
         #bg_collision_Judgment_flag            背景の障害物との衝突判定を行うかどうかのフラグ
@@ -4118,8 +4172,20 @@ class App:
         else:
             return False
 
+    #ゲーム関連のフラグ＆データリストを作成する
+    def create_master_flag_list(self):
+        self.master_flag_list[LIST_WINDOW_FLAG_DEBUG_MODE]  = self.debug_menu_status  #デバッグモードの有無フラグをリスト登録
+        self.master_flag_list[LIST_WINDOW_FLAG_GOD_MODE]    = self.god_mode_status    #ゴッドモードの有無フラグをリスト登録
+        self.master_flag_list[LIST_WINDOW_FLAG_HIT_BOX]     = self.boss_collision_rect_display_flag #ヒットボックス表示モードの有無フラグをリスト登録
+        self.master_flag_list[LIST_WINDOW_FLAG_BOSS_MODE]   = self.boss_test_mode     #ボスモードの有無フラグをリスト登録
+        self.master_flag_list[LIST_WINDOW_FLAG_START_STAGE] = self.stage_number       #スタートステージ数をリストに登録
+        self.master_flag_list[LIST_WINDOW_FLAG_START_LOOP]  = self.stage_loop         #スタートスループ数をリストに登録
+        self.master_flag_list[LIST_WINDOW_FLAG_START_AGE]   = self.stage_age          #スタート年代をリストに登録
+        self.master_flag_list[LIST_WINDOW_FLAG_DIFFICULTY]  = self.game_difficulty    #ゲーム難易度をリストに登録
+
     #各種ウィンドウの育成             id=windowクラスの window_idに入っている数値
     def create_window(self,id):
+        self.create_master_flag_list() #まず先にフラグ＆データ関連のマスターリスト作成関数を呼び出す
         new_window = Window()
         if   id == WINDOW_ID_MAIN_MENU:
             new_window.update(\
@@ -4146,7 +4212,7 @@ class App:
             44,34,44,34,   0,0,  8*8,9*8+5,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
-            [],[],[],[],[],[],[])
+            [],[],[],[],[],[],self.master_flag_list)
         elif id == WINDOW_ID_SELECT_STAGE_MENU:
             new_window.update(\
             WINDOW_ID_SELECT_STAGE_MENU,\
@@ -4165,7 +4231,7 @@ class App:
             90,60,90,60,   0,0,  2*8,5*8,   2,2, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
-            [],[],[],[],[],[],[])
+            [],[],[],[],[],[],self.master_flag_list)
         elif id == WINDOW_ID_SELECT_LOOP_MENU:
             new_window.update(\
             WINDOW_ID_SELECT_LOOP_MENU,\
@@ -4184,65 +4250,65 @@ class App:
             90+22,60+6,90+22,60+6,   0,0,  2*8,5*8,   2,2, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
-            [],[],[],[],[],[],[])
+            [],[],[],[],[],[],self.master_flag_list)
         elif id == WINDOW_ID_BOSS_MODE_MENU:
             new_window.update(\
             WINDOW_ID_BOSS_MODE_MENU,\
-            WINDOW_ID_SUB_YES_NO_MENU,\
+            WINDOW_ID_SUB_ON_OFF_MENU,\
             WINDOW_TYPE_NORMAL,\
             WINDOW_BG_TRANSLUCENT,\
             WINDOW_OPEN,\
             WINDOW_BETWEEN_LINE_7,\
             ["SELECT",DISP_CENTER,0,0,7,MES_RED_FLASH],\
             
-            [["ON",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-            ["OFF",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
+            [[".",DISP_CENTER,0,0,7,MES_NO_FLASH,0,0,0,0,   0,0,0,0,0,0,0,0,0,0,   LIST_WINDOW_FLAG_BOSS_MODE,0, "ON",DISP_CENTER,1, 0,0, 7,10],\
+            [ ".",DISP_CENTER,0,0,7,MES_NO_FLASH,0,0,0,0,   0,0,0,0,0,0,0,0,0,0,   LIST_WINDOW_FLAG_BOSS_MODE,0,"OFF",DISP_CENTER,0, 0,0, 7,10]],\
             
             [[""]],\
             96+3,60-1,96+3,60-1,   0,0,  2*8+7,21,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
-            [],[],[],[],[],[],[])
+            [],[],[],[],[],[],self.master_flag_list)
         elif id == WINDOW_ID_HITBOX_MENU:
             new_window.update(\
             WINDOW_ID_HITBOX_MENU,\
-            WINDOW_ID_SUB_YES_NO_MENU,\
+            WINDOW_ID_SUB_ON_OFF_MENU,\
             WINDOW_TYPE_NORMAL,\
             WINDOW_BG_TRANSLUCENT,\
             WINDOW_OPEN,\
             WINDOW_BETWEEN_LINE_7,\
             ["SELECT",DISP_CENTER,0,0,7,MES_RAINBOW_FLASH],\
             
-            [["ON",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-            ["OFF",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
+            [[" ",DISP_CENTER,0,0,7,MES_NO_FLASH,0,0,0,0,   0,0,0,0,0,0,0,0,0,0,   LIST_WINDOW_FLAG_HIT_BOX,0, "ON",DISP_CENTER,1, 0,0, 7,10],\
+            [ " ",DISP_CENTER,0,0,7,MES_NO_FLASH,0,0,0,0,   0,0,0,0,0,0,0,0,0,0,   LIST_WINDOW_FLAG_HIT_BOX,0,"OFF",DISP_CENTER,0, 0,0, 7,10]],\
             
             [[""]],\
             96+3,60-1,96+3,60-1,   0,0,  2*8+7,21,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
-            [],[],[],[],[],[],[])
+            [],[],[],[],[],[],self.master_flag_list)
         elif id == WINDOW_ID_SELECT_DIFFICULTY:
             new_window.update(\
             WINDOW_ID_SELECT_DIFFICULTY,\
-            WINDOW_ID_SUB_NORMAL_MENU,\
+            WINDOW_ID_SUB_MULTI_SELECT_MENU,\
             WINDOW_TYPE_NORMAL,\
             WINDOW_BG_BLUE_BACK,\
             WINDOW_OPEN,\
             WINDOW_BETWEEN_LINE_7,\
             ["DIFFICULTY",DISP_CENTER,0,0,7,MES_GREEN_FLASH],\
             
-            [["VERY EASY",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-            ["EASY",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-            ["NORMAL",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-            ["HARD",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-            ["VERY HARD",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-            ["INSAME",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
+            [[" ",DISP_CENTER,0,0,7,MES_NO_FLASH,0,0,0,0,   0,0,0,0,0,0,0,0,0,0,   LIST_WINDOW_FLAG_DIFFICULTY,0, "VERY EASY",DISP_CENTER,0, 0,0, 7,10],\
+            [ " ",DISP_CENTER,0,0,7,MES_NO_FLASH,0,0,0,0,   0,0,0,0,0,0,0,0,0,0,   LIST_WINDOW_FLAG_DIFFICULTY,0, "EASY",     DISP_CENTER,1, 0,0, 7,10],\
+            [ " ",DISP_CENTER,0,0,7,MES_NO_FLASH,0,0,0,0,   0,0,0,0,0,0,0,0,0,0,   LIST_WINDOW_FLAG_DIFFICULTY,0, "NORMAL",   DISP_CENTER,2, 0,0, 7,10],\
+            [ " ",DISP_CENTER,0,0,7,MES_NO_FLASH,0,0,0,0,   0,0,0,0,0,0,0,0,0,0,   LIST_WINDOW_FLAG_DIFFICULTY,0, "HARD",     DISP_CENTER,3, 0,0, 7,10],\
+            [ " ",DISP_CENTER,0,0,7,MES_NO_FLASH,0,0,0,0,   0,0,0,0,0,0,0,0,0,0,   LIST_WINDOW_FLAG_DIFFICULTY,0, "VERY HARD",DISP_CENTER,4, 0,0, 7,10],\
+            [ " ",DISP_CENTER,0,0,7,MES_NO_FLASH,0,0,0,0,   0,0,0,0,0,0,0,0,0,0,   LIST_WINDOW_FLAG_DIFFICULTY,0, "INSAME",   DISP_CENTER,5, 0,0, 7,10]],\
             
             [[""]],\
             93,52,93,52,   0,0,  48,51,   3,3, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
-            [],[],[],[],[],[],[])
+            [],[],[],[],[],[],self.master_flag_list)
         elif id == WINDOW_ID_GAME_OVER_RETURN:
             new_window.update(\
             WINDOW_ID_GAME_OVER_RETURN,\
@@ -4277,7 +4343,7 @@ class App:
             43,68,43,68,   0,0,  8*8,2*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
-            [],[],[],[],[],[],[])
+            [],[],[],[],[],[],self.master_flag_list)
         elif id == WINDOW_ID_INPUT_YOUR_NAME:
             new_window.update(\
             WINDOW_ID_INPUT_YOUR_NAME,\
@@ -4294,7 +4360,7 @@ class App:
             80,52,80,52,   0,0,  6*11+2,6*3,   3,3, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_ON,51,12,WINDOW_BUTTON_SIZE_1TEXT,\
             BUTTON_DISP_OFF,0,0,0,\
-            [],[],[],[],[],[],[])
+            [],[],[],[],[],[],self.master_flag_list)
         elif id == WINDOW_ID_CONFIG:
             new_window.update(\
             WINDOW_ID_CONFIG,\
@@ -4321,7 +4387,8 @@ class App:
             4,4,4,4,   0,0,  160-16,120-12,   2,2, 2,2,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
-            [],[],[],[],[],[],[])
+            [],[],[],[],[],[],self.master_flag_list)
+            print(self.master_flag_list)
         elif id == WINDOW_ID_CONFIG_GRAPHICS:
             new_window.update(\
             WINDOW_ID_CONFIG_GRAPHICS,\
@@ -4347,7 +4414,7 @@ class App:
             44,34,44,34,   0,0,  8*8,9*8+5,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
-            [],[],[],[],[],[],[])
+            [],[],[],[],[],[],self.master_flag_list)
         else:
             return
         
@@ -4355,6 +4422,7 @@ class App:
 
     #スコアボードウィンドウの表示
     def window_score_board(self,d): #引数dは難易度 difficulty
+        self.create_master_flag_list() #まず先にフラグ＆データ関連のマスターリスト作成関数を呼び出す
         new_window = Window()
         new_window.update(\
         WINDOW_ID_SCORE_BOARD,\
@@ -4386,6 +4454,7 @@ class App:
 
     #リプレイファイルスロット選択ウィンドウの表示
     def window_replay_data_slot_select(self):
+        self.create_master_flag_list() #まず先にフラグ＆データ関連のマスターリスト作成関数を呼び出す
         new_window = Window()
         new_window.update(\
         WINDOW_ID_SELECT_FILE_SLOT,\
@@ -4861,19 +4930,23 @@ class App:
                 
             elif self.cursor_pre_decision_item_y == 3 and self.cursor_decision_item_y == 0:
                 #「BOSS MODE」→「ON」
-                self.boss_test_mode = 1                              #ボステストモードをon
+                self.boss_test_mode = 1        #ボステストモードをon
+                self.create_master_flag_list() #フラグ＆データ関連のマスターリスト作成関数を呼び出す
                 i = self.search_window_id(WINDOW_ID_BOSS_MODE_MENU)
                 self.window[i].vx = 0.3            #WINDOW_ID_BOSS_MODE_MENUウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
+                self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
             elif self.cursor_pre_decision_item_y == 3 and self.cursor_decision_item_y == 1:
                 #「BOSS MODE」→「OFF」
                 self.boss_test_mode = 0                              #ボステストモードをoff
+                self.create_master_flag_list() #フラグ＆データ関連のマスターリスト作成関数を呼び出す
                 i = self.search_window_id(WINDOW_ID_BOSS_MODE_MENU)
                 self.window[i].vx = 0.3            #WINDOW_ID_BOSS_MODE_MENUウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
+                self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
@@ -4881,18 +4954,22 @@ class App:
             elif self.cursor_pre_decision_item_y == 4 and self.cursor_decision_item_y == 0:
                 #「HITBOX」→「ON」
                 self.boss_collision_rect_display_flag = 1            #ボス当たり判定表示をon
+                self.create_master_flag_list() #フラグ＆データ関連のマスターリスト作成関数を呼び出す
                 i = self.search_window_id(WINDOW_ID_HITBOX_MENU)
                 self.window[i].vx = 0.3            #WINDOW_ID_HITBOX_MENUウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
+                self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
             elif self.cursor_pre_decision_item_y == 4 and self.cursor_decision_item_y == 1:
                 #「HITBOX」→「OFF」
                 self.boss_collision_rect_display_flag = 0            #ボス当たり判定表示をoff
+                self.create_master_flag_list() #フラグ＆データ関連のマスターリスト作成関数を呼び出す
                 i = self.search_window_id(WINDOW_ID_HITBOX_MENU)
                 self.window[i].vx = 0.3            #WINDOW_ID_HITBOX_MENUウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
+                self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
@@ -4900,64 +4977,76 @@ class App:
             elif self.cursor_pre_decision_item_y == 5 and self.cursor_decision_item_y == 0:
                 #「DIFFICULTY」→「VERY_EASY」
                 self.game_difficulty = GAME_VERY_EASY
+                self.create_master_flag_list() #フラグ＆データ関連のマスターリスト作成関数を呼び出す
                 i = self.search_window_id(WINDOW_ID_SELECT_DIFFICULTY)
                 self.window[i].vx = 0.3            #WINDOW_ID_SELECT_DIFFICULTYウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
                 self.window[i].vy = -0.1
                 self.window[i].vy_accel = 1.2
+                self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
             elif self.cursor_pre_decision_item_y == 5 and self.cursor_decision_item_y == 1:
                 #「DIFFICULTY」→「EASY」
                 self.game_difficulty = GAME_EASY
+                self.create_master_flag_list() #フラグ＆データ関連のマスターリスト作成関数を呼び出す
                 i = self.search_window_id(WINDOW_ID_SELECT_DIFFICULTY)
                 self.window[i].vx = 0.3            #WINDOW_ID_SELECT_DIFFICULTYウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
                 self.window[i].vy = -0.05
                 self.window[i].vy_accel = 1.2
+                self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
             elif self.cursor_pre_decision_item_y == 5 and self.cursor_decision_item_y == 2:
                 #「DIFFICULTY」→「NORMAL」
                 self.game_difficulty = GAME_NORMAL
+                self.create_master_flag_list() #フラグ＆データ関連のマスターリスト作成関数を呼び出す
                 i = self.search_window_id(WINDOW_ID_SELECT_DIFFICULTY)
                 self.window[i].vx = 0.3            #WINDOW_ID_SELECT_DIFFICULTYウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
+                self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
             elif self.cursor_pre_decision_item_y == 5 and self.cursor_decision_item_y == 3:
                 #「DIFFICULTY」→「HARD」
                 self.game_difficulty = GAME_HARD
+                self.create_master_flag_list() #フラグ＆データ関連のマスターリスト作成関数を呼び出す
                 i = self.search_window_id(WINDOW_ID_SELECT_DIFFICULTY)
                 self.window[i].vx = 0.3            #WINDOW_ID_SELECT_DIFFICULTYウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
                 self.window[i].vy = 0.1
                 self.window[i].vy_accel = 1.2
+                self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
             elif self.cursor_pre_decision_item_y == 5 and self.cursor_decision_item_y == 4:
                 #「DIFFICULTY」→「VERY_HARD」
                 self.game_difficulty = GAME_VERY_HARD
+                self.create_master_flag_list() #フラグ＆データ関連のマスターリスト作成関数を呼び出す
                 i = self.search_window_id(WINDOW_ID_SELECT_DIFFICULTY)
                 self.window[i].vx = 0.3            #WINDOW_ID_SELECT_DIFFICULTYウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
                 self.window[i].vy = 0.2
                 self.window[i].vy_accel = 1.2
+                self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
             elif self.cursor_pre_decision_item_y == 5 and self.cursor_decision_item_y == 5:
                 #「DIFFICULTY」→「INSAME」
                 self.game_difficulty = GAME_INSAME
+                self.create_master_flag_list() #フラグ＆データ関連のマスターリスト作成関数を呼び出す
                 i = self.search_window_id(WINDOW_ID_SELECT_DIFFICULTY)
                 self.window[i].vx = 0.3            #WINDOW_ID_SELECT_DIFFICULTYウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
                 self.window[i].vy = 0.3
                 self.window[i].vy_accel = 1.2
+                self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
@@ -5028,11 +5117,13 @@ class App:
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
                 
             elif self.cursor_pre_decision_item_y == 8 and self.cursor_decision_item_y == 10:
+                self.create_master_flag_list() #フラグ＆データ関連のマスターリスト作成関数を呼び出す
                 i = self.search_window_id(WINDOW_ID_CONFIG)
                 self.window[i].vx = -0.1            #WINDOW_ID_CONFIGウィンドウを左下にフッ飛ばしていく
                 self.window[i].vx_accel = 1.1
                 self.window[i].vy = 0.2
                 self.window[i].vy_accel = 1.2
+                self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
@@ -11237,22 +11328,40 @@ class App:
             #ステータスがテキストメッセージの表示中もしくはウィンドウオープン完了の時はメッセージテキストを表示する
             if     self.window[i].window_status == WINDOW_WRITE_MESSAGE \
                 or self.window[i].window_status == WINDOW_OPEN_COMPLETED:
-                for ty in range(len(self.window[i].text)): #textの長さの分ループ処理する
-                    if self.window[i].text[ty][LIST_WINDOW_TEXT]  != "": #ウィンドウテキストの表示をする 文字列が存在しないのなら次の行へとスキップループする
-                        if   self.window[i].text[ty][LIST_WINDOW_TEXT_FLASH]  == MES_NO_FLASH:        #テキスト点滅無しの場合
-                            col = self.window[i].text[ty][LIST_WINDOW_TEXT_COLOR]
+                for j in range(len(self.window[i].text)): #textの長さの分ループ処理する
+                    if self.window[i].text[j][LIST_WINDOW_TEXT]  != "": #ウィンドウテキストの表示をする 文字列が存在しないのなら次の行へとスキップループする
+                        if   self.window[i].text[j][LIST_WINDOW_TEXT_FLASH]  == MES_NO_FLASH:        #テキスト点滅無しの場合
+                            col = self.window[i].text[j][LIST_WINDOW_TEXT_COLOR]
                         else:                                                                         #テキスト点滅系の場合
-                            flash_type = self.window[i].text[ty][LIST_WINDOW_TEXT_FLASH]              #flash_typeを元にカラーコードを取得
+                            flash_type = self.window[i].text[j][LIST_WINDOW_TEXT_FLASH]              #flash_typeを元にカラーコードを取得
                             col = self.get_flashing_type_color_code(flash_type)
                         
-                        if self.window[i].text[ty][LIST_WINDOW_TEXT_ALIGN] == DISP_CENTER:
-                            pyxel.text(self.window[i].posx + self.window[i].text[ty][LIST_WINDOW_TEXT_OX] + 6 + self.window[i].width // 2 - len(self.window[i].text[ty][LIST_WINDOW_TEXT]) * 2,self.window[i].posy + 5 + (ty+1) * self.window[i].between_line,str(self.window[i].text[ty][LIST_WINDOW_TEXT]),0)
-                            pyxel.text(self.window[i].posx + self.window[i].text[ty][LIST_WINDOW_TEXT_OX] + 6 + self.window[i].width // 2 - len(self.window[i].text[ty][LIST_WINDOW_TEXT]) * 2,self.window[i].posy + 6 + (ty+1) * self.window[i].between_line,str(self.window[i].text[ty][LIST_WINDOW_TEXT]),0)
-                            pyxel.text(self.window[i].posx + self.window[i].text[ty][LIST_WINDOW_TEXT_OX] + 5 + self.window[i].width // 2 - len(self.window[i].text[ty][LIST_WINDOW_TEXT]) * 2,self.window[i].posy + 5 + (ty+1) * self.window[i].between_line,str(self.window[i].text[ty][LIST_WINDOW_TEXT]),col)
-                        elif self.window[i].text[ty][LIST_WINDOW_TEXT_ALIGN] == DISP_LEFT_ALIGN:
-                            pyxel.text(self.window[i].posx + self.window[i].text[ty][LIST_WINDOW_TEXT_OX] + 6  ,self.window[i].posy + 5 + (ty+1) * self.window[i].between_line,str(self.window[i].text[ty][LIST_WINDOW_TEXT]),0)
-                            pyxel.text(self.window[i].posx + self.window[i].text[ty][LIST_WINDOW_TEXT_OX] + 6  ,self.window[i].posy + 6 + (ty+1) * self.window[i].between_line,str(self.window[i].text[ty][LIST_WINDOW_TEXT]),0)
-                            pyxel.text(self.window[i].posx + self.window[i].text[ty][LIST_WINDOW_TEXT_OX] + 5  ,self.window[i].posy + 5 + (ty+1) * self.window[i].between_line,str(self.window[i].text[ty][LIST_WINDOW_TEXT]),col)
+                        if self.window[i].text[j][LIST_WINDOW_TEXT_ALIGN] == DISP_CENTER:
+                            pyxel.text(self.window[i].posx + self.window[i].text[j][LIST_WINDOW_TEXT_OX] + 6 + self.window[i].width // 2 - len(self.window[i].text[j][LIST_WINDOW_TEXT]) * 2,self.window[i].posy + 5 + (j+1) * self.window[i].between_line,str(self.window[i].text[j][LIST_WINDOW_TEXT]),0)
+                            pyxel.text(self.window[i].posx + self.window[i].text[j][LIST_WINDOW_TEXT_OX] + 6 + self.window[i].width // 2 - len(self.window[i].text[j][LIST_WINDOW_TEXT]) * 2,self.window[i].posy + 6 + (j+1) * self.window[i].between_line,str(self.window[i].text[j][LIST_WINDOW_TEXT]),0)
+                            pyxel.text(self.window[i].posx + self.window[i].text[j][LIST_WINDOW_TEXT_OX] + 5 + self.window[i].width // 2 - len(self.window[i].text[j][LIST_WINDOW_TEXT]) * 2,self.window[i].posy + 5 + (j+1) * self.window[i].between_line,str(self.window[i].text[j][LIST_WINDOW_TEXT]),col)
+                        elif self.window[i].text[j][LIST_WINDOW_TEXT_ALIGN] == DISP_LEFT_ALIGN:
+                            pyxel.text(self.window[i].posx + self.window[i].text[j][LIST_WINDOW_TEXT_OX] + 6  ,self.window[i].posy + 5 + (j+1) * self.window[i].between_line,str(self.window[i].text[j][LIST_WINDOW_TEXT]),0)
+                            pyxel.text(self.window[i].posx + self.window[i].text[j][LIST_WINDOW_TEXT_OX] + 6  ,self.window[i].posy + 6 + (j+1) * self.window[i].between_line,str(self.window[i].text[j][LIST_WINDOW_TEXT]),0)
+                            pyxel.text(self.window[i].posx + self.window[i].text[j][LIST_WINDOW_TEXT_OX] + 5  ,self.window[i].posy + 5 + (j+1) * self.window[i].between_line,str(self.window[i].text[j][LIST_WINDOW_TEXT]),col)
+                    
+                    if     self.window[i].window_id_sub == WINDOW_ID_SUB_ON_OFF_MENU\
+                        or self.window[i].window_id_sub == WINDOW_ID_SUB_MULTI_SELECT_MENU: #「ON」「OFF」のトグルスイッチ式メニュー,ハイライト付きマルチメニューの場合はオブジェクト表示
+                        
+                        flag_index = self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ] #flag_indexに編集対象となるオブジェクトが入ったリストインデック値が入ります
+                        if self.window[i].flag_list[flag_index] == self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_COMPARE]: #フラグの数値とリストに登録されているパラメーター数値を比較して・・・
+                            col = self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_ON_COLOR] #同じ数値ならオンの色
+                        else:
+                            col = self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_OFF_COLOR]  #違っていたならオフの色
+                        
+                        if self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_ALIGN] == DISP_CENTER:
+                            pyxel.text(self.window[i].posx + self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_OX] + 6 + self.window[i].width // 2 - len(self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT]) * 2,self.window[i].posy + 5 + (j+1) * self.window[i].between_line,str(self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT]),0)
+                            pyxel.text(self.window[i].posx + self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_OX] + 6 + self.window[i].width // 2 - len(self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT]) * 2,self.window[i].posy + 6 + (j+1) * self.window[i].between_line,str(self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT]),0)
+                            pyxel.text(self.window[i].posx + self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_OX] + 5 + self.window[i].width // 2 - len(self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT]) * 2,self.window[i].posy + 5 + (j+1) * self.window[i].between_line,str(self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT]),col)
+                        elif self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_ALIGN] == DISP_LEFT_ALIGN:
+                            pyxel.text(self.window[i].posx + self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_OX] + 6  ,self.window[i].posy + 5 + (j+1) * self.window[i].between_line,str(self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT]),0)
+                            pyxel.text(self.window[i].posx + self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_OX] + 6  ,self.window[i].posy + 6 + (j+1) * self.window[i].between_line,str(self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT]),0)
+                            pyxel.text(self.window[i].posx + self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_OX] + 5  ,self.window[i].posy + 5 + (j+1) * self.window[i].between_line,str(self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT]),col)
             
             #ウィンドウタイプがテキスト編集の入力待ちのタイプはさらに入力メッセージ(edit_text)の文字列を表示する
             if     self.window[i].window_type   == WINDOW_TYPE_EDIT_TEXT:
