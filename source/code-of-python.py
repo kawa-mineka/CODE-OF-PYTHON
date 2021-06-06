@@ -2299,6 +2299,8 @@ class App:
         pyxel.init(WINDOW_W,WINDOW_H,caption="CODE OF PYTHON",fps = 60) #ゲームウィンドウのタイトルバーの表示とfpsの設定(60fpsにした)
         
         self.load_system_data()        #システムデータをロードする関数の呼び出し
+        if self.fullscreen_mode == 1:  #フルスクリーン起動モードフラグが立っていたのなら
+            pyxel.init(WINDOW_W,WINDOW_H,caption="CODE OF PYTHON",fps = 60,fullscreen = True) #フルスクリーンでpyxelを再起動する
         pyxel.mouse(False)             #マウスカーソルを非表示にする
         self.bg_cls_color = 0          #BGをCLS(クリアスクリーン)するときの色の指定(通常は0=黒色です)
         self.bg_transparent_color = 0  #BGタイルマップを敷き詰めるときに指定する透明色です
@@ -2314,6 +2316,7 @@ class App:
         self.my_name                         = "TESTER01" #プレイヤーの名前(ネームエントリーの関係上半角8文字でお願いします)
         
         self.development_testtime            = 0  #ゲーム開発時の総テスト時間
+        self.one_game_playtime_seconds       = 0  #1プレイでのゲームプレイ時間(秒単位)
         
         self.total_game_playtime             = 0  #初めてこのゲームをプレイしてからの合計プレイ時間
         self.number_of_play                  = 0  #遊んだ回数
@@ -3079,9 +3082,6 @@ class App:
         #debug_menu_status                  #デバッグパラメータの表示ステータス
                                             #0=表示しない 1=フル表示タイプ 2=簡易表示タイプ
         self.debug_menu_status             = (pyxel.tilemap(0).get(0,126)) - 16 #数字の[0]はアスキーコード16番なので16引いて数値としての0にしてやります
-        #god_mode_status                    #ゴッドモードのステータス
-                                            #0=ゴッドモードオフ 1=ゴッドモードオン
-        self.god_mode_status               = 0
         
         #boss_collision_rect_display_flag        ボス用の当たり判定確認の為の矩形表示フラグ(デバッグ時に1にします)
         self.boss_collision_rect_display_flag = (pyxel.tilemap(0).get(0,127)) - 16
@@ -3095,7 +3095,13 @@ class App:
         #no_enemy_mode                       マップチップによる敵の発生を行わないモードのフラグですです(地上の敵が出ない！)2021 03/07現在機能してない模様
                                             #0=マップスクロールによって敵が発生します
                                             #1=                    発生しません        
-        self.no_enemy_mode                = (pyxel.tilemap(0).get(0,130)) - 16
+        self.no_enemy_mode                 = (pyxel.tilemap(0).get(0,130)) - 16
+        #god_mode_status                    #ゴッドモードのステータス
+                                            #0=ゴッドモードオフ 1=ゴッドモードオン
+        self.god_mode_status               = (pyxel.tilemap(0).get(0,131)) - 16
+        #fullscreen_mode                    #フルスクリーンでの起動モード
+                                            #0=ウィンドウモードでの起動 1=フルスクリーンモードでの起動
+        self.fullscreen_mode               = (pyxel.tilemap(0).get(0,132)) - 16
         
         # self.test_read_num = self.read_system_data_num(15,156,16) #数値の読み取りテストです
 
@@ -3111,6 +3117,8 @@ class App:
         pyxel.tilemap(0).set(0,128,self.bg_collision_Judgment_flag + 16)      #BGとの当たり判定フラグ書き込み
         pyxel.tilemap(0).set(0,129,self.boss_test_mode + 16)                  #ボステストモードフラグ書き込み
         pyxel.tilemap(0).set(0,130,self.no_enemy_mode + 16)                   #敵が出ないモードフラグ書き込み
+        pyxel.tilemap(0).set(0,131,self.god_mode_status + 16)                 #ゴッドモードフラグ書き込み
+        pyxel.tilemap(0).set(0,132,self.fullscreen_mode + 16)                 #フルスクリーン起動フラグ書き込み
         
         #総ゲームプレイ時間(秒)のそれぞれの桁の数値を計算する (自分でも訳が分からないよ・・・)------------------------------
         t_sec = self.total_game_playtime_seconds
@@ -4201,10 +4209,10 @@ class App:
         self.master_flag_list[LIST_WINDOW_FLAG_START_AGE]   = self.stage_age          #スタート年代をリストに登録
         self.master_flag_list[LIST_WINDOW_FLAG_DIFFICULTY]  = self.game_difficulty    #ゲーム難易度をリストに登録
         
-        self.master_flag_list[LIST_WINDOW_FLAG_SCREEN_MODE]  = 0 #ダミー登録
-        self.master_flag_list[LIST_WINDOW_FLAG_BGM_VOL]      = 50
-        self.master_flag_list[LIST_WINDOW_FLAG_SE_VOL]       = 50
-        self.master_flag_list[LIST_WINDOW_FLAG_CTRL_TYPE]    = 1
+        self.master_flag_list[LIST_WINDOW_FLAG_SCREEN_MODE] = self.fullscreen_mode    #フルスクリーン起動モードフラグをリストに登録
+        self.master_flag_list[LIST_WINDOW_FLAG_BGM_VOL]     = 50 #仮登録
+        self.master_flag_list[LIST_WINDOW_FLAG_SE_VOL]      = 50
+        self.master_flag_list[LIST_WINDOW_FLAG_CTRL_TYPE]   = 1
 
     #マスターフラグ＆データリストを個別の変数にリストアさせる
     def restore_master_flag_list(self):
@@ -4217,7 +4225,7 @@ class App:
         self.stage_age         = self.master_flag_list[LIST_WINDOW_FLAG_START_AGE]               #スタート年代をリストにから参照してリストア
         self.game_difficulty   = self.master_flag_list[LIST_WINDOW_FLAG_DIFFICULTY]              #ゲーム難易度をリストにから参照してリストア
         
-        # self.master_flag_list[LIST_WINDOW_FLAG_SCREEN_MODE]  = 0 #ダミー登録
+        self.fullscreen_mode   = self.master_flag_list[LIST_WINDOW_FLAG_SCREEN_MODE]             #フルスクリーン起動モードフラグをリストから参照してリストア
         # self.master_flag_list[LIST_WINDOW_FLAG_BGM_VOL]      = 50
         # self.master_flag_list[LIST_WINDOW_FLAG_SE_VOL]       = 50
         # self.master_flag_list[LIST_WINDOW_FLAG_CTRL_TYPE]    = 1
@@ -5174,6 +5182,8 @@ class App:
                 self.window[i].vy = 0.2
                 self.window[i].vy_accel = 1.2
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
+                self.save_system_data()                            #システムデータをセーブします
+                pyxel.load("assets/graphic/min-sht2.pyxres") #タイトル＆ステージ1＆2のリソースファイルを読み込む
                 self.cursor_pre_decision_item_y = -1
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
 
