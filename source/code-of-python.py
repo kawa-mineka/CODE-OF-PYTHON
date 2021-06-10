@@ -76,6 +76,7 @@
 
 #todo900 BGMの作成(無理そう.........)
 #実装完了済み！
+#todo 各ウィンドウのクローズ処理を実装 2021 06/11
 
 # from random import randint   #random.randint(n,m) と呼ぶと、nからm(m自身を含む)までの間の整数が 等しい確率で、ランダムに返される
 from random import random    #random.random() と呼ぶと、0から1の範囲(1は含まない)のランダムな実数が返される(主にパーティクル系で使用します)
@@ -464,13 +465,15 @@ WINDOW_BG_BLUE_BACK       = 1 #青地
 WINDOW_BG_LOW_TRANSLUCENT = 2 #ちょっと半透明
 
 #メッセージウィンドウ関連の定数定義 windowクラスの window[i].window_statusに入ります
-WINDOW_OPEN            =  0    #テキストウィンドウ開き進行中
-WINDOW_WRITE_TITLE_BAR =  4    #テキストウィンドウのタイトルバー表示中
-WINDOW_WRITE_MESSAGE   =  5    #テキストメッセージの表示中
+WINDOW_OPEN            =  0    #ウィンドウ開き進行中
+WINDOW_WRITE_TITLE_BAR =  4    #ウィンドウのタイトルバー表示中
+WINDOW_WRITE_MESSAGE   =  5    #メッセージの表示中
 WINDOW_SELECT_YES_NO   =  8    #「はい」「いいえ」の2択表示中
-WINDOW_OPEN_COMPLETED  =  9    #テキストウィンドウ開き完了！
-WINDOW_CLOSE           = 10    #テキストウィンドウ閉め進行中
-WINDOW_CLOSE_COMPLETED = 11    #テキストウィンドウ閉め完了！
+WINDOW_OPEN_COMPLETED  =  9    #ウィンドウ開き完了！
+WINDOW_CLOSE           = 10    #ウィンドウ閉め進行中
+WINDOW_CLOSE_COMPLETED = 11    #ウィンドウ閉め完了！
+WINDOW_MOVE            = 12    #ウィンドウ移動中
+
 #ウィンドウのテキスト行間ドット数 windowクラスのbetween_lineに入ります
 WINDOW_BETWEEN_LINE_7   =  7     #行間 7ドット
 WINDOW_BETWEEN_LINE_8   =  8     #行間 8ドット
@@ -4271,7 +4274,7 @@ class App:
             [ "3",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
             
             [[""]],\
-            90,60,90,60,   0,0,  2*8,5*8,   2,2, 1,1,   0,0,    0,0,    0,0,0,0,\
+            90,60,90,60,   0,0,  2*8,5*8,   2,2, 1,0.5,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             [],[],[],[],[],[],self.master_flag_list)
@@ -4290,7 +4293,7 @@ class App:
             [ "3",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
             
             [[""]],\
-            90+22,60+6,90+22,60+6,   0,0,  2*8,5*8,   2,2, 1,1,   0,0,    0,0,    0,0,0,0,\
+            90+22,60+6,90+22,60+6,   0,0,  2*8,5*8,   2,2, 1,0.5,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             [],[],[],[],[],[],self.master_flag_list)
@@ -4308,7 +4311,7 @@ class App:
             [ ".",DISP_CENTER,0,0,7,MES_NO_FLASH,0,0,0,0,   0,0,0,0,0,0,0,0,0,0,   LIST_WINDOW_FLAG_BOSS_MODE,0,"OFF",DISP_CENTER,0, 0,0, 7,10]],\
             
             [[""]],\
-            96+3,60-1,96+3,60-1,   0,0,  2*8+7,21,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
+            96+3,60-1,96+3,60-1,   0,0,  2*8+7,21,   2,1, 1,0.7,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             [],[],[],[],[],[],self.master_flag_list)
@@ -4326,7 +4329,7 @@ class App:
             [ " ",DISP_CENTER,0,0,7,MES_NO_FLASH,0,0,0,0,   0,0,0,0,0,0,0,0,0,0,   LIST_WINDOW_FLAG_HIT_BOX,0,"OFF",DISP_CENTER,0, 0,0, 7,10]],\
             
             [[""]],\
-            96+3,60-1,96+3,60-1,   0,0,  2*8+7,21,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
+            96+3,60-1,96+3,60-1,   0,0,  2*8+7,21,   2,1, 1,0.7,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             [],[],[],[],[],[],self.master_flag_list)
@@ -4348,7 +4351,7 @@ class App:
             [ " ",DISP_CENTER,0,0,7,MES_NO_FLASH,0,0,0,0,   0,0,0,0,0,0,0,0,0,0,   LIST_WINDOW_FLAG_DIFFICULTY,0, "INSAME",   DISP_CENTER,5, 0,0, 7,10]],\
             
             [[""]],\
-            93,52,93,52,   0,0,  48,51,   3,3, 1,1,   0,0,    0,0,    0,0,0,0,\
+            93,52,93,52,   0,0,  48,51,   3,3, 1,0.7,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             [],[],[],[],[],[],self.master_flag_list)
@@ -4523,6 +4526,22 @@ class App:
         [],[],[],[],[],[],[])
         
         self.window.append(new_window)                      #「SELECT SLOT」を育成する
+
+    #メインメニューウィンドウを左にずらす
+    def move_left_main_menu_window(self):
+        i = self.search_window_id(WINDOW_ID_MAIN_MENU)
+        self.window[i].window_status = WINDOW_MOVE
+        self.window[i].dx = 44 - 30
+        self.window[i].vx = -4            #メインメニューウィンドウを左にずらしてやる
+        self.window[i].vx_accel = 0.8
+
+    #メインメニューウィンドウを右にずらす
+    def move_right_main_menu_window(self):
+        i = self.search_window_id(WINDOW_ID_MAIN_MENU)
+        self.window[i].window_status = WINDOW_MOVE
+        self.window[i].dx = 44
+        self.window[i].vx = 3.9            #メインメニューウィンドウを右にずらしてやる
+        self.window[i].vx_accel = 0.8
 
     #ウィンドウIDの検索(与えられたウィンドウIDを元にしてウィンドウ群を検索しインデックスナンバーを取得する)
     def search_window_id(self,id): #id=windowクラスの window_idに入っている数値 発見できなかった時は-1を返します
@@ -4764,6 +4783,8 @@ class App:
                 
             elif self.cursor_decision_item_y == 1:            #SELECT STAGEが押されて
                 if self.search_window_id(WINDOW_ID_SELECT_STAGE_MENU) == -1: #SELECT_STAGE_MENUウィンドウが存在しないのなら・・
+                    self.move_left_main_menu_window() #メインメニューウィンドウを左にずらす関数の呼び出し
+                    
                     self.cursor_pre_decision_item_y = self.cursor_decision_item_y #現時点で選択されたアイテム「SELECT STAGE」を前のレイヤー選択アイテムとしてコピーする
                     self.push_cursor_data(WINDOW_ID_MAIN_MENU)       #メインメニューのカーソルデータをPUSH
                     self.create_window(WINDOW_ID_SELECT_STAGE_MENU)  #ステージセレクトウィンドウの作製
@@ -4781,6 +4802,7 @@ class App:
                 
             elif self.cursor_decision_item_y == 2:            #SELECT LOOPが押されて
                 if self.search_window_id(WINDOW_ID_SELECT_LOOP_MENU) == -1: #SELECT_LOOP_MENUウィンドウが存在しないのなら・・
+                    self.move_left_main_menu_window() #メインメニューウィンドウを左にずらす関数の呼び出し
                     self.cursor_pre_decision_item_y = self.cursor_decision_item_y #現時点で選択されたアイテム「SELECT LOOP」を前のレイヤー選択アイテムとしてコピーする
                     self.push_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPUSH
                     self.create_window(WINDOW_ID_SELECT_LOOP_MENU)      #ループセレクトウィンドウの作成
@@ -4798,6 +4820,7 @@ class App:
                 
             elif self.cursor_decision_item_y == 3:            #BOSS MODEが押されて
                 if self.search_window_id(WINDOW_ID_BOSS_MODE_MENU) == -1: #BOSS MODEウィンドウが存在しないのなら・・
+                    self.move_left_main_menu_window() #メインメニューウィンドウを左にずらす関数の呼び出し
                     self.cursor_pre_decision_item_y = self.cursor_decision_item_y #現時点で選択されたアイテム「BOSS MODE」を前のレイヤー選択アイテムとしてコピーする
                     self.push_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPUSH
                     self.create_window(WINDOW_ID_BOSS_MODE_MENU)        #ボスモードon/offウィンドウの作製
@@ -4815,6 +4838,7 @@ class App:
                 
             elif self.cursor_decision_item_y == 4:            #HITBOXが押されて....
                 if self.search_window_id(WINDOW_ID_HITBOX_MENU) == -1: #HITBOXウィンドウが存在しないのなら・・
+                    self.move_left_main_menu_window() #メインメニューウィンドウを左にずらす関数の呼び出し
                     self.cursor_pre_decision_item_y = self.cursor_decision_item_y #現時点で選択されたアイテム「HITBOX」を前のレイヤー選択アイテムとしてコピーする
                     self.push_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPUSH
                     self.create_window(WINDOW_ID_HITBOX_MENU)           #ヒットボックスon/offウィンドウの作製
@@ -4832,6 +4856,7 @@ class App:
                 
             elif self.cursor_decision_item_y == 5:            #DIFFICULTYが押されて
                 if self.search_window_id(WINDOW_ID_SELECT_DIFFICULTY) == -1: #SELECT_DIFFICULTYウィンドウが存在しないのなら・・
+                    self.move_left_main_menu_window() #メインメニューウィンドウを左にずらす関数の呼び出し
                     self.cursor_pre_decision_item_y = self.cursor_decision_item_y #現時点で選択されたアイテム「DIFFICULTY」を前のレイヤー選択アイテムとしてコピーする
                     self.push_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPUSH
                     self.create_window(WINDOW_ID_SELECT_DIFFICULTY)     #「SELECT DIFFICULTY」ウィンドウの作製
@@ -4863,6 +4888,7 @@ class App:
                 
             elif self.cursor_decision_item_y == 7:            #NAME ENTRYが押されて...
                 if self.search_window_id(WINDOW_ID_INPUT_YOUR_NAME) == -1: #INPUT_YOUR_NAMEウィンドウが存在しないのなら・・
+                    self.move_left_main_menu_window() #メインメニューウィンドウを左にずらす関数の呼び出し
                     self.cursor_pre_decision_item_x = self.cursor_decision_item_x #現時点で選択されたアイテム「NAME ENTRY」を前のレイヤー選択アイテムとしてコピーする
                     self.cursor_pre_decision_item_y = self.cursor_decision_item_y #現時点で選択されたアイテム「NAME ENTRY」を前のレイヤー選択アイテムとしてコピーする
                     self.push_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPUSH
@@ -4918,33 +4944,42 @@ class App:
             if   self.cursor_pre_decision_item_y == 1 and self.cursor_decision_item_y == 0:
                 #「SELECT STAGE」→「1」
                 self.stage_number   = 1                          #ステージナンバー1
+                self.move_right_main_menu_window() #メインメニューウィンドウを右にずらす関数の呼び出し
+                
                 i = self.search_window_id(WINDOW_ID_SELECT_STAGE_MENU)
-                self.window[i].vx = 0.3            #WINDOW_ID_SELECT_STAGE_MENUウィンドウを右にフッ飛ばしていく
+                self.window[i].vx = 0.6            #WINDOW_ID_SELECT_STAGE_MENUウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.1
                 self.window[i].vy = 0.1 * self.stage_number
                 self.window[i].vy_accel = 1.1
+                self.window[i].window_status = WINDOW_CLOSE
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
             elif self.cursor_pre_decision_item_y == 1 and self.cursor_decision_item_y == 1:
                 #「SELECT STAGE」→「2」
                 self.stage_number   = 2                         #ステージナンバー2
+                self.move_right_main_menu_window() #メインメニューウィンドウを右にずらす関数の呼び出し
+                
                 i = self.search_window_id(WINDOW_ID_SELECT_STAGE_MENU)
                 self.window[i].vx = 0.3            #WINDOW_ID_SELECT_STAGE_MENUウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.1
                 self.window[i].vy = 0.1 * self.stage_number
                 self.window[i].vy_accel = 1.1
+                self.window[i].window_status = WINDOW_CLOSE
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
             elif self.cursor_pre_decision_item_y == 1 and self.cursor_decision_item_y == 2:
                 #「SELECT STAGE」→「3」
                 self.stage_number   = 3                        #ステージナンバー3
+                self.move_right_main_menu_window() #メインメニューウィンドウを右にずらす関数の呼び出し
+                
                 i = self.search_window_id(WINDOW_ID_SELECT_STAGE_MENU)
                 self.window[i].vx = 0.3            #WINDOW_ID_SELECT_STAGE_MENUウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.1
                 self.window[i].vy = 0.1 * self.stage_number
                 self.window[i].vy_accel = 1.1
+                self.window[i].window_status = WINDOW_CLOSE
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
@@ -4952,27 +4987,33 @@ class App:
             elif self.cursor_pre_decision_item_y == 2 and self.cursor_decision_item_y == 0:
                 #「SELECT LOOP NUMBER」→「1」
                 self.stage_loop = 1                           #ループ数に1週目を代入
+                self.move_right_main_menu_window() #メインメニューウィンドウを右にずらす関数の呼び出し
                 i = self.search_window_id(WINDOW_ID_SELECT_LOOP_MENU)
                 self.window[i].vx = 0.3            #WINDOW_ID_SELECT_LOOP_MENUウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
+                self.window[i].window_status = WINDOW_CLOSE
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
             elif self.cursor_pre_decision_item_y == 2 and self.cursor_decision_item_y == 1:
                 #「SELECT LOOP NUMBER」→「2」
                 self.stage_loop = 2                           #ループ数に2週目を代入
+                self.move_right_main_menu_window() #メインメニューウィンドウを右にずらす関数の呼び出し
                 i = self.search_window_id(WINDOW_ID_SELECT_LOOP_MENU)
                 self.window[i].vx = 0.3            #WINDOW_ID_SELECT_LOOP_MENUウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
+                self.window[i].window_status = WINDOW_CLOSE
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
             elif self.cursor_pre_decision_item_y == 2 and self.cursor_decision_item_y == 2:
                 #「SELECT LOOP NUMBER」→「3」
                 self.stage_loop = 3                          #ループ数に3週目を代入
+                self.move_right_main_menu_window() #メインメニューウィンドウを右にずらす関数の呼び出し
                 i = self.search_window_id(WINDOW_ID_SELECT_LOOP_MENU)
                 self.window[i].vx = 0.3            #WINDOW_ID_SELECT_LOOP_MENUウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
+                self.window[i].window_status = WINDOW_CLOSE
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
@@ -4980,10 +5021,12 @@ class App:
             elif self.cursor_pre_decision_item_y == 3 and self.cursor_decision_item_y == 0:
                 #「BOSS MODE」→「ON」
                 self.boss_test_mode = 1        #ボステストモードをon
+                self.move_right_main_menu_window() #メインメニューウィンドウを右にずらす関数の呼び出し
                 self.create_master_flag_list() #フラグ＆データ関連のマスターリスト作成関数を呼び出す
                 i = self.search_window_id(WINDOW_ID_BOSS_MODE_MENU)
                 self.window[i].vx = 0.3            #WINDOW_ID_BOSS_MODE_MENUウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
+                self.window[i].window_status = WINDOW_CLOSE
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
@@ -4991,12 +5034,14 @@ class App:
             elif self.cursor_pre_decision_item_y == 3 and self.cursor_decision_item_y == 1:
                 #「BOSS MODE」→「OFF」
                 self.boss_test_mode = 0                              #ボステストモードをoff
+                self.move_right_main_menu_window() #メインメニューウィンドウを右にずらす関数の呼び出し
                 self.create_master_flag_list() #フラグ＆データ関連のマスターリスト作成関数を呼び出す
                 i = self.search_window_id(WINDOW_ID_BOSS_MODE_MENU)
                 self.window[i].vx = 0.3            #WINDOW_ID_BOSS_MODE_MENUウィンドウを右下にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
                 self.window[i].vy = 0.2
                 self.window[i].vy_accel = 1.2
+                self.window[i].window_status = WINDOW_CLOSE
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
@@ -5005,10 +5050,12 @@ class App:
             elif self.cursor_pre_decision_item_y == 4 and self.cursor_decision_item_y == 0:
                 #「HITBOX」→「ON」
                 self.boss_collision_rect_display_flag = 1            #ボス当たり判定表示をon
+                self.move_right_main_menu_window() #メインメニューウィンドウを右にずらす関数の呼び出し
                 self.create_master_flag_list() #フラグ＆データ関連のマスターリスト作成関数を呼び出す
                 i = self.search_window_id(WINDOW_ID_HITBOX_MENU)
                 self.window[i].vx = 0.3            #WINDOW_ID_HITBOX_MENUウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
+                self.window[i].window_status = WINDOW_CLOSE
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
@@ -5016,12 +5063,14 @@ class App:
             elif self.cursor_pre_decision_item_y == 4 and self.cursor_decision_item_y == 1:
                 #「HITBOX」→「OFF」
                 self.boss_collision_rect_display_flag = 0            #ボス当たり判定表示をoff
+                self.move_right_main_menu_window() #メインメニューウィンドウを右にずらす関数の呼び出し
                 self.create_master_flag_list() #フラグ＆データ関連のマスターリスト作成関数を呼び出す
                 i = self.search_window_id(WINDOW_ID_HITBOX_MENU)
                 self.window[i].vx = 0.3            #WINDOW_ID_HITBOX_MENUウィンドウを右下にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
                 self.window[i].vy = 0.2
                 self.window[i].vy_accel = 1.2
+                self.window[i].window_status = WINDOW_CLOSE
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
@@ -5030,12 +5079,14 @@ class App:
             elif self.cursor_pre_decision_item_y == 5 and self.cursor_decision_item_y == 0:
                 #「DIFFICULTY」→「VERY_EASY」
                 self.game_difficulty = GAME_VERY_EASY
+                self.move_right_main_menu_window() #メインメニューウィンドウを右にずらす関数の呼び出し
                 self.create_master_flag_list() #フラグ＆データ関連のマスターリスト作成関数を呼び出す
                 i = self.search_window_id(WINDOW_ID_SELECT_DIFFICULTY)
                 self.window[i].vx = 0.3            #WINDOW_ID_SELECT_DIFFICULTYウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
                 self.window[i].vy = -0.1
                 self.window[i].vy_accel = 1.2
+                self.window[i].window_status = WINDOW_CLOSE
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
@@ -5043,12 +5094,14 @@ class App:
             elif self.cursor_pre_decision_item_y == 5 and self.cursor_decision_item_y == 1:
                 #「DIFFICULTY」→「EASY」
                 self.game_difficulty = GAME_EASY
+                self.move_right_main_menu_window() #メインメニューウィンドウを右にずらす関数の呼び出し
                 self.create_master_flag_list() #フラグ＆データ関連のマスターリスト作成関数を呼び出す
                 i = self.search_window_id(WINDOW_ID_SELECT_DIFFICULTY)
                 self.window[i].vx = 0.3            #WINDOW_ID_SELECT_DIFFICULTYウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
                 self.window[i].vy = -0.05
                 self.window[i].vy_accel = 1.2
+                self.window[i].window_status = WINDOW_CLOSE
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
@@ -5056,10 +5109,12 @@ class App:
             elif self.cursor_pre_decision_item_y == 5 and self.cursor_decision_item_y == 2:
                 #「DIFFICULTY」→「NORMAL」
                 self.game_difficulty = GAME_NORMAL
+                self.move_right_main_menu_window() #メインメニューウィンドウを右にずらす関数の呼び出し
                 self.create_master_flag_list() #フラグ＆データ関連のマスターリスト作成関数を呼び出す
                 i = self.search_window_id(WINDOW_ID_SELECT_DIFFICULTY)
                 self.window[i].vx = 0.3            #WINDOW_ID_SELECT_DIFFICULTYウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
+                self.window[i].window_status = WINDOW_CLOSE
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
@@ -5067,12 +5122,14 @@ class App:
             elif self.cursor_pre_decision_item_y == 5 and self.cursor_decision_item_y == 3:
                 #「DIFFICULTY」→「HARD」
                 self.game_difficulty = GAME_HARD
+                self.move_right_main_menu_window() #メインメニューウィンドウを右にずらす関数の呼び出し
                 self.create_master_flag_list() #フラグ＆データ関連のマスターリスト作成関数を呼び出す
                 i = self.search_window_id(WINDOW_ID_SELECT_DIFFICULTY)
                 self.window[i].vx = 0.3            #WINDOW_ID_SELECT_DIFFICULTYウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
                 self.window[i].vy = 0.1
                 self.window[i].vy_accel = 1.2
+                self.window[i].window_status = WINDOW_CLOSE
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
@@ -5080,12 +5137,14 @@ class App:
             elif self.cursor_pre_decision_item_y == 5 and self.cursor_decision_item_y == 4:
                 #「DIFFICULTY」→「VERY_HARD」
                 self.game_difficulty = GAME_VERY_HARD
+                self.move_right_main_menu_window() #メインメニューウィンドウを右にずらす関数の呼び出し
                 self.create_master_flag_list() #フラグ＆データ関連のマスターリスト作成関数を呼び出す
                 i = self.search_window_id(WINDOW_ID_SELECT_DIFFICULTY)
                 self.window[i].vx = 0.3            #WINDOW_ID_SELECT_DIFFICULTYウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
                 self.window[i].vy = 0.2
                 self.window[i].vy_accel = 1.2
+                self.window[i].window_status = WINDOW_CLOSE
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
@@ -5093,12 +5152,14 @@ class App:
             elif self.cursor_pre_decision_item_y == 5 and self.cursor_decision_item_y == 5:
                 #「DIFFICULTY」→「INSAME」
                 self.game_difficulty = GAME_INSAME
+                self.move_right_main_menu_window() #メインメニューウィンドウを右にずらす関数の呼び出し
                 self.create_master_flag_list() #フラグ＆データ関連のマスターリスト作成関数を呼び出す
                 i = self.search_window_id(WINDOW_ID_SELECT_DIFFICULTY)
                 self.window[i].vx = 0.3            #WINDOW_ID_SELECT_DIFFICULTYウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
                 self.window[i].vy = 0.3
                 self.window[i].vy_accel = 1.2
+                self.window[i].window_status = WINDOW_CLOSE
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
@@ -5161,6 +5222,7 @@ class App:
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
                 
             elif self.cursor_pre_decision_item_y == 7 and self.cursor_decision_item_x == 8:
+                self.move_right_main_menu_window() #メインメニューウィンドウを右にずらす関数の呼び出し
                 #「ENTER YOUR NAME」→「OK」ボタンを押した
                 text = self.window[self.active_window_index].edit_text[LIST_WINDOW_TEXT]
                 self.my_name = text[:8] #文字列textの先頭から8文字までをmy_nameとします
@@ -5176,6 +5238,7 @@ class App:
                 self.window[i].vx_accel = 1.1
                 self.window[i].vy = 0.2
                 self.window[i].vy_accel = 1.2
+                self.window[i].window_status = WINDOW_CLOSE
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.save_system_data()                            #システムデータをセーブします
                 pyxel.load("assets/graphic/min-sht2.pyxres") #タイトル＆ステージ1＆2のリソースファイルを読み込む
@@ -9833,7 +9896,7 @@ class App:
     def update_window(self):
         window_count = len(self.window)
         for i in range(window_count):
-            if self.window[i].window_status == WINDOW_OPEN: #ステータスが「オープン」の時は・・・・・・・・・・・・
+            if   self.window[i].window_status == WINDOW_OPEN:     #ステータスが「オープン」の時は・・・・・・・・・・・・
                 if self.window[i].width < self.window[i].open_width:#widthをopen_widthの数値になるまで増加させていく
                     self.window[i].width += int(self.window[i].change_x * self.window[i].open_speed)
                 
@@ -9847,6 +9910,32 @@ class App:
                     
                     self.window[i].width  = self.window[i].open_width #小数点以下の座標の誤差を修正するために強制的にopen時の座標数値を現在座標数値に代入してやる
                     self.window[i].height = self.window[i].open_height
+            elif self.window[i].window_status == WINDOW_CLOSE:    #ステータスが「クローズ」の時は・・・・・・・・・・・・
+                if self.window[i].width > 0 :#widthを0になるまで減少させていく
+                        self.window[i].width -= int(self.window[i].change_x * self.window[i].close_speed)
+                    
+                if self.window[i].height >0 :#heightを0になるまで減少させていく
+                    self.window[i].height -= int(self.window[i].change_y * self.window[i].close_speed)
+                    
+                #ウィンドウが開ききったのか判断する
+                if  -2 <= self.window[i].width  <= 2 and\
+                    -2 <= self.window[i].height <= 2:#もしwidthとheightの値が+-2以内になったのなら
+                    self.window[i].window_status = WINDOW_CLOSE_COMPLETED#ウィンドウは完全に閉めきったとみなしてステータスをWINDOW_CLOSE_COMPLETEDにする
+                    
+                    self.window[i].width  = 0 #小数点以下の座標の誤差を修正するために0を現在のウィンドウ縦横幅とする
+                    self.window[i].height = 0
+            elif self.window[i].window_status == WINDOW_MOVE:     #ステータスが「ムーブ」の時は・・・・・・・・・・・・・
+                if      -3 <= self.window[i].dx - self.window[i].posx <= 3\
+                    and -3 <= self.window[i].dy - self.window[i].posy <= 3: #移動先の座標(dx,dy)と現在の座標が+-3以内になったのなら
+                    self.window[i].window_status = WINDOW_WRITE_MESSAGE#ウィンドウ移動は完了とみなしてステータスをWINDOW_WRITE_MESSAGEにする
+                    
+                    self.window[i].posx = self.window[i].dx #小数点以下の座標の誤差を修正するために強制的に移動先の座標を現在座標数値に代入してやる
+                    self.window[i].posy = self.window[i].dy
+                    self.window[i].vx = 0       #移動速度,加速度初期化
+                    self.window[i].vy = 0
+                    self.window[i].vx_accel = 1
+                    self.window[i].vy_accel = 1
+            
             self.window[i].vx *= self.window[i].vx_accel #速度に加速度を掛け合わせて変化させていく
             self.window[i].vy *= self.window[i].vy_accel
             self.window[i].posx += self.window[i].vx #ウィンドウ位置の更新
@@ -11401,9 +11490,11 @@ class App:
             
             self.shadow_drop_text(self.window[i].posx + self.window[i].window_title[LIST_WINDOW_TEXT_OX] + 5 + self.window[i].width // 2 - len(self.window[i].window_title[LIST_WINDOW_TEXT]) * 2,self.window[i].posy + 5,str(self.window[i].window_title[LIST_WINDOW_TEXT]),col)
             
-            #ステータスがテキストメッセージの表示中もしくはウィンドウオープン完了の時はメッセージテキストを表示する
-            if     self.window[i].window_status == WINDOW_WRITE_MESSAGE \
-                or self.window[i].window_status == WINDOW_OPEN_COMPLETED:
+            #ステータスがテキストメッセージの表示中,閉じ中,移動中,ウィンドウオープン完了の時はメッセージテキストを表示する
+            if      self.window[i].window_status == WINDOW_WRITE_MESSAGE\
+                or  self.window[i].window_status == WINDOW_CLOSE\
+                or  self.window[i].window_status == WINDOW_MOVE\
+                or  self.window[i].window_status == WINDOW_OPEN_COMPLETED:
                 for j in range(len(self.window[i].text)): #textの長さの分ループ処理する
                     if self.window[i].text[j][LIST_WINDOW_TEXT]  != "": #ウィンドウテキストの表示をする 文字列が存在しないのなら次の行へとスキップループする
                         if   self.window[i].text[j][LIST_WINDOW_TEXT_FLASH]  == MES_NO_FLASH:        #テキスト点滅無しの場合
