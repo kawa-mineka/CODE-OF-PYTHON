@@ -77,6 +77,7 @@
 #todo900 BGMの作成(無理そう.........)
 #実装完了済み！
 #todo 各ウィンドウのクローズ処理を実装 2021 06/11
+#todo メニューウィンドウのCONFIGで数値を左右キーで調整するときに左右矢印を表示、今現在の値が最大値なのか最小値なのか？中間値なのか判るようにした 2021 06/13
 
 # from random import randint   #random.randint(n,m) と呼ぶと、nからm(m自身を含む)までの間の整数が 等しい確率で、ランダムに返される
 from random import random    #random.random() と呼ぶと、0から1の範囲(1は含まない)のランダムな実数が返される(主にパーティクル系で使用します)
@@ -523,7 +524,7 @@ LIST_WINDOW_TEXT_SLIDE_MAG_SPEED    = 19 #ウィンドウテキストをスラ�
 LIST_WINDOW_TEXT_OPE_OBJ            = 20 #ウィンドウテキストで編集対象となるオブジェクトを指示します(windowクラスのflag_list[i][対象オブジェクト]の対象オブジェクトとなります)
 LIST_WINDOW_TEXT_OPE_OBJ_TYPE       = 21 #ウィンドウテキストで編集対象となるオブジェクトの種類分類
 LIST_WINDOW_TEXT_OPE_OBJ_TEXT       = 22 #ウィンドウテキストで編集対象となるオブジェクトのタイトルテキスト「ON」とか「OFF」とか
-LIST_WINDOW_TEXT_OPE_OBJ_TEXT_ALIGN = 23 #ウィンドウテキストで編集対象となるオブジェクトのタイトルテキストの揃え方(アライメント)(整列の仕方)
+LIST_WINDOW_TEXT_OPE_OBJ_TEXT_ALIGN = 23 #ウィンドウテキストで編集対象となるオブジェクトのタイトルテキストの揃え方(アライメント)(整列の仕方)アラ～イイアラ～～イイ
 LIST_WINDOW_TEXT_OPE_OBJ_COMPARE    = 24 #対象オブジェクトと比較するパラメータ数値(この数値とOPE_OBJの数値を比較してTrueかFalseか判定します)
 
 LIST_WINDOW_TEXT_OPE_OBJ_TEXT_OX    = 25 #ウィンドウテキストで編集対象となるオブジェクトのタイトルテキスト x軸のオフセット値
@@ -532,8 +533,23 @@ LIST_WINDOW_TEXT_OPE_OBJ_OFF_COLOR  = 27 #対象オブジェクトがFalse(OFF)�
 LIST_WINDOW_TEXT_OPE_OBJ_ON_COLOR   = 28 #対象オブジェクトがTrue(ON)になった時の文字色
 LIST_WINDOW_TEXT_OPE_OBJ_MIN_NUM    = 29 #ウィンドウテキストで編集対象となるオブジェクトの最小値(数値の場合)
 
-LIST_WINDOW_TEXT_OPE_OBJ_MAX_NUM    = 30 #ウィンドウテキストで編集対象となるオブジェクトの最大値(数値の場合)
-LIST_WINDOW_TEXT_OPE_OBJ_SWITCH_TEXT= 31 #ウィンドウテキストで編集対象となるオブジェクトテキスト(切り替え表示タイプ「VERYEASY」「EASY」「NORMAL」「HARD」とか表示テキストがボタンまたは左右カーソルセレクトで切り替わる
+LIST_WINDOW_TEXT_OPE_OBJ_MAX_NUM        = 30 #ウィンドウテキストで編集対象となるオブジェクトの最大値(数値の場合)
+LIST_WINDOW_TEXT_OPE_OBJ_SWITCH_TEXT    = 31 #ウィンドウテキストで編集対象となるオブジェクトテキスト(切り替え表示タイプ「VERYEASY」「EASY」「NORMAL」「HARD」とか表示テキストがボタンまたは左右カーソルセレクトで切り替わる
+LIST_WINDOW_TEXT_OPE_OBJ_MARKER_TYPE    = 32 #ウィンドウテキストで編集対象となるオブジェクトが増減できる数値とかの場合増加減出来るかどうかの矢印マーカーの種別（矢印マーカを表示するしないの判断はLIST_WINDOW_TEXT_OPE_OBJ_TYPEをみて行う,LIST_WINDOW_TEXT_OPE_OBJ_MARKER_TYPEは複数の表示パターンを持てるようにするためのリザーブ）
+
+LIST_WINDOW_TEXT_OPE_OBJ_UP_MARKER_FLAG    = 33 #増減表示（上矢印）を表示するかのフラグ
+LIST_WINDOW_TEXT_OPE_OBJ_DOWN_MARKER_FLAG  = 34 #増減表示（下矢印）を表示するかのフラグ
+LIST_WINDOW_TEXT_OPE_OBJ_RIGHT_MARKER_FLAG = 35 #増減表示（右矢印）を表示するかのフラグ
+LIST_WINDOW_TEXT_OPE_OBJ_LEFT_MARKER_FLAG  = 36 #増減表示（左矢印）を表示するかのフラグ
+
+LIST_WINDOW_TEXT_OPE_OBJ_UP_MARKER_X    = 37 #対象が数値とかで増加減出来るかどうかの、上矢印の座標(x,y)
+LIST_WINDOW_TEXT_OPE_OBJ_UP_MARKER_Y    = 38
+LIST_WINDOW_TEXT_OPE_OBJ_DOWN_MARKER_X  = 39 #対象が数値とかで増加減出来るかどうかの、下矢印の座標(x,y)
+LIST_WINDOW_TEXT_OPE_OBJ_DOWN_MARKER_Y  = 40
+LIST_WINDOW_TEXT_OPE_OBJ_RIGHT_MARKER_X = 41 #対象が数値とかで増加減出来るかどうかの、右矢印の座標(x,y)
+LIST_WINDOW_TEXT_OPE_OBJ_RIGHT_MARKER_Y = 42
+LIST_WINDOW_TEXT_OPE_OBJ_LEFT_MARKER_X  = 43 #対象が数値とかで増加減出来るかどうかの、左矢印の座標(x,y)
+LIST_WINDOW_TEXT_OPE_OBJ_LEFT_MARKER_Y  = 44
 
 #ウィンドウフラグリストの２次元配列のインデックスナンバーとして使用する定数定義 windowクラスのflag_list[i][ここで定義した定数]に入ります
 LIST_WINDOW_FLAG_DEBUG_MODE        =  0 #デバッグモードのon/offフラグ
@@ -591,6 +607,21 @@ CURSOR_MOVE_UD_SLIDER        = 4 #セレクトカーソルは上下に動かす�
 CURSOR_MOVE_UD_SLIDER_BUTTON = 5 #セレクトカーソルは上下に動かすことができ、左右の入力でスライダーを動かせます ON/OFF切り替えの項目ではボタンを押すことでも切り替えができます
 CURSOR_MOVE_LR_SLIDER        = 6 #セレクトカーソルは左右に動かすことができ、上下の入力でスライダーを動かせます
 CURSOR_MOVE_SHOW_PAGE        = 7 #セレクトカーソルは表示せずLRキーもしくはLショルダーRショルダーで左右に頁をめくる動作です
+#カーソルの移動量
+STEP4                        = 4 #4ドット
+STEP5                        = 5 #5ドット
+STEP6                        = 6 #6ドット
+STEP7                        = 7 #7ドット
+STEP8                        = 8 #8ドット
+STEP9                        = 9 #9ドット
+
+#メニューのレイヤー数定数定義
+MENU_LAYER0                  = 0 #レイヤー数0でメニュー階層は0
+MENU_LAYER1                  = 1 #レイヤー数1でメニュー階層は1
+MENU_LAYER2                  = 2 #レイヤー数2でメニュー階層は2
+
+#メニューで選ばれたアイテムの定数定義
+UNSELECTED                   = -1  #まだ未選択なので-1
 
 #火花エフェクトの表示の仕方(大気圏突入シーンなどのエフェクトで使用)
 SPARK_OFF = 0              #火花表示なし
@@ -4228,7 +4259,6 @@ class App:
         # self.master_flag_list[LIST_WINDOW_FLAG_SE_VOL]       = 50
         # self.master_flag_list[LIST_WINDOW_FLAG_CTRL_TYPE]    = 1
 
-
     #各種ウィンドウの育成             id=windowクラスの window_idに入っている数値
     def create_window(self,id):
         self.create_master_flag_list() #まず先にフラグ＆データ関連のマスターリスト作成関数を呼び出す
@@ -4417,17 +4447,17 @@ class App:
             WINDOW_BETWEEN_LINE_9,\
             ["CONFIGURATION",DISP_CENTER,     0,0,7,MES_MONOCHROME_FLASH],\
             
-            [["SCREEN MODE", DISP_LEFT_ALIGN,11,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  LIST_WINDOW_FLAG_SCREEN_MODE,OPE_OBJ_TYPE_ON_OFF,"",DISP_LEFT_ALIGN,0,  70,0,7,10,0,  100,["WINDOW","FULL SCREEN"]],\
-            ["BGM VOLUME",   DISP_LEFT_ALIGN,11,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  LIST_WINDOW_FLAG_BGM_VOL,    OPE_OBJ_TYPE_NUM,   "",DISP_LEFT_ALIGN,0,  70,0,7,10,0,  100,[" "," "]               ],\
-            ["SE VOLUME",    DISP_LEFT_ALIGN,11,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  LIST_WINDOW_FLAG_SE_VOL,     OPE_OBJ_TYPE_NUM,   "",DISP_LEFT_ALIGN,0,  70,0,7,10,0,  100,[" "," "]               ],\
-            ["CONTROL TYPE", DISP_LEFT_ALIGN,10,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  LIST_WINDOW_FLAG_CTRL_TYPE,  OPE_OBJ_TYPE_NUM,   "",DISP_LEFT_ALIGN,0,  70,0,7,10,1,  5,  [" "," "]               ],\
-            ["",             DISP_LEFT_ALIGN, 0,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  0,                           OPE_OBJ_TYPE_NONE,  "",DISP_LEFT_ALIGN,0,  70,0,7,10,0,  0,  [" "," "]               ],\
-            ["",             DISP_LEFT_ALIGN, 0,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  0,                           OPE_OBJ_TYPE_NONE,  "",DISP_LEFT_ALIGN,0,  70,0,7,10,0,  0,  [" "," "]               ],\
-            ["",             DISP_LEFT_ALIGN, 0,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  0,                           OPE_OBJ_TYPE_NONE,  "",DISP_LEFT_ALIGN,0,  70,0,7,10,0,  0,  [" "," "]               ],\
-            ["BOSS MODE",    DISP_LEFT_ALIGN,11,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  LIST_WINDOW_FLAG_BOSS_MODE,  OPE_OBJ_TYPE_ON_OFF,"",DISP_LEFT_ALIGN,0,  70,0,7,10,0,  100,["OFF"," ON"]           ],\
-            ["HIT BOX",      DISP_LEFT_ALIGN,11,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  LIST_WINDOW_FLAG_HIT_BOX,    OPE_OBJ_TYPE_ON_OFF,"",DISP_LEFT_ALIGN,0,  70,0,7,10,0,  100,["OFF"," ON"]           ],\
-            ["DEBUG MODE",   DISP_LEFT_ALIGN,11,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  LIST_WINDOW_FLAG_DEBUG_MODE, OPE_OBJ_TYPE_ON_OFF,"",DISP_LEFT_ALIGN,0,  70,0,7,10,0,  100,["OFF"," ON"]           ],\
-            ["RETURN",       DISP_LEFT_ALIGN,11,0,7,  MES_YELLOW_FLASH,0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  0,                           OPE_OBJ_TYPE_NONE,  "",DISP_LEFT_ALIGN,0,  70,0,7,10,0,  0,  ["",""]     ]           ],\
+            [["SCREEN MODE", DISP_LEFT_ALIGN,11,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  LIST_WINDOW_FLAG_SCREEN_MODE,OPE_OBJ_TYPE_ON_OFF,"",DISP_LEFT_ALIGN,0,   70  ,0,7,10,0,   100,["WINDOW","FULL SCREEN"]],\
+            ["BGM VOLUME",   DISP_LEFT_ALIGN,11,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  LIST_WINDOW_FLAG_BGM_VOL,    OPE_OBJ_TYPE_NUM,   "",DISP_LEFT_ALIGN,0,   70+4,0,7,10,0,   100,[" "," "],               0,     DISP_OFF,DISP_OFF,DISP_ON,DISP_ON, 0,0, 0,0, STEP4*25,STEP9*3, STEP4*19,STEP9*3],\
+            ["SE VOLUME",    DISP_LEFT_ALIGN,11,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  LIST_WINDOW_FLAG_SE_VOL,     OPE_OBJ_TYPE_NUM,   "",DISP_LEFT_ALIGN,0,   70+4,0,7,10,0,   100,[" "," "],               0,     DISP_OFF,DISP_OFF,DISP_ON,DISP_ON, 0,0, 0,0, STEP4*25,STEP9*4, STEP4*19,STEP9*4],\
+            ["CONTROL TYPE", DISP_LEFT_ALIGN,10,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  LIST_WINDOW_FLAG_CTRL_TYPE,  OPE_OBJ_TYPE_NUM,   "",DISP_LEFT_ALIGN,0,   70+4,0,7,10,1,   5,  [" "," "],               0,     DISP_OFF,DISP_OFF,DISP_ON,DISP_ON, 0,0, 0,0, STEP4*25,STEP9*5, STEP4*19,STEP9*5],\
+            ["",             DISP_LEFT_ALIGN, 0,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  0,                           OPE_OBJ_TYPE_NONE,  "",DISP_LEFT_ALIGN,0,   70  ,0,7,10,0,   0,  [" "," "],              ],\
+            ["",             DISP_LEFT_ALIGN, 0,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  0,                           OPE_OBJ_TYPE_NONE,  "",DISP_LEFT_ALIGN,0,   70  ,0,7,10,0,   0,  [" "," "],              ],\
+            ["",             DISP_LEFT_ALIGN, 0,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  0,                           OPE_OBJ_TYPE_NONE,  "",DISP_LEFT_ALIGN,0,   70  ,0,7,10,0,   0,  [" "," "],              ],\
+            ["BOSS MODE",    DISP_LEFT_ALIGN,11,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  LIST_WINDOW_FLAG_BOSS_MODE,  OPE_OBJ_TYPE_ON_OFF,"",DISP_LEFT_ALIGN,0,   70  ,0,7,10,0,   100,["OFF"," ON"]           ],\
+            ["HIT BOX",      DISP_LEFT_ALIGN,11,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  LIST_WINDOW_FLAG_HIT_BOX,    OPE_OBJ_TYPE_ON_OFF,"",DISP_LEFT_ALIGN,0,   70  ,0,7,10,0,   100,["OFF"," ON"]           ],\
+            ["DEBUG MODE",   DISP_LEFT_ALIGN,11,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  LIST_WINDOW_FLAG_DEBUG_MODE, OPE_OBJ_TYPE_ON_OFF,"",DISP_LEFT_ALIGN,0,   70  ,0,7,10,0,   100,["OFF"," ON"]           ],\
+            ["RETURN",       DISP_LEFT_ALIGN,11,0,7,  MES_YELLOW_FLASH,0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  0,                           OPE_OBJ_TYPE_NONE,  "",DISP_LEFT_ALIGN,0,   70  ,0,7,10,0,   0,  ["",""]     ]           ],\
             
             [[""]],\
             4,4,4,4,   0,0,  160-16,120-12,   2,2, 2,2,   0,0,    0,0,    0,0,0,0,\
@@ -4561,6 +4591,27 @@ class App:
             if self.window[i].window_id == id:
                 self.window[i].vx,self.window[i].vy             = vx,vy
                 self.window[i].vx_accel,self.window[i].vy_accel = vx_accel,vy_accel
+
+    #カーソル関係の数値を変数にセットする関数
+    def set_cursor_data(self,cu_type,cu_move_direction,posx,posy,step_x,step_y,page,page_max,item_x,item_y,d_item_x,d_item_y,max_item_x,max_item_y,color,menu_layer):
+        self.cursor_type = cu_type
+        self.cursor_move_direction = cu_move_direction
+        self.cursor_x = posx
+        self.cursor_y = posy
+        self.cursor_step_x = step_x
+        self.cursor_step_y = step_y
+        self.cursor_page = page
+        self.cursor_page_max = page_max
+        self.cursor_item_x = item_x
+        self.cursor_item_y = item_y
+        self.cursor_decision_item_x = d_item_x
+        self.cursor_decision_item_y = d_item_y
+        self.cursor_max_item_x = max_item_x
+        self.cursor_max_item_y = max_item_y
+        self.cursor_color = color
+        self.cursor_menu_layer = menu_layer
+
+
 
     #現在のカーソルの状態データ群をcursorクラスのリストに記録する(PUSH)cursorクラスのリストはLastInFastOut形式となってます「後入先出（LIFO）」
     #引数のidはウィンドウIDナンバーです
@@ -4719,6 +4770,7 @@ class App:
                                             #選択してcursor_decision_item_yに入ったアイテムナンバーをcursor_pre_decision_item_yに入れて次の階層に潜るって手法かな？
         self.cursor_move_direction = 0         #セレクトカーソルがどう動かせることが出来るのか？の状態変数です
         self.cursor_move_data = 0              #カーソルが実際に動いた方向のデータが入ります
+        
         self.active_window_id = 0              #アクティブになっているウィンドウのIDが入ります
         self.active_window_index = 0           #アクティブになっているウィンドウのインデックスナンバー(i)が入ります(ウィンドウIDを元にして全ウィンドウデータから検索しインデックス値を求めるのです！)
         #system-data.pyxresリソースファイルからこれらの設定値を読み込むようにしたのでコメントアウトしています
@@ -4758,16 +4810,11 @@ class App:
         #全てのカウンター類が0になったらゲームメニューウィンドウを育成する
         if self.title_oscillation_count == 0 and self.title_slash_in_count == 0 and self.display_title_time == 0:
             self.create_window(WINDOW_ID_MAIN_MENU)             #メニューウィンドウを作製
-            self.cursor_type = CURSOR_TYPE_NORMAL               #選択カーソル表示をonにする
-            self.cursor_move_direction = CURSOR_MOVE_UD         #カーソルは上下移動のみ
-            self.cursor_x = 49                                  #セレクトカーソルの座標を設定します
-            self.cursor_y = 44
-            self.cursor_item_y = 0                              #いま指示しているアイテムナンバーは0の「YES」
-            self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
-            self.cursor_max_item_y = 9                          #選択できる項目数は10項目なので 10-1=9を代入
-            self.cursor_menu_layer = 0                          #メニューの階層は最初は0にします
-            self.active_window_id = WINDOW_ID_MAIN_MENU #このウィンドウIDを最前列アクティブなものとする
-            self.game_status = SCENE_TITLE_MENU_SELECT #ゲームステータスを「TITLE_MENU_SELECT」(タイトルでメニューを選択中)」にする
+            #選択カーソル表示をon,カーソルは上下移動のみ,いま指示しているアイテムナンバーは0,まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
+            #選択できる項目数は10項目なので 10-1=9を代入,メニューの階層は最初は0にします,カーソル移動ステップはx4,y7
+            self.set_cursor_data(CURSOR_TYPE_NORMAL,CURSOR_MOVE_UD,49,44,STEP4,STEP7,0,0,0,0,UNSELECTED,UNSELECTED,0,10-1,0,MENU_LAYER0)
+            self.active_window_id = WINDOW_ID_MAIN_MENU         #このウィンドウIDを最前列アクティブなものとする
+            self.game_status = SCENE_TITLE_MENU_SELECT          #ゲームステータスを「TITLE_MENU_SELECT」(タイトルでメニューを選択中)」にする
 
     #タイトルメニューの選択中の更新#####################################
     def update_title_menu_select(self):
@@ -4788,16 +4835,9 @@ class App:
                     self.cursor_pre_decision_item_y = self.cursor_decision_item_y #現時点で選択されたアイテム「SELECT STAGE」を前のレイヤー選択アイテムとしてコピーする
                     self.push_cursor_data(WINDOW_ID_MAIN_MENU)       #メインメニューのカーソルデータをPUSH
                     self.create_window(WINDOW_ID_SELECT_STAGE_MENU)  #ステージセレクトウィンドウの作製
-                    self.cursor_type = CURSOR_TYPE_NORMAL            #選択カーソル表示をonにする
-                    self.cursor_move_direction = CURSOR_MOVE_UD      #カーソルは上下移動のみ
-                    self.cursor_x = 92                               #セレクトカーソルの座標を設定します
-                    self.cursor_y = 71
-                    self.cursor_step_x = 4                           #横方向の移動ドット数は4ドット
-                    self.cursor_step_y = 7                           #縦方向の移動ドット数は7ドット
-                    self.cursor_item_y = 0                           #いま指示しているアイテムナンバーは0の「1」
-                    self.cursor_decision_item_y = -1                 #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
-                    self.cursor_max_item_y = 2                       #最大項目数は3項目なので 3-1=2を代入
-                    self.cursor_menu_layer = 1                       #メニューの階層が増えたので0から1にします
+                    #選択カーソル表示をon,カーソルは上下移動のみ,,カーソル移動ステップはx4,y7,いま指示しているアイテムナンバーは0の「1」
+                    #まだボタンも押されておらず未決定状態なのでdecision_item_yはUNSELECTED,y最大項目数は3項目なので 3-1=2を代入,メニューの階層が増えたのでMENU_LAYER0からMENU_LAYER1にします
+                    self.set_cursor_data(CURSOR_TYPE_NORMAL,CURSOR_MOVE_UD,92,71,STEP4,STEP7,0,0,0,0,UNSELECTED,UNSELECTED,0,3-1,0,MENU_LAYER1)
                     self.active_window_id = WINDOW_ID_SELECT_STAGE_MENU #このウィンドウIDを最前列アクティブなものとする
                 
             elif self.cursor_decision_item_y == 2:            #SELECT LOOPが押されて
@@ -4806,16 +4846,9 @@ class App:
                     self.cursor_pre_decision_item_y = self.cursor_decision_item_y #現時点で選択されたアイテム「SELECT LOOP」を前のレイヤー選択アイテムとしてコピーする
                     self.push_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPUSH
                     self.create_window(WINDOW_ID_SELECT_LOOP_MENU)      #ループセレクトウィンドウの作成
-                    self.cursor_type = CURSOR_TYPE_NORMAL               #選択カーソル表示をonにする
-                    self.cursor_move_direction = CURSOR_MOVE_UD         #カーソルは上下移動のみ
-                    self.cursor_x = 90+24                               #セレクトカーソルの座標を設定します
-                    self.cursor_y = 72+5
-                    self.cursor_step_x = 4                              #横方向の移動ドット数は4ドット
-                    self.cursor_step_y = 7                              #縦方向の移動ドット数は7ドット
-                    self.cursor_item_y = 0                              #いま指示しているアイテムナンバーは0の「1」
-                    self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
-                    self.cursor_max_item_y = 2                          #最大項目数は3項目なので 3-1=2を代入
-                    self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
+                    #選択カーソル表示をon,カーソルは上下移動のみ,,カーソル移動ステップはx4,y7,いま指示しているアイテムナンバーは0の「1」
+                    #まだボタンも押されておらず未決定状態なのでdecision_item_yはUNSELECTED,y最大項目数は3項目なので 3-1=2を代入,メニューの階層が増えたのでMENU_LAYER0からMENU_LAYER1にします
+                    self.set_cursor_data(CURSOR_TYPE_NORMAL,CURSOR_MOVE_UD,90+24,72+5,STEP4,STEP7,0,0,0,0,UNSELECTED,UNSELECTED,0,3-1,0,MENU_LAYER1)
                     self.active_window_id = WINDOW_ID_SELECT_LOOP_MENU  #このウィンドウIDを最前列でアクティブなものとする
                 
             elif self.cursor_decision_item_y == 3:            #BOSS MODEが押されて
@@ -4824,16 +4857,9 @@ class App:
                     self.cursor_pre_decision_item_y = self.cursor_decision_item_y #現時点で選択されたアイテム「BOSS MODE」を前のレイヤー選択アイテムとしてコピーする
                     self.push_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPUSH
                     self.create_window(WINDOW_ID_BOSS_MODE_MENU)        #ボスモードon/offウィンドウの作製
-                    self.cursor_type = CURSOR_TYPE_NORMAL               #選択カーソル表示をonにする
-                    self.cursor_move_direction = CURSOR_MOVE_UD         #カーソルは上下移動のみ
-                    self.cursor_x = 96+5                                #セレクトカーソルの座標を設定します
-                    self.cursor_y = 69
-                    self.cursor_step_x = 4                              #横方向の移動ドット数は4ドット
-                    self.cursor_step_y = 7                              #縦方向の移動ドット数は7ドット
-                    self.cursor_item_y = 0                              #いま指示しているアイテムナンバーは0の「ON」
-                    self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
-                    self.cursor_max_item_y = 1                          #最大項目数は2項目なので 2-1=1を代入
-                    self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
+                    #選択カーソル表示をon,カーソルは上下移動のみ,,カーソル移動ステップはx4,y7,いま指示しているアイテムナンバーは0の「ON」
+                    #まだボタンも押されておらず未決定状態なのでdecision_item_yはUNSELECTED,y最大項目数は2項目なので 2-1=1を代入,メニューの階層が増えたのでMENU_LAYER0からMENU_LAYER1にします
+                    self.set_cursor_data(CURSOR_TYPE_NORMAL,CURSOR_MOVE_UD,96+5,69,STEP4,STEP7,0,0,0,0,UNSELECTED,UNSELECTED,0,2-1,0,MENU_LAYER1)
                     self.active_window_id = WINDOW_ID_BOSS_MODE_MENU    #このウィンドウIDを最前列でアクティブなものとする
                 
             elif self.cursor_decision_item_y == 4:            #HITBOXが押されて....
@@ -4842,16 +4868,9 @@ class App:
                     self.cursor_pre_decision_item_y = self.cursor_decision_item_y #現時点で選択されたアイテム「HITBOX」を前のレイヤー選択アイテムとしてコピーする
                     self.push_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPUSH
                     self.create_window(WINDOW_ID_HITBOX_MENU)           #ヒットボックスon/offウィンドウの作製
-                    self.cursor_type = CURSOR_TYPE_NORMAL               #選択カーソル表示をonにする
-                    self.cursor_move_direction = CURSOR_MOVE_UD         #カーソルは上下移動のみ
-                    self.cursor_x = 96+5                                #セレクトカーソルの座標を設定します
-                    self.cursor_y = 69
-                    self.cursor_step_x = 4                              #横方向の移動ドット数は4ドット
-                    self.cursor_step_y = 7                              #縦方向の移動ドット数は7ドット
-                    self.cursor_item_y = 0                              #いま指示しているアイテムナンバーは0の「ON」
-                    self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
-                    self.cursor_max_item_y = 1                          #最大項目数は2項目なので 2-1=1を代入
-                    self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
+                    #選択カーソル表示をon,カーソルは上下移動のみ,,カーソル移動ステップはx4,y7,いま指示しているアイテムナンバーは0の「ON」
+                    #まだボタンも押されておらず未決定状態なのでdecision_item_yはUNSELECTED,y最大項目数は2項目なので 2-1=1を代入,メニューの階層が増えたのでMENU_LAYER0からMENU_LAYER1にします
+                    self.set_cursor_data(CURSOR_TYPE_NORMAL,CURSOR_MOVE_UD,96+5,69,STEP4,STEP7,0,0,0,0,UNSELECTED,UNSELECTED,0,2-1,0,MENU_LAYER1)
                     self.active_window_id = WINDOW_ID_HITBOX_MENU       #このウィンドウIDを最前列でアクティブなものとする
                 
             elif self.cursor_decision_item_y == 5:            #DIFFICULTYが押されて
@@ -4860,16 +4879,9 @@ class App:
                     self.cursor_pre_decision_item_y = self.cursor_decision_item_y #現時点で選択されたアイテム「DIFFICULTY」を前のレイヤー選択アイテムとしてコピーする
                     self.push_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPUSH
                     self.create_window(WINDOW_ID_SELECT_DIFFICULTY)     #「SELECT DIFFICULTY」ウィンドウの作製
-                    self.cursor_type = CURSOR_TYPE_NORMAL               #選択カーソル表示をonにする
-                    self.cursor_move_direction = CURSOR_MOVE_UD         #カーソルは上下移動のみ
-                    self.cursor_x = 96                                  #セレクトカーソルの座標を設定します
-                    self.cursor_y = 77
-                    self.cursor_step_x = 4                              #横方向の移動ドット数は4ドット
-                    self.cursor_step_y = 7                              #縦方向の移動ドット数は7ドット
-                    self.cursor_item_y = 2                              #いま指示しているアイテムナンバーは2の「NORMAL」
-                    self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
-                    self.cursor_max_item_y = 5                          #最大項目数は6項目なので 6-1=5を代入
-                    self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
+                    #選択カーソル表示をon,カーソルは上下移動のみ,,カーソル移動ステップはx4,y7,いま指示しているアイテムナンバーは2の「NORMAL」
+                    #まだボタンも押されておらず未決定状態なのでdecision_item_yはUNSELECTED,y最大項目数は6項目なので 6-1=5を代入,メニューの階層が増えたのでMENU_LAYER0からMENU_LAYER1にします
+                    self.set_cursor_data(CURSOR_TYPE_NORMAL,CURSOR_MOVE_UD,96,77,STEP4,STEP7,0,0,0,2,UNSELECTED,UNSELECTED,0,6-1,0,MENU_LAYER1)
                     self.active_window_id = WINDOW_ID_SELECT_DIFFICULTY #このウィンドウIDを最前列でアクティブなものとする
                 
             elif self.cursor_decision_item_y == 6:            #SCORE BOARDが押されて...
@@ -4877,13 +4889,9 @@ class App:
                     self.cursor_pre_decision_item_y = self.cursor_decision_item_y #現時点で選択されたアイテム「SCORE BOARD」を前のレイヤー選択アイテムとしてコピーする
                     self.push_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPUSH
                     self.window_score_board(GAME_NORMAL)                #スコアボードウィンドウを育成=============
-                    self.cursor_type = CURSOR_TYPE_NO_DISP              #セレクトカーソルの表示をoffにする
-                    self.cursor_move_direction = CURSOR_MOVE_SHOW_PAGE  #セレクトカーソルは表示せずLRキーもしくはLショルダーRショルダーで左右に頁をめくる動作です
-                    self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
-                    self.cursor_max_item_y = 0                          #最大項目数は1項目なので 1-1=0を代入
-                    self.cursor_page = 0                                #いま指し示しているページナンバー 0=very easy
-                    self.cursor_page_max = 5                            #最大ページ数 難易度は0~5の範囲 なのでMAX5
-                    self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
+                    #選択カーソル表示をoff,カーソルは表示せずLRキーもしくはLショルダーRショルダーで左右に頁をめくる動作,カーソル移動ステップはx4,y7,いま指示しているアイテムナンバーは0の「1」
+                    #まだボタンも押されておらず未決定状態なのでdecision_item_yはUNSELECTED,y最大項目数は1項目なので 1-1=0を代入,いま指し示しているページナンバー 0=very easy,#最大ページ数 難易度は0~5の範囲 なのでMAX5,メニューの階層が増えたのでMENU_LAYER0からMENU_LAYER1にします
+                    self.set_cursor_data(CURSOR_TYPE_NO_DISP,CURSOR_MOVE_SHOW_PAGE,92,71,STEP4,STEP7,0,5,0,0,UNSELECTED,UNSELECTED,0,0,0,MENU_LAYER1)
                     self.active_window_id = WINDOW_ID_SCORE_BOARD       #このウィンドウIDを最前列でアクティブなものとする
                 
             elif self.cursor_decision_item_y == 7:            #NAME ENTRYが押されて...
@@ -4893,19 +4901,9 @@ class App:
                     self.cursor_pre_decision_item_y = self.cursor_decision_item_y #現時点で選択されたアイテム「NAME ENTRY」を前のレイヤー選択アイテムとしてコピーする
                     self.push_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPUSH
                     self.create_window(WINDOW_ID_INPUT_YOUR_NAME)       #「ENTER YOUR NAME」ウィンドウの作製
-                    self.cursor_type = CURSOR_TYPE_UNDER_BAR            #選択カーソルのタイプはアンダーバーの点滅にします
-                    self.cursor_move_direction = CURSOR_MOVE_LR_SLIDER  #カーソルは左右でスライダー入力
-                    self.cursor_x = 100                                 #セレクトカーソルの座標を設定します
-                    self.cursor_y = 66
-                    self.cursor_step_x = 4                              #横方向の移動ドット数は4ドット
-                    self.cursor_step_y = 7                              #縦方向の移動ドット数は7ドット
-                    self.cursor_item_x = 0                              #いま指示しているアイテムナンバーx軸は0
-                    self.cursor_item_y = 0                              #いま指示しているアイテムナンバーy軸は0(縦には動かないので常に0となります)
-                    self.cursor_decision_item_x = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_xは-1
-                    self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
-                    self.cursor_max_item_x = 8                          #最大項目数x軸方向は(8文字+OKボタンなので合計9項目 9-1=8を代入
-                    self.cursor_max_item_y = 0                          #最大項目数y軸方向は1項目なので 1-1=0を代入
-                    self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
+                    #選択カーソルのタイプはアンダーバーの点滅にします,カーソルは左右でスライダー入力,カーソル移動ステップはx4,y7,いま指示しているアイテムナンバーx軸は0,y軸は0(縦には動かないので常に0となります)
+                    #まだボタンも押されておらず未決定状態なのでdecision_item_x,decision_item_yはUNSELECTED,最大項目数x軸方向は(8文字+OKボタンなので)合計9項目 9-1=8を代入,最大項目数y軸方向は0,メニューの階層が増えたのでMENU_LAYER0からMENU_LAYER1にします
+                    self.set_cursor_data(CURSOR_TYPE_UNDER_BAR,CURSOR_MOVE_LR_SLIDER,100,66,STEP4,STEP7,0,0,0,0,UNSELECTED,UNSELECTED,9-1,0,0,MENU_LAYER1)
                     self.active_window_id = WINDOW_ID_INPUT_YOUR_NAME   #このウィンドウIDを最前列でアクティブなものとする
                 
             elif self.cursor_decision_item_y == 8:            #CONFIGが押されて
@@ -4913,16 +4911,9 @@ class App:
                     self.cursor_pre_decision_item_y = self.cursor_decision_item_y #現時点で選択されたアイテム「CONFIG」を前のレイヤー選択アイテムとしてコピーする
                     self.push_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPUSH
                     self.create_window(WINDOW_ID_CONFIG)                #「CONFIG」ウィンドウの作製
-                    self.cursor_type = CURSOR_TYPE_NORMAL               #選択カーソル表示をonにする
-                    self.cursor_move_direction = CURSOR_MOVE_UD_SLIDER  #カーソルは上下移動+左右によるパラメーターの変更
-                    self.cursor_x = 9                                   #セレクトカーソルの座標を設定します
-                    self.cursor_y = 17
-                    self.cursor_step_x = 4                              #横方向の移動ドット数は4ドット
-                    self.cursor_step_y = 9                              #縦方向の移動ドット数は9ドット
-                    self.cursor_item_y = 0                              #いま指示しているアイテムナンバーは0の「?????」
-                    self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
-                    self.cursor_max_item_y = 10                         #最大項目数は11項目なので11-1=10を代入
-                    self.cursor_menu_layer = 1                          #メニューの階層が増えたので0から1にします
+                    #選択カーソル表示をon,カーソルは上下移動+左右によるパラメーターの変更,カーソル移動ステップはx4,y9,いま指示しているアイテムナンバーは0の
+                    #まだボタンも押されておらず未決定状態なのでdecision_item_yはUNSELECTED,y最大項目数は11項目なので11-1=10を代入,メニューの階層が増えたのでMENU_LAYER0からMENU_LAYER1にします
+                    self.set_cursor_data(CURSOR_TYPE_NORMAL,CURSOR_MOVE_UD_SLIDER,9,17,STEP4,STEP9,0,0,0,0,UNSELECTED,UNSELECTED,0,11-1,0,MENU_LAYER1)
                     self.active_window_id = WINDOW_ID_CONFIG #このウィンドウIDを最前列でアクティブなものとする
                 
             elif self.cursor_decision_item_y == 9:            #REPLAYが押されたら
@@ -10034,7 +10025,20 @@ class App:
                     if k < self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_MAX_NUM]: #kがLIST_WINDOW_TEXT_OPE_OBJ_MAX_NUMより小さい時は
                         k += 1 #オブジェクトの数値をインクリメント
                     
-                    self.window[self.active_window_index].flag_list[flag_index] = k #フラグ＆数値リストを更新する
+                    if  k == self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_MAX_NUM]:  #kが最大値の場合は
+                        rd = DISP_OFF #右矢印(数値を増加できるかどうかを指し示す矢印）表示フラグoff
+                        ld = DISP_ON  #左矢印表示フラグon
+                    elif k == self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_MIN_NUM]: #kが最小値の場合は
+                        rd = DISP_ON   #右矢印(数値を増加できるかどうかを指し示す矢印）表示フラグon
+                        ld = DISP_OFF  #左矢印表示フラグoff
+                    else: #それ以外の場合(中間値の場合)は
+                        #どちらの方向にも動けるので
+                        rd = DISP_ON   #右矢印表示フラグon
+                        ld = DISP_ON   #左矢印表示フラグoff
+                    
+                    self.window[self.active_window_index].flag_list[flag_index] = k #フラグ＆数値リストを更新
+                    self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_RIGHT_MARKER_FLAG] = rd #右矢印表示フラグ更新
+                    self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_LEFT_MARKER_FLAG]  = ld #左矢印表示フラグ更新
         
         #左入力されたらcursor_pageを -1する
         if pyxel.btnp(pyxel.KEY_LEFT) or pyxel.btnp(pyxel.GAMEPAD_1_LEFT) or pyxel.btnp(pyxel.GAMEPAD_2_LEFT) or pyxel.btnp(pyxel.GAMEPAD_2_LEFT) or pyxel.btnp(pyxel.GAMEPAD_1_LEFT_SHOULDER) or pyxel.btnp(pyxel.GAMEPAD_2_LEFT_SHOULDER):
@@ -10050,12 +10054,25 @@ class App:
             elif self.cursor_move_direction == CURSOR_MOVE_UD_SLIDER:
                 flag_index = self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ] #flag_indexに編集対象となるオブジェクトが入ったリストインデックス値が入ります
                 k = self.window[self.active_window_index].flag_list[flag_index] #Kに現在表示されている数値が代入されます(on/offの表示の場合はon=1 off=0が代入されます)
+                
                 if self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_TYPE]  == OPE_OBJ_TYPE_NUM: #操作テキストオブジェクトが数値を左右キーで増減させるタイプの場合は
                     if k > self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_MIN_NUM]: #kがLIST_WINDOW_TEXT_OPE_OBJ_MIN_NUMより大きい時は
                         k -= 1 #オブジェクトの数値をデクリメント
                     
+                    if  k == self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_MAX_NUM]:  #kが最大値の場合は
+                        rd = DISP_OFF #右矢印(数値を増加できるかどうかを指し示す矢印）表示フラグoff
+                        ld = DISP_ON  #左矢印表示フラグon
+                    elif k == self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_MIN_NUM]: #kが最小値の場合は
+                        rd = DISP_ON   #右矢印(数値を増加できるかどうかを指し示す矢印）表示フラグon
+                        ld = DISP_OFF  #左矢印表示フラグoff
+                    else: #それ以外の場合(中間値の場合)は
+                        #どちらの方向にも動けるので
+                        rd = DISP_ON   #右矢印表示フラグon
+                        ld = DISP_ON   #左矢印表示フラグoff
+                    
                     self.window[self.active_window_index].flag_list[flag_index] = k #フラグ＆数値リストを更新する
-        
+                    self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_RIGHT_MARKER_FLAG] = rd #右矢印表示フラグ更新
+                    self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_LEFT_MARKER_FLAG]  = ld #左矢印表示フラグ更新
         
         if pyxel.btnp(pyxel.KEY_SPACE) or pyxel.btnp(pyxel.GAMEPAD_1_A) or pyxel.btnp(pyxel.GAMEPAD_2_A) or pyxel.btnp(pyxel.GAMEPAD_1_B) or pyxel.btnp(pyxel.GAMEPAD_2_B):
             self.cursor_move_data = PAD_A
@@ -11521,7 +11538,6 @@ class App:
                             self.shadow_drop_text(self.window[i].posx + self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_OX] + 5 + self.window[i].width // 2 - len(self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT]) * 2,self.window[i].posy + 5 + (j+1) * self.window[i].between_line,str(self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT]),col)
                         elif self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_ALIGN] == DISP_LEFT_ALIGN:
                             self.shadow_drop_text(self.window[i].posx + self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_OX] + 5  ,self.window[i].posy + 5 + (j+1) * self.window[i].between_line,str(self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT]),col)
-                        
                     elif self.window[i].window_id_sub == WINDOW_ID_SUB_SWITCH_TEXT_MENU: #上下操作でカーソルが上下し左右でそれぞれの項目に対応したテキストが切り替わり表示されるメニュータイプの場合
                         flag_index = self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ] #flag_indexに編集対象となるオブジェクトが入ったリストインデックス値が入ります
                         k = self.window[i].flag_list[flag_index]
@@ -11539,6 +11555,17 @@ class App:
                             col = self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_OFF_COLOR] #描画色はOFF時の色とします
                             str_k = "{:>3}".format(k)
                             self.shadow_drop_text(self.window[i].posx + self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_OX] + 5  ,self.window[i].posy + 5 + (j+1) * self.window[i].between_line,str_k,col) #3桁の整数で右寄せで表示
+                            
+                            #各方向矢印表示フラグが立っていた時はそれぞれの方向の矢印（テキスト）を描画する
+                            if self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_UP_MARKER_FLAG]    == DISP_ON:
+                                self.shadow_drop_text(self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_UP_MARKER_X]   ,self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_UP_MARKER_Y]     ,"^",col)
+                            if self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_DOWN_MARKER_FLAG]  == DISP_ON:
+                                self.shadow_drop_text(self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_DOWN_MARKER_X] ,self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_DOWN_MARKER_Y]   ,"v",col)
+                            if self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_RIGHT_MARKER_FLAG] == DISP_ON:
+                                self.shadow_drop_text(self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_RIGHT_MARKER_X],self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_RIGHT_MARKER_Y]  ,">",col)
+                            if self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_LEFT_MARKER_FLAG]  == DISP_ON:
+                                self.shadow_drop_text(self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_LEFT_MARKER_X] ,self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_LEFT_MARKER_Y]   ,"<",col)
+            
             
             #ウィンドウタイプがテキスト編集の入力待ちのタイプはさらに入力メッセージ(edit_text)の文字列を表示する
             if     self.window[i].window_type   == WINDOW_TYPE_EDIT_TEXT:
