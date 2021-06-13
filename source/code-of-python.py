@@ -4337,8 +4337,8 @@ class App:
             WINDOW_BETWEEN_LINE_7,\
             ["SELECT",DISP_CENTER,0,0,7,MES_RED_FLASH],\
             
-            [[".",DISP_CENTER,0,0,7,MES_NO_FLASH,0,0,0,0,   0,0,0,0,0,0,0,0,0,0,   LIST_WINDOW_FLAG_BOSS_MODE,0, "ON",DISP_CENTER,1, 0,0, 7,10],\
-            [ ".",DISP_CENTER,0,0,7,MES_NO_FLASH,0,0,0,0,   0,0,0,0,0,0,0,0,0,0,   LIST_WINDOW_FLAG_BOSS_MODE,0,"OFF",DISP_CENTER,0, 0,0, 7,10]],\
+            [[".",DISP_CENTER,0,0,7,MES_NO_FLASH,0,0,0,0,   0,0,0,0,0,0,0,0,0,0,   LIST_WINDOW_FLAG_BOSS_MODE,0,"OFF",DISP_CENTER,0, 0,0, 7,10],\
+            [ ".",DISP_CENTER,0,0,7,MES_NO_FLASH,0,0,0,0,   0,0,0,0,0,0,0,0,0,0,   LIST_WINDOW_FLAG_BOSS_MODE,0,"ON" ,DISP_CENTER,1, 0,0, 7,10]],\
             
             [[""]],\
             96+3,60-1,96+3,60-1,   0,0,  2*8+7,21,   2,1, 1,0.7,   0,0,    0,0,    0,0,0,0,\
@@ -4355,8 +4355,8 @@ class App:
             WINDOW_BETWEEN_LINE_7,\
             ["SELECT",DISP_CENTER,0,0,7,MES_RAINBOW_FLASH],\
             
-            [[" ",DISP_CENTER,0,0,7,MES_NO_FLASH,0,0,0,0,   0,0,0,0,0,0,0,0,0,0,   LIST_WINDOW_FLAG_HIT_BOX,0, "ON",DISP_CENTER,1, 0,0, 7,10],\
-            [ " ",DISP_CENTER,0,0,7,MES_NO_FLASH,0,0,0,0,   0,0,0,0,0,0,0,0,0,0,   LIST_WINDOW_FLAG_HIT_BOX,0,"OFF",DISP_CENTER,0, 0,0, 7,10]],\
+            [[" ",DISP_CENTER,0,0,7,MES_NO_FLASH,0,0,0,0,   0,0,0,0,0,0,0,0,0,0,   LIST_WINDOW_FLAG_HIT_BOX,0,"OFF",DISP_CENTER,0, 0,0, 7,10],\
+            [ " ",DISP_CENTER,0,0,7,MES_NO_FLASH,0,0,0,0,   0,0,0,0,0,0,0,0,0,0,   LIST_WINDOW_FLAG_HIT_BOX,0,"ON" ,DISP_CENTER,1, 0,0, 7,10]],\
             
             [[""]],\
             96+3,60-1,96+3,60-1,   0,0,  2*8+7,21,   2,1, 1,0.7,   0,0,    0,0,    0,0,0,0,\
@@ -4859,7 +4859,7 @@ class App:
                     self.create_window(WINDOW_ID_BOSS_MODE_MENU)        #ボスモードon/offウィンドウの作製
                     #選択カーソル表示をon,カーソルは上下移動のみ,,カーソル移動ステップはx4,y7,いま指示しているアイテムナンバーは0の「ON」
                     #まだボタンも押されておらず未決定状態なのでdecision_item_yはUNSELECTED,y最大項目数は2項目なので 2-1=1を代入,メニューの階層が増えたのでMENU_LAYER0からMENU_LAYER1にします
-                    self.set_cursor_data(CURSOR_TYPE_NORMAL,CURSOR_MOVE_UD,96+5,69,STEP4,STEP7,0,0,0,0,UNSELECTED,UNSELECTED,0,2-1,0,MENU_LAYER1)
+                    self.set_cursor_data(CURSOR_TYPE_NORMAL,CURSOR_MOVE_UD,96+5,69+self.boss_test_mode * STEP7,STEP4,STEP7,0,0,0,self.boss_test_mode,UNSELECTED,UNSELECTED,0,2-1,0,MENU_LAYER1)
                     self.active_window_id = WINDOW_ID_BOSS_MODE_MENU    #このウィンドウIDを最前列でアクティブなものとする
                 
             elif self.cursor_decision_item_y == 4:            #HITBOXが押されて....
@@ -4868,9 +4868,9 @@ class App:
                     self.cursor_pre_decision_item_y = self.cursor_decision_item_y #現時点で選択されたアイテム「HITBOX」を前のレイヤー選択アイテムとしてコピーする
                     self.push_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPUSH
                     self.create_window(WINDOW_ID_HITBOX_MENU)           #ヒットボックスon/offウィンドウの作製
-                    #選択カーソル表示をon,カーソルは上下移動のみ,,カーソル移動ステップはx4,y7,いま指示しているアイテムナンバーは0の「ON」
+                    #選択カーソル表示をon,カーソルは上下移動のみ,,カーソル移動ステップはx4,y7,いま指示しているアイテムナンバーは0の「OFF」
                     #まだボタンも押されておらず未決定状態なのでdecision_item_yはUNSELECTED,y最大項目数は2項目なので 2-1=1を代入,メニューの階層が増えたのでMENU_LAYER0からMENU_LAYER1にします
-                    self.set_cursor_data(CURSOR_TYPE_NORMAL,CURSOR_MOVE_UD,96+5,69,STEP4,STEP7,0,0,0,0,UNSELECTED,UNSELECTED,0,2-1,0,MENU_LAYER1)
+                    self.set_cursor_data(CURSOR_TYPE_NORMAL,CURSOR_MOVE_UD,96+5,69+self.boss_collision_rect_display_flag * STEP7,STEP4,STEP7,0,0,0,self.boss_collision_rect_display_flag,UNSELECTED,UNSELECTED,0,2-1,0,MENU_LAYER1)
                     self.active_window_id = WINDOW_ID_HITBOX_MENU       #このウィンドウIDを最前列でアクティブなものとする
                 
             elif self.cursor_decision_item_y == 5:            #DIFFICULTYが押されて
@@ -4881,7 +4881,7 @@ class App:
                     self.create_window(WINDOW_ID_SELECT_DIFFICULTY)     #「SELECT DIFFICULTY」ウィンドウの作製
                     #選択カーソル表示をon,カーソルは上下移動のみ,,カーソル移動ステップはx4,y7,いま指示しているアイテムナンバーは2の「NORMAL」
                     #まだボタンも押されておらず未決定状態なのでdecision_item_yはUNSELECTED,y最大項目数は6項目なので 6-1=5を代入,メニューの階層が増えたのでMENU_LAYER0からMENU_LAYER1にします
-                    self.set_cursor_data(CURSOR_TYPE_NORMAL,CURSOR_MOVE_UD,96,77,STEP4,STEP7,0,0,0,2,UNSELECTED,UNSELECTED,0,6-1,0,MENU_LAYER1)
+                    self.set_cursor_data(CURSOR_TYPE_NORMAL,CURSOR_MOVE_UD,96,63 + self.game_difficulty * STEP7,STEP4,STEP7,0,0,0,self.game_difficulty,UNSELECTED,UNSELECTED,0,6-1,0,MENU_LAYER1)
                     self.active_window_id = WINDOW_ID_SELECT_DIFFICULTY #このウィンドウIDを最前列でアクティブなものとする
                 
             elif self.cursor_decision_item_y == 6:            #SCORE BOARDが押されて...
@@ -5010,8 +5010,8 @@ class App:
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
                 
             elif self.cursor_pre_decision_item_y == 3 and self.cursor_decision_item_y == 0:
-                #「BOSS MODE」→「ON」
-                self.boss_test_mode = 1        #ボステストモードをon
+                #「BOSS MODE」→「OFF」
+                self.boss_test_mode = 0        #ボステストモードをoff
                 self.move_right_main_menu_window() #メインメニューウィンドウを右にずらす関数の呼び出し
                 self.create_master_flag_list() #フラグ＆データ関連のマスターリスト作成関数を呼び出す
                 i = self.search_window_id(WINDOW_ID_BOSS_MODE_MENU)
@@ -5023,8 +5023,8 @@ class App:
                 self.cursor_pre_decision_item_y = -1
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
             elif self.cursor_pre_decision_item_y == 3 and self.cursor_decision_item_y == 1:
-                #「BOSS MODE」→「OFF」
-                self.boss_test_mode = 0                              #ボステストモードをoff
+                #「BOSS MODE」→「ON」
+                self.boss_test_mode = 1                              #ボステストモードをon
                 self.move_right_main_menu_window() #メインメニューウィンドウを右にずらす関数の呼び出し
                 self.create_master_flag_list() #フラグ＆データ関連のマスターリスト作成関数を呼び出す
                 i = self.search_window_id(WINDOW_ID_BOSS_MODE_MENU)
@@ -5039,8 +5039,8 @@ class App:
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
                 
             elif self.cursor_pre_decision_item_y == 4 and self.cursor_decision_item_y == 0:
-                #「HITBOX」→「ON」
-                self.boss_collision_rect_display_flag = 1            #ボス当たり判定表示をon
+                #「HITBOX」→「OFF」
+                self.boss_collision_rect_display_flag = 0            #ボス当たり判定表示をoff
                 self.move_right_main_menu_window() #メインメニューウィンドウを右にずらす関数の呼び出し
                 self.create_master_flag_list() #フラグ＆データ関連のマスターリスト作成関数を呼び出す
                 i = self.search_window_id(WINDOW_ID_HITBOX_MENU)
@@ -5052,8 +5052,8 @@ class App:
                 self.cursor_pre_decision_item_y = -1
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
             elif self.cursor_pre_decision_item_y == 4 and self.cursor_decision_item_y == 1:
-                #「HITBOX」→「OFF」
-                self.boss_collision_rect_display_flag = 0            #ボス当たり判定表示をoff
+                #「HITBOX」→「ON」
+                self.boss_collision_rect_display_flag = 1            #ボス当たり判定表示をon
                 self.move_right_main_menu_window() #メインメニューウィンドウを右にずらす関数の呼び出し
                 self.create_master_flag_list() #フラグ＆データ関連のマスターリスト作成関数を呼び出す
                 i = self.search_window_id(WINDOW_ID_HITBOX_MENU)
