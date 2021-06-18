@@ -76,8 +76,7 @@
 
 #todo900 BGMの作成(無理そう.........)
 #実装完了済み！
-#todo 各ウィンドウのクローズ処理を実装 2021 06/11
-#todo メニューウィンドウのCONFIGで数値を左右キーで調整するときに左右矢印を表示、今現在の値が最大値なのか最小値なのか？中間値なのか判るようにした 2021 06/13
+
 
 # from random import randint   #random.randint(n,m) と呼ぶと、nからm(m自身を含む)までの間の整数が 等しい確率で、ランダムに返される
 from random import random    #random.random() と呼ぶと、0から1の範囲(1は含まない)のランダムな実数が返される(主にパーティクル系で使用します)
@@ -2334,12 +2333,15 @@ class App:
         self.bg_cls_color = 0          #BGをCLS(クリアスクリーン)するときの色の指定(通常は0=黒色です)
         self.bg_transparent_color = 0  #BGタイルマップを敷き詰めるときに指定する透明色です
         
-        self.rnd_seed = 0              #線形合同法で使用する乱数の種を初期化します(r_randintが呼ばれるごとにrnd_seedの中身が変化するので注意！)
-        self.master_rnd_seed = 0       #線形合同法で使用する乱数の種(ゲームスタート時のrnd_seedを保存してリプレイファイル再生時の最初の乱数の種として使用します初期化します
+        self.rnd_seed           = 0  #線形合同法で使用する乱数の種を初期化します(r_randintが呼ばれるごとにrnd_seedの中身が変化するので注意！)
+        self.master_rnd_seed    = 0  #線形合同法で使用する乱数の種(ゲームスタート時のrnd_seedを保存してリプレイファイル再生時の最初の乱数の種として使用します初期化します
         self.start_stage_number = STAGE_MOUNTAIN_REGION    #スタート時のステージ数を保存する変数をまず初期化
         self.start_stage_loop   = 1                        #スタート時のループ数を保存する変数をまず初期化
         self.start_stage_age    = 0                        #スタート時の年代数を保存する変数をまず初期化
-        self.replay_slot_num = 0       #リプレイファイルをセーブしたりロードするスロットナンバーが入ります(0~9)
+        self.master_bgm_vol     = 50 #マスターBGMボリューム数値をデフォルト値の50で初期化
+        self.master_se_vol      = 50 #マスターSEボリューム数値をデフォルト値の50で初期化
+        
+        self.replay_slot_num    = 0  #リプレイファイルをセーブしたりロードするスロットナンバーが入ります(0~9)
         
         self.header                          = "code-of-python system-data ver 1.00"   #システムファイルに書き込むヘッダ文字列
         self.my_name                         = "TESTER01" #プレイヤーの名前(ネームエントリーの関係上半角8文字でお願いします)
@@ -3131,7 +3133,10 @@ class App:
         #fullscreen_mode                    #フルスクリーンでの起動モード
                                             #0=ウィンドウモードでの起動 1=フルスクリーンモードでの起動
         self.fullscreen_mode               = (pyxel.tilemap(0).get(0,132)) - 16
-        
+        #ctrl_type                          #コントロールパッドのタイプ
+                                            #0~5
+        self.ctrl_type                     = (pyxel.tilemap(0).get(0,133)) - 16
+
         # self.test_read_num = self.read_system_data_num(15,156,16) #数値の読み取りテストです
 
     #システムデータのセーブ
@@ -3148,6 +3153,8 @@ class App:
         pyxel.tilemap(0).set(0,130,self.no_enemy_mode + 16)                   #敵が出ないモードフラグ書き込み
         pyxel.tilemap(0).set(0,131,self.god_mode_status + 16)                 #ゴッドモードフラグ書き込み
         pyxel.tilemap(0).set(0,132,self.fullscreen_mode + 16)                 #フルスクリーン起動フラグ書き込み
+        pyxel.tilemap(0).set(0,133,self.ctrl_type + 16)                       #パッドコントロールタイプ書き込み
+        
         
         #総ゲームプレイ時間(秒)のそれぞれの桁の数値を計算する (自分でも訳が分からないよ・・・)------------------------------
         t_sec = self.total_game_playtime_seconds
@@ -4239,9 +4246,9 @@ class App:
         self.master_flag_list[LIST_WINDOW_FLAG_DIFFICULTY]  = self.game_difficulty    #ゲーム難易度をリストに登録
         
         self.master_flag_list[LIST_WINDOW_FLAG_SCREEN_MODE] = self.fullscreen_mode    #フルスクリーン起動モードフラグをリストに登録
-        self.master_flag_list[LIST_WINDOW_FLAG_BGM_VOL]     = 50 #仮登録
-        self.master_flag_list[LIST_WINDOW_FLAG_SE_VOL]      = 50
-        self.master_flag_list[LIST_WINDOW_FLAG_CTRL_TYPE]   = 1
+        self.master_flag_list[LIST_WINDOW_FLAG_BGM_VOL]     = self.master_bgm_vol     #マスターBGMボリューム数値をリストに登録
+        self.master_flag_list[LIST_WINDOW_FLAG_SE_VOL]      = self.master_se_vol      #マスターSEボリューム数値をリストに登録
+        self.master_flag_list[LIST_WINDOW_FLAG_CTRL_TYPE]   = self.ctrl_type          #パッドコントロールパターン値をリストに登録
 
     #マスターフラグ＆データリストを個別の変数にリストアさせる
     def restore_master_flag_list(self):
@@ -4255,9 +4262,9 @@ class App:
         self.game_difficulty   = self.master_flag_list[LIST_WINDOW_FLAG_DIFFICULTY]              #ゲーム難易度をリストにから参照してリストア
         
         self.fullscreen_mode   = self.master_flag_list[LIST_WINDOW_FLAG_SCREEN_MODE]             #フルスクリーン起動モードフラグをリストから参照してリストア
-        # self.master_flag_list[LIST_WINDOW_FLAG_BGM_VOL]      = 50
-        # self.master_flag_list[LIST_WINDOW_FLAG_SE_VOL]       = 50
-        # self.master_flag_list[LIST_WINDOW_FLAG_CTRL_TYPE]    = 1
+        self.master_bgm_vol    = self.master_flag_list[LIST_WINDOW_FLAG_BGM_VOL]                 #マスターBGMボリューム数値をリストから参照してリストア
+        self.master_se_vol     = self.master_flag_list[LIST_WINDOW_FLAG_SE_VOL]                  #マスターSEボリューム数値をリストから参照してリストア
+        self.ctrl_type         = self.master_flag_list[LIST_WINDOW_FLAG_CTRL_TYPE]               #パッドコントロールパターン値をリストから参照してリストア
 
     #各種ウィンドウの育成             id=windowクラスの window_idに入っている数値
     def create_window(self,id):
@@ -4611,8 +4618,6 @@ class App:
         self.cursor_color = color
         self.cursor_menu_layer = menu_layer
 
-
-
     #現在のカーソルの状態データ群をcursorクラスのリストに記録する(PUSH)cursorクラスのリストはLastInFastOut形式となってます「後入先出（LIFO）」
     #引数のidはウィンドウIDナンバーです
     def push_cursor_data(self,id):
@@ -4919,16 +4924,9 @@ class App:
             elif self.cursor_decision_item_y == 9:            #REPLAYが押されたら
                 self.game_status = SCENE_SELECT_LOAD_SLOT           #ゲームステータスを「SCENE_SELECT_LOAD_SLOT」にしてロードデータスロットの選択に移る
                 self.window_replay_data_slot_select()               #リプレイデータファイルスロット選択ウィンドウの表示
-                self.cursor_type = CURSOR_TYPE_NORMAL               #選択カーソル表示をonにする
-                self.cursor_move_direction = CURSOR_MOVE_UD         #カーソルは上下移動のみ
-                self.cursor_x = 67                                  #セレクトカーソルの座標を設定します
-                self.cursor_y = 55
-                self.cursor_step_x = 4                              #横方向の移動ドット数は4ドット
-                self.cursor_step_y = 7                              #縦方向の移動ドット数は7ドット
-                self.cursor_item_y = 0                              #いま指示しているアイテムナンバーは0の「1」
-                self.cursor_decision_item_y = -1                    #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1
-                self.cursor_max_item_y = 6                          #最大項目数は「1」「2」「3」「4」「5」「6」「7」の7項目なので 7-1=6を代入
-                self.cursor_menu_layer = 0                          #メニューの階層は最初は0にします
+                #選択カーソル表示をonにする,カーソルは上下移動のみ,カーソル移動ステップはx4,y7,いま指示しているアイテムナンバーは0の「1」
+                #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1最大項目数は「1」「2」「3」「4」「5」「6」「7」の7項目なので 7-1=6を代入,メニューの階層が増えたので,MENU_LAYER0からMENU_LAYER1にします
+                self.set_cursor_data(CURSOR_TYPE_NORMAL,CURSOR_MOVE_UD,67,55,STEP4,STEP7,0,0,0,0,UNSELECTED,UNSELECTED,0,6,0,MENU_LAYER1)
                 self.active_window_id = WINDOW_ID_SELECT_FILE_SLOT  #このウィンドウIDを最前列でアクティブなものとする
             
         elif self.cursor_menu_layer == 1: #メニューが1階層目の選択分岐
