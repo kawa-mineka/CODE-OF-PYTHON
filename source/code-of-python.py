@@ -54,7 +54,7 @@
 #todo84 機体選択シーンにおける各機体のタイポモーションロゴのアニメーション作成(難しそう)
 
 #todo90 MagiForceとJusticePythonの合体演出
-#todo99 漢字フォントの読み込み時に遅くなるので高速化する(案としては分割してローディング？)
+#todo99 漢字フォント読み込み時に遅くなるので高速化する(案としては分割してローディング？)
 
 #todo703 画面上の任意の位置＆画面下の任意の位置から降下、上昇してくる敵編隊の実装
 #todo705 子世代まで分裂する隕石の実装(結構硬い感じで)
@@ -72,11 +72,9 @@
 #todo803 ウィンドウシステムを改良する（滅茶苦茶難しそう・・・今は同じようなコードを羅列してるだけなのでシンプルに行きたいところですが・・）
 #todo804 難易度選択によるスタート時のクロー追加ボーナスでローリングクローだけ上手く複数追加されない(1個だけなら追加される)(おそらく2~4個追加時に全く同じ座標で回転し続けて1個だけで回っているように見える？のかも？)要バグ取り
 #todo805 ボスとの当たり判定関連の関数はショット、ミサイル、クローショットの3つの関数があるがほとんど同じようなコードの羅列なので共通化したい・・リファクタリングって奴なのかな？？
-#todo806 時々敵を倒したときパワーカプセルが出ない時があるっぽい？多分サブウェポンで敵(編隊群のみかな？？)を倒したときに出ない？？？多分？？？
 
 #todo900 BGMの作成(無理そう.........)
 #実装完了済み！
-#todo CONFIGでメインBGMのボリューム変更を実装（SEの方はよくわからないのでやめちゃうのだ！！pyxelのサウンド関連よくわからぬぅうう！) 2021 06/19
 
 
 
@@ -6357,7 +6355,7 @@ class App:
                             self.update_append_particle(PARTICLE_DOT,self.enemy[e].posx + 4,self.enemy[e].posy + 4,self.shots[h].vx / 2,self.shots[h].vy / 2, 0,0,0)
                         
                         #スコア加算
-                        if self.enemy[e].status == ENEMY_STATUS_NORMAL:   #ステータスが「通常」ならscore_normalをpointとしてスコアを加算する
+                        if   self.enemy[e].status == ENEMY_STATUS_NORMAL:   #ステータスが「通常」ならscore_normalをpointとしてスコアを加算する
                             point = self.enemy[e].score_normal
                         elif self.enemy[e].status == ENEMY_STATUS_ATTACK: #ステータスが「攻撃中」ならscore_attackをpointとしてスコアを加算する
                             point = self.enemy[e].score_attack
@@ -6376,10 +6374,6 @@ class App:
                         
                     self.shots[h].shot_hp = 0#自機弾のＨＰをゼロにして自機弾移動時にチェックしリストから消去させるため
                     pyxel.play(0,2)#変な爆発音を出すのだ～～～☆彡
-                
-                
-                # else:
-                    # continue
 
     #自機弾とボスとの当たり判定
     def update_collision_my_shot_boss(self):
@@ -6605,10 +6599,6 @@ class App:
                     
                     self.missile[h].missile_hp = 0#ミサイルのＨＰをゼロにしてミサイル移動時にチェックしリストから消去させるため
                     pyxel.play(0,2)#ミサイルが敵を破壊した音！
-
-
-            # else:
-                # continue
 
     #自機ミサイルとボスとの当たり判定
     def update_collision_missile_boss(self):
@@ -7144,17 +7134,15 @@ class App:
                     self.enemy[e].enemy_hp -= self.claw_shot[h].shot_power #敵の耐久力をクローショットパワーの分だけ減らす
                     if self.enemy[e].enemy_hp <= 0:
                         self.enemy_destruction(e) #敵破壊処理関数呼び出し！
-                    #パーティクル生成
-                    for _number in range(5):
-                        self.update_append_particle(PARTICLE_DOT,self.enemy[e].posx + 4,self.enemy[e].posy + 4,self.claw_shot[h].vx / 2,self.claw_shot[h].vy / 2,    0,0,0)
-                    
-                    del self.enemy[e]#敵リストから破壊した敵をＤＥＬ消去破壊！
-                    self.score += 1#スコア加算（あとあといろんなスコアシステム実装する予定だよ）
+                        #パーティクル生成
+                        for _number in range(5):
+                            self.update_append_particle(PARTICLE_DOT,self.enemy[e].posx + 4,self.enemy[e].posy + 4,self.claw_shot[h].vx / 2,self.claw_shot[h].vy / 2,    0,0,0)
+                        
+                        del self.enemy[e]#敵リストから破壊した敵をＤＥＬ消去破壊！
+                        self.score += 1#スコア加算（あとあといろんなスコアシステム実装する予定だよ）
                     
                     self.claw_shot[h].shot_hp = 0#クローショットのＨＰをゼロにしてクローショット移動時にチェックしリストから消去させるため
-                    pyxel.play(0,2)#ミサイルが敵を破壊した音！
-                else:
-                    continue
+                    pyxel.play(0,2)#クローショットが敵を破壊した音！
 
     #クローショットとボスとの当たり判定
     def update_collision_claw_shot_boss(self):
