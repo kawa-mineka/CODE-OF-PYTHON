@@ -2338,8 +2338,6 @@ class App:
         self.start_stage_number = STAGE_MOUNTAIN_REGION    #スタート時のステージ数を保存する変数をまず初期化
         self.start_stage_loop   = 1                        #スタート時のループ数を保存する変数をまず初期化
         self.start_stage_age    = 0                        #スタート時の年代数を保存する変数をまず初期化
-        self.master_bgm_vol     = 50 #マスターBGMボリューム数値をデフォルト値の50で初期化
-        self.master_se_vol      = 50 #マスターSEボリューム数値をデフォルト値の50で初期化
         
         self.replay_slot_num    = 0  #リプレイファイルをセーブしたりロードするスロットナンバーが入ります(0~9)
         
@@ -3078,8 +3076,8 @@ class App:
         pyxel.load("assets/system/system-data.pyxres") #システムデータを読み込む
         self.game_difficulty = pyxel.tilemap(0).get(0,120) - 16 #数字の[0]はアスキーコード16番なので16引いて数値としての0にしてやります
         self.stage_number    = pyxel.tilemap(0).get(0,121) - 16
-        self.stage_loop     = pyxel.tilemap(0).get(0,122) - 16
-        self.stage_age      = 0
+        self.stage_loop      = pyxel.tilemap(0).get(0,122) - 16
+        self.stage_age       = 0
         #総ゲームプレイ時間(秒)を計算する
         sec_1  = pyxel.tilemap(0).get(9,5) - 16 #秒の  1の位取得
         sec_10 = pyxel.tilemap(0).get(8,5) - 16 #秒の  10の位取得
@@ -3136,6 +3134,12 @@ class App:
         #ctrl_type                          #コントロールパッドのタイプ
                                             #0~5
         self.ctrl_type                     = (pyxel.tilemap(0).get(0,133)) - 16
+        #master_bgm_vol                     #BGMのマスターボリューム
+                                            #0~100
+        self.master_bgm_vol                = self.read_system_data_num(2,134,3)
+        #master_se_vol                      #SEのマスターボリューム
+                                            #0~7
+        self.master_se_vol                 = self.read_system_data_num(2,135,3)
 
         # self.test_read_num = self.read_system_data_num(15,156,16) #数値の読み取りテストです
 
@@ -3154,7 +3158,8 @@ class App:
         pyxel.tilemap(0).set(0,131,self.god_mode_status + 16)                 #ゴッドモードフラグ書き込み
         pyxel.tilemap(0).set(0,132,self.fullscreen_mode + 16)                 #フルスクリーン起動フラグ書き込み
         pyxel.tilemap(0).set(0,133,self.ctrl_type + 16)                       #パッドコントロールタイプ書き込み
-        
+        self.write_system_data_num(2,134,3,self.master_bgm_vol)               #マスターBGMボリューム値書き込み
+        self.write_system_data_num(2,135,3,self.master_se_vol)                #マスターSEボリューム値書き込み
         
         #総ゲームプレイ時間(秒)のそれぞれの桁の数値を計算する (自分でも訳が分からないよ・・・)------------------------------
         t_sec = self.total_game_playtime_seconds
@@ -3706,7 +3711,8 @@ class App:
             #スコア加算（あとあといろんなスコアシステム実装する予定だよ）
             self.score += 1
             
-        pyxel.play(0,2)#変な爆発音を出すのだ～～～☆彡
+        pyxel.sound(2).volume = self.master_se_vol #サウンドナンバー2のボリュームをself.master_se_vol(0~7の整数)に設定する
+        pyxel.play(0,2)#変な爆発音を出すのだ～～～☆彡 チャンネル0 でサウンドナンバー2の音を鳴らす
 
     #各面のボスをBossクラスに定義して出現させる
     def born_boss(self):
@@ -4143,8 +4149,10 @@ class App:
     def load_stage_bgm(self):
         if   self.stage_number == 1:
             pygame.mixer.music.load("assets/music/BGM088-100714-kongoushinkidaia-su.wav") #STAGE1 BGMファイルの読み込み
+            pygame.mixer.music.set_volume(self.master_bgm_vol / 100)
         elif self.stage_number == 2:
             pygame.mixer.music.load("assets/music/BGM056-081012-kakeroginnnogennya.wav")  #STAGE2 BGMファイルの読み込み
+            pygame.mixer.music.set_volume(self.master_bgm_vol / 100)
 
     #0~9の範囲の乱数関数
     def rnd0_9(self):
@@ -4289,7 +4297,8 @@ class App:
             ["SCORE BOARD",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             ["NAME ENTRY",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             ["CONFIG",DISP_CENTER,0,0,7,MES_NO_FLASH],\
-            ["REPLAY",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
+            ["REPLAY",DISP_CENTER,0,0,7,MES_NO_FLASH],\
+            ["STATUS",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
             
             [[""]],\
             44,34,44,34,   0,0,  8*8,9*8+5,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
@@ -4787,6 +4796,7 @@ class App:
         pygame.mixer.init(frequency = 44100)     #pygameミキサー関連の初期化
         pygame.mixer.music.set_volume(0.7)       #音量設定(0~1の範囲内)
         pygame.mixer.music.load('assets/music/BGM200-171031-konotenitsukame-intro.wav') #タイトルイントロ部分のwavファイルを読み込み
+        pygame.mixer.music.set_volume(self.master_bgm_vol / 100)
         pygame.mixer.music.play(1)               #イントロを1回だけ再生
         
         self.game_status = SCENE_TITLE           #ゲームステータスを「SCENE_TITLE」にしてタイトル表示を開始する
@@ -4810,6 +4820,7 @@ class App:
             pygame.mixer.init(frequency = 44100)    #pygameミキサー関連の初期化
             pygame.mixer.music.set_volume(0.7)      #音量設定(0~1の範囲内)
             pygame.mixer.music.load('assets/music/BGM200-171031-konotenitsukame-loop.wav') #タイトルBGMループ部分のwavファイルを読み込み
+            pygame.mixer.music.set_volume(self.master_bgm_vol / 100)
             pygame.mixer.music.play(-1)             #タイトルBGMをループ再生
         
         #全てのカウンター類が0になったらゲームメニューウィンドウを育成する
@@ -6016,7 +6027,7 @@ class App:
             if len(self.shots) < self.shot_rapid_of_fire:
             #if self.shot_type_count(self.shot_level) < 3: 
                 if (pyxel.frame_count % 8) == 0:
-                    pyxel.play(2,5)
+                    pyxel.play(2,5) #チャンネル2でサウンドナンバー5を鳴らす
                     new_shot = Shot()
                     new_shot.update(self.shot_level,self.my_x + 5,self.my_y -4,      3,0,  8,16,  0,   2,1)
                     
@@ -9953,6 +9964,7 @@ class App:
 
     #セレクトカーソルの更新
     def update_select_cursor(self):
+        # pygame.mixer.music.set_volume(self.master_bgm_vol / 100)
         # 上入力されたら  y座標を  -7する(1キャラ分)
         if pyxel.btnp(pyxel.KEY_UP) or pyxel.btnp(pyxel.GAMEPAD_1_UP) or pyxel.btnp(pyxel.GAMEPAD_2_UP):
             self.cursor_move_data = PAD_UP
@@ -10037,7 +10049,13 @@ class App:
                     self.window[self.active_window_index].flag_list[flag_index] = k #フラグ＆数値リストを更新
                     self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_RIGHT_MARKER_FLAG] = rd #右矢印表示フラグ更新
                     self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_LEFT_MARKER_FLAG]  = ld #左矢印表示フラグ更新
-        
+                    
+                    #編集された数値がBGMボリュームとSEボリュームの場合はすぐにマスターフラグリストを更新して音量の変化を反映させてやります
+                    if     self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ] == LIST_WINDOW_FLAG_BGM_VOL\
+                        or self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ] == LIST_WINDOW_FLAG_SE_VOL:
+                        self.restore_master_flag_list()
+                        pygame.mixer.music.set_volume(self.master_bgm_vol / 100)
+                    
         #左入力されたらcursor_pageを -1する
         if pyxel.btnp(pyxel.KEY_LEFT) or pyxel.btnp(pyxel.GAMEPAD_1_LEFT) or pyxel.btnp(pyxel.GAMEPAD_2_LEFT) or pyxel.btnp(pyxel.GAMEPAD_2_LEFT) or pyxel.btnp(pyxel.GAMEPAD_1_LEFT_SHOULDER) or pyxel.btnp(pyxel.GAMEPAD_2_LEFT_SHOULDER):
             self.cursor_move_data = PAD_LEFT
@@ -10071,6 +10089,12 @@ class App:
                     self.window[self.active_window_index].flag_list[flag_index] = k #フラグ＆数値リストを更新する
                     self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_RIGHT_MARKER_FLAG] = rd #右矢印表示フラグ更新
                     self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_LEFT_MARKER_FLAG]  = ld #左矢印表示フラグ更新
+                    
+                    #編集された数値がBGMボリュームとSEボリュームの場合はすぐにマスターフラグリストを更新して音量の変化を反映させてやります
+                    if     self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ] == LIST_WINDOW_FLAG_BGM_VOL\
+                        or self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ] == LIST_WINDOW_FLAG_SE_VOL:
+                        self.restore_master_flag_list()
+                        pygame.mixer.music.set_volume(self.master_bgm_vol / 100)
         
         if pyxel.btnp(pyxel.KEY_SPACE) or pyxel.btnp(pyxel.GAMEPAD_1_A) or pyxel.btnp(pyxel.GAMEPAD_2_A) or pyxel.btnp(pyxel.GAMEPAD_1_B) or pyxel.btnp(pyxel.GAMEPAD_2_B):
             self.cursor_move_data = PAD_A
