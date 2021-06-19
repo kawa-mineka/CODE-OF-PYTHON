@@ -76,6 +76,8 @@
 
 #todo900 BGMの作成(無理そう.........)
 #実装完了済み！
+#todo CONFIGでメインBGMのボリューム変更を実装（SEの方はよくわからないのでやめちゃうのだ！！pyxelのサウンド関連よくわからぬぅうう！) 2021 06/19
+
 
 
 # from random import randint   #random.randint(n,m) と呼ぶと、nからm(m自身を含む)までの間の整数が 等しい確率で、ランダムに返される
@@ -576,6 +578,18 @@ LIST_WINDOW_FLAG_                  = 21 #
 LIST_WINDOW_FLAG_                  = 22 #
 LIST_WINDOW_FLAG_                  = 23 #
 LIST_WINDOW_FLAG_                  = 23 #
+#ウィンドウグラフイック群リストの２次元配列のインデックスナンバーとして使用する定数定義 windowクラスのgraph_list[i][ここで定義した定数]に入ります
+LIST_WINDOW_GRAPH_OX               =  0 #グラフイックキャラを表示する座標(ox,oy)ウィンドウ表示座標からのオフセット値となります
+LIST_WINDOW_GRAPH_OY               =  1 #
+LIST_WINDOW_GRAPH_IMGB             =  2 #表示するグラフイックキャラが入っているイメージバンクの数値
+LIST_WINDOW_GRAPH_U                =  3 #表示するグラフイックキャラが入っている場所を示した座標(u,v)
+LIST_WINDOW_GRAPH_V                =  4 #
+LIST_WINDOW_GRAPH_W                =  5 #表示するグラフイックキャラの縦幅、横幅(width,height)マイナス値の場合は反転します
+LIST_WINDOW_GRAPH_H                =  6 #
+LIST_WINDOW_GRAPH_COLKEY           =  7 #透明色の指定
+LIST_WINDOW_GRAPH_ANIME_FRAME_NUM  =  8 #アニメーションパターンの枚数(1の場合はアニメーション無し)
+LIST_WINDOW_GRAPH_ANIME_SPEED      =  9 #アニメーションのスピード(1が速く数値が増えるにつれて遅くなる4位が良いかも？)
+
 
 #メッセージを点滅させるかのフラグ windowクラスのwindow[i].text[j][LIST_WINDOW_TEXT_FLASH]に入ります
 MES_NO_FLASH         = 0 #点滅しない
@@ -606,13 +620,9 @@ CURSOR_MOVE_UD_SLIDER        = 4 #セレクトカーソルは上下に動かす�
 CURSOR_MOVE_UD_SLIDER_BUTTON = 5 #セレクトカーソルは上下に動かすことができ、左右の入力でスライダーを動かせます ON/OFF切り替えの項目ではボタンを押すことでも切り替えができます
 CURSOR_MOVE_LR_SLIDER        = 6 #セレクトカーソルは左右に動かすことができ、上下の入力でスライダーを動かせます
 CURSOR_MOVE_SHOW_PAGE        = 7 #セレクトカーソルは表示せずLRキーもしくはLショルダーRショルダーで左右に頁をめくる動作です
+
 #カーソルの移動量
-STEP4                        = 4 #4ドット
-STEP5                        = 5 #5ドット
-STEP6                        = 6 #6ドット
-STEP7                        = 7 #7ドット
-STEP8                        = 8 #8ドット
-STEP9                        = 9 #9ドット
+STEP3,STEP4,STEP5,STEP6,STEP7,STEP8,STEP9,STEP10 = 3,4,5,6,7,8,9,10
 
 #メニューのレイヤー数定数定義
 MENU_LAYER0                  = 0 #レイヤー数0でメニュー階層は0
@@ -772,16 +782,12 @@ LV00,LV01,LV02,LV03,LV04,LV05,LV06,LV07,LV08,LV09,LV10 = 0,1,2,3,4,5,6,7,8,9,10
 #サイズ(大きさ)の定数定義 おもに画像表示用、当たり判定用としてwidthやheightに入ります
 SIZE_1, SIZE_2, SIZE_3, SIZE_4, SIZE_5  =  1, 2, 3, 4, 5
 SIZE_6, SIZE_7, SIZE_8, SIZE_9, SIZE_10 =  6, 7, 8, 9,10
-
 SIZE_11,SIZE_12,SIZE_13,SIZE_14,SIZE_15 = 11,12,13,14,15
 SIZE_16,SIZE_17,SIZE_18,SIZE_19,SIZE_20 = 16,17,18,19,20
-
 SIZE_21,SIZE_22,SIZE_23,SIZE_24,SIZE_25 = 21,22,23,24,25
 SIZE_26,SIZE_27,SIZE_28,SIZE_29,SIZE_30 = 26,27,28,29,30
-
 SIZE_31,SIZE_32,SIZE_33,SIZE_34,SIZE_35 = 31,32,33,34,35
 SIZE_36,SIZE_37,SIZE_38,SIZE_39,SIZE_40 = 36,37,38,39,40
-
 SIZE_41,SIZE_42,SIZE_43,SIZE_44,SIZE_45 = 41,42,43,44,45
 SIZE_46,SIZE_47,SIZE_48,SIZE_49,SIZE_50 = 46,47,48,49,50
 
@@ -2089,8 +2095,9 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         self.sub_weapon_list = []
         self.missile_list = []
         self.medal_list = []
-        self.item_list = [[] for i in range(128)]
-        self.flag_list = [[] for i in range(128)]
+        self.item_list    = [[] for i in range(128)]
+        self.flag_list    = [[] for i in range(128)]
+        self.graph_list   = [[] for i in range(128)]
     def update(self,window_id,window_id_sub,window_type,window_bg,window_status,\
         between_line,\
         
@@ -2102,7 +2109,7 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         vx,vy,vx_accel,vy_accel,\
         ok_button_disp_flag,ok_button_x,ok_button_y,ok_button_size,\
         no_button_disp_flag,no_button_x,no_button_y,no_button_size,\
-        ship_list,weapon_list,sub_weapon_list,missile_list,medal_list,item_list,flag_list):
+        ship_list,weapon_list,sub_weapon_list,missile_list,medal_list,item_list,flag_list,graph_list):
         self.window_id = window_id
         self.window_id_sub = window_id_sub
         self.window_type = window_type
@@ -2153,6 +2160,7 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         self.medal_list      = medal_list
         self.item_list       = item_list
         self.flag_list       = flag_list
+        self.graph_list      = graph_list
 class Cursor: #メッセージ表示ウィンドウで使用するカーソルのデータ群のクラス設定
     def __init__(self): #コンストラクタ
         self.window_id = 0         #このウィンドウIDがアクティブになったらこのカーソルデータを使用してカーソルを表示開始します
@@ -3711,7 +3719,7 @@ class App:
             #スコア加算（あとあといろんなスコアシステム実装する予定だよ）
             self.score += 1
             
-        pyxel.sound(2).volume = self.master_se_vol #サウンドナンバー2のボリュームをself.master_se_vol(0~7の整数)に設定する
+        
         pyxel.play(0,2)#変な爆発音を出すのだ～～～☆彡 チャンネル0 でサウンドナンバー2の音を鳴らす
 
     #各面のボスをBossクラスに定義して出現させる
@@ -4304,7 +4312,7 @@ class App:
             44,34,44,34,   0,0,  8*8,9*8+5,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
-            [],[],[],[],[],[],self.master_flag_list)
+            [],[],[],[],[],[],self.master_flag_list,[])
         elif id == WINDOW_ID_SELECT_STAGE_MENU:
             new_window.update(\
             WINDOW_ID_SELECT_STAGE_MENU,\
@@ -4323,7 +4331,7 @@ class App:
             90,60,90,60,   0,0,  2*8,5*8,   2,2, 1,0.5,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
-            [],[],[],[],[],[],self.master_flag_list)
+            [],[],[],[],[],[],self.master_flag_list,[])
         elif id == WINDOW_ID_SELECT_LOOP_MENU:
             new_window.update(\
             WINDOW_ID_SELECT_LOOP_MENU,\
@@ -4342,7 +4350,7 @@ class App:
             90+22,60+6,90+22,60+6,   0,0,  2*8,5*8,   2,2, 1,0.5,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
-            [],[],[],[],[],[],self.master_flag_list)
+            [],[],[],[],[],[],self.master_flag_list,[])
         elif id == WINDOW_ID_BOSS_MODE_MENU:
             new_window.update(\
             WINDOW_ID_BOSS_MODE_MENU,\
@@ -4360,7 +4368,7 @@ class App:
             96+3,60-1,96+3,60-1,   0,0,  2*8+7,21,   2,1, 1,0.7,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
-            [],[],[],[],[],[],self.master_flag_list)
+            [],[],[],[],[],[],self.master_flag_list,[])
         elif id == WINDOW_ID_HITBOX_MENU:
             new_window.update(\
             WINDOW_ID_HITBOX_MENU,\
@@ -4378,7 +4386,7 @@ class App:
             96+3,60-1,96+3,60-1,   0,0,  2*8+7,21,   2,1, 1,0.7,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
-            [],[],[],[],[],[],self.master_flag_list)
+            [],[],[],[],[],[],self.master_flag_list,[])
         elif id == WINDOW_ID_SELECT_DIFFICULTY:
             new_window.update(\
             WINDOW_ID_SELECT_DIFFICULTY,\
@@ -4400,7 +4408,7 @@ class App:
             93,52,93,52,   0,0,  48,51,   3,3, 1,0.7,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
-            [],[],[],[],[],[],self.master_flag_list)
+            [],[],[],[],[],[],self.master_flag_list,[])
         elif id == WINDOW_ID_GAME_OVER_RETURN:
             new_window.update(\
             WINDOW_ID_GAME_OVER_RETURN,\
@@ -4418,7 +4426,7 @@ class App:
             43,68,43,68,   0,0,  8*8,3*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
-            [],[],[],[],[],[],[])
+            [],[],[],[],[],[],self.master_flag_list,[])
         elif id == WINDOW_ID_GAME_OVER_RETURN_NO_SAVE:
             new_window.update(\
             WINDOW_ID_GAME_OVER_RETURN_NO_SAVE,\
@@ -4435,7 +4443,7 @@ class App:
             43,68,43,68,   0,0,  8*8,2*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
-            [],[],[],[],[],[],self.master_flag_list)
+            [],[],[],[],[],[],self.master_flag_list,[])
         elif id == WINDOW_ID_INPUT_YOUR_NAME:
             new_window.update(\
             WINDOW_ID_INPUT_YOUR_NAME,\
@@ -4452,7 +4460,7 @@ class App:
             80,52,80,52,   0,0,  6*11+2,6*3,   3,3, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_ON,51,12,WINDOW_BUTTON_SIZE_1TEXT,\
             BUTTON_DISP_OFF,0,0,0,\
-            [],[],[],[],[],[],self.master_flag_list)
+            [],[],[],[],[],[],self.master_flag_list,[])
         elif id == WINDOW_ID_CONFIG:
             new_window.update(\
             WINDOW_ID_CONFIG,\
@@ -4479,7 +4487,7 @@ class App:
             4,4,4,4,   0,0,  160-16,120-12,   2,2, 2,2,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
-            [],[],[],[],[],[],self.master_flag_list)
+            [],[],[],[],[],[],self.master_flag_list,[[108,4,  IMG2,  144,8,SIZE_8,SIZE_8, 0, 14,3],[40,4,  IMG2,  8,0,SIZE_8,SIZE_8, 0,  1,1]])
             print(self.master_flag_list)
         elif id == WINDOW_ID_CONFIG_GRAPHICS:
             new_window.update(\
@@ -4506,7 +4514,7 @@ class App:
             44,34,44,34,   0,0,  8*8,9*8+5,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
-            [],[],[],[],[],[],self.master_flag_list)
+            [],[],[],[],[],[],self.master_flag_list,[])
         else:
             return
         
@@ -4540,7 +4548,7 @@ class App:
         31,28,31,28,   20,79,  90,79,   4,1, 2,1,   0,0,    0,0,    0,0,0,0,\
         BUTTON_DISP_OFF,0,0,0,\
         BUTTON_DISP_OFF,0,0,0,\
-        [],[],[],[],[],[],[])
+        [],[],[],[],[],[],self.master_flag_list,[])
         
         self.window.append(new_window)                   #「RANKING」を育成する
 
@@ -4569,7 +4577,7 @@ class App:
         63,44,63,44,   0,0,  22,67,      2,1, 2,1,   1,1,    0,0,    0,0,0,0,\
         BUTTON_DISP_OFF,0,0,0,\
         BUTTON_DISP_OFF,0,0,0,\
-        [],[],[],[],[],[],[])
+        [],[],[],[],[],[],self.master_flag_list,[])
         
         self.window.append(new_window)                      #「SELECT SLOT」を育成する
 
@@ -11470,7 +11478,7 @@ class App:
                     pyxel.blt(self.window[i].posx + w * 8,self.window[i].posy + h * 8,            
                             IMG2,
                             96 + self.window[i].window_bg * 32,88,
-                            8,8, 13)
+                            SIZE_8,SIZE_8, 13)
             
             #ウィンドウ横パーツ描画#############################################################
             for w in range(self.window[i].width // 8 + 1):
@@ -11478,12 +11486,12 @@ class App:
                 pyxel.blt(self.window[i].posx + w * 8,self.window[i].posy,                         
                     IMG2,
                     96 + self.window[i].window_bg * 32,80,
-                    8,8, 13)
+                    SIZE_8,SIZE_8, 13)
                 #下部の横パーツ描画
                 pyxel.blt(self.window[i].posx + w * 8,self.window[i].posy + self.window[i].height,
                     IMG2,
                     96 + self.window[i].window_bg * 32,96,
-                    8,8, 13)
+                    SIZE_8,SIZE_8, 13)
             
             #ウィンドウ縦パーツ描画####################################################
             for h in range(self.window[i].height // 8 + 1):
@@ -11491,34 +11499,34 @@ class App:
                 pyxel.blt(self.window[i].posx                      ,self.window[i].posy + h * 8,
                     IMG2,
                     80 + self.window[i].window_bg * 32,88,
-                    8,8, 13)
+                    SIZE_8,SIZE_8, 13)
                 #右の縦パーツ描画
                 pyxel.blt(self.window[i].posx + self.window[i].width,self.window[i].posy + h * 8,
                     IMG2,
                     104 + self.window[i].window_bg * 32,88,
-                    8,8, 13)
+                    SIZE_8,SIZE_8, 13)
             
             #################ウィンドウ四隅の角の描画#####################################
             #左上のウィンドウパーツの描画
             pyxel.blt(self.window[i].posx                      ,self.window[i].posy                        ,
                 IMG2,
                 80  + self.window[i].window_bg * 32,80,
-                8,8,  13)
+                SIZE_8,SIZE_8,  13)
             #右上のウィンドウパーツの描画
             pyxel.blt(self.window[i].posx + self.window[i].width,self.window[i].posy                        ,
                 IMG2,
                 104 + self.window[i].window_bg * 32,80,
-                8,8,  13)
+                SIZE_8,SIZE_8,  13)
             #左下のウィンドウパーツの描画
             pyxel.blt(self.window[i].posx                      ,self.window[i].posy + self.window[i].height ,
                 IMG2,
                 80  + self.window[i].window_bg * 32,96,
-                8,8,  13)
+                SIZE_8,SIZE_8,  13)
             #左下のウィンドウパーツの描画
             pyxel.blt(self.window[i].posx + self.window[i].width ,self.window[i].posy + self.window[i].height  ,
                 IMG2,
                 104 + self.window[i].window_bg * 32,96,
-                8,8,  13)
+                SIZE_8,SIZE_8,  13)
             
             #タイトルバーの表示######################################
             if   self.window[i].window_title[LIST_WINDOW_TEXT_FLASH]  == MES_NO_FLASH:        #テキスト点滅無しの場合
@@ -11588,7 +11596,6 @@ class App:
                             if self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_LEFT_MARKER_FLAG]  == DISP_ON:
                                 self.shadow_drop_text(self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_LEFT_MARKER_X] ,self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_LEFT_MARKER_Y]   ,"<",col)
             
-            
             #ウィンドウタイプがテキスト編集の入力待ちのタイプはさらに入力メッセージ(edit_text)の文字列を表示する
             if     self.window[i].window_type   == WINDOW_TYPE_EDIT_TEXT:
                 if self.window[i].edit_text[LIST_WINDOW_TEXT]  != "": #ウィンドウテキストの表示をする 文字列が存在しないのなら次の行へとスキップループする
@@ -11606,9 +11613,24 @@ class App:
             #OKボタンの表示
             if self.window[i].ok_button_disp_flag == BUTTON_DISP_ON: #OKボタン表示フラグが立っているのならば・・・
                 if self.window[i].ok_button_size == WINDOW_BUTTON_SIZE_1TEXT: #ボタンサイズが半角テキストの場合
-                    u,v = 224 + (pyxel.frame_count // 3 % 8) * 4,184
-                    w,h = 4,6
+                    u,v = 224 + (pyxel.frame_count // 3 % 8) * SIZE_4,184
+                    w,h = SIZE_4,SIZE_6
                     pyxel.blt(self.window[i].posx + self.window[i].ok_button_x,self.window[i].posy + self.window[i].ok_button_y,IMG2,u,v,w,h,13)
+            
+            #グラフイックキャラ,グラフイックパターン,画像の表示などなど
+            if self.window[i].graph_list != "": #ウィンドウグラフイック表示を行うリストが空でないのならば表示を始める
+                for j in range(len(self.window[i].graph_list)): #graph_listの長さの分ループ処理する
+                    ox,oy  = self.window[i].graph_list[j][LIST_WINDOW_GRAPH_OX],self.window[i].graph_list[j][LIST_WINDOW_GRAPH_OY]#表示オフセット座標取得
+                    imgb   = self.window[i].graph_list[j][LIST_WINDOW_GRAPH_IMGB]#参照イメージバンク値取得
+                    u,v    = self.window[i].graph_list[j][LIST_WINDOW_GRAPH_U],self.window[i].graph_list[j][LIST_WINDOW_GRAPH_V]#グラフイックデーター収納座標取得
+                    w,h    = self.window[i].graph_list[j][LIST_WINDOW_GRAPH_W],self.window[i].graph_list[j][LIST_WINDOW_GRAPH_H]#幅と縦を取得
+                    colkey = self.window[i].graph_list[j][LIST_WINDOW_GRAPH_COLKEY]#透明色取得
+                    ani_num = self.window[i].graph_list[j][LIST_WINDOW_GRAPH_ANIME_FRAME_NUM]#アニメーション枚数取得
+                    ani_speed = self.window[i].graph_list[j][LIST_WINDOW_GRAPH_ANIME_SPEED]#アニメーションスピード取得
+                    u_offset = (pyxel.frame_count // ani_speed % ani_num) * w #アニメ枚数とアニメスピード、描画幅から参照すべきグラフイックデーター収納座標のオフセット値を求める
+                    open_rate_x = self.window[i].width / self.window[i].open_width   #開閉率(横軸)
+                    open_rate_y = self.window[i].height / self.window[i].open_height #開閉率(縦軸)
+                    pyxel.blt(self.window[i].posx + ox * open_rate_x,self.window[i].posy + oy * open_rate_y,imgb,u + u_offset,v,int(w * open_rate_x),int(h * open_rate_y),colkey) #グラフイック表示
 
     #セレクトカーソルの表示
     def draw_select_cursor(self):
