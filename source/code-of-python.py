@@ -75,6 +75,7 @@
 
 #todo900 BGMの作成(無理そう.........)
 #実装完了済み！
+#todo ウィンドウメニューのカーソルを動かしたときやボタンを押したときの効果音(SE)を実装 2021 06/20
 
 # from random import randint   #random.randint(n,m) と呼ぶと、nからm(m自身を含む)までの間の整数が 等しい確率で、ランダムに返される
 from random import random    #random.random() と呼ぶと、0から1の範囲(1は含まない)のランダムな実数が返される(主にパーティクル系で使用します)
@@ -607,31 +608,31 @@ CURSOR_TYPE_NO_DISP   = 0 #セレクトカーソルは表示しない
 CURSOR_TYPE_NORMAL    = 1 #通常の横向きのクロー回転アニメーションカーソル
 CURSOR_TYPE_UNDER_BAR = 2 #アンダーバータイプ
 #セレクトカーソルの移動音
-CURSOR_MOVE_SE_NORMAL   = 0
+CURSOR_MOVE_SE_NORMAL   = 16
 CURSOR_MOVE_SE_TYPE1    = 1
 CURSOR_MOVE_SE_TYPE2    = 2
 CURSOR_MOVE_SE_TYPE3    = 3
 CURSOR_MOVE_SE_TYPE4    = 4
 
-CURSOR_PUSH_SE_NORMAL   = 0
+CURSOR_PUSH_SE_NORMAL   = 19
 CURSOR_PUSH_SE_TYPE1    = 1
 CURSOR_PUSH_SE_TYPE2    = 2
 CURSOR_PUSH_SE_TYPE3    = 3
 CURSOR_PUSH_SE_TYPE4    = 4
 
-CURSOR_OK_SE_NORMAL     = 0
+CURSOR_OK_SE_NORMAL     = 17
 CURSOR_OK_SE_TYPE1      = 1
 CURSOR_OK_SE_TYPE2      = 2
 CURSOR_OK_SE_TYPE3      = 3
 CURSOR_OK_SE_TYPE4      = 4
 
-CURSOR_CANCEL_SE_NORMAL   = 0
+CURSOR_CANCEL_SE_NORMAL   = 18
 CURSOR_CANCEL_SE_TYPE1    = 1
 CURSOR_CANCEL_SE_TYPE2    = 2
 CURSOR_CANCEL_SE_TYPE3    = 3
 CURSOR_CANCEL_SE_TYPE4    = 4
 
-CURSOR_BOUNCE_SE_NORMAL     = 0
+CURSOR_BOUNCE_SE_NORMAL     = 20
 CURSOR_BOUNCE_SE_TYPE1      = 1
 CURSOR_BOUNCE_SE_TYPE2      = 2
 CURSOR_BOUNCE_SE_TYPE3      = 3
@@ -4915,8 +4916,7 @@ class App:
                     #まだボタンも押されておらず未決定状態なのでdecision_item_yはUNSELECTED,y最大項目数は3項目なので 3-1=2を代入,メニューの階層が増えたのでMENU_LAYER0からMENU_LAYER1にします
                     self.set_cursor_data(CURSOR_TYPE_NORMAL,CURSOR_MOVE_UD,92,71,STEP4,STEP7,0,0,0,0,UNSELECTED,UNSELECTED,0,3-1,0,MENU_LAYER1)
                     self.active_window_id = WINDOW_ID_SELECT_STAGE_MENU #このウィンドウIDを最前列アクティブなものとする
-                    if self.window[self.active_window_index].cursor_push_se == CURSOR_PUSH_SE_NORMAL:
-                        pyxel.play(0,19)#通常のカーソルボタンプッシュ音を鳴らす
+                    pyxel.play(0,self.window[self.active_window_index].cursor_push_se)#カーソルボタンプッシュ音を鳴らす
                 
             elif self.cursor_decision_item_y == 2:            #SELECT LOOPが押されて
                 if self.search_window_id(WINDOW_ID_SELECT_LOOP_MENU) == -1: #SELECT_LOOP_MENUウィンドウが存在しないのなら・・
@@ -4928,8 +4928,7 @@ class App:
                     #まだボタンも押されておらず未決定状態なのでdecision_item_yはUNSELECTED,y最大項目数は3項目なので 3-1=2を代入,メニューの階層が増えたのでMENU_LAYER0からMENU_LAYER1にします
                     self.set_cursor_data(CURSOR_TYPE_NORMAL,CURSOR_MOVE_UD,90+24,72+5,STEP4,STEP7,0,0,0,0,UNSELECTED,UNSELECTED,0,3-1,0,MENU_LAYER1)
                     self.active_window_id = WINDOW_ID_SELECT_LOOP_MENU  #このウィンドウIDを最前列でアクティブなものとする
-                    if self.window[self.active_window_index].cursor_push_se == CURSOR_PUSH_SE_NORMAL:
-                        pyxel.play(0,19)#通常のカーソルボタンプッシュ音を鳴らす
+                    pyxel.play(0,self.window[self.active_window_index].cursor_push_se)#カーソルボタンプッシュ音を鳴らす
                 
             elif self.cursor_decision_item_y == 3:            #BOSS MODEが押されて
                 if self.search_window_id(WINDOW_ID_BOSS_MODE_MENU) == -1: #BOSS MODEウィンドウが存在しないのなら・・
@@ -4941,8 +4940,7 @@ class App:
                     #まだボタンも押されておらず未決定状態なのでdecision_item_yはUNSELECTED,y最大項目数は2項目なので 2-1=1を代入,メニューの階層が増えたのでMENU_LAYER0からMENU_LAYER1にします
                     self.set_cursor_data(CURSOR_TYPE_NORMAL,CURSOR_MOVE_UD,96+5,69+self.boss_test_mode * STEP7,STEP4,STEP7,0,0,0,self.boss_test_mode,UNSELECTED,UNSELECTED,0,2-1,0,MENU_LAYER1)
                     self.active_window_id = WINDOW_ID_BOSS_MODE_MENU    #このウィンドウIDを最前列でアクティブなものとする
-                    if self.window[self.active_window_index].cursor_push_se == CURSOR_PUSH_SE_NORMAL:
-                        pyxel.play(0,19)#通常のカーソルボタンプッシュ音を鳴らす
+                    pyxel.play(0,self.window[self.active_window_index].cursor_push_se)#カーソルボタンプッシュ音を鳴らす
                 
             elif self.cursor_decision_item_y == 4:            #HITBOXが押されて....
                 if self.search_window_id(WINDOW_ID_HITBOX_MENU) == -1: #HITBOXウィンドウが存在しないのなら・・
@@ -4954,8 +4952,7 @@ class App:
                     #まだボタンも押されておらず未決定状態なのでdecision_item_yはUNSELECTED,y最大項目数は2項目なので 2-1=1を代入,メニューの階層が増えたのでMENU_LAYER0からMENU_LAYER1にします
                     self.set_cursor_data(CURSOR_TYPE_NORMAL,CURSOR_MOVE_UD,96+5,69+self.boss_collision_rect_display_flag * STEP7,STEP4,STEP7,0,0,0,self.boss_collision_rect_display_flag,UNSELECTED,UNSELECTED,0,2-1,0,MENU_LAYER1)
                     self.active_window_id = WINDOW_ID_HITBOX_MENU       #このウィンドウIDを最前列でアクティブなものとする
-                    if self.window[self.active_window_index].cursor_push_se == CURSOR_PUSH_SE_NORMAL:
-                        pyxel.play(0,19)#通常のカーソルボタンプッシュ音を鳴らす
+                    pyxel.play(0,self.window[self.active_window_index].cursor_push_se)#カーソルボタンプッシュ音を鳴らす
                 
             elif self.cursor_decision_item_y == 5:            #DIFFICULTYが押されて
                 if self.search_window_id(WINDOW_ID_SELECT_DIFFICULTY) == -1: #SELECT_DIFFICULTYウィンドウが存在しないのなら・・
@@ -4967,8 +4964,7 @@ class App:
                     #まだボタンも押されておらず未決定状態なのでdecision_item_yはUNSELECTED,y最大項目数は6項目なので 6-1=5を代入,メニューの階層が増えたのでMENU_LAYER0からMENU_LAYER1にします
                     self.set_cursor_data(CURSOR_TYPE_NORMAL,CURSOR_MOVE_UD,96,63 + self.game_difficulty * STEP7,STEP4,STEP7,0,0,0,self.game_difficulty,UNSELECTED,UNSELECTED,0,6-1,0,MENU_LAYER1)
                     self.active_window_id = WINDOW_ID_SELECT_DIFFICULTY #このウィンドウIDを最前列でアクティブなものとする
-                    if self.window[self.active_window_index].cursor_push_se == CURSOR_PUSH_SE_NORMAL:
-                        pyxel.play(0,19)#通常のカーソルボタンプッシュ音を鳴らす
+                    pyxel.play(0,self.window[self.active_window_index].cursor_push_se)#カーソルボタンプッシュ音を鳴らす
                 
             elif self.cursor_decision_item_y == 6:            #SCORE BOARDが押されて...
                 if self.search_window_id(WINDOW_ID_SCORE_BOARD) == -1: #SCORE_BOARDウィンドウが存在しないのなら・・
@@ -4979,8 +4975,7 @@ class App:
                     #まだボタンも押されておらず未決定状態なのでdecision_item_yはUNSELECTED,y最大項目数は1項目なので 1-1=0を代入,いま指し示しているページナンバー 0=very easy,#最大ページ数 難易度は0~5の範囲 なのでMAX5,メニューの階層が増えたのでMENU_LAYER0からMENU_LAYER1にします
                     self.set_cursor_data(CURSOR_TYPE_NO_DISP,CURSOR_MOVE_SHOW_PAGE,92,71,STEP4,STEP7,0,5,0,0,UNSELECTED,UNSELECTED,0,0,0,MENU_LAYER1)
                     self.active_window_id = WINDOW_ID_SCORE_BOARD       #このウィンドウIDを最前列でアクティブなものとする
-                    if self.window[self.active_window_index].cursor_push_se == CURSOR_PUSH_SE_NORMAL:
-                        pyxel.play(0,19)#通常のカーソルボタンプッシュ音を鳴らす
+                    pyxel.play(0,self.window[self.active_window_index].cursor_push_se)#カーソルボタンプッシュ音を鳴らす
                 
             elif self.cursor_decision_item_y == 7:            #NAME ENTRYが押されて...
                 if self.search_window_id(WINDOW_ID_INPUT_YOUR_NAME) == -1: #INPUT_YOUR_NAMEウィンドウが存在しないのなら・・
@@ -4993,8 +4988,7 @@ class App:
                     #まだボタンも押されておらず未決定状態なのでdecision_item_x,decision_item_yはUNSELECTED,最大項目数x軸方向は(8文字+OKボタンなので)合計9項目 9-1=8を代入,最大項目数y軸方向は0,メニューの階層が増えたのでMENU_LAYER0からMENU_LAYER1にします
                     self.set_cursor_data(CURSOR_TYPE_UNDER_BAR,CURSOR_MOVE_LR_SLIDER,100,66,STEP4,STEP7,0,0,0,0,UNSELECTED,UNSELECTED,9-1,0,0,MENU_LAYER1)
                     self.active_window_id = WINDOW_ID_INPUT_YOUR_NAME   #このウィンドウIDを最前列でアクティブなものとする
-                    if self.window[self.active_window_index].cursor_push_se == CURSOR_PUSH_SE_NORMAL:
-                        pyxel.play(0,19)#通常のカーソルボタンプッシュ音を鳴らす
+                    pyxel.play(0,self.window[self.active_window_index].cursor_push_se)#カーソルボタンプッシュ音を鳴らす
                 
             elif self.cursor_decision_item_y == 8:            #CONFIGが押されて
                 if self.search_window_id(WINDOW_ID_CONFIG) == -1: #SELECT_CONFIGウィンドウが存在しないのなら・・
@@ -5005,8 +4999,7 @@ class App:
                     #まだボタンも押されておらず未決定状態なのでdecision_item_yはUNSELECTED,y最大項目数は11項目なので11-1=10を代入,メニューの階層が増えたのでMENU_LAYER0からMENU_LAYER1にします
                     self.set_cursor_data(CURSOR_TYPE_NORMAL,CURSOR_MOVE_UD_SLIDER,9,17,STEP4,STEP9,0,0,0,0,UNSELECTED,UNSELECTED,0,11-1,0,MENU_LAYER1)
                     self.active_window_id = WINDOW_ID_CONFIG #このウィンドウIDを最前列でアクティブなものとする
-                    if self.window[self.active_window_index].cursor_push_se == CURSOR_PUSH_SE_NORMAL:
-                        pyxel.play(0,19)#通常のカーソルボタンプッシュ音を鳴らす
+                    pyxel.play(0,self.window[self.active_window_index].cursor_push_se)#カーソルボタンプッシュ音を鳴らす
                 
             elif self.cursor_decision_item_y == 9:            #REPLAYが押されたら
                 self.game_status = SCENE_SELECT_LOAD_SLOT           #ゲームステータスを「SCENE_SELECT_LOAD_SLOT」にしてロードデータスロットの選択に移る
@@ -5015,8 +5008,7 @@ class App:
                 #まだボタンも押されておらず未決定状態なのでdecision_item_yは-1最大項目数は「1」「2」「3」「4」「5」「6」「7」の7項目なので 7-1=6を代入,メニューの階層が増えたので,MENU_LAYER0からMENU_LAYER1にします
                 self.set_cursor_data(CURSOR_TYPE_NORMAL,CURSOR_MOVE_UD,67,55,STEP4,STEP7,0,0,0,0,UNSELECTED,UNSELECTED,0,6,0,MENU_LAYER1)
                 self.active_window_id = WINDOW_ID_SELECT_FILE_SLOT  #このウィンドウIDを最前列でアクティブなものとする
-                if self.window[self.active_window_index].cursor_push_se == CURSOR_PUSH_SE_NORMAL:
-                        pyxel.play(0,19)#通常のカーソルボタンプッシュ音を鳴らす
+                pyxel.play(0,self.window[self.active_window_index].cursor_push_se) #カーソルボタンプッシュ音を鳴らす
             
         elif self.cursor_menu_layer == 1: #メニューが1階層目の選択分岐
             if   self.cursor_pre_decision_item_y == 1 and self.cursor_decision_item_y == 0:
@@ -5108,8 +5100,7 @@ class App:
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
-                if self.window[self.active_window_index].cursor_cancel_se == CURSOR_CANCEL_SE_NORMAL:
-                        pyxel.play(0,18)#通常のカーソルキャンセル音を鳴らす
+                pyxel.play(0,self.window[self.active_window_index].cursor_cancel_se)#カーソルキャンセル音を鳴らす
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
             elif self.cursor_pre_decision_item_y == 3 and self.cursor_decision_item_y == 1:
                 #「BOSS MODE」→「ON」
@@ -5125,8 +5116,7 @@ class App:
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
-                if self.window[self.active_window_index].cursor_ok_se == CURSOR_OK_SE_NORMAL:
-                        pyxel.play(0,17)#通常のカーソルOK音を鳴らす
+                pyxel.play(0,self.window[self.active_window_index].cursor_ok_se)#カーソルOK音を鳴らす
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
                 
             elif self.cursor_pre_decision_item_y == 4 and self.cursor_decision_item_y == 0:
@@ -5141,8 +5131,7 @@ class App:
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
-                if self.window[self.active_window_index].cursor_cancel_se == CURSOR_CANCEL_SE_NORMAL:
-                        pyxel.play(0,18)#通常のカーソルキャンセル音を鳴らす
+                pyxel.play(0,self.window[self.active_window_index].cursor_cancel_se)#カーソルキャンセル音を鳴らす
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
             elif self.cursor_pre_decision_item_y == 4 and self.cursor_decision_item_y == 1:
                 #「HITBOX」→「ON」
@@ -5158,8 +5147,7 @@ class App:
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
-                if self.window[self.active_window_index].cursor_ok_se == CURSOR_OK_SE_NORMAL:
-                        pyxel.play(0,17)#通常のカーソルOK音を鳴らす
+                pyxel.play(0,self.window[self.active_window_index].cursor_ok_se)#カーソルOK音を鳴らす
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
                 
             elif self.cursor_pre_decision_item_y == 5 and self.cursor_decision_item_y == 0:
@@ -5176,8 +5164,7 @@ class App:
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
-                if self.window[self.active_window_index].cursor_ok_se == CURSOR_OK_SE_NORMAL:
-                        pyxel.play(0,17)#通常のカーソルOK音を鳴らす
+                pyxel.play(0,self.window[self.active_window_index].cursor_ok_se)#カーソルOK音を鳴らす
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
             elif self.cursor_pre_decision_item_y == 5 and self.cursor_decision_item_y == 1:
                 #「DIFFICULTY」→「EASY」
@@ -5193,8 +5180,7 @@ class App:
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
-                if self.window[self.active_window_index].cursor_ok_se == CURSOR_OK_SE_NORMAL:
-                        pyxel.play(0,17)#通常のカーソルOK音を鳴らす
+                pyxel.play(0,self.window[self.active_window_index].cursor_ok_se)#カーソルOK音を鳴らす
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
             elif self.cursor_pre_decision_item_y == 5 and self.cursor_decision_item_y == 2:
                 #「DIFFICULTY」→「NORMAL」
@@ -5208,8 +5194,7 @@ class App:
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
-                if self.window[self.active_window_index].cursor_ok_se == CURSOR_OK_SE_NORMAL:
-                        pyxel.play(0,17)#通常のカーソルOK音を鳴らす
+                pyxel.play(0,self.window[self.active_window_index].cursor_ok_se)#カーソルOK音を鳴らす
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
             elif self.cursor_pre_decision_item_y == 5 and self.cursor_decision_item_y == 3:
                 #「DIFFICULTY」→「HARD」
@@ -5225,8 +5210,7 @@ class App:
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
-                if self.window[self.active_window_index].cursor_ok_se == CURSOR_OK_SE_NORMAL:
-                        pyxel.play(0,17)#通常のカーソルOK音を鳴らす
+                pyxel.play(0,self.window[self.active_window_index].cursor_ok_se)#カーソルOK音を鳴らす
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
             elif self.cursor_pre_decision_item_y == 5 and self.cursor_decision_item_y == 4:
                 #「DIFFICULTY」→「VERY_HARD」
@@ -5242,8 +5226,7 @@ class App:
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
-                if self.window[self.active_window_index].cursor_ok_se == CURSOR_OK_SE_NORMAL:
-                        pyxel.play(0,17)#通常のカーソルOK音を鳴らす
+                pyxel.play(0,self.window[self.active_window_index].cursor_ok_se)#カーソルOK音を鳴らす
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
             elif self.cursor_pre_decision_item_y == 5 and self.cursor_decision_item_y == 5:
                 #「DIFFICULTY」→「INSAME」
@@ -5259,8 +5242,7 @@ class App:
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
-                if self.window[self.active_window_index].cursor_ok_se == CURSOR_OK_SE_NORMAL:
-                        pyxel.play(0,17)#通常のカーソルOK音を鳴らす
+                pyxel.play(0,self.window[self.active_window_index].cursor_ok_se)#カーソルOK音を鳴らす
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
                 
             elif self.cursor_pre_decision_item_y == 6 and self.cursor_page == 0 and self.cursor_pre_page != self.cursor_page: #前に表示していたページ数と現在のページ数に変化があった時だけ
@@ -5317,6 +5299,7 @@ class App:
                 self.all_move_window(WINDOW_ID_SCORE_BOARD,0,0.3,0,1.2) #すべてのSCORE_BOARDウィンドウを下方向にフッ飛ばしていく
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)               #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1                    #前回選択したアイテムも未決定に
+                pyxel.play(0,self.window[self.active_window_index].cursor_cancel_se)#カーソルキャンセル音を鳴らす
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
                 
             elif self.cursor_pre_decision_item_y == 7 and self.cursor_decision_item_x == 8:
@@ -5327,6 +5310,7 @@ class App:
                 self.all_move_window(WINDOW_ID_INPUT_YOUR_NAME,0.2,0.3,1.2,1.2) #すべてのINPUT_YOUR_NAMEウィンドウを右下方向にフッ飛ばしていく
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
+                pyxel.play(0,self.window[self.active_window_index].cursor_ok_se)#カーソルOK音を鳴らす
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
                 
             elif self.cursor_pre_decision_item_y == 8 and self.cursor_decision_item_y == 10:
@@ -5341,6 +5325,7 @@ class App:
                 self.save_system_data()                            #システムデータをセーブします
                 pyxel.load("assets/graphic/min-sht2.pyxres") #タイトル＆ステージ1＆2のリソースファイルを読み込む
                 self.cursor_pre_decision_item_y = -1
+                pyxel.play(0,self.window[self.active_window_index].cursor_cancel_se)#カーソルキャンセル音を鳴らす
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
 
     #!ゲームスタート時の初期化#########################################
@@ -10058,8 +10043,7 @@ class App:
             self.cursor_move_data = PAD_UP
             if self.cursor_move_direction == CURSOR_MOVE_UD or self.cursor_move_direction == CURSOR_MOVE_UD_SLIDER or self.cursor_move_direction == CURSOR_MOVE_UD_SLIDER_BUTTON:
                 if self.cursor_item_y != 0: #指し示しているアイテムナンバーが一番上の項目の0以外なら上方向にカーソルは移動できるので・・・
-                    if self.window[self.active_window_index].cursor_move_se == CURSOR_MOVE_SE_NORMAL:
-                        pyxel.play(0,16)#通常カーソル移動音を鳴らす
+                    pyxel.play(0,self.window[self.active_window_index].cursor_move_se)#カーソル移動音を鳴らす
                     
                     for ty in range(len(self.window[self.active_window_index].text)): #textの長さの分ループ処理する
                         if self.window[self.active_window_index].text[self.cursor_item_y-1][LIST_WINDOW_TEXT] == "": #カーソル移動先にテキストが存在しない場合は・・
@@ -10070,14 +10054,13 @@ class App:
                             self.cursor_y -= self.cursor_step_y #y座標をcursor_step_y（初期値は1キャラ7ドット）減算して上に移動させる
                             self.cursor_item_y -= 1 #現在指し示しているアイテムナンバーを1減らす
                             break #選択すべき項目テキストが見つかったのでループから脱出！
+                    
                 else:
-                    if self.window[self.active_window_index].cursor_bounce_se == CURSOR_BOUNCE_SE_NORMAL:
-                        pyxel.play(0,20)#通常カーソル跳ね返り音を鳴らす
+                    pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
                 
             elif self.cursor_move_direction == CURSOR_MOVE_LR_SLIDER:
                 if self.cursor_item_x != self.cursor_max_item_x: #指し示しているアイテムナンバーx軸方向が最大項目数の場合はOKアイコンなので何もしない(それ以外の時は処理をする)
-                    if self.window[self.active_window_index].cursor_move_se == CURSOR_MOVE_SE_NORMAL:
-                        pyxel.play(0,16)#通常カーソル移動音を鳴らす
+                    pyxel.play(0,self.window[self.active_window_index].cursor_push_se)#カーソルプッシュを鳴らす
                     
                     if self.window[self.active_window_index].edit_text[LIST_WINDOW_TEXT] != "": #テキストリストに何かしらの文字列が入っている時のみ処理をする
                         text = self.window[self.active_window_index].edit_text[LIST_WINDOW_TEXT]
@@ -10087,17 +10070,17 @@ class App:
                         right_text = text[self.cursor_item_x+1:] #カーソル位置から文字列の最後まで切り出す(カーソルの右方向の文字列の切り出し)
                         new_text = left_text + chr(character) + right_text #新しい文字列を作り出す(pythonの文字列はimmutable(変更不能)らしいので新しい文字列変数を作ってそれを代入するしかない？？のかな？よくわかんない)
                         self.window[self.active_window_index].edit_text[LIST_WINDOW_TEXT] = new_text
+                    
                 else:
-                    if self.window[self.active_window_index].cursor_bounce_se == CURSOR_BOUNCE_SE_NORMAL:
-                        pyxel.play(0,20)#通常カーソル跳ね返り音を鳴らす
+                    pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
+        
         
         # 下入力されたら  y座標を  +7する(1キャラ分)
         if pyxel.btnp(pyxel.KEY_DOWN) or pyxel.btnp(pyxel.GAMEPAD_1_DOWN) or pyxel.btnp(pyxel.GAMEPAD_2_DOWN):
             self.cursor_move_data = PAD_DOWN
             if self.cursor_move_direction == CURSOR_MOVE_UD or self.cursor_move_direction == CURSOR_MOVE_UD_SLIDER or self.cursor_move_direction == CURSOR_MOVE_UD_SLIDER_BUTTON:
                 if self.cursor_item_y != self.cursor_max_item_y: #指し示しているアイテムナンバーが最大項目数でないのなら下方向にカーソルは移動できるので・・
-                    if self.window[self.active_window_index].cursor_move_se == CURSOR_MOVE_SE_NORMAL:
-                        pyxel.play(0,16)#通常カーソル移動音を鳴らす
+                    pyxel.play(0,self.window[self.active_window_index].cursor_move_se)#カーソル移動音を鳴らす
                     
                     for ty in range(len(self.window[self.active_window_index].text)): #textの長さの分ループ処理する
                         if self.window[self.active_window_index].text[self.cursor_item_y+1][LIST_WINDOW_TEXT] == "": #カーソル移動先にテキストが存在しない場合は・・
@@ -10108,14 +10091,14 @@ class App:
                             self.cursor_y += self.cursor_step_y #y座標をcursor_step_y（初期値は1キャラ7ドット）加算して下に移動させる
                             self.cursor_item_y += 1 #現在指し示しているアイテムナンバーを1増やす
                             break #選択すべき項目テキストが見つかったのでループから脱出！
+                    
                 else:
-                    if self.window[self.active_window_index].cursor_bounce_se == CURSOR_BOUNCE_SE_NORMAL:
-                        pyxel.play(0,20)#通常カーソル跳ね返り音を鳴らす
+                    pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
+                
                 
             elif self.cursor_move_direction == CURSOR_MOVE_LR_SLIDER:
                 if self.cursor_item_x != self.cursor_max_item_x: #指し示しているアイテムナンバーx軸方向が最大項目数の場合はOKアイコンなので何もしない(それ以外の時は処理をする)
-                    if self.window[self.active_window_index].cursor_move_se == CURSOR_MOVE_SE_NORMAL:
-                        pyxel.play(0,16)#通常カーソル移動音を鳴らす
+                    pyxel.play(0,self.window[self.active_window_index].cursor_push_se)#カーソルプッシュ音を鳴らす
                     
                     if self.window[self.active_window_index].edit_text[LIST_WINDOW_TEXT] != "": #テキストリストに何かしらの文字列が入っている時のみ処理をする
                         text = self.window[self.active_window_index].edit_text[LIST_WINDOW_TEXT]
@@ -10125,27 +10108,36 @@ class App:
                         right_text = text[self.cursor_item_x+1:] #カーソル位置から文字列の最後まで切り出す(カーソルの右方向の文字列の切り出し)
                         new_text = left_text + chr(character) + right_text #新しい文字列を作り出す(pythonの文字列はimmutable(いみゅーたぶる変更不能)らしいので新しい文字列変数を作ってそれを代入するしかない？？のかな？よくわかんない)
                         self.window[self.active_window_index].edit_text[LIST_WINDOW_TEXT] = new_text
+                    
                 else:
-                    if self.window[self.active_window_index].cursor_bounce_se == CURSOR_BOUNCE_SE_NORMAL:
-                        pyxel.play(0,20)#通常カーソル跳ね返り音を鳴らす
+                    pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
         
         #右入力されたらcursor_pageを +1する
         if pyxel.btnp(pyxel.KEY_RIGHT) or pyxel.btnp(pyxel.GAMEPAD_1_RIGHT) or pyxel.btnp(pyxel.GAMEPAD_2_RIGHT) or pyxel.btnp(pyxel.GAMEPAD_1_RIGHT_SHOULDER) or pyxel.btnp(pyxel.GAMEPAD_2_RIGHT_SHOULDER):
             self.cursor_move_data = PAD_RIGHT
             if   self.cursor_move_direction == CURSOR_MOVE_SHOW_PAGE:
                 self.cursor_page += 1 #ページ数インクリメント
+                pyxel.play(0,self.window[self.active_window_index].cursor_move_se)#カーソル移動音を鳴らす
                 if self.cursor_page > self.cursor_page_max: #カーソルページ数が最大ページ数を超えたのなら
                     self.cursor_page = 0                    #ページ数は0にする
+                
             elif self.cursor_move_direction == CURSOR_MOVE_LR_SLIDER:
                 if self.cursor_item_x != self.cursor_max_item_x: #指し示しているアイテムナンバーx軸方向が最大項目数でないのなら右方向にカーソルは移動できるので・・
                     self.cursor_x += self.cursor_step_x #x座標をcursor_step_x（初期値は1文字分4ドット）加算してカーソルを右に移動させる
                     self.cursor_item_x += 1
+                    pyxel.play(0,self.window[self.active_window_index].cursor_move_se)#カーソル移動音を鳴らす
+                else:
+                    pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
+                
             elif self.cursor_move_direction == CURSOR_MOVE_UD_SLIDER:
                 flag_index = self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ] #flag_indexに編集対象となるオブジェクトが入ったリストインデックス値が入ります
                 k = self.window[self.active_window_index].flag_list[flag_index] #Kに現在表示されている数値が代入されます(on/offの表示の場合はon=1 off=0が代入されます)
                 if self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_TYPE] == OPE_OBJ_TYPE_NUM:#操作テキストオブジェクトが数値を左右キーで増減させるタイプの場合は
                     if k < self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_MAX_NUM]: #kがLIST_WINDOW_TEXT_OPE_OBJ_MAX_NUMより小さい時は
                         k += 1 #オブジェクトの数値をインクリメント
+                        pyxel.play(0,self.window[self.active_window_index].cursor_push_se)#カーソルプッシュ音を鳴らす
+                    else:
+                        pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
                     
                     if  k == self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_MAX_NUM]:  #kが最大値の場合は
                         rd = DISP_OFF #右矢印(数値を増加できるかどうかを指し示す矢印）表示フラグoff
@@ -10167,18 +10159,24 @@ class App:
                         or self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ] == LIST_WINDOW_FLAG_SE_VOL:
                         self.restore_master_flag_list()
                         pygame.mixer.music.set_volume(self.master_bgm_vol / 100)
-                    
+        
         #左入力されたらcursor_pageを -1する
         if pyxel.btnp(pyxel.KEY_LEFT) or pyxel.btnp(pyxel.GAMEPAD_1_LEFT) or pyxel.btnp(pyxel.GAMEPAD_2_LEFT) or pyxel.btnp(pyxel.GAMEPAD_2_LEFT) or pyxel.btnp(pyxel.GAMEPAD_1_LEFT_SHOULDER) or pyxel.btnp(pyxel.GAMEPAD_2_LEFT_SHOULDER):
             self.cursor_move_data = PAD_LEFT
             if self.cursor_move_direction == CURSOR_MOVE_SHOW_PAGE:
                 self.cursor_page -= 1 #ページ数デクリメント
+                pyxel.play(0,self.window[self.active_window_index].cursor_move_se)#カーソル移動音を鳴らす
                 if self.cursor_page < 0:                    #カーソルページ数が0より小さくなったのなら
                     self.cursor_page = self.cursor_page_max                    #ページ数はmaxにする
+                
             elif self.cursor_move_direction == CURSOR_MOVE_LR_SLIDER:
                 if self.cursor_item_x != 0: #指し示しているアイテムナンバーx軸方向が0以外ならでないのなら左方向にカーソルは移動できるので・・
                     self.cursor_x -= self.cursor_step_x #x座標をcursor_step_x（初期値は1文字分4ドット）加算してカーソルを左に移動させる
                     self.cursor_item_x -= 1
+                    pyxel.play(0,self.window[self.active_window_index].cursor_move_se)#カーソル移動音を鳴らす
+                else:
+                    pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
+                
             elif self.cursor_move_direction == CURSOR_MOVE_UD_SLIDER:
                 flag_index = self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ] #flag_indexに編集対象となるオブジェクトが入ったリストインデックス値が入ります
                 k = self.window[self.active_window_index].flag_list[flag_index] #Kに現在表示されている数値が代入されます(on/offの表示の場合はon=1 off=0が代入されます)
@@ -10186,6 +10184,9 @@ class App:
                 if self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_TYPE]  == OPE_OBJ_TYPE_NUM: #操作テキストオブジェクトが数値を左右キーで増減させるタイプの場合は
                     if k > self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_MIN_NUM]: #kがLIST_WINDOW_TEXT_OPE_OBJ_MIN_NUMより大きい時は
                         k -= 1 #オブジェクトの数値をデクリメント
+                        pyxel.play(0,self.window[self.active_window_index].cursor_push_se)#カーソルプッシュ音を鳴らす
+                    else:
+                        pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
                     
                     if  k == self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_MAX_NUM]:  #kが最大値の場合は
                         rd = DISP_OFF #右矢印(数値を増加できるかどうかを指し示す矢印）表示フラグoff
@@ -10221,11 +10222,9 @@ class App:
                         k = 1
                     else:
                         k = 0
-                    self.window[self.active_window_index].flag_list[flag_index] = k #フラグ＆数値リストを更新する
                     
-                    if self.window[self.active_window_index].cursor_bounce_se == CURSOR_PUSH_SE_NORMAL:
-                        pyxel.play(0,17)#通常のカーソルボタンプッシュ音を鳴らす
-
+                    self.window[self.active_window_index].flag_list[flag_index] = k #フラグ＆数値リストを更新する
+                    pyxel.play(0,self.window[self.active_window_index].cursor_ok_se)#カーソルok音を鳴らす
 
     #リプレイデータの記録   自動移動モードの時とステージクリアのブーストの時とリプレイ再生中の時はリプレイデータを記録しません
     def update_record_replay_data(self):
