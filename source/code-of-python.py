@@ -75,7 +75,7 @@
 
 #todo900 BGMの作成(無理そう.........)
 #実装完了済み！
-#todo ウィンドウメニューのカーソルを動かしたときやボタンを押したときの効果音(SE)を実装 2021 06/20
+
 
 # from random import randint   #random.randint(n,m) と呼ぶと、nからm(m自身を含む)までの間の整数が 等しい確率で、ランダムに返される
 from random import random    #random.random() と呼ぶと、0から1の範囲(1は含まない)のランダムな実数が返される(主にパーティクル系で使用します)
@@ -483,7 +483,7 @@ WINDOW_BUTTON_SIZE_1X1    = 0      #1x1キャラ分(8x8ドット)
 WINDOW_BUTTON_SIZE_1TEXT  = 1      #半角文字サイズ4*6ドット
 WINDOW_BUTTON_SIZE_1X2    = 2      #1x2キャラ分(8x16ドット)
 
-#メッセージ,ボタンの表示の仕方 windowクラスのwindow[i].window_title[LIST_WINDOW_TEXT_ALIGN],window[i].text[j][LIST_WINDOW_TEXT_ALIGN]に入ります
+#メッセージ,ボタンの表示の仕方 windowクラスのwindow[i].title_text[LIST_WINDOW_TEXT_ALIGN],またはwindow[i].item_text[j][LIST_WINDOW_TEXT_ALIGN]に入ります
 BUTTON_DISP_OFF    = 0 #0=表示しない
 DISP_OFF           = 0 #0=表示しない
 
@@ -494,7 +494,7 @@ DISP_CENTER        = 2 #2=中央表示
 DISP_LEFT_ALIGN    = 3 #3=左揃え
 DISP_RIGHT_ALIGN   = 4 #4=右揃え
 
-#ウィンドウテキストのリストの2次元配列のインデックスナンバーとして使用する定数定義 windowクラスのwindow[i].window_title[ここで定義した定数],またはwindow[i].text[j][ここで定義した定数]に入ります
+#ウィンドウテキストのリストの2次元配列のインデックスナンバーとして使用する定数定義 windowクラスのwindow[i].title_text[ここで定義した定数],またはwindow[i].item_text[j][ここで定義した定数]に入ります
 LIST_WINDOW_TEXT                    =  0 #ウィンドウテキスト
 LIST_WINDOW_TEXT_ALIGN              =  1 #ウィンドウテキストの揃え方(アライメント)(整列の仕方)
 LIST_WINDOW_TEXT_OX                 =  2 #ウィンドウテキスト表示x軸のオフセット値
@@ -549,19 +549,19 @@ LIST_WINDOW_TEXT_OPE_OBJ_RIGHT_MARKER_Y = 42
 LIST_WINDOW_TEXT_OPE_OBJ_LEFT_MARKER_X  = 43 #対象が数値とかで増加減出来るかどうかの、左矢印の座標(x,y)
 LIST_WINDOW_TEXT_OPE_OBJ_LEFT_MARKER_Y  = 44
 
-#ウィンドウフラグリストの２次元配列のインデックスナンバーとして使用する定数定義 windowクラスのflag_list[i][ここで定義した定数]に入ります
+#ウィンドウフラグリストの２次元配列のインデックスナンバーとして使用する定数定義 windowクラスのwindow[i].flag_list[ここで定義した定数]に入ります
 LIST_WINDOW_FLAG_DEBUG_MODE        =  0 #デバッグモードのon/offフラグ
-LIST_WINDOW_FLAG_GOD_MODE          =  1 #
-LIST_WINDOW_FLAG_HIT_BOX           =  2 #
-LIST_WINDOW_FLAG_BOSS_MODE         =  3 #
-LIST_WINDOW_FLAG_START_STAGE       =  4 #
-LIST_WINDOW_FLAG_START_LOOP        =  5 #
-LIST_WINDOW_FLAG_START_AGE         =  6 #
-LIST_WINDOW_FLAG_DIFFICULTY        =  7 #
-LIST_WINDOW_FLAG_SCREEN_MODE       =  8 #
-LIST_WINDOW_FLAG_BGM_VOL           =  9 #
-LIST_WINDOW_FLAG_SE_VOL            = 10 #
-LIST_WINDOW_FLAG_CTRL_TYPE         = 11 #
+LIST_WINDOW_FLAG_GOD_MODE          =  1 #ゴッドモードの
+LIST_WINDOW_FLAG_HIT_BOX           =  2 #ヒットボックス(当たり判定)の
+LIST_WINDOW_FLAG_BOSS_MODE         =  3 #ボスモード(ボス戦闘のみのモード)の
+LIST_WINDOW_FLAG_START_STAGE       =  4 #開始ステージ数
+LIST_WINDOW_FLAG_START_LOOP        =  5 #開始ループ数
+LIST_WINDOW_FLAG_START_AGE         =  6 #開始時代数
+LIST_WINDOW_FLAG_DIFFICULTY        =  7 #難易度
+LIST_WINDOW_FLAG_SCREEN_MODE       =  8 #画面スクリーンモード(ウィンドウ表示、全画面表示切替)
+LIST_WINDOW_FLAG_BGM_VOL           =  9 #BGMボリューム値
+LIST_WINDOW_FLAG_SE_VOL            = 10 #SE(サウンドエフェクト)ボリューム値
+LIST_WINDOW_FLAG_CTRL_TYPE         = 11 #パッド入力パターン
 LIST_WINDOW_FLAG_                  = 12 #
 LIST_WINDOW_FLAG_                  = 13 #
 LIST_WINDOW_FLAG_                  = 14 #
@@ -575,7 +575,7 @@ LIST_WINDOW_FLAG_                  = 21 #
 LIST_WINDOW_FLAG_                  = 22 #
 LIST_WINDOW_FLAG_                  = 23 #
 LIST_WINDOW_FLAG_                  = 23 #
-#ウィンドウグラフイック群リストの２次元配列のインデックスナンバーとして使用する定数定義 windowクラスのgraph_list[i][ここで定義した定数]に入ります
+#ウィンドウグラフイック群リストの２次元配列のインデックスナンバーとして使用する定数定義 windowクラスのwindow[i].graph_list[ここで定義した定数]に入ります
 LIST_WINDOW_GRAPH_OX               =  0 #グラフイックキャラを表示する座標(ox,oy)ウィンドウ表示座標からのオフセット値となります
 LIST_WINDOW_GRAPH_OY               =  1 #
 LIST_WINDOW_GRAPH_IMGB             =  2 #表示するグラフイックキャラが入っているイメージバンクの数値
@@ -587,8 +587,32 @@ LIST_WINDOW_GRAPH_COLKEY           =  7 #透明色の指定
 LIST_WINDOW_GRAPH_ANIME_FRAME_NUM  =  8 #アニメーションパターンの枚数(1の場合はアニメーション無し)
 LIST_WINDOW_GRAPH_ANIME_SPEED      =  9 #アニメーションのスピード(1が速く数値が増えるにつれて遅くなる4位が良いかも？)
 
+#ウィンドウスクリプトリストのリストの2次元配列のインデックスナンバーとして使用する定数定義 windowクラスのwindow[i].script[ここで定義した定数]に入ります
+LIST_WINDOW_SCRIPT_TEXT            =  0 #スクリプト文本文が入ります(文字列型)
+LIST_WINDOW_SCRIPT_OX              =  1 #スクリプト内のテキストの表示オフセット座標(OX,OY)
+LIST_WINDOW_SCRIPT_OY              =  2 #
+LIST_WINDOW_SCRIPT_DISP_TYPE       =  3 #スクリプトテキストの表示タイプ
+LIST_WINDOW_SCRIPT_DISP_SPEED      =  4 #スクリプトテキストの表示スピード
+LIST_WINDOW_SCRIPT_TEXT_WIDTH      =  5 #現在のスクリプトテキストの最大表示幅(はみ出したとき折り返すかどうかは〇〇の値で判断する)
+LIST_WINDOW_SCRIPT_TEXT_HEIGHT     =  6 #現在のスクリプトテキストの最大表示行数
+LIST_WINDOW_SCRIPT_ALIGN           =  7 #現在のスクリプトテキストの表示揃えの仕方
+LIST_WINDOW_SCRIPT_COLOR           =  8 #現在のスクリプトテキストの表示色
+LIST_WINDOW_SCRIPT_SCROLL_TYPE     =  9 #現在のスクリプトテキストのスクロールタイプ
+LIST_WINDOW_SCRIPT_SCROLL_SPEED    = 10 #現在のスクリプトテキストのスクロールスピード
+LIST_WINDOW_SCRIPT_                = 11 #
+LIST_WINDOW_SCRIPT_                = 12 #
+LIST_WINDOW_SCRIPT_                = 13 #
+LIST_WINDOW_SCRIPT_                = 14 #
+LIST_WINDOW_SCRIPT_                = 15 #
+LIST_WINDOW_SCRIPT_                = 16 #
+LIST_WINDOW_SCRIPT_                = 17 #
+LIST_WINDOW_SCRIPT_                = 18 #
+LIST_WINDOW_SCRIPT_                = 19 #
+LIST_WINDOW_SCRIPT_                = 20 #
 
-#メッセージを点滅させるかのフラグ windowクラスのwindow[i].text[j][LIST_WINDOW_TEXT_FLASH]に入ります
+
+
+#メッセージを点滅させるかのフラグ windowクラスのwindow[i].item_text[j][LIST_WINDOW_TEXT_FLASH]に入ります
 MES_NO_FLASH         = 0 #点滅しない
 MES_BLINKING_FLASH   = 1 #点滅
 MES_RED_FLASH        = 2 #赤い点滅
@@ -597,7 +621,7 @@ MES_YELLOW_FLASH     = 4 #黄色で点滅
 MES_MONOCHROME_FLASH = 5 #白黒で点滅
 MES_RAINBOW_FLASH    = 6 #虹色に点滅
 
-#ウィンドウテキストで編集対象となるオブジェクトの種類分類ですwindow[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TYPE]に入ります
+#ウィンドウテキストで編集対象となるオブジェクトの種類分類ですwindowクラスのwindow[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_TYPE]に入ります
 OPE_OBJ_TYPE_NONE    = 0 #操作テキストオブジェクトの指定は無し
 OPE_OBJ_TYPE_ON_OFF  = 1 #操作テキストオブジェクトは「ON」「OFF」の二つから選ぶシンプルなタイプです
 OPE_OBJ_TYPE_NUM     = 2 #操作テキストオブジェクトは数値を増減させて選択するタイプ
@@ -607,7 +631,7 @@ OPE_OBJ_MULTI_ITEM   = 3 #操作テキストオブジェクトは多項目から
 CURSOR_TYPE_NO_DISP   = 0 #セレクトカーソルは表示しない
 CURSOR_TYPE_NORMAL    = 1 #通常の横向きのクロー回転アニメーションカーソル
 CURSOR_TYPE_UNDER_BAR = 2 #アンダーバータイプ
-#セレクトカーソルの移動音
+#セレクトカーソルの移動音 pyxelのsndの番号を使って定義してね～～♪
 CURSOR_MOVE_SE_NORMAL   = 16
 CURSOR_MOVE_SE_TYPE1    = 1
 CURSOR_MOVE_SE_TYPE2    = 2
@@ -2082,9 +2106,10 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         self.window_status = 0      #ウィンドウの現在の状態を表しますステータスです WINDOW_OPEN=ウィンドウ開き中 WINDOW_CLOSE=ウィンドウ閉じ中
                                     #                                           WINDOW_WRITE_MESSAGE=メッセージテキスト表示中
         self.between_line = 0       #テキスト表示時の行と行の間隔(通常は7ドット)
-        self.window_title = []                      #タイトルが入ります
-        self.text         = [[] for i in range(12)] #テキストが入ります 
+        self.title_text = []                      #タイトルが入ります
+        self.item_text    = [[] for i in range(12)] #アイテムテキスト(選択メニューの項目文章)が入ります 
         self.edit_text    = []                      #編集できるテキストが入ります
+        self.script       = []                      #スクリプト(書記系)が入ります
         
         self.posx = 0          #現在のウィンドウの座標(posx,posy)
         self.posy = 0
@@ -2123,20 +2148,21 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         self.cursor_cancel_se = 0  #カーソルでキャンセルボタンを押したときの効果音
         self.cursor_bounce_se = 0  #カーソルが障害物に当たった時の跳ね返り効果音
         
-        self.ship_list =[]
-        self.weapon_list = []
-        self.sub_weapon_list = []
-        self.missile_list = []
-        self.medal_list = []
-        self.item_list    = [[] for i in range(128)]
-        self.flag_list    = [[] for i in range(128)]
-        self.graph_list   = [[] for i in range(128)]
+        self.ship_list        = []
+        self.weapon_list      = []
+        self.sub_weapon_list  = []
+        self.missile_list     = []
+        self.medal_list       = []
+        self.item_list        = [[] for i in range(128)]
+        self.flag_list        = [[] for i in range(128)]
+        self.graph_list       = [[] for i in range(128)]
     def update(self,window_id,window_id_sub,window_type,window_bg,window_status,\
         between_line,\
         
-        window_title,\
-        text,\
+        title_text,\
+        item_text,\
         edit_text,\
+        script,\
         
         x,y,dx,dy,width,height,open_width,open_height,change_x,change_y,open_speed,close_speed,open_accel,close_accel,marker,color,\
         vx,vy,vx_accel,vy_accel,\
@@ -2152,9 +2178,10 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         
         self.between_line = between_line
         
-        self.window_title = window_title
-        self.text = text
-        self.edit_text = edit_text
+        self.title_text   = title_text
+        self.item_text    = item_text
+        self.edit_text    = edit_text
+        self.script       = script
         
         self.posx = x
         self.posy = y
@@ -4348,7 +4375,7 @@ class App:
             ["REPLAY",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             ["STATUS",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
             
-            [[""]],\
+            [[""]],[],\
             44,34,44,34,   0,0,  8*8,9*8+5,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
@@ -4368,7 +4395,7 @@ class App:
             [ "2",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             [ "3",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
             
-            [[""]],\
+            [[""]],[],\
             90,60,90,60,   0,0,  2*8,5*8,   2,2, 1,0.5,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
@@ -4388,7 +4415,7 @@ class App:
             [ "2",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             [ "3",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
             
-            [[""]],\
+            [[""]],[],\
             90+22,60+6,90+22,60+6,   0,0,  2*8,5*8,   2,2, 1,0.5,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
@@ -4407,7 +4434,7 @@ class App:
             [[".",DISP_CENTER,0,0,7,MES_NO_FLASH,0,0,0,0,   0,0,0,0,0,0,0,0,0,0,   LIST_WINDOW_FLAG_BOSS_MODE,0,"OFF",DISP_CENTER,0, 0,0, 7,10],\
             [ ".",DISP_CENTER,0,0,7,MES_NO_FLASH,0,0,0,0,   0,0,0,0,0,0,0,0,0,0,   LIST_WINDOW_FLAG_BOSS_MODE,0,"ON" ,DISP_CENTER,1, 0,0, 7,10]],\
             
-            [[""]],\
+            [[""]],[],\
             96+3,60-1,96+3,60-1,   0,0,  2*8+7,21,   2,1, 1,0.7,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
@@ -4426,7 +4453,7 @@ class App:
             [[" ",DISP_CENTER,0,0,7,MES_NO_FLASH,0,0,0,0,   0,0,0,0,0,0,0,0,0,0,   LIST_WINDOW_FLAG_HIT_BOX,0,"OFF",DISP_CENTER,0, 0,0, 7,10],\
             [ " ",DISP_CENTER,0,0,7,MES_NO_FLASH,0,0,0,0,   0,0,0,0,0,0,0,0,0,0,   LIST_WINDOW_FLAG_HIT_BOX,0,"ON" ,DISP_CENTER,1, 0,0, 7,10]],\
             
-            [[""]],\
+            [[""]],[],\
             96+3,60-1,96+3,60-1,   0,0,  2*8+7,21,   2,1, 1,0.7,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
@@ -4449,7 +4476,7 @@ class App:
             [ " ",DISP_CENTER,0,0,7,MES_NO_FLASH,0,0,0,0,   0,0,0,0,0,0,0,0,0,0,   LIST_WINDOW_FLAG_DIFFICULTY,0, "VERY HARD",DISP_CENTER,4, 0,0, 7,10],\
             [ " ",DISP_CENTER,0,0,7,MES_NO_FLASH,0,0,0,0,   0,0,0,0,0,0,0,0,0,0,   LIST_WINDOW_FLAG_DIFFICULTY,0, "INSAME",   DISP_CENTER,5, 0,0, 7,10]],\
             
-            [[""]],\
+            [[""]],[],\
             93,52,93,52,   0,0,  48,51,   3,3, 1,0.7,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
@@ -4468,7 +4495,7 @@ class App:
             [["RETURN",DISP_CENTER,0,0,6,MES_NO_FLASH],\
             ["SAVE & RETURN",DISP_CENTER,0,0,10,MES_NO_FLASH]],\
             
-            [[""]],\
+            [[""]],[],\
             43,68,43,68,   0,0,  8*8,3*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
@@ -4486,7 +4513,7 @@ class App:
             
             [["RETURN",DISP_CENTER,0,0,6,MES_NO_FLASH]],\
             
-            [[""]],\
+            [[""]],[],\
             43,68,43,68,   0,0,  8*8,2*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
@@ -4504,7 +4531,7 @@ class App:
             
             [["",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
             
-            [self.my_name,DISP_LEFT_ALIGN,20,12,10,MES_NO_FLASH],\
+            [self.my_name,DISP_LEFT_ALIGN,20,12,10,MES_NO_FLASH],[],\
             80,52,80,52,   0,0,  6*11+2,6*3,   3,3, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_ON,51,12,WINDOW_BUTTON_SIZE_1TEXT,\
             BUTTON_DISP_OFF,0,0,0,\
@@ -4532,7 +4559,7 @@ class App:
             ["DEBUG MODE",   DISP_LEFT_ALIGN,11,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  LIST_WINDOW_FLAG_DEBUG_MODE, OPE_OBJ_TYPE_ON_OFF,"",DISP_LEFT_ALIGN,0,   70  ,0,7,10,0,   100,["OFF"," ON"]           ],\
             ["RETURN",       DISP_LEFT_ALIGN,11,0,7,  MES_YELLOW_FLASH,0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  0,                           OPE_OBJ_TYPE_NONE,  "",DISP_LEFT_ALIGN,0,   70  ,0,7,10,0,   0,  ["",""]     ]           ],\
             
-            [[""]],\
+            [[""]],[],\
             4,4,4,4,   0,0,  160-16,120-12,   2,2, 2,2,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
@@ -4560,7 +4587,7 @@ class App:
             ["",DISP_CENTER,0,0,7,MES_NO_FLASH],\
             ["",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
             
-            [[""]],\
+            [[""]],[],\
             44,34,44,34,   0,0,  8*8,9*8+5,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
@@ -4595,7 +4622,7 @@ class App:
         [ " 9 " + str(self.score_ranking[d][8][2]) + " " + str("{:>8}".format(self.score_ranking[d][8][3])),DISP_LEFT_ALIGN,0,0,13,MES_NO_FLASH],\
         [ "10 " + str(self.score_ranking[d][9][2]) + " " + str("{:>8}".format(self.score_ranking[d][9][3])),DISP_LEFT_ALIGN,0,0, 2,MES_NO_FLASH]],\
         
-        [[""]],\
+        [[""]],[],\
         31,28,31,28,   20,79,  90,79,   4,1, 2,1,   0,0,    0,0,    0,0,0,0,\
         BUTTON_DISP_OFF,0,0,0,\
         BUTTON_DISP_OFF,0,0,0,\
@@ -4625,7 +4652,7 @@ class App:
         [ "6",DISP_CENTER,0,0,7,MES_NO_FLASH],\
         [ "7",DISP_CENTER,0,0,7,MES_NO_FLASH]],\
         
-        [[""]],\
+        [[""]],[],\
         63,44,63,44,   0,0,  22,67,      2,1, 2,1,   1,1,    0,0,    0,0,0,0,\
         BUTTON_DISP_OFF,0,0,0,\
         BUTTON_DISP_OFF,0,0,0,\
@@ -10037,7 +10064,6 @@ class App:
 
     #セレクトカーソルの更新
     def update_select_cursor(self):
-        # pygame.mixer.music.set_volume(self.master_bgm_vol / 100)
         # 上入力されたら  y座標を  -7する(1キャラ分)
         if pyxel.btnp(pyxel.KEY_UP) or pyxel.btnp(pyxel.GAMEPAD_1_UP) or pyxel.btnp(pyxel.GAMEPAD_2_UP):
             self.cursor_move_data = PAD_UP
@@ -10045,8 +10071,8 @@ class App:
                 if self.cursor_item_y != 0: #指し示しているアイテムナンバーが一番上の項目の0以外なら上方向にカーソルは移動できるので・・・
                     pyxel.play(0,self.window[self.active_window_index].cursor_move_se)#カーソル移動音を鳴らす
                     
-                    for ty in range(len(self.window[self.active_window_index].text)): #textの長さの分ループ処理する
-                        if self.window[self.active_window_index].text[self.cursor_item_y-1][LIST_WINDOW_TEXT] == "": #カーソル移動先にテキストが存在しない場合は・・
+                    for ty in range(len(self.window[self.active_window_index].item_text)): #item_textの長さの分ループ処理する
+                        if self.window[self.active_window_index].item_text[self.cursor_item_y-1][LIST_WINDOW_TEXT] == "": #カーソル移動先にテキストが存在しない場合は・・
                             self.cursor_y -= self.cursor_step_y#y座標をcursor_step_y*2減算して上に移動させる
                             self.cursor_item_y -= 1 #現在指し示しているアイテムナンバーを2減らす
                             continue #選択すべき項目テキストは見つかっていないのでまだループは継続する
@@ -10074,7 +10100,6 @@ class App:
                 else:
                     pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
         
-        
         # 下入力されたら  y座標を  +7する(1キャラ分)
         if pyxel.btnp(pyxel.KEY_DOWN) or pyxel.btnp(pyxel.GAMEPAD_1_DOWN) or pyxel.btnp(pyxel.GAMEPAD_2_DOWN):
             self.cursor_move_data = PAD_DOWN
@@ -10082,8 +10107,8 @@ class App:
                 if self.cursor_item_y != self.cursor_max_item_y: #指し示しているアイテムナンバーが最大項目数でないのなら下方向にカーソルは移動できるので・・
                     pyxel.play(0,self.window[self.active_window_index].cursor_move_se)#カーソル移動音を鳴らす
                     
-                    for ty in range(len(self.window[self.active_window_index].text)): #textの長さの分ループ処理する
-                        if self.window[self.active_window_index].text[self.cursor_item_y+1][LIST_WINDOW_TEXT] == "": #カーソル移動先にテキストが存在しない場合は・・
+                    for ty in range(len(self.window[self.active_window_index].item_text)): #item_textの長さの分ループ処理する
+                        if self.window[self.active_window_index].item_text[self.cursor_item_y+1][LIST_WINDOW_TEXT] == "": #カーソル移動先にテキストが存在しない場合は・・
                             self.cursor_y += self.cursor_step_y#y座標をcursor_step_y*2加算して下に移動させる
                             self.cursor_item_y += 1 #現在指し示しているアイテムナンバーを2増やす
                             continue #選択すべき項目テキストは見つかっていないのでまだループは継続する
@@ -10130,19 +10155,19 @@ class App:
                     pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
                 
             elif self.cursor_move_direction == CURSOR_MOVE_UD_SLIDER:
-                flag_index = self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ] #flag_indexに編集対象となるオブジェクトが入ったリストインデックス値が入ります
+                flag_index = self.window[self.active_window_index].item_text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ] #flag_indexに編集対象となるオブジェクトが入ったリストインデックス値が入ります
                 k = self.window[self.active_window_index].flag_list[flag_index] #Kに現在表示されている数値が代入されます(on/offの表示の場合はon=1 off=0が代入されます)
-                if self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_TYPE] == OPE_OBJ_TYPE_NUM:#操作テキストオブジェクトが数値を左右キーで増減させるタイプの場合は
-                    if k < self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_MAX_NUM]: #kがLIST_WINDOW_TEXT_OPE_OBJ_MAX_NUMより小さい時は
+                if self.window[self.active_window_index].item_text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_TYPE] == OPE_OBJ_TYPE_NUM:#操作テキストオブジェクトが数値を左右キーで増減させるタイプの場合は
+                    if k < self.window[self.active_window_index].item_text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_MAX_NUM]: #kがLIST_WINDOW_TEXT_OPE_OBJ_MAX_NUMより小さい時は
                         k += 1 #オブジェクトの数値をインクリメント
                         pyxel.play(0,self.window[self.active_window_index].cursor_push_se)#カーソルプッシュ音を鳴らす
                     else:
                         pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
                     
-                    if  k == self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_MAX_NUM]:  #kが最大値の場合は
+                    if  k == self.window[self.active_window_index].item_text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_MAX_NUM]:  #kが最大値の場合は
                         rd = DISP_OFF #右矢印(数値を増加できるかどうかを指し示す矢印）表示フラグoff
                         ld = DISP_ON  #左矢印表示フラグon
-                    elif k == self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_MIN_NUM]: #kが最小値の場合は
+                    elif k == self.window[self.active_window_index].item_text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_MIN_NUM]: #kが最小値の場合は
                         rd = DISP_ON   #右矢印(数値を増加できるかどうかを指し示す矢印）表示フラグon
                         ld = DISP_OFF  #左矢印表示フラグoff
                     else: #それ以外の場合(中間値の場合)は
@@ -10151,12 +10176,12 @@ class App:
                         ld = DISP_ON   #左矢印表示フラグoff
                     
                     self.window[self.active_window_index].flag_list[flag_index] = k #フラグ＆数値リストを更新
-                    self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_RIGHT_MARKER_FLAG] = rd #右矢印表示フラグ更新
-                    self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_LEFT_MARKER_FLAG]  = ld #左矢印表示フラグ更新
+                    self.window[self.active_window_index].item_text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_RIGHT_MARKER_FLAG] = rd #右矢印表示フラグ更新
+                    self.window[self.active_window_index].item_text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_LEFT_MARKER_FLAG]  = ld #左矢印表示フラグ更新
                     
                     #編集された数値がBGMボリュームとSEボリュームの場合はすぐにマスターフラグリストを更新して音量の変化を反映させてやります
-                    if     self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ] == LIST_WINDOW_FLAG_BGM_VOL\
-                        or self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ] == LIST_WINDOW_FLAG_SE_VOL:
+                    if     self.window[self.active_window_index].item_text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ] == LIST_WINDOW_FLAG_BGM_VOL\
+                        or self.window[self.active_window_index].item_text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ] == LIST_WINDOW_FLAG_SE_VOL:
                         self.restore_master_flag_list()
                         pygame.mixer.music.set_volume(self.master_bgm_vol / 100)
         
@@ -10178,20 +10203,20 @@ class App:
                     pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
                 
             elif self.cursor_move_direction == CURSOR_MOVE_UD_SLIDER:
-                flag_index = self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ] #flag_indexに編集対象となるオブジェクトが入ったリストインデックス値が入ります
+                flag_index = self.window[self.active_window_index].item_text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ] #flag_indexに編集対象となるオブジェクトが入ったリストインデックス値が入ります
                 k = self.window[self.active_window_index].flag_list[flag_index] #Kに現在表示されている数値が代入されます(on/offの表示の場合はon=1 off=0が代入されます)
                 
-                if self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_TYPE]  == OPE_OBJ_TYPE_NUM: #操作テキストオブジェクトが数値を左右キーで増減させるタイプの場合は
-                    if k > self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_MIN_NUM]: #kがLIST_WINDOW_TEXT_OPE_OBJ_MIN_NUMより大きい時は
+                if self.window[self.active_window_index].item_text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_TYPE]  == OPE_OBJ_TYPE_NUM: #操作テキストオブジェクトが数値を左右キーで増減させるタイプの場合は
+                    if k > self.window[self.active_window_index].item_text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_MIN_NUM]: #kがLIST_WINDOW_TEXT_OPE_OBJ_MIN_NUMより大きい時は
                         k -= 1 #オブジェクトの数値をデクリメント
                         pyxel.play(0,self.window[self.active_window_index].cursor_push_se)#カーソルプッシュ音を鳴らす
                     else:
                         pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
                     
-                    if  k == self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_MAX_NUM]:  #kが最大値の場合は
+                    if  k == self.window[self.active_window_index].item_text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_MAX_NUM]:  #kが最大値の場合は
                         rd = DISP_OFF #右矢印(数値を増加できるかどうかを指し示す矢印）表示フラグoff
                         ld = DISP_ON  #左矢印表示フラグon
-                    elif k == self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_MIN_NUM]: #kが最小値の場合は
+                    elif k == self.window[self.active_window_index].item_text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_MIN_NUM]: #kが最小値の場合は
                         rd = DISP_ON   #右矢印(数値を増加できるかどうかを指し示す矢印）表示フラグon
                         ld = DISP_OFF  #左矢印表示フラグoff
                     else: #それ以外の場合(中間値の場合)は
@@ -10200,12 +10225,12 @@ class App:
                         ld = DISP_ON   #左矢印表示フラグoff
                     
                     self.window[self.active_window_index].flag_list[flag_index] = k #フラグ＆数値リストを更新する
-                    self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_RIGHT_MARKER_FLAG] = rd #右矢印表示フラグ更新
-                    self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_LEFT_MARKER_FLAG]  = ld #左矢印表示フラグ更新
+                    self.window[self.active_window_index].item_text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_RIGHT_MARKER_FLAG] = rd #右矢印表示フラグ更新
+                    self.window[self.active_window_index].item_text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_LEFT_MARKER_FLAG]  = ld #左矢印表示フラグ更新
                     
                     #編集された数値がBGMボリュームとSEボリュームの場合はすぐにマスターフラグリストを更新して音量の変化を反映させてやります
-                    if     self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ] == LIST_WINDOW_FLAG_BGM_VOL\
-                        or self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ] == LIST_WINDOW_FLAG_SE_VOL:
+                    if     self.window[self.active_window_index].item_text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ] == LIST_WINDOW_FLAG_BGM_VOL\
+                        or self.window[self.active_window_index].item_text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ] == LIST_WINDOW_FLAG_SE_VOL:
                         self.restore_master_flag_list()
                         pygame.mixer.music.set_volume(self.master_bgm_vol / 100)
         
@@ -10215,9 +10240,9 @@ class App:
             self.cursor_decision_item_x = self.cursor_item_x #ボタンが押されて決定されたら、いま指示しているアイテムナンバーをcursor_decision_item_xに代入！
             self.cursor_decision_item_y = self.cursor_item_y #ボタンが押されて決定されたら、いま指示しているアイテムナンバーをcursor_decision_item_yに代入！
             if self.cursor_move_direction == CURSOR_MOVE_UD_SLIDER:
-                flag_index = self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ] #flag_indexに編集対象となるオブジェクトが入ったリストインデックス値が入ります
+                flag_index = self.window[self.active_window_index].item_text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ] #flag_indexに編集対象となるオブジェクトが入ったリストインデックス値が入ります
                 k = self.window[self.active_window_index].flag_list[flag_index] #Kに現在表示されている数値が代入されます(on/offの表示の場合はon=1 off=0が代入されます)
-                if self.window[self.active_window_index].text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_TYPE] == OPE_OBJ_TYPE_ON_OFF:#操作テキストオブジェクトは「ON」「OFF」の二つから選ぶシンプルなタイプの時は
+                if self.window[self.active_window_index].item_text[self.cursor_item_y][LIST_WINDOW_TEXT_OPE_OBJ_TYPE] == OPE_OBJ_TYPE_ON_OFF:#操作テキストオブジェクトは「ON」「OFF」の二つから選ぶシンプルなタイプの時は
                     if k == 0: #k=0(off)の時はk=1(on)に、k=1(on)の時はk=0(off)にする
                         k = 1
                     else:
@@ -11637,72 +11662,72 @@ class App:
                 SIZE_8,SIZE_8,  13)
             
             #タイトルバーの表示######################################
-            if   self.window[i].window_title[LIST_WINDOW_TEXT_FLASH]  == MES_NO_FLASH:        #テキスト点滅無しの場合
-                col = self.window[i].window_title[LIST_WINDOW_TEXT_COLOR]
+            if   self.window[i].title_text[LIST_WINDOW_TEXT_FLASH]  == MES_NO_FLASH:        #テキスト点滅無しの場合
+                col = self.window[i].title_text[LIST_WINDOW_TEXT_COLOR]
             else:                                                                             #テキスト点滅系の場合
-                flash_type = self.window[i].window_title[LIST_WINDOW_TEXT_FLASH]              #flash_typeを元にカラーコードを取得
+                flash_type = self.window[i].title_text[LIST_WINDOW_TEXT_FLASH]              #flash_typeを元にカラーコードを取得
                 col = self.get_flashing_type_color_code(flash_type)
             
-            self.shadow_drop_text(self.window[i].posx + self.window[i].window_title[LIST_WINDOW_TEXT_OX] + 5 + self.window[i].width // 2 - len(self.window[i].window_title[LIST_WINDOW_TEXT]) * 2,self.window[i].posy + 5,str(self.window[i].window_title[LIST_WINDOW_TEXT]),col)
+            self.shadow_drop_text(self.window[i].posx + self.window[i].title_text[LIST_WINDOW_TEXT_OX] + 5 + self.window[i].width // 2 - len(self.window[i].title_text[LIST_WINDOW_TEXT]) * 2,self.window[i].posy + 5,str(self.window[i].title_text[LIST_WINDOW_TEXT]),col)
             
             #ステータスがテキストメッセージの表示中,閉じ中,移動中,ウィンドウオープン完了の時はメッセージテキストを表示する
             if      self.window[i].window_status == WINDOW_WRITE_MESSAGE\
                 or  self.window[i].window_status == WINDOW_CLOSE\
                 or  self.window[i].window_status == WINDOW_MOVE\
                 or  self.window[i].window_status == WINDOW_OPEN_COMPLETED:
-                for j in range(len(self.window[i].text)): #textの長さの分ループ処理する
-                    if self.window[i].text[j][LIST_WINDOW_TEXT]  != "": #ウィンドウテキストの表示をする 文字列が存在しないのなら次の行へとスキップループする
-                        if   self.window[i].text[j][LIST_WINDOW_TEXT_FLASH]  == MES_NO_FLASH:        #テキスト点滅無しの場合
-                            col = self.window[i].text[j][LIST_WINDOW_TEXT_COLOR]
+                for j in range(len(self.window[i].item_text)): #textの長さの分ループ処理する
+                    if self.window[i].item_text[j][LIST_WINDOW_TEXT]  != "": #ウィンドウテキストの表示をする 文字列が存在しないのなら次の行へとスキップループする
+                        if   self.window[i].item_text[j][LIST_WINDOW_TEXT_FLASH]  == MES_NO_FLASH:        #テキスト点滅無しの場合
+                            col = self.window[i].item_text[j][LIST_WINDOW_TEXT_COLOR]
                         else:                                                                         #テキスト点滅系の場合
-                            flash_type = self.window[i].text[j][LIST_WINDOW_TEXT_FLASH]              #flash_typeを元にカラーコードを取得
+                            flash_type = self.window[i].item_text[j][LIST_WINDOW_TEXT_FLASH]              #flash_typeを元にカラーコードを取得
                             col = self.get_flashing_type_color_code(flash_type)
                         
-                        if self.window[i].text[j][LIST_WINDOW_TEXT_ALIGN] == DISP_CENTER:
-                            self.shadow_drop_text(self.window[i].posx + self.window[i].text[j][LIST_WINDOW_TEXT_OX] + 5 + self.window[i].width // 2 - len(self.window[i].text[j][LIST_WINDOW_TEXT]) * 2,self.window[i].posy + 5 + (j+1) * self.window[i].between_line,str(self.window[i].text[j][LIST_WINDOW_TEXT]),col)
-                        elif self.window[i].text[j][LIST_WINDOW_TEXT_ALIGN] == DISP_LEFT_ALIGN:
-                            self.shadow_drop_text(self.window[i].posx + self.window[i].text[j][LIST_WINDOW_TEXT_OX] + 5  ,self.window[i].posy + 5 + (j+1) * self.window[i].between_line,str(self.window[i].text[j][LIST_WINDOW_TEXT]),col)
+                        if self.window[i].item_text[j][LIST_WINDOW_TEXT_ALIGN] == DISP_CENTER:
+                            self.shadow_drop_text(self.window[i].posx + self.window[i].item_text[j][LIST_WINDOW_TEXT_OX] + 5 + self.window[i].width // 2 - len(self.window[i].item_text[j][LIST_WINDOW_TEXT]) * 2,self.window[i].posy + 5 + (j+1) * self.window[i].between_line,str(self.window[i].item_text[j][LIST_WINDOW_TEXT]),col)
+                        elif self.window[i].item_text[j][LIST_WINDOW_TEXT_ALIGN] == DISP_LEFT_ALIGN:
+                            self.shadow_drop_text(self.window[i].posx + self.window[i].item_text[j][LIST_WINDOW_TEXT_OX] + 5  ,self.window[i].posy + 5 + (j+1) * self.window[i].between_line,str(self.window[i].item_text[j][LIST_WINDOW_TEXT]),col)
                     
                     if     self.window[i].window_id_sub == WINDOW_ID_SUB_ON_OFF_MENU\
                         or self.window[i].window_id_sub == WINDOW_ID_SUB_MULTI_SELECT_MENU: #「ON」「OFF」のトグルスイッチ式メニュー,ハイライト付きマルチメニューの場合はオブジェクト表示
                         
-                        flag_index = self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ] #flag_indexに編集対象となるオブジェクトが入ったリストインデックス値が入ります
-                        if self.window[i].flag_list[flag_index] == self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_COMPARE]: #フラグの数値とリストに登録されているパラメーター数値を比較して・・・
-                            col = self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_ON_COLOR] #同じ数値ならオンの色
+                        flag_index = self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ] #flag_indexに編集対象となるオブジェクトが入ったリストインデックス値が入ります
+                        if self.window[i].flag_list[flag_index] == self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_COMPARE]: #フラグの数値とリストに登録されているパラメーター数値を比較して・・・
+                            col = self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_ON_COLOR] #同じ数値ならオンの色
                         else:
-                            col = self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_OFF_COLOR]  #違っていたならオフの色
+                            col = self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_OFF_COLOR]  #違っていたならオフの色
                         
-                        if self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_ALIGN] == DISP_CENTER:
-                            self.shadow_drop_text(self.window[i].posx + self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_OX] + 5 + self.window[i].width // 2 - len(self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT]) * 2,self.window[i].posy + 5 + (j+1) * self.window[i].between_line,str(self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT]),col)
-                        elif self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_ALIGN] == DISP_LEFT_ALIGN:
-                            self.shadow_drop_text(self.window[i].posx + self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_OX] + 5  ,self.window[i].posy + 5 + (j+1) * self.window[i].between_line,str(self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT]),col)
+                        if self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_ALIGN] == DISP_CENTER:
+                            self.shadow_drop_text(self.window[i].posx + self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_OX] + 5 + self.window[i].width // 2 - len(self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT]) * 2,self.window[i].posy + 5 + (j+1) * self.window[i].between_line,str(self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT]),col)
+                        elif self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_ALIGN] == DISP_LEFT_ALIGN:
+                            self.shadow_drop_text(self.window[i].posx + self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_OX] + 5  ,self.window[i].posy + 5 + (j+1) * self.window[i].between_line,str(self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT]),col)
                     elif self.window[i].window_id_sub == WINDOW_ID_SUB_SWITCH_TEXT_MENU: #上下操作でカーソルが上下し左右でそれぞれの項目に対応したテキストが切り替わり表示されるメニュータイプの場合
-                        flag_index = self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ] #flag_indexに編集対象となるオブジェクトが入ったリストインデックス値が入ります
+                        flag_index = self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ] #flag_indexに編集対象となるオブジェクトが入ったリストインデックス値が入ります
                         k = self.window[i].flag_list[flag_index]
-                        if self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TYPE] == OPE_OBJ_TYPE_ON_OFF: #「ON」「OFF」の二つから選ぶシンプルなタイプ
+                        if self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_TYPE] == OPE_OBJ_TYPE_ON_OFF: #「ON」「OFF」の二つから選ぶシンプルなタイプ
                             if k == 0: #kの値がゼロの時はOFFなので・・
-                                col = self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_OFF_COLOR] #描画色はOFF時の色とします
+                                col = self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_OFF_COLOR] #描画色はOFF時の色とします
                             else: #Kの値が0以外の時はONと扱うので
-                                col = self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_ON_COLOR]  #描画色はON時の色とします
+                                col = self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_ON_COLOR]  #描画色はON時の色とします
                             
-                            if self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_ALIGN] == DISP_CENTER:
-                                self.shadow_drop_text(self.window[i].posx + self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_OX] + 5 + self.window[i].width // 2 - len(self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_SWITCH_TEXT][k]) * 2,self.window[i].posy + 5 + (j+1) * self.window[i].between_line,str(self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_SWITCH_TEXT][k]),col)
-                            elif self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_ALIGN] == DISP_LEFT_ALIGN:
-                                self.shadow_drop_text(self.window[i].posx + self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_OX] + 5  ,self.window[i].posy + 5 + (j+1) * self.window[i].between_line,str(self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_SWITCH_TEXT][k]),col)
-                        elif self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TYPE] ==  OPE_OBJ_TYPE_NUM: #数値を増減させて選択するタイプ
-                            col = self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_OFF_COLOR] #描画色はOFF時の色とします
+                            if self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_ALIGN] == DISP_CENTER:
+                                self.shadow_drop_text(self.window[i].posx + self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_OX] + 5 + self.window[i].width // 2 - len(self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_SWITCH_TEXT][k]) * 2,self.window[i].posy + 5 + (j+1) * self.window[i].between_line,str(self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_SWITCH_TEXT][k]),col)
+                            elif self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_ALIGN] == DISP_LEFT_ALIGN:
+                                self.shadow_drop_text(self.window[i].posx + self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_OX] + 5  ,self.window[i].posy + 5 + (j+1) * self.window[i].between_line,str(self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_SWITCH_TEXT][k]),col)
+                        elif self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_TYPE] ==  OPE_OBJ_TYPE_NUM: #数値を増減させて選択するタイプ
+                            col = self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_OFF_COLOR] #描画色はOFF時の色とします
                             str_k = "{:>3}".format(k)
-                            self.shadow_drop_text(self.window[i].posx + self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_OX] + 5  ,self.window[i].posy + 5 + (j+1) * self.window[i].between_line,str_k,col) #3桁の整数で右寄せで表示
+                            self.shadow_drop_text(self.window[i].posx + self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_TEXT_OX] + 5  ,self.window[i].posy + 5 + (j+1) * self.window[i].between_line,str_k,col) #3桁の整数で右寄せで表示
                             
                             #各方向矢印表示フラグが立っていた時はそれぞれの方向の矢印（テキスト）を描画する
-                            if self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_UP_MARKER_FLAG]    == DISP_ON:
-                                self.shadow_drop_text(self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_UP_MARKER_X]   ,self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_UP_MARKER_Y]     ,"^",col)
-                            if self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_DOWN_MARKER_FLAG]  == DISP_ON:
-                                self.shadow_drop_text(self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_DOWN_MARKER_X] ,self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_DOWN_MARKER_Y]   ,"v",col)
-                            if self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_RIGHT_MARKER_FLAG] == DISP_ON:
-                                self.shadow_drop_text(self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_RIGHT_MARKER_X],self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_RIGHT_MARKER_Y]  ,">",col)
-                            if self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_LEFT_MARKER_FLAG]  == DISP_ON:
-                                self.shadow_drop_text(self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_LEFT_MARKER_X] ,self.window[i].text[j][LIST_WINDOW_TEXT_OPE_OBJ_LEFT_MARKER_Y]   ,"<",col)
+                            if self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_UP_MARKER_FLAG]    == DISP_ON:
+                                self.shadow_drop_text(self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_UP_MARKER_X]   ,self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_UP_MARKER_Y]     ,"^",col)
+                            if self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_DOWN_MARKER_FLAG]  == DISP_ON:
+                                self.shadow_drop_text(self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_DOWN_MARKER_X] ,self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_DOWN_MARKER_Y]   ,"v",col)
+                            if self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_RIGHT_MARKER_FLAG] == DISP_ON:
+                                self.shadow_drop_text(self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_RIGHT_MARKER_X],self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_RIGHT_MARKER_Y]  ,">",col)
+                            if self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_LEFT_MARKER_FLAG]  == DISP_ON:
+                                self.shadow_drop_text(self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_LEFT_MARKER_X] ,self.window[i].item_text[j][LIST_WINDOW_TEXT_OPE_OBJ_LEFT_MARKER_Y]   ,"<",col)
             
             #ウィンドウタイプがテキスト編集の入力待ちのタイプはさらに入力メッセージ(edit_text)の文字列を表示する
             if     self.window[i].window_type   == WINDOW_TYPE_EDIT_TEXT:
