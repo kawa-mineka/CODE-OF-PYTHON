@@ -593,7 +593,11 @@ LIST_WINDOW_GRAPH_H                =  6 #
 LIST_WINDOW_GRAPH_COLKEY           =  7 #透明色の指定
 LIST_WINDOW_GRAPH_ANIME_FRAME_NUM  =  8 #アニメーションパターンの枚数(1の場合はアニメーション無し)
 LIST_WINDOW_GRAPH_ANIME_SPEED      =  9 #アニメーションのスピード(1が速く数値が増えるにつれて遅くなる4位が良いかも？)
-LIST_WINDOW_GRAPH_COMMENT          = 10 #グラフイックキャラに対するコメント
+LIST_WINDOW_GRAPH_COMMENT_ENG      = 10 #グラフイックキャラに対する説明文(英語)
+LIST_WINDOW_GRAPH_COMMENT_JAP      = 11 #グラフイックキャラに対する説明文(日本語)
+LIST_WINDOW_GRAPH_COMMENT_OX       = 12 #グラフイックキャラに対する説明文を表示する座標(gc_ox,gc_oy)ウィンドウ表示座標からのオフセット値となります
+LIST_WINDOW_GRAPH_COMMENT_OY       = 13
+LIST_WINDOW_GRAPH_COMMENT_COL      = 12 #グラフイックキャラに対する説明文の表示色
 
 #ウィンドウスクリプトリストのリストの2次元配列のインデックスナンバーとして使用する定数定義 windowクラスのwindow[i].script[ここで定義した定数]に入ります(一つだけだよ=1個だけ)(リスト表記=複数の数値が入ります)
 LIST_WINDOW_SCRIPT_TEXT            =  0 #スクリプト文本文が入ります(文字列型)
@@ -642,6 +646,8 @@ OPE_OBJ_MULTI_ITEM   = 3 #操作テキストオブジェクトは多項目から
 CURSOR_TYPE_NO_DISP   = 0 #セレクトカーソルは表示しない
 CURSOR_TYPE_NORMAL    = 1 #通常の横向きのクロー回転アニメーションカーソル
 CURSOR_TYPE_UNDER_BAR = 2 #アンダーバータイプ
+CURSOR_TYPE_BOX_FLASH = 3 #点滅囲み矩形タイプ
+
 #セレクトカーソルの移動音 pyxelのsndの番号を使って定義してね～～♪
 CURSOR_MOVE_SE_NORMAL   = 16
 CURSOR_MOVE_SE_TYPE1    = 1
@@ -674,14 +680,17 @@ CURSOR_BOUNCE_SE_TYPE3      = 3
 CURSOR_BOUNCE_SE_TYPE4      = 4
 
 #セレクトカーソルの動き方
-CURSOR_MOVE_UD               = 0 #セレクトカーソルの動きは上下のみです UD=Up Down
-CURSOR_MOVE_LR               = 1 #セレクトカーソルの動きは左右のみです LR=Left Right
-CURSOR_MOVE_4WAY             = 2 #上下左右4方向に動かせます
-CURSOR_MOVE_8WAY             = 3 #斜め移動も含んだ8方向に動かせます
-CURSOR_MOVE_UD_SLIDER        = 4 #セレクトカーソルは上下に動かすことができ、左右の入力でスライダーを動かせます
-CURSOR_MOVE_UD_SLIDER_BUTTON = 5 #セレクトカーソルは上下に動かすことができ、左右の入力でスライダーを動かせます ON/OFF切り替えの項目ではボタンを押すことでも切り替えができます
-CURSOR_MOVE_LR_SLIDER        = 6 #セレクトカーソルは左右に動かすことができ、上下の入力でスライダーを動かせます
-CURSOR_MOVE_SHOW_PAGE        = 7 #セレクトカーソルは表示せずLRキーもしくはLショルダーRショルダーで左右に頁をめくる動作です
+CURSOR_MOVE_UD               =  0 #セレクトカーソルの動きは上下のみです UD=Up Down
+CURSOR_MOVE_UD_SLIDER        =  1 #セレクトカーソルは上下に動かすことができ、左右の入力でスライダーを動かせます
+CURSOR_MOVE_UD_SLIDER_BUTTON =  2 #セレクトカーソルは上下に動かすことができ、左右の入力でスライダーを動かせます ON/OFF切り替えの項目ではボタンを押すことでも切り替えができます
+CURSOR_MOVE_LR               =  3 #セレクトカーソルの動きは左右のみです LR=Left Right
+CURSOR_MOVE_LR_SLIDER        =  4 #セレクトカーソルは左右に動かすことができ、上下の入力でスライダーを動かせます
+CURSOR_MOVE_LR_SLIDER_BUTTON =  5 #セレクトカーソルは左右に動かすことができ、上下の入力でスライダーを動かせます ON/OFF切り替えの項目ではボタンを押すことでも切り替えができます
+CURSOR_MOVE_4WAY             =  6 #上下左右4方向に動かせます
+CURSOR_MOVE_4WAY_BUTTON      =  7 #上下左右4方向に動かせます(ボタンを押すと現在のカーソル位置のアイテムがアクティブとなります)
+CURSOR_MOVE_8WAY             =  8 #斜め移動も含んだ8方向に動かせます
+CURSOR_MOVE_8WAY_BUTTON      =  9 #斜め移動も含んだ8方向に動かせます(ボタンを押すと現在のカーソル位置のアイテムがアクティブとなります)
+CURSOR_MOVE_SHOW_PAGE        = 10 #セレクトカーソルは表示せずLRキーもしくはLショルダーRショルダーで左右に頁をめくる動作です
 
 #カーソルの移動量
 STEP3,STEP4,STEP5,STEP6,STEP7,STEP8,STEP9,STEP10 = 3,4,5,6,7,8,9,10
@@ -4631,30 +4640,36 @@ class App:
             [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[])
         elif id == WINDOW_ID_MEDAL_LIST:
             new_window.update(\
-            WINDOW_ID_CONFIG,\
-            WINDOW_ID_SUB_SWITCH_TEXT_MENU,\
+            WINDOW_ID_MEDAL_LIST,\
+            WINDOW_ID_SUB_NORMAL_MENU,\
             WINDOW_TYPE_NORMAL,\
             WINDOW_BG_BLUE_BACK,\
             WINDOW_OPEN,\
             WINDOW_BETWEEN_LINE_9,\
             ["MEDAL LIST",DISP_CENTER,     0,0,7,MES_MONOCHROME_FLASH],\
-            [],\
+            
+            [["Lv1",DISP_LEFT_ALIGN,0,0,7,MES_NO_FLASH],\
+            ["Lv2",DISP_LEFT_ALIGN,0,0,7,MES_NO_FLASH],\
+            ["Lv3",DISP_LEFT_ALIGN,0,0,7,MES_NO_FLASH]],\
+            
             [[""]],[],[],\
-            43,68,43,68,   0,0,  8*8,3*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
+            23,48,23,48,   0,0,  13*8+4,6*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
             [],[],[],[],[],[],[],[],self.medal_list,\
-                [[10    , 12,  IMG2,  176    ,176,SIZE_8,SIZE_8, 13, 1,1],\
-                [ 10+8*1, 12,  IMG2,  176+8*1,176,SIZE_8,SIZE_8, 13, 1,1],\
-                [ 10+8*2, 12,  IMG2,  176+8*2,176,SIZE_8,SIZE_8, 13, 1,1],\
-                [ 10+8*3, 12,  IMG2,  176+8*3,176,SIZE_8,SIZE_8, 13, 1,1],\
-                [ 10+8*4, 12,  IMG2,  176+8*4,176,SIZE_8,SIZE_8, 13, 1,1],\
-                [ 10+8*5, 12,  IMG2,  176+8*5,176,SIZE_8,SIZE_8, 13, 1,1],\
-                [ 10+8*6, 12,  IMG2,  176+8*6,176,SIZE_8,SIZE_8, 13, 1,1],\
-                [ 10+8*7, 12,  IMG2,  176+8*7,176,SIZE_8,SIZE_8, 13, 1,1],\
-                [ 10+8*8, 12,  IMG2,  176+8*8,176,SIZE_8,SIZE_8, 13, 1,1],\
-                [ 10+8*9, 12,  IMG2,  176+8*9,176,SIZE_8,SIZE_8, 13, 1,1]],\
+                [[20     , 13   ,  IMG2,  176    ,176,SIZE_8,SIZE_8, 13, 1,1],\
+                [ 20+10*1, 13   ,  IMG2,  176+8*1,176,SIZE_8,SIZE_8, 13, 1,1],\
+                [ 20+10*2, 13   ,  IMG2,  176+8*2,176,SIZE_8,SIZE_8, 13, 1,1],\
+                [ 20+10*3, 13   ,  IMG2,  176+8*3,176,SIZE_8,SIZE_8, 13, 1,1],\
+                
+                [ 20     , 13+10,  IMG2,  176+8*4,176,SIZE_8,SIZE_8, 13, 1,1],\
+                [ 20+10*1, 13+10,  IMG2,  176+8*5,176,SIZE_8,SIZE_8, 13, 1,1],\
+                [ 20+10*2, 13+10,  IMG2,  176+8*6,176,SIZE_8,SIZE_8, 13, 1,1],\
+                
+                [ 20,      13+20,  IMG2,  176+8*7,176,SIZE_8,SIZE_8, 13, 1,1],\
+                [ 20+10*1, 13+20,  IMG2,  176+8*8,176,SIZE_8,SIZE_8, 13, 1,1],\
+                [ 20+10*2, 13+20,  IMG2,  176+8*9,176,SIZE_8,SIZE_8, 13, 1,1]],\
                 
                 
             [],[],self.master_flag_list,[])
@@ -5108,9 +5123,9 @@ class App:
                     self.cursor_pre_decision_item_y = self.cursor_decision_item_y #現時点で選択されたアイテム「MEDAL_LIST」を前のレイヤー選択アイテムとしてコピーする
                     self.push_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPUSH
                     self.create_window(WINDOW_ID_MEDAL_LIST)                #「MEDAL_LIST」ウィンドウの作製
-                    #選択カーソル表示をon,カーソルは上下移動,カーソル移動ステップはx4,y9,いま指示しているアイテムナンバーは0
-                    #まだボタンも押されておらず未決定状態なのでdecision_item_yはUNSELECTED,y最大項目数は1項目なので1-1=0を代入,メニューの階層が増えたのでMENU_LAYER0からMENU_LAYER1にします
-                    self.set_cursor_data(CURSOR_TYPE_NO_DISP,CURSOR_MOVE_UD,9,17,STEP4,STEP9,0,0,0,0,UNSELECTED,UNSELECTED,0,1-1,0,MENU_LAYER1)
+                    #カーソルは点滅囲み矩形タイプ,カーソルは4方向,カーソル移動ステップはx9,y9,いま指示しているアイテムナンバーは0
+                    #まだボタンも押されておらず未決定状態なのでdecision_item_yはUNSELECTED,x最大項目数は9項目なので9-1=8を代入,メニューの階層が増えたのでMENU_LAYER0からMENU_LAYER1にします
+                    self.set_cursor_data(CURSOR_TYPE_BOX_FLASH,CURSOR_MOVE_4WAY,42,60,STEP10,STEP10,0,0,0,0,UNSELECTED,UNSELECTED,9-1,3-1,0,MENU_LAYER1)
                     self.active_window_id = WINDOW_ID_CONFIG #このウィンドウIDを最前列でアクティブなものとする
                     pyxel.play(0,self.window[self.active_window_index].cursor_push_se)#カーソルボタンプッシュ音を鳴らす
             
@@ -10159,20 +10174,30 @@ class App:
         # 上入力されたら  y座標を  -7する(1キャラ分)
         if pyxel.btnp(pyxel.KEY_UP) or pyxel.btnp(pyxel.GAMEPAD_1_UP) or pyxel.btnp(pyxel.GAMEPAD_2_UP):
             self.cursor_move_data = PAD_UP
-            if self.cursor_move_direction == CURSOR_MOVE_UD or self.cursor_move_direction == CURSOR_MOVE_UD_SLIDER or self.cursor_move_direction == CURSOR_MOVE_UD_SLIDER_BUTTON:
+            if     self.cursor_move_direction == CURSOR_MOVE_UD\
+                or self.cursor_move_direction == CURSOR_MOVE_UD_SLIDER\
+                or self.cursor_move_direction == CURSOR_MOVE_UD_SLIDER_BUTTON:
                 if self.cursor_item_y != 0: #指し示しているアイテムナンバーが一番上の項目の0以外なら上方向にカーソルは移動できるので・・・
                     pyxel.play(0,self.window[self.active_window_index].cursor_move_se)#カーソル移動音を鳴らす
                     
                     for ty in range(len(self.window[self.active_window_index].item_text)): #item_textの長さの分ループ処理する
                         if self.window[self.active_window_index].item_text[self.cursor_item_y-1][LIST_WINDOW_TEXT] == "": #カーソル移動先にテキストが存在しない場合は・・
-                            self.cursor_y -= self.cursor_step_y#y座標をcursor_step_y*2減算して上に移動させる
-                            self.cursor_item_y -= 1 #現在指し示しているアイテムナンバーを2減らす
+                            self.cursor_y -= self.cursor_step_y#y座標をcursor_step_y減算して上に移動させる
+                            self.cursor_item_y -= 1 #現在指し示しているアイテムナンバーを1減らす
                             continue #選択すべき項目テキストは見つかっていないのでまだループは継続する
                         else:
                             self.cursor_y -= self.cursor_step_y #y座標をcursor_step_y（初期値は1キャラ7ドット）減算して上に移動させる
                             self.cursor_item_y -= 1 #現在指し示しているアイテムナンバーを1減らす
                             break #選択すべき項目テキストが見つかったのでループから脱出！
                     
+                else:
+                    pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
+                
+            elif self.cursor_move_direction == CURSOR_MOVE_4WAY:
+                if self.cursor_item_y != 0: #指し示しているアイテムナンバーが一番上の項目の0以外なら上方向にカーソルは移動できるので・・・
+                    self.cursor_y -= self.cursor_step_y #y座標をcursor_step_y減算してカーソルを上に移動させる
+                    self.cursor_item_y -= 1 #現在指し示しているアイテムナンバーを1減らす
+                    pyxel.play(0,self.window[self.active_window_index].cursor_move_se)#カーソル移動音を鳴らす
                 else:
                     pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
                 
@@ -10195,14 +10220,16 @@ class App:
         # 下入力されたら  y座標を  +7する(1キャラ分)
         if pyxel.btnp(pyxel.KEY_DOWN) or pyxel.btnp(pyxel.GAMEPAD_1_DOWN) or pyxel.btnp(pyxel.GAMEPAD_2_DOWN):
             self.cursor_move_data = PAD_DOWN
-            if self.cursor_move_direction == CURSOR_MOVE_UD or self.cursor_move_direction == CURSOR_MOVE_UD_SLIDER or self.cursor_move_direction == CURSOR_MOVE_UD_SLIDER_BUTTON:
+            if     self.cursor_move_direction == CURSOR_MOVE_UD\
+                or self.cursor_move_direction == CURSOR_MOVE_UD_SLIDER\
+                or self.cursor_move_direction == CURSOR_MOVE_UD_SLIDER_BUTTON:
                 if self.cursor_item_y != self.cursor_max_item_y: #指し示しているアイテムナンバーが最大項目数でないのなら下方向にカーソルは移動できるので・・
                     pyxel.play(0,self.window[self.active_window_index].cursor_move_se)#カーソル移動音を鳴らす
                     
                     for ty in range(len(self.window[self.active_window_index].item_text)): #item_textの長さの分ループ処理する
                         if self.window[self.active_window_index].item_text[self.cursor_item_y+1][LIST_WINDOW_TEXT] == "": #カーソル移動先にテキストが存在しない場合は・・
-                            self.cursor_y += self.cursor_step_y#y座標をcursor_step_y*2加算して下に移動させる
-                            self.cursor_item_y += 1 #現在指し示しているアイテムナンバーを2増やす
+                            self.cursor_y += self.cursor_step_y#y座標をcursor_step_y加算して下に移動させる
+                            self.cursor_item_y += 1 #現在指し示しているアイテムナンバーを1増やす
                             continue #選択すべき項目テキストは見つかっていないのでまだループは継続する
                         else:
                             self.cursor_y += self.cursor_step_y #y座標をcursor_step_y（初期値は1キャラ7ドット）加算して下に移動させる
@@ -10212,6 +10239,13 @@ class App:
                 else:
                     pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
                 
+            elif self.cursor_move_direction == CURSOR_MOVE_4WAY:
+                if self.cursor_item_y != self.cursor_max_item_y: #指し示しているアイテムナンバーが最大項目数でないのなら下方向にカーソルは移動できるので・・
+                    self.cursor_y += self.cursor_step_y #y座標をcursor_step_y加算してカーソルを下に移動させる
+                    self.cursor_item_y += 1 #現在指し示しているアイテムナンバーを1増やす
+                    pyxel.play(0,self.window[self.active_window_index].cursor_move_se)#カーソル移動音を鳴らす
+                else:
+                    pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
                 
             elif self.cursor_move_direction == CURSOR_MOVE_LR_SLIDER:
                 if self.cursor_item_x != self.cursor_max_item_x: #指し示しているアイテムナンバーx軸方向が最大項目数の場合はOKアイコンなので何もしない(それ以外の時は処理をする)
@@ -10238,7 +10272,8 @@ class App:
                 if self.cursor_page > self.cursor_page_max: #カーソルページ数が最大ページ数を超えたのなら
                     self.cursor_page = 0                    #ページ数は0にする
                 
-            elif self.cursor_move_direction == CURSOR_MOVE_LR_SLIDER:
+            elif   self.cursor_move_direction == CURSOR_MOVE_LR_SLIDER\
+                or self.cursor_move_direction == CURSOR_MOVE_4WAY:
                 if self.cursor_item_x != self.cursor_max_item_x: #指し示しているアイテムナンバーx軸方向が最大項目数でないのなら右方向にカーソルは移動できるので・・
                     self.cursor_x += self.cursor_step_x #x座標をcursor_step_x（初期値は1文字分4ドット）加算してカーソルを右に移動させる
                     self.cursor_item_x += 1
@@ -10280,15 +10315,16 @@ class App:
         #左入力されたらcursor_pageを -1する
         if pyxel.btnp(pyxel.KEY_LEFT) or pyxel.btnp(pyxel.GAMEPAD_1_LEFT) or pyxel.btnp(pyxel.GAMEPAD_2_LEFT) or pyxel.btnp(pyxel.GAMEPAD_2_LEFT) or pyxel.btnp(pyxel.GAMEPAD_1_LEFT_SHOULDER) or pyxel.btnp(pyxel.GAMEPAD_2_LEFT_SHOULDER):
             self.cursor_move_data = PAD_LEFT
-            if self.cursor_move_direction == CURSOR_MOVE_SHOW_PAGE:
+            if   self.cursor_move_direction == CURSOR_MOVE_SHOW_PAGE:
                 self.cursor_page -= 1 #ページ数デクリメント
                 pyxel.play(0,self.window[self.active_window_index].cursor_move_se)#カーソル移動音を鳴らす
                 if self.cursor_page < 0:                    #カーソルページ数が0より小さくなったのなら
                     self.cursor_page = self.cursor_page_max                    #ページ数はmaxにする
                 
-            elif self.cursor_move_direction == CURSOR_MOVE_LR_SLIDER:
+            elif   self.cursor_move_direction == CURSOR_MOVE_LR_SLIDER\
+                or self.cursor_move_direction == CURSOR_MOVE_4WAY:
                 if self.cursor_item_x != 0: #指し示しているアイテムナンバーx軸方向が0以外ならでないのなら左方向にカーソルは移動できるので・・
-                    self.cursor_x -= self.cursor_step_x #x座標をcursor_step_x（初期値は1文字分4ドット）加算してカーソルを左に移動させる
+                    self.cursor_x -= self.cursor_step_x #x座標をcursor_step_x（初期値は1文字分4ドット）減算してカーソルを左に移動させる
                     self.cursor_item_x -= 1
                     pyxel.play(0,self.window[self.active_window_index].cursor_move_se)#カーソル移動音を鳴らす
                 else:
@@ -11879,7 +11915,8 @@ class App:
             pyxel.blt(self.cursor_x, self.cursor_y,     IMG2,    184 + (((pyxel.frame_count // 2.5 ) % 9) * 8),96,      8,8,    0)
         elif self.cursor_type == CURSOR_TYPE_UNDER_BAR: #アンダーバータイプのカーソルの表示
             pyxel.text(self.cursor_x, self.cursor_y,"_", self.rainbow_flash_color[pyxel.frame_count // 8 % 10])
-
+        elif self.cursor_type == CURSOR_TYPE_BOX_FLASH: #点滅囲み矩形タイプカーソルの表示
+            pyxel.rectb(self.cursor_x,self.cursor_y, 10,10, self.blinking_color[pyxel.frame_count // 8 % 10]) #点滅四角線描画
     #ゲームオーバーダイアログを表示する
     def draw_gameover_dialog(self):
         pyxel.blt(47, 48, IMG2, 0,72, 64,8, 0)
