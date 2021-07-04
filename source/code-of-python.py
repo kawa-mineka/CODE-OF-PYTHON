@@ -679,6 +679,10 @@ CURSOR_BOUNCE_SE_TYPE2      = 2
 CURSOR_BOUNCE_SE_TYPE3      = 3
 CURSOR_BOUNCE_SE_TYPE4      = 4
 
+#カーソルが現在指し示しているアイテムの説明文を表示するかどうかのフラグ
+COMMENT_FLAG_OFF            = 0 #表示しない
+COMMENT_FLAG_ON             = 1 #表示する
+
 #セレクトカーソルの動き方
 CURSOR_MOVE_UD               =  0 #セレクトカーソルの動きは上下のみです UD=Up Down
 CURSOR_MOVE_UD_SLIDER        =  1 #セレクトカーソルは上下に動かすことができ、左右の入力でスライダーを動かせます
@@ -2169,6 +2173,7 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         self.cursor_cancel_se = 0  #カーソルでキャンセルボタンを押したときの効果音
         self.cursor_bounce_se = 0  #カーソルが障害物に当たった時の跳ね返り効果音
         
+        
         self.ship_list              = []
         self.ship_graph_list        = []
         self.weapon_list            = []
@@ -2179,10 +2184,17 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         self.missile_graph_list     = []
         self.medal_list             = []
         self.medal_graph_list       = []
-        self.item_list        = [[] for i in range(128)]
-        self.item_graph_list  = [[] for i in range(128)]
-        self.flag_list        = [[] for i in range(128)]
-        self.graph_list       = [[] for i in range(128)]
+        self.item_list              = [[] for i in range(128)]
+        self.item_graph_list        = [[] for i in range(128)]
+        self.flag_list              = [[] for i in range(128)]
+        self.graph_list             = [[] for i in range(128)]
+        
+        self.comment_flag           = 0   #カーソルが現在指し示しているアイテムの説明文を表示するかどうかのフラグ(全体管理)
+        self.comment_ox             = 0   #アイテムの説明文を表示する座標(comment_ox,comment_oy)(ウィンドウの座標からのオフセット値となります)
+        self.comment_oy             = 0
+        self.comment_disp_flag      = []  #個々のアイテムの説明文を表示するかのフラグcomment_list_eng,comment_list_jpnと1対1で対応し対となります
+        self.comment_list_eng       = []  #アイテムの説明文(英語)
+        self.comment_list_jpn       = []  #アイテムの説明文(日本語)
     def update(self,window_id,window_id_sub,window_type,window_bg,window_status,\
         between_line,\
         
@@ -2198,13 +2210,16 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         no_button_disp_flag,no_button_x,no_button_y,no_button_size,\
         cursor_move_se,cursor_push_se,cursor_ok_se,cursor_cancel_se,cursor_bounce_se,\
         
+        
         ship_list,ship_graph_list,\
         weapon_list,weapon_graph_list,\
         sub_weapon_list,sub_weapon_graph_list,\
         missile_list,missile_graph_list,\
         medal_list,medal_graph_list,\
         item_list,item_graph_list,\
-        flag_list,graph_list):
+        flag_list,graph_list,\
+        
+        comment_flag,comment_ox,comment_oy,comment_disp_flag,comment_list_eng,comment_list_jpn):
         
         self.window_id = window_id
         self.window_id_sub = window_id_sub
@@ -2255,7 +2270,8 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         self.cursor_push_se   = cursor_push_se
         self.cursor_ok_se     = cursor_ok_se
         self.cursor_cancel_se = cursor_cancel_se
-        self.cursor_bounce_se = cursor_bounce_se    
+        self.cursor_bounce_se = cursor_bounce_se
+        
         
         self.ship_list             = ship_list
         self.ship_graph_list       = ship_graph_list
@@ -2271,6 +2287,14 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         self.item_graph_list       = item_graph_list
         self.flag_list             = flag_list
         self.graph_list            = graph_list
+        
+        self.comment_flag      = comment_flag
+        self.comment_ox        = comment_ox
+        self.comment_oy        = comment_oy
+        self.comment_disp_flag = comment_disp_flag
+        self.comment_list_eng  = comment_list_eng
+        self.comment_list_jpn  = comment_list_jpn
+        
 class Cursor: #メッセージ表示ウィンドウで使用するカーソルのデータ群のクラス設定
     def __init__(self): #コンストラクタ
         self.window_id = 0         #このウィンドウIDがアクティブになったらこのカーソルデータを使用してカーソルを表示開始します
@@ -4425,8 +4449,10 @@ class App:
             44,34,44,34,   0,0,  8*8,9*8+5,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
+            
             CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
-            [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[])
+            [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[],\
+            COMMENT_FLAG_OFF,0,0,[],[],[])
         elif id == WINDOW_ID_SELECT_STAGE_MENU:
             new_window.update(\
             WINDOW_ID_SELECT_STAGE_MENU,\
@@ -4445,8 +4471,10 @@ class App:
             90,60,90,60,   0,0,  2*8,5*8,   2,2, 1,0.5,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
+            
             CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
-            [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[])
+            [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[],\
+            COMMENT_FLAG_OFF,0,0,[],[],[])
         elif id == WINDOW_ID_SELECT_LOOP_MENU:
             new_window.update(\
             WINDOW_ID_SELECT_LOOP_MENU,\
@@ -4465,8 +4493,10 @@ class App:
             90+22,60+6,90+22,60+6,   0,0,  2*8,5*8,   2,2, 1,0.5,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
+            
             CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
-            [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[])
+            [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[],\
+            COMMENT_FLAG_OFF,0,0,[],[],[])
         elif id == WINDOW_ID_BOSS_MODE_MENU:
             new_window.update(\
             WINDOW_ID_BOSS_MODE_MENU,\
@@ -4484,8 +4514,10 @@ class App:
             96+3,60-1,96+3,60-1,   0,0,  2*8+7,21,   2,1, 1,0.7,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
+            
             CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
-            [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[])
+            [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[],\
+            COMMENT_FLAG_OFF,0,0,[],[],[])
         elif id == WINDOW_ID_HITBOX_MENU:
             new_window.update(\
             WINDOW_ID_HITBOX_MENU,\
@@ -4503,8 +4535,10 @@ class App:
             96+3,60-1,96+3,60-1,   0,0,  2*8+7,21,   2,1, 1,0.7,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
+            
             CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
-            [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[])
+            [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[],\
+            COMMENT_FLAG_OFF,0,0,[],[],[])
         elif id == WINDOW_ID_SELECT_DIFFICULTY:
             new_window.update(\
             WINDOW_ID_SELECT_DIFFICULTY,\
@@ -4526,8 +4560,10 @@ class App:
             93,52,93,52,   0,0,  48,51,   3,3, 1,0.7,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
+            
             CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
-            [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[])
+            [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[],\
+            COMMENT_FLAG_OFF,0,0,[],[],[])
         elif id == WINDOW_ID_GAME_OVER_RETURN:
             new_window.update(\
             WINDOW_ID_GAME_OVER_RETURN,\
@@ -4545,8 +4581,10 @@ class App:
             43,68,43,68,   0,0,  8*8,3*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
+            
             CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
-            [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[])
+            [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[],\
+            COMMENT_FLAG_OFF,0,0,[],[])
         elif id == WINDOW_ID_GAME_OVER_RETURN_NO_SAVE:
             new_window.update(\
             WINDOW_ID_GAME_OVER_RETURN_NO_SAVE,\
@@ -4563,8 +4601,10 @@ class App:
             43,68,43,68,   0,0,  8*8,2*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
+            
             CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
-            [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[])
+            [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[],\
+            COMMENT_FLAG_OFF,0,0,[],[],[])
         elif id == WINDOW_ID_INPUT_YOUR_NAME:
             new_window.update(\
             WINDOW_ID_INPUT_YOUR_NAME,\
@@ -4581,8 +4621,10 @@ class App:
             80,52,80,52,   0,0,  6*11+2,6*3,   3,3, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_ON,51,12,WINDOW_BUTTON_SIZE_1TEXT,\
             BUTTON_DISP_OFF,0,0,0,\
+            
             CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
-            [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[])
+            [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[],\
+            COMMENT_FLAG_OFF,0,0,[],[],[])
         elif id == WINDOW_ID_CONFIG:
             new_window.update(\
             WINDOW_ID_CONFIG,\
@@ -4609,8 +4651,10 @@ class App:
             4,4,4,4,   0,0,  160-16,120-12,   2,2, 2,2,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
+            
             CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
-            [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[[108,4,  IMG2,  144,8,SIZE_8,SIZE_8, 0, 14,3],[40,4,  IMG2,  8,0,SIZE_8,SIZE_8, 0,  1,1]])
+            [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[[108,4,  IMG2,  144,8,SIZE_8,SIZE_8, 0, 14,3],[40,4,  IMG2,  8,0,SIZE_8,SIZE_8, 0,  1,1]],\
+            COMMENT_FLAG_OFF,0,0,[],[],[])
         elif id == WINDOW_ID_CONFIG_GRAPHICS:
             new_window.update(\
             WINDOW_ID_CONFIG_GRAPHICS,\
@@ -4636,8 +4680,10 @@ class App:
             44,34,44,34,   0,0,  8*8,9*8+5,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
+            
             CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
-            [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[])
+            [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[],\
+            COMMENT_FLAG_OFF,0,0,[],[],[])
         elif id == WINDOW_ID_MEDAL_LIST:
             new_window.update(\
             WINDOW_ID_MEDAL_LIST,\
@@ -4645,7 +4691,7 @@ class App:
             WINDOW_TYPE_NORMAL,\
             WINDOW_BG_BLUE_BACK,\
             WINDOW_OPEN,\
-            WINDOW_BETWEEN_LINE_9,\
+            WINDOW_BETWEEN_LINE_10,\
             ["MEDAL LIST",DISP_CENTER,     0,0,7,MES_MONOCHROME_FLASH],\
             
             [["Lv1",DISP_LEFT_ALIGN,0,0,7,MES_NO_FLASH],\
@@ -4656,6 +4702,7 @@ class App:
             23,48,23,48,   0,0,  13*8+4,6*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
+            
             CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
             [],[],[],[],[],[],[],[],self.medal_list,\
                 [[20     , 13   ,  IMG2,  176    ,176,SIZE_8,SIZE_8, 13, 1,1],\
@@ -4672,7 +4719,18 @@ class App:
                 [ 20+10*2, 13+20,  IMG2,  176+8*9,176,SIZE_8,SIZE_8, 13, 1,1]],\
                 
                 
-            [],[],self.master_flag_list,[])
+            [],[],self.master_flag_list,[],\
+            
+            COMMENT_FLAG_ON,27,13+30,\
+            [[DISP_ON,DISP_ON,DISP_ON,DISP_ON,  DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF],\
+            [ DISP_ON,DISP_ON,DISP_ON,DISP_OFF, DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF],\
+            [ DISP_ON,DISP_ON,DISP_ON,DISP_OFF, DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF]],\
+            
+            [["BEFOREHAND 1 SHOT","BEFOREHAND 2 SHOT","BEFOREHAND 3 SHOT","BEFOREHAND 4 SHOT","","","","","",""],\
+            [ "EQUIP L's SHIELD", "????",             "?????",            "",                 "","","","","",""],\
+            [ "2 OPTION SLOT",    "????",             "?????",            "",                 "","","","","",""]],\
+            [])
+            
         else:
             return
         
@@ -4706,8 +4764,10 @@ class App:
         31,28,31,28,   20,79,  90,79,   4,1, 2,1,   0,0,    0,0,    0,0,0,0,\
         BUTTON_DISP_OFF,0,0,0,\
         BUTTON_DISP_OFF,0,0,0,\
+        
         CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
-        [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[])
+        [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[],\
+        COMMENT_FLAG_OFF,0,0,[],[],[])
         
         self.window.append(new_window)                   #「RANKING」を育成する
 
@@ -4736,8 +4796,10 @@ class App:
         63,44,63,44,   0,0,  22,67,      2,1, 2,1,   1,1,    0,0,    0,0,0,0,\
         BUTTON_DISP_OFF,0,0,0,\
         BUTTON_DISP_OFF,0,0,0,\
+        
         CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
-        [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[])
+        [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[],\
+        COMMENT_FLAG_OFF,0,0,[],[],[])
         
         self.window.append(new_window)                      #「SELECT SLOT」を育成する
 
@@ -5141,6 +5203,7 @@ class App:
                 self.window[i].vy = 0.1 * self.stage_number
                 self.window[i].vy_accel = 1.1
                 self.window[i].window_status = WINDOW_CLOSE
+                self.window[i].comment_flag = COMMENT_FLAG_OFF
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
@@ -5155,6 +5218,7 @@ class App:
                 self.window[i].vy = 0.1 * self.stage_number
                 self.window[i].vy_accel = 1.1
                 self.window[i].window_status = WINDOW_CLOSE
+                self.window[i].comment_flag = COMMENT_FLAG_OFF
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
@@ -5169,6 +5233,7 @@ class App:
                 self.window[i].vy = 0.1 * self.stage_number
                 self.window[i].vy_accel = 1.1
                 self.window[i].window_status = WINDOW_CLOSE
+                self.window[i].comment_flag = COMMENT_FLAG_OFF
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
@@ -5181,6 +5246,7 @@ class App:
                 self.window[i].vx = 0.3            #WINDOW_ID_SELECT_LOOP_MENUウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
                 self.window[i].window_status = WINDOW_CLOSE
+                self.window[i].comment_flag = COMMENT_FLAG_OFF
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
@@ -5192,6 +5258,7 @@ class App:
                 self.window[i].vx = 0.3            #WINDOW_ID_SELECT_LOOP_MENUウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
                 self.window[i].window_status = WINDOW_CLOSE
+                self.window[i].comment_flag = COMMENT_FLAG_OFF
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
@@ -5203,6 +5270,7 @@ class App:
                 self.window[i].vx = 0.3            #WINDOW_ID_SELECT_LOOP_MENUウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
                 self.window[i].window_status = WINDOW_CLOSE
+                self.window[i].comment_flag = COMMENT_FLAG_OFF
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 self.active_window_id = WINDOW_ID_MAIN_MENU #1階層前メインメニューウィンドウIDを最前列でアクティブなものとする
@@ -5216,6 +5284,7 @@ class App:
                 self.window[i].vx = 0.3            #WINDOW_ID_BOSS_MODE_MENUウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
                 self.window[i].window_status = WINDOW_CLOSE
+                self.window[i].comment_flag = COMMENT_FLAG_OFF
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
@@ -5232,6 +5301,7 @@ class App:
                 self.window[i].vy = 0.2
                 self.window[i].vy_accel = 1.2
                 self.window[i].window_status = WINDOW_CLOSE
+                self.window[i].comment_flag = COMMENT_FLAG_OFF
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
@@ -5247,6 +5317,7 @@ class App:
                 self.window[i].vx = 0.3            #WINDOW_ID_HITBOX_MENUウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
                 self.window[i].window_status = WINDOW_CLOSE
+                self.window[i].comment_flag = COMMENT_FLAG_OFF
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
@@ -5263,6 +5334,7 @@ class App:
                 self.window[i].vy = 0.2
                 self.window[i].vy_accel = 1.2
                 self.window[i].window_status = WINDOW_CLOSE
+                self.window[i].comment_flag = COMMENT_FLAG_OFF
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
@@ -5280,6 +5352,7 @@ class App:
                 self.window[i].vy = -0.1
                 self.window[i].vy_accel = 1.2
                 self.window[i].window_status = WINDOW_CLOSE
+                self.window[i].comment_flag = COMMENT_FLAG_OFF
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
@@ -5296,6 +5369,7 @@ class App:
                 self.window[i].vy = -0.05
                 self.window[i].vy_accel = 1.2
                 self.window[i].window_status = WINDOW_CLOSE
+                self.window[i].comment_flag = COMMENT_FLAG_OFF
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
@@ -5310,6 +5384,7 @@ class App:
                 self.window[i].vx = 0.3            #WINDOW_ID_SELECT_DIFFICULTYウィンドウを右にフッ飛ばしていく
                 self.window[i].vx_accel = 1.2
                 self.window[i].window_status = WINDOW_CLOSE
+                self.window[i].comment_flag = COMMENT_FLAG_OFF
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
@@ -5326,6 +5401,7 @@ class App:
                 self.window[i].vy = 0.1
                 self.window[i].vy_accel = 1.2
                 self.window[i].window_status = WINDOW_CLOSE
+                self.window[i].comment_flag = COMMENT_FLAG_OFF
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
@@ -5342,6 +5418,7 @@ class App:
                 self.window[i].vy = 0.2
                 self.window[i].vy_accel = 1.2
                 self.window[i].window_status = WINDOW_CLOSE
+                self.window[i].comment_flag = COMMENT_FLAG_OFF
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
@@ -5358,6 +5435,7 @@ class App:
                 self.window[i].vy = 0.3
                 self.window[i].vy_accel = 1.2
                 self.window[i].window_status = WINDOW_CLOSE
+                self.window[i].comment_flag = COMMENT_FLAG_OFF
                 self.window[i].flag_list = self.master_flag_list #ボステストフラグを更新→マスターフラグデータリスト更新→ウィンドウのフラグリストに書き込んで更新します
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
@@ -5440,6 +5518,7 @@ class App:
                 self.window[i].vy = 0.2
                 self.window[i].vy_accel = 1.2
                 self.window[i].window_status = WINDOW_CLOSE
+                self.window[i].comment_flag = COMMENT_FLAG_OFF
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.save_system_data()                            #システムデータをセーブします
                 pyxel.load("assets/graphic/min-sht2.pyxres") #タイトル＆ステージ1＆2のリソースファイルを読み込む
@@ -5456,7 +5535,7 @@ class App:
                 self.window[i].vy = 0.1
                 self.window[i].vy_accel = 1.2
                 self.window[i].window_status = WINDOW_CLOSE
-                
+                self.window[i].comment_flag = COMMENT_FLAG_OFF
                 self.pop_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPOP
                 self.cursor_pre_decision_item_y = -1
                 pyxel.play(0,self.window[self.active_window_index].cursor_cancel_se)#カーソルキャンセル音を鳴らす
@@ -11908,6 +11987,16 @@ class App:
                     open_rate_y = self.window[i].height / self.window[i].open_height #開閉率(縦軸)
                     if self.window[i].medal_list[j] == 1:#メダルリストを見て所持フラグが立っているのなら表示する
                         pyxel.blt(self.window[i].posx + ox * open_rate_x,self.window[i].posy + oy * open_rate_y,imgb,u + u_offset,v,int(w * open_rate_x),int(h * open_rate_y),colkey) #グラフイック表示
+            
+            #今カーソルが指し示しているアイテムの説明文の表示
+            if self.window[i].comment_flag == COMMENT_FLAG_ON: #説明文コメントを表示するフラグが立っているのならば・・・
+                cx = self.cursor_item_x
+                cy = self.cursor_item_y
+                if self.window[i].comment_disp_flag[cy][cx] == DISP_ON: #カーソルの位置からそのアイテムの個々の表示フラグを見て表示する指示が立ってたら説明文を表示する
+                    co_str = self.window[i].comment_list_eng[cy][cx]
+                    co_x = self.window[i].comment_ox + self.window[i].posx
+                    co_y = self.window[i].comment_oy + self.window[i].posy
+                    self.shadow_drop_text(co_x,co_y,co_str,7)
 
     #セレクトカーソルの表示
     def draw_select_cursor(self):
