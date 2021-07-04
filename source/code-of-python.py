@@ -75,6 +75,8 @@
 
 #todo900 BGMの作成(無理そう.........)
 #実装完了済み！
+#todo 所持メダルのリスト表示＆各メダルの詳細なコメント表示実装(スロット装着はまだ未実装) 2021 07/04
+
 
 
 # from random import randint   #random.randint(n,m) と呼ぶと、nからm(m自身を含む)までの間の整数が 等しい確率で、ランダムに返される
@@ -175,6 +177,9 @@ SHIP_ANCENT          = 2 #古代機体
 SHIP_EXTRA           = 3 #特殊機体
 SHIP_NEXT_GENERATION = 4 #次世代機体
 
+#言語選択
+LANGUAGE_ENG         = 0 #英語
+LANGUAGE_JPN         = 1 #日本語
 
 #!キーアイテムの定数定義 ########################################################
 KEY_ITEM_PUNCHED_CARD               =  0 #パンチカード
@@ -569,7 +574,7 @@ LIST_WINDOW_FLAG_SCREEN_MODE       =  8 #画面スクリーンモード(ウィ�
 LIST_WINDOW_FLAG_BGM_VOL           =  9 #BGMボリューム値
 LIST_WINDOW_FLAG_SE_VOL            = 10 #SE(サウンドエフェクト)ボリューム値
 LIST_WINDOW_FLAG_CTRL_TYPE         = 11 #パッド入力パターン
-LIST_WINDOW_FLAG_                  = 12 #
+LIST_WINDOW_FLAG_LANGUAGE          = 12 #選択言語
 LIST_WINDOW_FLAG_                  = 13 #
 LIST_WINDOW_FLAG_                  = 14 #
 LIST_WINDOW_FLAG_                  = 15 #
@@ -2190,8 +2195,10 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         self.graph_list             = [[] for i in range(128)]
         
         self.comment_flag           = 0   #カーソルが現在指し示しているアイテムの説明文を表示するかどうかのフラグ(全体管理)
-        self.comment_ox             = 0   #アイテムの説明文を表示する座標(comment_ox,comment_oy)(ウィンドウの座標からのオフセット値となります)
-        self.comment_oy             = 0
+        self.comment_ox_eng         = 0   #アイテムの説明文を表示する座標(英語)(comment_ox_eng,comment_oy_eng)(ウィンドウの座標からのオフセット値となります)
+        self.comment_oy_eng         = 0
+        self.comment_ox_jpn         = 0   #アイテムの説明文を表示する座標(日本語)(comment_ox_jpn,comment_oy_jpn)(ウィンドウの座標からのオフセット値となります)
+        self.comment_oy_jpn         = 0
         self.comment_disp_flag      = []  #個々のアイテムの説明文を表示するかのフラグcomment_list_eng,comment_list_jpnと1対1で対応し対となります
         self.comment_list_eng       = []  #アイテムの説明文(英語)
         self.comment_list_jpn       = []  #アイテムの説明文(日本語)
@@ -2219,7 +2226,7 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         item_list,item_graph_list,\
         flag_list,graph_list,\
         
-        comment_flag,comment_ox,comment_oy,comment_disp_flag,comment_list_eng,comment_list_jpn):
+        comment_flag,comment_ox_eng,comment_oy_eng,comment_ox_jpn,comment_oy_jpn,comment_disp_flag,comment_list_eng,comment_list_jpn):
         
         self.window_id = window_id
         self.window_id_sub = window_id_sub
@@ -2289,12 +2296,13 @@ class Window: #メッセージ表示ウィンドウのクラスの設定
         self.graph_list            = graph_list
         
         self.comment_flag      = comment_flag
-        self.comment_ox        = comment_ox
-        self.comment_oy        = comment_oy
+        self.comment_ox_eng    = comment_ox_eng
+        self.comment_oy_eng    = comment_oy_eng
+        self.comment_ox_jpn    = comment_ox_jpn
+        self.comment_oy_jpn    = comment_oy_jpn
         self.comment_disp_flag = comment_disp_flag
         self.comment_list_eng  = comment_list_eng
         self.comment_list_jpn  = comment_list_jpn
-        
 class Cursor: #メッセージ表示ウィンドウで使用するカーソルのデータ群のクラス設定
     def __init__(self): #コンストラクタ
         self.window_id = 0         #このウィンドウIDがアクティブになったらこのカーソルデータを使用してカーソルを表示開始します
@@ -2496,7 +2504,7 @@ class App:
         self.get_my_ship                    = [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0]  #手に入れた機体0=未入手 1=入手 機体のIDナンバーがリストのインデックス値となります
                                                                                     #例 J_PYTHONはIDナンバー0なので リスト先頭の1番目の数値となる  (0始まりなので)
                                                                                     #   FIRST_BASICはIDナンバー8なのでリスト先頭の9番目の数値となる(0始まりなので)
-        self.medal_list = [1,1,1,1,1,  1,1,1,1,1]   #取得メダルリスト(とりあえずダミー登録、あとでシステムデータのロードからリスト取得します)
+        self.medal_list = [1,1,1,1,1,  1,1,1,0,1]   #取得メダルリスト(とりあえずダミー登録、あとでシステムデータのロードからリスト取得します)
                                                     #0=未入手 1=入手 メダルのIDナンバーがリストのインデックス値となります
 
         #ゲーム中で絶対に変化することのないリスト群はここで作成します#######################################
@@ -2512,6 +2520,7 @@ class App:
         self.expansion_shrink_number = [1,1,1,2,2,2,3,3,3,4,   4,5,5,6,6,7,8,9,10,9,   8,7,6,6,5,5,4,4,3,3,   3,2,2,2,1,1,1,1,1,1,1,1]
         
         #いきなり美咲フォントコードテーブルを直接代入という破天荒なコード・・・・
+        #「シールド」は「シ─ルド」と入力しないと文字化けするので注意 ー→─
         self.font_code_table = (
             "　、。,.・:;?!゛゜´`¨^‾_ヽヾゝゞ〃仝々〆〇ー—‐/\〜‖|…‥‘’“”()〔〕[]{}〈〉《》「」『』【】+−±×÷=≠<>≦≧∞∴♂♀°′″℃¥$¢£%#&*@§☆★○●◎◇\n"
             "◆□■△▲▽▼※〒→←↑↓〓         ∈∋⊆⊇⊂⊃∪∩       ∧∨¬⇒⇔∀∃         ∠⊥⌒∂∇≡≒≪≫√∽∝∵∫∬      Å‰♯♭♪†‡¶    ◯\n"
@@ -2526,7 +2535,7 @@ class App:
             "\n"
             "\n"
             "\n"
-            "①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪ㍉㌔㌢㍍㌘㌧㌃㌶㍑㍗㌍㌦㌣㌫㍊㌻㎜㎝㎞㎎㎏㏄㎡            ㊥㊦㊧㊨㈱㈲㈹㍾㍽㍼∮∟⊿❖☞\n"
+            "⓪①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩⅪ㍉㌔㌢㍍㌘㌧㌃㌶㍑㍗㌍㌦㌣㌫㍊㌻㎜㎝㎞㎎㎏㏄㎡            ㊥㊦㊧㊨㈱㈲㈹㍾㍽㍼∮∟⊿❖☞\n"
             "\n"          
             "\n"
             "亜唖娃阿哀愛挨姶逢葵茜穐悪握渥旭葦芦鯵梓圧斡扱宛姐虻飴絢綾鮎或粟袷安庵按暗案闇鞍杏以伊位依偉囲夷委威尉惟意慰易椅為畏異移維緯胃萎衣謂違遺医井亥域育郁磯一壱溢逸稲茨芋鰯允印咽員因姻引飲淫胤蔭\n"
@@ -3285,7 +3294,10 @@ class App:
         #master_se_vol                      #SEのマスターボリューム
                                             #0~7
         self.master_se_vol                 = self.read_system_data_num(2,135,3)
-
+        #language                           #選択言語
+                                            #0=英語 1=日本語
+        self.language                      = (pyxel.tilemap(0).get(0,136)) - 16
+        
         # self.test_read_num = self.read_system_data_num(15,156,16) #数値の読み取りテストです
 
     #システムデータのセーブ
@@ -3305,6 +3317,7 @@ class App:
         pyxel.tilemap(0).set(0,133,self.ctrl_type + 16)                       #パッドコントロールタイプ書き込み
         self.write_system_data_num(2,134,3,self.master_bgm_vol)               #マスターBGMボリューム値書き込み
         self.write_system_data_num(2,135,3,self.master_se_vol)                #マスターSEボリューム値書き込み
+        pyxel.tilemap(0).set(0,136,self.language + 16)                        #選択言語書き込み
         
         #総ゲームプレイ時間(秒)のそれぞれの桁の数値を計算する (自分でも訳が分からないよ・・・)------------------------------
         t_sec = self.total_game_playtime_seconds
@@ -4402,6 +4415,7 @@ class App:
         self.master_flag_list[LIST_WINDOW_FLAG_BGM_VOL]     = self.master_bgm_vol     #マスターBGMボリューム数値をリストに登録
         self.master_flag_list[LIST_WINDOW_FLAG_SE_VOL]      = self.master_se_vol      #マスターSEボリューム数値をリストに登録
         self.master_flag_list[LIST_WINDOW_FLAG_CTRL_TYPE]   = self.ctrl_type          #パッドコントロールパターン値をリストに登録
+        self.master_flag_list[LIST_WINDOW_FLAG_LANGUAGE]    = self.language           #選択言語をリストに登録
 
     #マスターフラグ＆データリストを個別の変数にリストアさせる
     def restore_master_flag_list(self):
@@ -4418,6 +4432,7 @@ class App:
         self.master_bgm_vol    = self.master_flag_list[LIST_WINDOW_FLAG_BGM_VOL]                 #マスターBGMボリューム数値をリストから参照してリストア
         self.master_se_vol     = self.master_flag_list[LIST_WINDOW_FLAG_SE_VOL]                  #マスターSEボリューム数値をリストから参照してリストア
         self.ctrl_type         = self.master_flag_list[LIST_WINDOW_FLAG_CTRL_TYPE]               #パッドコントロールパターン値をリストから参照してリストア
+        self.language          = self.master_flag_list[LIST_WINDOW_FLAG_LANGUAGE]                #選択言語をリストから参照してリストア
 
     #各種ウィンドウの育成             id=windowクラスの window_idに入っている数値
     def create_window(self,id):
@@ -4452,7 +4467,7 @@ class App:
             
             CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
             [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[],\
-            COMMENT_FLAG_OFF,0,0,[],[],[])
+            COMMENT_FLAG_OFF,0,0,0,0,[],[],[])
         elif id == WINDOW_ID_SELECT_STAGE_MENU:
             new_window.update(\
             WINDOW_ID_SELECT_STAGE_MENU,\
@@ -4474,7 +4489,7 @@ class App:
             
             CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
             [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[],\
-            COMMENT_FLAG_OFF,0,0,[],[],[])
+            COMMENT_FLAG_OFF,0,0,0,0,[],[],[])
         elif id == WINDOW_ID_SELECT_LOOP_MENU:
             new_window.update(\
             WINDOW_ID_SELECT_LOOP_MENU,\
@@ -4496,7 +4511,7 @@ class App:
             
             CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
             [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[],\
-            COMMENT_FLAG_OFF,0,0,[],[],[])
+            COMMENT_FLAG_OFF,0,0,0,0,[],[],[])
         elif id == WINDOW_ID_BOSS_MODE_MENU:
             new_window.update(\
             WINDOW_ID_BOSS_MODE_MENU,\
@@ -4517,7 +4532,7 @@ class App:
             
             CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
             [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[],\
-            COMMENT_FLAG_OFF,0,0,[],[],[])
+            COMMENT_FLAG_OFF,0,0,0,0,[],[],[])
         elif id == WINDOW_ID_HITBOX_MENU:
             new_window.update(\
             WINDOW_ID_HITBOX_MENU,\
@@ -4538,7 +4553,7 @@ class App:
             
             CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
             [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[],\
-            COMMENT_FLAG_OFF,0,0,[],[],[])
+            COMMENT_FLAG_OFF,0,0,0,0,[],[],[])
         elif id == WINDOW_ID_SELECT_DIFFICULTY:
             new_window.update(\
             WINDOW_ID_SELECT_DIFFICULTY,\
@@ -4563,7 +4578,7 @@ class App:
             
             CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
             [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[],\
-            COMMENT_FLAG_OFF,0,0,[],[],[])
+            COMMENT_FLAG_OFF,0,0,0,0,[],[],[])
         elif id == WINDOW_ID_GAME_OVER_RETURN:
             new_window.update(\
             WINDOW_ID_GAME_OVER_RETURN,\
@@ -4584,7 +4599,7 @@ class App:
             
             CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
             [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[],\
-            COMMENT_FLAG_OFF,0,0,[],[])
+            COMMENT_FLAG_OFF,0,0,0,0,[],[],[])
         elif id == WINDOW_ID_GAME_OVER_RETURN_NO_SAVE:
             new_window.update(\
             WINDOW_ID_GAME_OVER_RETURN_NO_SAVE,\
@@ -4604,7 +4619,7 @@ class App:
             
             CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
             [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[],\
-            COMMENT_FLAG_OFF,0,0,[],[],[])
+            COMMENT_FLAG_OFF,0,0,0,0,[],[],[])
         elif id == WINDOW_ID_INPUT_YOUR_NAME:
             new_window.update(\
             WINDOW_ID_INPUT_YOUR_NAME,\
@@ -4624,7 +4639,7 @@ class App:
             
             CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
             [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[],\
-            COMMENT_FLAG_OFF,0,0,[],[],[])
+            COMMENT_FLAG_OFF,0,0,0,0,[],[],[])
         elif id == WINDOW_ID_CONFIG:
             new_window.update(\
             WINDOW_ID_CONFIG,\
@@ -4641,7 +4656,7 @@ class App:
             ["CONTROL TYPE", DISP_LEFT_ALIGN,10,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  LIST_WINDOW_FLAG_CTRL_TYPE,  OPE_OBJ_TYPE_NUM,   "",DISP_LEFT_ALIGN,0,   70+4,0,7,10,1,   5,  [" "," "],               0,     DISP_OFF,DISP_OFF,DISP_ON,DISP_ON, 0,0, 0,0, STEP4*25,STEP9*5, STEP4*19,STEP9*5],\
             ["",             DISP_LEFT_ALIGN, 0,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  0,                           OPE_OBJ_TYPE_NONE,  "",DISP_LEFT_ALIGN,0,   70  ,0,7,10,0,   0,  [" "," "],              ],\
             ["",             DISP_LEFT_ALIGN, 0,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  0,                           OPE_OBJ_TYPE_NONE,  "",DISP_LEFT_ALIGN,0,   70  ,0,7,10,0,   0,  [" "," "],              ],\
-            ["",             DISP_LEFT_ALIGN, 0,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  0,                           OPE_OBJ_TYPE_NONE,  "",DISP_LEFT_ALIGN,0,   70  ,0,7,10,0,   0,  [" "," "],              ],\
+            ["LANGUAGE",     DISP_LEFT_ALIGN,11,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  LIST_WINDOW_FLAG_LANGUAGE,   OPE_OBJ_TYPE_ON_OFF,"",DISP_LEFT_ALIGN,0,   70  ,0,7,10,0,   100,["ENGLISH","JAPANESE"], ],\
             ["BOSS MODE",    DISP_LEFT_ALIGN,11,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  LIST_WINDOW_FLAG_BOSS_MODE,  OPE_OBJ_TYPE_ON_OFF,"",DISP_LEFT_ALIGN,0,   70  ,0,7,10,0,   100,["OFF"," ON"]           ],\
             ["HIT BOX",      DISP_LEFT_ALIGN,11,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  LIST_WINDOW_FLAG_HIT_BOX,    OPE_OBJ_TYPE_ON_OFF,"",DISP_LEFT_ALIGN,0,   70  ,0,7,10,0,   100,["OFF"," ON"]           ],\
             ["DEBUG MODE",   DISP_LEFT_ALIGN,11,0,7,  MES_NO_FLASH,    0,0,0,0,   0,0,0,0,0,  0,0,0,0,0,  LIST_WINDOW_FLAG_DEBUG_MODE, OPE_OBJ_TYPE_ON_OFF,"",DISP_LEFT_ALIGN,0,   70  ,0,7,10,0,   100,["OFF"," ON"]           ],\
@@ -4654,7 +4669,7 @@ class App:
             
             CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
             [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[[108,4,  IMG2,  144,8,SIZE_8,SIZE_8, 0, 14,3],[40,4,  IMG2,  8,0,SIZE_8,SIZE_8, 0,  1,1]],\
-            COMMENT_FLAG_OFF,0,0,[],[],[])
+            COMMENT_FLAG_OFF,0,0,0,0,[],[],[])
         elif id == WINDOW_ID_CONFIG_GRAPHICS:
             new_window.update(\
             WINDOW_ID_CONFIG_GRAPHICS,\
@@ -4683,7 +4698,7 @@ class App:
             
             CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
             [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[],\
-            COMMENT_FLAG_OFF,0,0,[],[],[])
+            COMMENT_FLAG_OFF,0,0,0,0,[],[],[])
         elif id == WINDOW_ID_MEDAL_LIST:
             new_window.update(\
             WINDOW_ID_MEDAL_LIST,\
@@ -4721,7 +4736,7 @@ class App:
                 
             [],[],self.master_flag_list,[],\
             
-            COMMENT_FLAG_ON,27,13+30,\
+            COMMENT_FLAG_ON,27,43,5,42,\
             [[DISP_ON,DISP_ON,DISP_ON,DISP_ON,  DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF],\
             [ DISP_ON,DISP_ON,DISP_ON,DISP_OFF, DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF],\
             [ DISP_ON,DISP_ON,DISP_ON,DISP_OFF, DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF]],\
@@ -4729,7 +4744,11 @@ class App:
             [["BEFOREHAND 1 SHOT","BEFOREHAND 2 SHOT","BEFOREHAND 3 SHOT","BEFOREHAND 4 SHOT","","","","","",""],\
             [ "EQUIP L's SHIELD", "????",             "?????",            "",                 "","","","","",""],\
             [ "2 OPTION SLOT",    "????",             "?????",            "",                 "","","","","",""]],\
-            [])
+            
+            [["事前にショットアイテム①個取得","事前にショットアイテム②個取得","事前にショットアイテム③個取得","事前にショットアイテム④個取得","","","","","",""],\
+            [ "エルズシ─ルド装備", "？？？？",             "？？",            "",                 "","","","","",""],\
+            [ "スロットが②個増える",    "？？",             "？？？",            "",                 "","","","","",""]],\
+            )
             
         else:
             return
@@ -4767,7 +4786,7 @@ class App:
         
         CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
         [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[],\
-        COMMENT_FLAG_OFF,0,0,[],[],[])
+        COMMENT_FLAG_OFF,0,0,0,0,[],[],[])
         
         self.window.append(new_window)                   #「RANKING」を育成する
 
@@ -4799,7 +4818,7 @@ class App:
         
         CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
         [],[],[],[],[],[],[],[],[],[],[],[],self.master_flag_list,[],\
-        COMMENT_FLAG_OFF,0,0,[],[],[])
+        COMMENT_FLAG_OFF,0,0,0,0,[],[],[])
         
         self.window.append(new_window)                      #「SELECT SLOT」を育成する
 
@@ -11989,14 +12008,24 @@ class App:
                         pyxel.blt(self.window[i].posx + ox * open_rate_x,self.window[i].posy + oy * open_rate_y,imgb,u + u_offset,v,int(w * open_rate_x),int(h * open_rate_y),colkey) #グラフイック表示
             
             #今カーソルが指し示しているアイテムの説明文の表示
-            if self.window[i].comment_flag == COMMENT_FLAG_ON: #説明文コメントを表示するフラグが立っているのならば・・・
-                cx = self.cursor_item_x
-                cy = self.cursor_item_y
-                if self.window[i].comment_disp_flag[cy][cx] == DISP_ON: #カーソルの位置からそのアイテムの個々の表示フラグを見て表示する指示が立ってたら説明文を表示する
-                    co_str = self.window[i].comment_list_eng[cy][cx]
-                    co_x = self.window[i].comment_ox + self.window[i].posx
-                    co_y = self.window[i].comment_oy + self.window[i].posy
-                    self.shadow_drop_text(co_x,co_y,co_str,7)
+            if      self.window[i].window_status == WINDOW_WRITE_MESSAGE\
+                or  self.window[i].window_status == WINDOW_CLOSE\
+                or  self.window[i].window_status == WINDOW_MOVE\
+                or  self.window[i].window_status == WINDOW_OPEN_COMPLETED:
+                if self.window[i].comment_flag == COMMENT_FLAG_ON: #説明文コメントを表示するフラグが立っているのならば・・・
+                    cx = self.cursor_item_x
+                    cy = self.cursor_item_y
+                    if self.window[i].comment_disp_flag[cy][cx] == DISP_ON: #カーソルの位置からそのアイテムの個々の表示フラグを見て表示する指示が立ってたら説明文を表示する
+                        if self.language == LANGUAGE_ENG: #選択言語が英語の場合
+                            co_x = self.window[i].comment_ox_eng + self.window[i].posx
+                            co_y = self.window[i].comment_oy_eng + self.window[i].posy
+                            co_str = self.window[i].comment_list_eng[cy][cx]
+                            self.shadow_drop_text(co_x,co_y,co_str,7)
+                        else:                            #日本語の場合
+                            co_x = self.window[i].comment_ox_jpn + self.window[i].posx
+                            co_y = self.window[i].comment_oy_jpn + self.window[i].posy
+                            co_str = self.window[i].comment_list_jpn[cy][cx]
+                            self.kanji_text(co_x,co_y,co_str,7)
 
     #セレクトカーソルの表示
     def draw_select_cursor(self):
