@@ -598,11 +598,9 @@ LIST_WINDOW_GRAPH_H                =  6 #
 LIST_WINDOW_GRAPH_COLKEY           =  7 #透明色の指定
 LIST_WINDOW_GRAPH_ANIME_FRAME_NUM  =  8 #アニメーションパターンの枚数(1の場合はアニメーション無し)
 LIST_WINDOW_GRAPH_ANIME_SPEED      =  9 #アニメーションのスピード(1が速く数値が増えるにつれて遅くなる4位が良いかも？)
-LIST_WINDOW_GRAPH_COMMENT_ENG      = 10 #グラフイックキャラに対する説明文(英語)
-LIST_WINDOW_GRAPH_COMMENT_JAP      = 11 #グラフイックキャラに対する説明文(日本語)
-LIST_WINDOW_GRAPH_COMMENT_OX       = 12 #グラフイックキャラに対する説明文を表示する座標(gc_ox,gc_oy)ウィンドウ表示座標からのオフセット値となります
-LIST_WINDOW_GRAPH_COMMENT_OY       = 13
-LIST_WINDOW_GRAPH_COMMENT_COL      = 12 #グラフイックキャラに対する説明文の表示色
+LIST_WINDOW_GRAPH_ITEM_X           = 10 #このグラフイックキャラはアイテムとしてどこに位置するのかを指定する(x座標)
+LIST_WINDOW_GRAPH_ITEM_Y           = 11 #このグラフイックキャラはアイテムとしてどこに位置するのかを指定する(y座標)(0,0)だったらdecision_item_x=0,decision_item_y=0
+                                        #                                                                   (2,1)だったらdecision_item_x=2,decision_item_y=1って事になります
 
 #ウィンドウスクリプトリストのリストの2次元配列のインデックスナンバーとして使用する定数定義 windowクラスのwindow[i].script[ここで定義した定数]に入ります(一つだけだよ=1個だけ)(リスト表記=複数の数値が入ります)
 LIST_WINDOW_SCRIPT_TEXT            =  0 #スクリプト文本文が入ります(文字列型)
@@ -2504,7 +2502,7 @@ class App:
         self.get_my_ship                    = [0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0]  #手に入れた機体0=未入手 1=入手 機体のIDナンバーがリストのインデックス値となります
                                                                                     #例 J_PYTHONはIDナンバー0なので リスト先頭の1番目の数値となる  (0始まりなので)
                                                                                     #   FIRST_BASICはIDナンバー8なのでリスト先頭の9番目の数値となる(0始まりなので)
-        self.medal_list = [1,1,1,1,1,  1,1,1,0,1]   #取得メダルリスト(とりあえずダミー登録、あとでシステムデータのロードからリスト取得します)
+        self.medal_list = [1,0,0,1,1,  1,1,1,0,1]   #取得メダルリスト(とりあえずダミー登録、あとでシステムデータのロードからリスト取得します)
                                                     #0=未入手 1=入手 メダルのIDナンバーがリストのインデックス値となります
 
         #ゲーム中で絶対に変化することのないリスト群はここで作成します#######################################
@@ -4709,45 +4707,45 @@ class App:
             WINDOW_BETWEEN_LINE_10,\
             ["MEDAL LIST",DISP_CENTER,     0,0,7,MES_MONOCHROME_FLASH],\
             
-            [["Lv1",DISP_LEFT_ALIGN,0,0,7,MES_NO_FLASH],\
-            ["Lv2",DISP_LEFT_ALIGN,0,0,7,MES_NO_FLASH],\
-            ["Lv3",DISP_LEFT_ALIGN,0,0,7,MES_NO_FLASH]],\
+            [[" Lv1",DISP_LEFT_ALIGN,0,0,7,MES_NO_FLASH],\
+            [ " Lv2",DISP_LEFT_ALIGN,0,0,7,MES_NO_FLASH],\
+            [ " Lv3",DISP_LEFT_ALIGN,0,0,7,MES_NO_FLASH]],\
             
             [[""]],[],[],\
-            23,48,23,48,   0,0,  13*8+4,6*8,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
+            17,48,17,48,   0,0,  13*8+17,6*8+3,   2,1, 1,1,   0,0,    0,0,    0,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             BUTTON_DISP_OFF,0,0,0,\
             
             CURSOR_MOVE_SE_NORMAL,CURSOR_PUSH_SE_NORMAL,CURSOR_OK_SE_NORMAL,CURSOR_CANCEL_SE_NORMAL,CURSOR_BOUNCE_SE_NORMAL,\
             [],[],[],[],[],[],[],[],self.medal_list,\
-                [[20     , 13   ,  IMG2,  176    ,176,SIZE_8,SIZE_8, 13, 1,1],\
-                [ 20+10*1, 13   ,  IMG2,  176+8*1,176,SIZE_8,SIZE_8, 13, 1,1],\
-                [ 20+10*2, 13   ,  IMG2,  176+8*2,176,SIZE_8,SIZE_8, 13, 1,1],\
-                [ 20+10*3, 13   ,  IMG2,  176+8*3,176,SIZE_8,SIZE_8, 13, 1,1],\
+                [[30     , 13   ,  IMG2,  176    ,176,SIZE_8,SIZE_8, 13, 1,1,    0,0],\
+                [ 30+10*1, 13   ,  IMG2,  176+8*1,176,SIZE_8,SIZE_8, 13, 1,1,    1,0],\
+                [ 30+10*2, 13   ,  IMG2,  176+8*2,176,SIZE_8,SIZE_8, 13, 1,1,    2,0],\
+                [ 30+10*3, 13   ,  IMG2,  176+8*3,176,SIZE_8,SIZE_8, 13, 1,1,    3,0],\
                 
-                [ 20     , 13+10,  IMG2,  176+8*4,176,SIZE_8,SIZE_8, 13, 1,1],\
-                [ 20+10*1, 13+10,  IMG2,  176+8*5,176,SIZE_8,SIZE_8, 13, 1,1],\
-                [ 20+10*2, 13+10,  IMG2,  176+8*6,176,SIZE_8,SIZE_8, 13, 1,1],\
+                [ 30     , 13+10,  IMG2,  176+8*4,176,SIZE_8,SIZE_8, 13, 1,1,    0,1],\
+                [ 30+10*1, 13+10,  IMG2,  176+8*5,176,SIZE_8,SIZE_8, 13, 1,1,    1,1],\
+                [ 30+10*2, 13+10,  IMG2,  176+8*6,176,SIZE_8,SIZE_8, 13, 1,1,    2,1],\
                 
-                [ 20,      13+20,  IMG2,  176+8*7,176,SIZE_8,SIZE_8, 13, 1,1],\
-                [ 20+10*1, 13+20,  IMG2,  176+8*8,176,SIZE_8,SIZE_8, 13, 1,1],\
-                [ 20+10*2, 13+20,  IMG2,  176+8*9,176,SIZE_8,SIZE_8, 13, 1,1]],\
+                [ 30,      13+20,  IMG2,  176+8*7,176,SIZE_8,SIZE_8, 13, 1,1,    0,2],\
+                [ 30+10*1, 13+20,  IMG2,  176+8*8,176,SIZE_8,SIZE_8, 13, 1,1,    1,2],\
+                [ 30+10*2, 13+20,  IMG2,  176+8*9,176,SIZE_8,SIZE_8, 13, 1,1,    2,2]],\
                 
                 
             [],[],self.master_flag_list,[],\
             
-            COMMENT_FLAG_ON,27,43,5,42,\
-            [[DISP_ON,DISP_ON,DISP_ON,DISP_ON,  DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF],\
-            [ DISP_ON,DISP_ON,DISP_ON,DISP_OFF, DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF],\
-            [ DISP_ON,DISP_ON,DISP_ON,DISP_OFF, DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF]],\
+            COMMENT_FLAG_ON,27,45,5,42,\
+            [[DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,  DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF],\
+            [ DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,  DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF],\
+            [ DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,  DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF]],\
             
-            [["BEFOREHAND 1 SHOT","BEFOREHAND 2 SHOT","BEFOREHAND 3 SHOT","BEFOREHAND 4 SHOT","","","","","",""],\
-            [ "EQUIP L's SHIELD", "????",             "?????",            "",                 "","","","","",""],\
-            [ "2 OPTION SLOT",    "????",             "?????",            "",                 "","","","","",""]],\
+            [[" BEFOREHAND 1 SHOT"," BEFOREHAND 2 SHOT"," BEFOREHAND 3 SHOT"," BEFOREHAND 4 SHOT","","","","","",""],\
+            [ "  EQUIP L's SHIELD", "????",             "?????",            "",                 "","","","","",""],\
+            [ "  2 OPTION SLOT",    "????",             "?????",            "",                 "","","","","",""]],\
             
             [["事前にショットアイテム①個取得","事前にショットアイテム②個取得","事前にショットアイテム③個取得","事前にショットアイテム④個取得","","","","","",""],\
-            [ "エルズシ─ルド装備", "？？？？",             "？？",            "",                 "","","","","",""],\
-            [ "スロットが②個増える",    "？？",             "？？？",            "",                 "","","","","",""]],\
+            [ "　　　エルズシ─ルド装備", "？？？？",             "？？",            "",                 "","","","","",""],\
+            [ "　　スロットが②個増える",    "？？",             "ぴかぴか光る！",            "",                 "","","","","",""]],\
             )
             
         else:
@@ -4856,6 +4854,23 @@ class App:
             if self.window[i].window_id == id:
                 self.window[i].vx,self.window[i].vy             = vx,vy
                 self.window[i].vx_accel,self.window[i].vy_accel = vx_accel,vy_accel
+
+    #メダルリストウィンドウで「存在するアイテム」を調べ上げコメント表示フラグテーブルを作製する関数
+    def make_medal_list_window_comment_disp_flag_table(self):
+        i = self.search_window_id(WINDOW_ID_MEDAL_LIST) #メダルリストウィンドウをIDを元にインデックス番号を調べる
+        if i != -1: #メダルリストが存在するときは「存在するアイテム」を調べ上げて、テーブルを作製開始する
+            for j in range(len(self.window[i].medal_graph_list)): #medal_graph_listの長さの分ループ処理する
+                item_x = self.window[i].medal_graph_list[j][LIST_WINDOW_GRAPH_ITEM_X] #アイテムのx座標取得
+                item_y = self.window[i].medal_graph_list[j][LIST_WINDOW_GRAPH_ITEM_Y] #アイテムのy座標取得
+                if self.window[i].medal_list[j] == 1:#メダルリストを見て所持フラグが立っているのならcomment_disp_flagのアイテムの存在すべき座標にDISP_ONを書き込む
+                    self.window[i].comment_disp_flag[item_y][item_x] = DISP_ON
+                else:
+                    self.window[i].comment_disp_flag[item_y][item_x] = DISP_OFF
+            
+        else: #メダルリストが存在しなかったらどうしようもない・・・ので・・・リターン戻るのですよ・・・orz
+            return
+
+
 
     #カーソル関係の数値を変数にセットする関数
     def set_cursor_data(self,cu_type,cu_move_direction,posx,posy,step_x,step_y,page,page_max,item_x,item_y,d_item_x,d_item_y,max_item_x,max_item_y,color,menu_layer):
@@ -5206,8 +5221,9 @@ class App:
                     self.create_window(WINDOW_ID_MEDAL_LIST)                #「MEDAL_LIST」ウィンドウの作製
                     #カーソルは点滅囲み矩形タイプ,カーソルは4方向,カーソル移動ステップはx9,y9,いま指示しているアイテムナンバーは0
                     #まだボタンも押されておらず未決定状態なのでdecision_item_yはUNSELECTED,x最大項目数は9項目なので9-1=8を代入,メニューの階層が増えたのでMENU_LAYER0からMENU_LAYER1にします
-                    self.set_cursor_data(CURSOR_TYPE_BOX_FLASH,CURSOR_MOVE_4WAY,42,60,STEP10,STEP10,0,0,0,0,UNSELECTED,UNSELECTED,9-1,3-1,0,MENU_LAYER1)
-                    self.active_window_id = WINDOW_ID_CONFIG #このウィンドウIDを最前列でアクティブなものとする
+                    self.set_cursor_data(CURSOR_TYPE_BOX_FLASH,CURSOR_MOVE_4WAY,46,60,STEP10,STEP10,0,0,0,0,UNSELECTED,UNSELECTED,9-1,3-1,0,MENU_LAYER1)
+                    self.active_window_id = WINDOW_ID_MEDAL_LIST #このウィンドウIDを最前列でアクティブなものとする
+                    self.make_medal_list_window_comment_disp_flag_table() #メダルリストウィンドウで「存在するアイテム」を調べ上げコメント表示フラグテーブルを作製する関数の呼び出す
                     pyxel.play(0,self.window[self.active_window_index].cursor_push_se)#カーソルボタンプッシュ音を鳴らす
             
         elif self.cursor_menu_layer == 1: #メニューが1階層目の選択分岐
@@ -11993,7 +12009,7 @@ class App:
             
             #メダルの表示
             if self.window[i].medal_graph_list != "": #メダルグラフイックリストが空でないのならば表示を始める
-                for j in range(len(self.window[i].medal_graph_list)): #graph_listの長さの分ループ処理する
+                for j in range(len(self.window[i].medal_graph_list)): #medal_graph_listの長さの分ループ処理する
                     ox,oy  = self.window[i].medal_graph_list[j][LIST_WINDOW_GRAPH_OX],self.window[i].medal_graph_list[j][LIST_WINDOW_GRAPH_OY]#表示オフセット座標取得
                     imgb   = self.window[i].medal_graph_list[j][LIST_WINDOW_GRAPH_IMGB]#参照イメージバンク値取得
                     u,v    = self.window[i].medal_graph_list[j][LIST_WINDOW_GRAPH_U],self.window[i].medal_graph_list[j][LIST_WINDOW_GRAPH_V]#グラフイックデーター収納座標取得
@@ -12327,7 +12343,7 @@ class App:
                 self.active_window_id = WINDOW_ID_GAME_OVER_RETURN_NO_SAVE #このウィンドウIDを最前列でアクティブなものとする
                 self.game_status = SCENE_RETURN_TITLE                      #ゲームステータスを「RETURN_TITLE」にする
         
-        if self.game_status == SCENE_RETURN_TITLE:             #「RETURN_TITLE」の時は        
+        if self.game_status == SCENE_RETURN_TITLE:           #「RETURN_TITLE」の時は        
             if   self.cursor_decision_item_y == 0:             #メニューでアイテムナンバー0の「RETURN」が押されたら
                 self.game_playing_flag = 0                     #ゲームプレイ中のフラグを降ろす
                 self.select_cursor_flag = 0                    #セレクトカーソルの移動更新は行わないのでフラグを降ろす
