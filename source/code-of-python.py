@@ -30,7 +30,7 @@
 #todo17 VOLCANIC_BELT メインスクロール面に重ね合わせての岩盤(ＢＧ)の挟みこみアニメーション実装
 #todo17A VOLCANIC_BELT 暗闇の中を突き進んでいくスポットライトエフェクトの実装
 
-#todo18 ゲームプレイ中の実績解除ダイアログ表示（ボスキャラ戦闘中は表示せず破壊後か破壊できなかったらリスタート時に表示）
+#todo18 ゲームプレイ中の実績解除ダイアログ表示(ボスキャラ戦闘中は表示せず破壊後か破壊できなかったらリスタート時に表示)
 #todo19 汎用性のある中ボスの実装
 #todo21 汎用母艦「アークウェスディ」からの自機射出演出
 #todo23 狙い撃ちn-way弾を射出する関数で偶数弾の処理が微妙に奇数弾っぽくなってるのを治す(自機狙いの弾が出なくて奇数弾→偶数弾になってるポイ)
@@ -72,6 +72,7 @@
 #todo803 ウィンドウシステムを改良する（滅茶苦茶難しそう・・・今は同じようなコードを羅列してるだけなのでシンプルに行きたいところですが・・）
 #todo804 難易度選択によるスタート時のクロー追加ボーナスでローリングクローだけ上手く複数追加されない(1個だけなら追加される)(おそらく2~4個追加時に全く同じ座標で回転し続けて1個だけで回っているように見える？のかも？)要バグ取り
 #todo805 ボスとの当たり判定関連の関数はショット、ミサイル、クローショットの3つの関数があるがほとんど同じようなコードの羅列なので共通化したい・・リファクタリングって奴なのかな？？
+#todo806 ウィンドウシステムで背後のウィンドウを左右に移動させたときに２～３秒後に左側の枠が微妙にズレてしまい1ドットくらいの隙間が出るバグの修正
 
 #todo900 BGMの作成(無理そう.........)
 #実装完了済み！
@@ -81,10 +82,10 @@
 
 # from random import randint   #random.randint(n,m) と呼ぶと、nからm(m自身を含む)までの間の整数が 等しい確率で、ランダムに返される
 from random import random    #random.random() と呼ぶと、0から1の範囲(1は含まない)のランダムな実数が返される(主にパーティクル系で使用します)
-import math
+import math #三角関数などを使用したいのでインポートぉぉおお！
 
-import pyxel
-import pygame.mixer #MP3再生するためだけに使用する予定・・・予定は未定・・・そして未定は確定に！やったあぁ！
+import pyxel        #グラフイックキャラやバックグラウンドグラフイック(背景(BG))の表示効果音、キーボードパッド入力などで使用 メインコアゲームエンジン
+import pygame.mixer #MP3再生するためだけに使用する予定・・・予定は未定・・・そして未定は確定に！やったあぁ！ BGMだけで使用しているサブゲームエンジン
 
 #定数の定義関連##################################################################################################
 WINDOW_W = 160    #ゲームウィンドウの横サイズ
@@ -496,15 +497,29 @@ WINDOW_BUTTON_SIZE_1TEXT  = 1      #半角文字サイズ4*6ドット
 WINDOW_BUTTON_SIZE_1X2    = 2      #1x2キャラ分(8x16ドット)
 
 #メッセージ,ボタンの表示の仕方 windowクラスのwindow[i].title_text[LIST_WINDOW_TEXT_ALIGN],またはwindow[i].item_text[j][LIST_WINDOW_TEXT_ALIGN]に入ります
-BUTTON_DISP_OFF    = 0 #0=表示しない
-DISP_OFF           = 0 #0=表示しない
+BUTTON_DISP_OFF    =  0 #0=表示しない
+DISP_OFF           =  0 #0=表示しない
 
-BUTTON_DISP_ON     = 1 #1=表示する
-DISP_ON            = 1 #1=表示する 
+BUTTON_DISP_ON     =  1 #1=表示する
+DISP_ON            =  1 #1=表示する 
 
-DISP_CENTER        = 2 #2=中央表示
-DISP_LEFT_ALIGN    = 3 #3=左揃え
-DISP_RIGHT_ALIGN   = 4 #4=右揃え
+DISP_CENTER        =  2 #2=中央表示
+DISP_LEFT_ALIGN    =  3 #3=左揃え
+DISP_RIGHT_ALIGN   =  4 #4=右揃え
+
+SKIP_CURSOR_AREA   = 10 #メッセージもコメントも表示せず、カーソルはこのアイテム位置を飛び越えて移動する(スキップして移動する)
+
+WIDE_SIZE_BUTTON   = 11 #横幅一杯を使用する横長のボタン
+
+SIZE3_BUTTON_1     = 12 #横3x縦1キャラサイズのボタンの1番左端 (1**)
+SIZE3_BUTTON_2     = 13 #横3x縦1キャラサイズのボタンの真ん中  (*2*)
+SIZE3_BUTTON_3     = 14 #横3x縦1キャラサイズのボタンの1番右端 (**3)
+
+SIZE5_BUTTON_1     = 15 #横5x縦1キャラサイズのボタンの左端       (1****)
+SIZE5_BUTTON_2     = 16 #横5x縦1キャラサイズのボタンの左から2番目 (*2***)
+SIZE5_BUTTON_3     = 17 #横5x縦1キャラサイズのボタンの真ん中     (**3**)
+SIZE5_BUTTON_4     = 18 #横5x縦1キャラサイズのボタンの右から2番目 (***4*)
+SIZE5_BUTTON_5     = 19 #横5x縦1キャラサイズのボタンの右端       (****5)
 
 #ウィンドウテキストのリストの2次元配列のインデックスナンバーとして使用する定数定義 windowクラスのwindow[i].title_text[ここで定義した定数],またはwindow[i].item_text[j][ここで定義した定数]またはwindow[i].scroll_text[ここで定義した定数]に入ります
 LIST_WINDOW_TEXT                    =  0 #ウィンドウテキスト
@@ -2472,7 +2487,7 @@ class App:
     
     def __init__(self):
         pygame.mixer.init()  #pygameミキサー関連の初期化 pyxel.initよりも先にpygameをinitしないと上手く動かないみたい・・・
-        pyxel.init(WINDOW_W,WINDOW_H,caption="CODE OF PYTHON",fps = 60) #ゲームウィンドウのタイトルバーの表示とfpsの設定(60fpsにした)
+        pyxel.init(WINDOW_W,WINDOW_H,caption="CODE OF PYTHON",fps = 60,quit_key=pyxel.KEY_NONE) #ゲームウィンドウのタイトルバーの表示とfpsの設定(60fpsにした),キーボード入力による強制終了は無しとする
         
         self.load_system_data()        #システムデータをロードする関数の呼び出し
         if self.fullscreen_mode == 1:  #フルスクリーン起動モードフラグが立っていたのなら
@@ -4732,19 +4747,28 @@ class App:
                 [ 30+10*2, 13+20,  IMG2,  176+8*9,176,SIZE_8,SIZE_8, 13, 1,1,    2,2]],\
                 
                 
-            [],[],self.master_flag_list,[],\
+            [],[],self.master_flag_list,\
+            [[100,13,  IMG2, 0,232,SIZE_8,SIZE_8, 0,  8,4],\
+            [  90,13,  IMG2, 0,232,SIZE_8,SIZE_8, 0,  8,4],\
+            [ 100,23,  IMG2, 0,232,SIZE_8,SIZE_8, 0,  8,4],\
+            
+            [  90,33,  IMG2, 128,224,SIZE_8,SIZE_8, 0,  8,4],\
+            [ 100,33,  IMG2, 128,224,SIZE_8,SIZE_8, 0,  8,4],\
+            [ 110,33,  IMG2, 128,224,SIZE_8,SIZE_8, 0,  8,4],\
+            
+            [ 9,5,     IMG2, 0, 48,SIZE_8,SIZE_8, 0,  8,5]],\
             
             COMMENT_FLAG_ON,27,45,5,42,\
-            [[DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,  DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF],\
-            [ DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,  DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF],\
-            [ DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,  DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF]],\
+            [[DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,  DISP_OFF,SKIP_CURSOR_AREA,SKIP_CURSOR_AREA,DISP_OFF        ],\
+            [ DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,  DISP_OFF,DISP_OFF,        SKIP_CURSOR_AREA,DISP_OFF        ],\
+            [ DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,DISP_OFF,  DISP_OFF,SKIP_CURSOR_AREA,SKIP_CURSOR_AREA,SKIP_CURSOR_AREA]],\
             
             [[" BEFOREHAND 1 SHOT"," BEFOREHAND 2 SHOT"," BEFOREHAND 3 SHOT"," BEFOREHAND 4 SHOT","","","","","",""],\
             [ "  EQUIP L's SHIELD", "????",             "?????",            "",                 "","","","","",""],\
             [ "  2 OPTION SLOT",    "????",             "?????",            "",                 "","","","","",""]],\
             
             [["事前にショットアイテム①個取得","事前にショットアイテム②個取得","事前にショットアイテム③個取得","事前にショットアイテム④個取得","","","","","",""],\
-            [ "　　　エルズシ─ルド装備", "？？？？",             "？？",            "",                 "","","","","",""],\
+            [ "　　　エルズシ─ルド装備", "一点集中",             "炎耐性＋",            "",                 "","","","","",""],\
             [ "　　スロットが②個増える",    "？？",             "ぴかぴか光る！",            "",                 "","","","","",""]],\
             )
             
@@ -4869,8 +4893,6 @@ class App:
             
         else: #メダルリストが存在しなかったらどうしようもない・・・ので・・・リターン戻るのですよ・・・orz
             return
-
-
 
     #カーソル関係の数値を変数にセットする関数
     def set_cursor_data(self,cu_type,cu_move_direction,posx,posy,step_x,step_y,page,page_max,item_x,item_y,d_item_x,d_item_y,max_item_x,max_item_y,color,menu_layer):
@@ -5219,7 +5241,7 @@ class App:
                     self.cursor_pre_decision_item_y = self.cursor_decision_item_y #現時点で選択されたアイテム「MEDAL_LIST」を前のレイヤー選択アイテムとしてコピーする
                     self.push_cursor_data(WINDOW_ID_MAIN_MENU)          #メインメニューのカーソルデータをPUSH
                     self.create_window(WINDOW_ID_MEDAL_LIST)                #「MEDAL_LIST」ウィンドウの作製
-                    #カーソルは点滅囲み矩形タイプ,カーソルは4方向,カーソル移動ステップはx9,y9,いま指示しているアイテムナンバーは0
+                    #カーソルは点滅囲み矩形タイプ,カーソルは4方向,カーソル移動ステップはx10y10,いま指し示しているitem_x,item_yは(0,0)
                     #まだボタンも押されておらず未決定状態なのでdecision_item_yはUNSELECTED,x最大項目数は9項目なので9-1=8を代入,メニューの階層が増えたのでMENU_LAYER0からMENU_LAYER1にします
                     self.set_cursor_data(CURSOR_TYPE_BOX_FLASH,CURSOR_MOVE_4WAY,46,60,STEP10,STEP10,0,0,0,0,UNSELECTED,UNSELECTED,9-1,3-1,0,MENU_LAYER1)
                     self.active_window_id = WINDOW_ID_MEDAL_LIST #このウィンドウIDを最前列でアクティブなものとする
@@ -10298,20 +10320,31 @@ class App:
                         if self.window[self.active_window_index].item_text[self.cursor_item_y-1][LIST_WINDOW_TEXT] == "": #カーソル移動先にテキストが存在しない場合は・・
                             self.cursor_y -= self.cursor_step_y#y座標をcursor_step_y減算して上に移動させる
                             self.cursor_item_y -= 1 #現在指し示しているアイテムナンバーを1減らす
-                            continue #選択すべき項目テキストは見つかっていないのでまだループは継続する
+                            continue #カーソルの移動先はまだ見つかっていないのでまだループは継続する
                         else:
                             self.cursor_y -= self.cursor_step_y #y座標をcursor_step_y（初期値は1キャラ7ドット）減算して上に移動させる
                             self.cursor_item_y -= 1 #現在指し示しているアイテムナンバーを1減らす
-                            break #選択すべき項目テキストが見つかったのでループから脱出！
+                            break #カーソルの移動先が見つかったのでループから脱出！
                     
                 else:
                     pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
                 
             elif self.cursor_move_direction == CURSOR_MOVE_4WAY:
                 if self.cursor_item_y != 0: #指し示しているアイテムナンバーが一番上の項目の0以外なら上方向にカーソルは移動できるので・・・
-                    self.cursor_y -= self.cursor_step_y #y座標をcursor_step_y減算してカーソルを上に移動させる
-                    self.cursor_item_y -= 1 #現在指し示しているアイテムナンバーを1減らす
-                    pyxel.play(0,self.window[self.active_window_index].cursor_move_se)#カーソル移動音を鳴らす
+                    for ty in range(self.cursor_item_y): #現在のカーソルy座標の数だけループ処理する
+                        if self.window[self.active_window_index].comment_disp_flag[self.cursor_item_y-(ty+1)][self.cursor_item_x] == SKIP_CURSOR_AREA: #カーソルの移動先がスキップエリアだったのなら・・・
+                            if self.cursor_item_y-(ty+1) < 0:
+                                pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
+                                break #上方向がスキップエリアで尚且つ調べる対象のitem_yが0より小さかったらカーソルは全く動かすことはできないので座標はそのままにループから脱出する
+                            else:
+                                pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
+                                continue #カーソルの移動先はまだ見つかっていないのでまだループは継続する
+                        else:
+                            #カーソル移動先が見つかったぞ！
+                            self.cursor_y -= self.cursor_step_y * (ty+1) #y座標をcursor_step_y*(ty+1)減算してカーソルを上に移動させる
+                            self.cursor_item_y -= (ty+1) #現在指し示しているアイテムナンバーをty+1減らす
+                            pyxel.play(0,self.window[self.active_window_index].cursor_move_se)#カーソル移動音を鳴らす
+                            break #カーソルの移動先が見つかったのでループから脱出
                 else:
                     pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
                 
@@ -10355,9 +10388,18 @@ class App:
                 
             elif self.cursor_move_direction == CURSOR_MOVE_4WAY:
                 if self.cursor_item_y != self.cursor_max_item_y: #指し示しているアイテムナンバーが最大項目数でないのなら下方向にカーソルは移動できるので・・
-                    self.cursor_y += self.cursor_step_y #y座標をcursor_step_y加算してカーソルを下に移動させる
-                    self.cursor_item_y += 1 #現在指し示しているアイテムナンバーを1増やす
                     pyxel.play(0,self.window[self.active_window_index].cursor_move_se)#カーソル移動音を鳴らす
+                    
+                    for ty in range(self.cursor_max_item_y - self.cursor_item_y): #(y軸アイテム最大値-現在のカーソルy座標)の数だけループ処理する
+                        if self.window[self.active_window_index].comment_disp_flag[self.cursor_item_y+(ty+1)][self.cursor_item_x] == SKIP_CURSOR_AREA: #カーソルの移動先がスキップエリアだったのなら・・・
+                            if self.cursor_item_y+(ty+1) > self.cursor_max_item_y:
+                                break #下方向がスキップエリアで尚且つ調べる対象がmax_item_yより大きかったらカーソルは全く動かすことはできないので座標はそのままにループから脱出する
+                            else:
+                                continue #カーソルの移動先はまだ見つかっていないのでまだループは継続する
+                        else:
+                            self.cursor_y += self.cursor_step_y * (ty+1) #y座標をcursor_step_y*(ty+1)加算してカーソルを下に移動させる
+                            self.cursor_item_y += (ty+1) #現在指し示しているアイテムナンバーをty+1増やす
+                            break #カーソルの移動先が見つかったのでループから脱出
                 else:
                     pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
                 
@@ -10386,12 +10428,37 @@ class App:
                 if self.cursor_page > self.cursor_page_max: #カーソルページ数が最大ページ数を超えたのなら
                     self.cursor_page = 0                    #ページ数は0にする
                 
-            elif   self.cursor_move_direction == CURSOR_MOVE_LR_SLIDER\
-                or self.cursor_move_direction == CURSOR_MOVE_4WAY:
+            elif self.cursor_move_direction == CURSOR_MOVE_LR_SLIDER:
                 if self.cursor_item_x != self.cursor_max_item_x: #指し示しているアイテムナンバーx軸方向が最大項目数でないのなら右方向にカーソルは移動できるので・・
-                    self.cursor_x += self.cursor_step_x #x座標をcursor_step_x（初期値は1文字分4ドット）加算してカーソルを右に移動させる
-                    self.cursor_item_x += 1
                     pyxel.play(0,self.window[self.active_window_index].cursor_move_se)#カーソル移動音を鳴らす
+                    
+                    for tx in range(self.cursor_max_item_x): #x軸アイテムの最大値の分だけループ処理する
+                        if self.window[self.active_window_index].comment_disp_flag[self.cursor_item_y][self.cursor_item_x+1] == SKIP_CURSOR_AREA: #カーソルの移動先がスキップエリアだったのなら・・・
+                            self.cursor_x += self.cursor_step_x #x座標をcursor_step_x（初期値は1文字分4ドット）加算してカーソルを右に移動させる
+                            self.cursor_item_x += 1 #現在指示しているアイテムナンバーを1増やす
+                            continue #カーソルの移動先はまだ見つかっていないのでまだループは継続する
+                        else:
+                            self.cursor_x += self.cursor_step_x #x座標をcursor_step_x（初期値は1文字分4ドット）加算してカーソルを右に移動させる
+                            self.cursor_item_x += 1 #現在指示しているアイテムナンバーを1増やす
+                            break #カーソルの移動先が見つかったのでループから脱出
+                    
+                else:
+                    pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
+                
+            elif self.cursor_move_direction == CURSOR_MOVE_4WAY:
+                if self.cursor_item_x != self.cursor_max_item_x: #指し示しているアイテムナンバーが最大項目数でないのなら右方向にカーソルは移動できるので・・
+                    pyxel.play(0,self.window[self.active_window_index].cursor_move_se)#カーソル移動音を鳴らす
+                    
+                    for tx in range(self.cursor_max_item_x - self.cursor_item_x): #(x軸アイテム最大値-現在のカーソルx座標)の数だけループ処理する
+                        if self.window[self.active_window_index].comment_disp_flag[self.cursor_item_y][self.cursor_item_x+(tx+1)] == SKIP_CURSOR_AREA: #カーソルの移動先がスキップエリアだったのなら・・・
+                            if self.cursor_item_x+(tx+1) > self.cursor_max_item_x:
+                                break #右方向がスキップエリアで尚且つ調べる対象がmax_item_xより大きかったらカーソルは全く動かすことはできないので座標はそのままにループから脱出する
+                            else:
+                                continue #カーソルの移動先はまだ見つかっていないのでまだループは継続する
+                        else:
+                            self.cursor_x += self.cursor_step_x * (tx+1) #x座標をcursor_step_x*(tx+1)加算してカーソルを右に移動させる
+                            self.cursor_item_x += (tx+1) #現在指し示しているアイテムナンバーをtx+1増やす
+                            break #カーソルの移動先が見つかったのでループから脱出
                 else:
                     pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
                 
@@ -10435,12 +10502,39 @@ class App:
                 if self.cursor_page < 0:                    #カーソルページ数が0より小さくなったのなら
                     self.cursor_page = self.cursor_page_max                    #ページ数はmaxにする
                 
-            elif   self.cursor_move_direction == CURSOR_MOVE_LR_SLIDER\
-                or self.cursor_move_direction == CURSOR_MOVE_4WAY:
+            elif   self.cursor_move_direction == CURSOR_MOVE_LR_SLIDER:
                 if self.cursor_item_x != 0: #指し示しているアイテムナンバーx軸方向が0以外ならでないのなら左方向にカーソルは移動できるので・・
-                    self.cursor_x -= self.cursor_step_x #x座標をcursor_step_x（初期値は1文字分4ドット）減算してカーソルを左に移動させる
-                    self.cursor_item_x -= 1
                     pyxel.play(0,self.window[self.active_window_index].cursor_move_se)#カーソル移動音を鳴らす
+                    
+                    for tx in range(self.cursor_max_item_x): #x軸アイテムの最大値の分だけループ処理する
+                        if self.window[self.active_window_index].comment_disp_flag[self.cursor_item_y][self.cursor_item_x-1] == SKIP_CURSOR_AREA: #カーソルの移動先がスキップエリアだったのなら・・・
+                            self.cursor_x -= self.cursor_step_x #x座標をcursor_step_x（初期値は1文字分4ドット）減算してカーソルを左に移動させる
+                            self.cursor_item_x -= 1#現在指示しているアイテムナンバーを1減らす
+                            continue #カーソルの移動先はまだ見つかっていないのでまだループは継続する
+                        else:
+                            self.cursor_x -= self.cursor_step_x #x座標をcursor_step_x（初期値は1文字分4ドット）減算してカーソルを左に移動させる
+                            self.cursor_item_x -= 1#現在指示しているアイテムナンバーを1減らす
+                            break #カーソルの移動先が見つかったのでループから脱出
+                    
+                else:
+                    pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
+                
+            elif self.cursor_move_direction == CURSOR_MOVE_4WAY:
+                if self.cursor_item_x != 0: #指し示しているアイテムナンバーが一番左の項目の0以外なら左方向にカーソルは移動できるので・・・
+                    for tx in range(self.cursor_item_x): #現在のカーソルx座標の数だけループ処理する
+                        if self.window[self.active_window_index].comment_disp_flag[self.cursor_item_y][self.cursor_item_x-(tx+1)] == SKIP_CURSOR_AREA: #カーソルの移動先がスキップエリアだったのなら・・・
+                            if self.cursor_item_x-(tx+1) < 0:
+                                pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
+                                break #左方向がスキップエリアで尚且つ調べる対象のitem_xが0より小さかったらカーソルは全く動かすことはできないので座標はそのままにループから脱出する
+                            else:
+                                pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
+                                continue #カーソルの移動先はまだ見つかっていないのでまだループは継続する
+                        else:
+                            #カーソル移動先が見つかったぞ！
+                            self.cursor_x -= self.cursor_step_x * (tx+1) #x座標をcursor_step_x*(tx+1)減算してカーソルを左に移動させる
+                            self.cursor_item_x -= (tx+1) #現在指し示しているアイテムナンバーをtx+1減らす
+                            pyxel.play(0,self.window[self.active_window_index].cursor_move_se)#カーソル移動音を鳴らす
+                            break #カーソルの移動先が見つかったのでループから脱出
                 else:
                     pyxel.play(0,self.window[self.active_window_index].cursor_bounce_se)#カーソル跳ね返り音を鳴らす
                 
