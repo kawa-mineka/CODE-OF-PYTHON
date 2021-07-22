@@ -10416,7 +10416,6 @@ class App:
                 pyxel.play(0,self.window[self.active_window_index].cursor_cancel_se)#カーソルキャンセル音を鳴らす
                 pyxel.quit() #ゲーム終了！
 
-
     #プレイ時間の計算処理を行う
     def update_calc_playtime(self):
         self.playtime_frame_counter += 1         #フレームカウンターをインクリメント
